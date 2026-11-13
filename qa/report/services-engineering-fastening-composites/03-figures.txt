@@ -1,0 +1,70 @@
+## FIGURES
+ 1 y= 1789 x=  70 136x109 ratio=- aspect=auto fit=fill natural=1440x1154
+     alt : Logo 5M
+     src : Logo_5M.png
+     cls : shrink-0 w-[136px]
+ 2 y= 1789 x= 302 136x109 ratio=- aspect=auto fit=fill natural=1440x1154
+     alt : Logo Adler Pelzer Group
+     src : Logo_Adler_Pelzer_Group.png
+     cls : shrink-0 w-[136px]
+ 3 y= 1789 x= 534 136x109 ratio=- aspect=auto fit=fill natural=1440x1154
+     alt : Logo Swandoo
+     src : Logo_Swandoo.png
+     cls : shrink-0 w-[136px]
+ 4 y= 1789 x= 766 136x109 ratio=- aspect=auto fit=fill natural=1440x1154
+     alt : Logo Storopack
+     src : Logo_STOROpack.webp
+     cls : shrink-0 w-[136px]
+ 5 y= 2288 x=  70 631x504 ratio=- aspect=auto fit=fill natural=1340x1072
+     alt : Two engineers are working on a test setup for a torque analysis, directly at test bench
+     src : Engineers_preparing_torque_analysis.webp
+     cls : h-full w-full
+ 6 y= 2973 x= 725 631x504 ratio=- aspect=auto fit=fill natural=1340x1072
+     alt : Two people at a desk in a modern office discuss fastening a composite material; one holds a sandwich panel, the other a fastener.
+     src : People_talking_about_fastening_composites_solution.jpg
+     cls : h-full w-full
+ 7 y= 3657 x=  70 631x504 ratio=- aspect=auto fit=fill natural=1340x1072
+     alt : Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.
+     src : SFL_key_visual.jpg
+     cls : h-full w-full
+ 8 y= 4408 x= 211 120x120 ratio=- aspect=auto fit=fill natural=120x120
+     alt : Challenges and solutions fastening composites icon
+     src : challenges_solutions_fastening_composites.jpg
+     cls : mb-40 sm:mb-0 shrink-0 sm:mr-40 lg:mr-48 ul:mr-54 w-96 lg:w-120
+ 9 y= 4765 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Leadership accelerator icon
+     src : Leadership_Accelerator.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+10 y= 4765 x= 510 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Increasing product quality icon
+     src : Increasing_Product_Quality.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+11 y= 4765 x= 939 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Maximizing flexibility in production icon
+     src : Maximizing_Flexibility_in_Production.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+12 y= 4984 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Product and cost optimization icon
+     src : Product_and_Cost_Optimization.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+13 y= 5673 x=  95 396x317 ratio=- aspect=auto fit=fill natural=396x317
+     alt : Female designer in her office, holding a tablet in her hands
+     src : Composites_design_key_visual.jpg
+     cls : w-auto md:w-[284px] lg:w-[396px] max-md:w-full max-md:mb-12
+14 y= 6151 x=  95 396x317 ratio=- aspect=auto fit=fill natural=396x317
+     alt : Male production supervisor in production hall
+     src : Composites_manufacturing_key_visual-7MB.jpg
+     cls : w-auto md:w-[284px] lg:w-[396px] max-md:w-full max-md:mb-12
+15 y= 6629 x=  95 396x317 ratio=- aspect=auto fit=fill natural=396x317
+     alt : Female assembly manager standing in automotive production facility
+     src : keyvisual-composite-assembly.jpg
+     cls : w-auto md:w-[284px] lg:w-[396px] max-md:w-full max-md:mb-12
+16 y= 7379 x=  71 740x555 ratio=- aspect=auto fit=fill natural=740x555
+     alt : Two people at a desk in a modern office discuss fastening a composite material; one holds a sandwich panel, the other a fastener.
+     src : People_talking_about_fastening_composites_solution.jpg
+     cls : rounded-lg lg:w-[72%] ul:w-[740px] wd:w-[50%] w-full
+
+## IMAGES (not in figure)
+ 1 y=  825 x=  70 1285x723 fit=cover
+     alt : ATE | Fastening Composites: Challenges and Solutions
+     src : maxresdefault.jpg

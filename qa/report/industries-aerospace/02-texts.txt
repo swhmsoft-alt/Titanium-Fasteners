@@ -1,0 +1,472 @@
+## TEXTS (main region only)
+  -- y=275 --
+  LI    x=  70 y=  275 w=  16 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .flex items-center
+  -- y=280 --
+  A     x=  70 y=  280 w=  16 h=  16 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .breadcrumb L0
+  -- y=295 --
+  SPAN  x=  69 y=  295 w=   1 h=   1 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .sr-only
+  -- y=275 --
+  LI    x=  86 y=  275 w= 112 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Industries
+        .flex items-center
+  A     x= 126 y=  275 w=  72 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Industries
+        .breadcrumb L1 whitespace-nowrap
+  LI    x= 198 y=  275 w= 115 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Aerospace
+        .flex-shrink-1 flex-grow-0 truncate whitespace-nowrap
+  -- y=277 --
+  SPAN  x= 238 y=  277 w=  75 h=  21 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Aerospace
+        .
+  -- y=332 --
+  P     x=  70 y=  332 w= 643 h=  28 fs=20px    lh=28px     fw=500  rgb(102, 102, 102)
+        Bossard Aerospace
+        .text-label mb-8 text-gray-medium lg:mb-12
+  -- y=372 --
+  H1    x=  70 y=  372 w= 643 h= 141 fs=64px    lh=70.4px   fw=700  rgb(0, 73, 117)
+        Welcome to Bossard Aerospace
+        .text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32
+  -- y=885 --
+  A     x=  38 y=  885 w= 812 h= 753 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Aerospace Fastening SolutionsFrom metrics and imperial standard parts, to built-to-print part according to your requirements.
+        .sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))
+  -- y=1406 --
+  H2    x=  86 y= 1406 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Aerospace Fastening Solutions
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1466 --
+  P     x=  86 y= 1466 w= 716 h= 109 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        From metrics and imperial standard parts, to built-to-print part according to your requirements.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=925 --
+  A     x= 882 y=  925 w= 505 h= 673 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Engineering & ServicesWe offer a wide range of engineering services to support your projects, from the design phase to component optimization.
+        .md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]
+  -- y=1290 --
+  H2    x= 930 y= 1290 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Engineering & Services
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1349 --
+  P     x= 930 y= 1349 w= 409 h= 186 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        We offer a wide range of engineering services to support your projects, from the design phase to component optimization.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=1790 --
+  A     x=  38 y= 1790 w= 505 h= 673 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Supplier NetworkPartner with Bossard Aerospace for exceptional C-parts distribution.
+        .md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]
+  -- y=2232 --
+  H2    x=  86 y= 2232 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Supplier Network
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=2291 --
+  P     x=  86 y= 2291 w= 409 h= 109 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Partner with Bossard Aerospace for exceptional C-parts distribution.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=2195 --
+  H2    x= 623 y= 2195 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        About Bossard Aerospace
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=2616 --
+  A     x=  38 y= 2616 w= 812 h= 753 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Working at Bossard AerospaceWant to join a team of passionate people in an exciting industry? Find out more about career opportunities at Bossard Aerospace.
+        .sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))
+  -- y=3137 --
+  H2    x=  86 y= 3137 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Working at Bossard Aerospace
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=3196 --
+  P     x=  86 y= 3196 w= 716 h= 109 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Want to join a team of passionate people in an exciting industry? Find out more about career opportunities at Bossard Aerospace.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=2656 --
+  A     x= 882 y= 2656 w= 505 h= 673 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Contacts and LocationsFrom Europe to America and Asia, we have teams around the world to support you locally. Find out more.
+        .md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]
+  -- y=3059 --
+  H2    x= 930 y= 3059 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Contacts and Locations
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=3118 --
+  P     x= 930 y= 3118 w= 409 h= 147 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        From Europe to America and Asia, we have teams around the world to support you locally. Find out more.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=3473 --
+  H2    x=  70 y= 3473 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        News Overview
+        .text-h3 mb-16 text-blue-dark2 lg:mb-24
+  -- y=3546 --
+  P     x= 296 y= 3546 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        October 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=3582 --
+  H3    x= 296 y= 3582 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Beyond the Catalog: Why Aerospace Fastener Design Review Matters
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3648 --
+  P     x= 296 y= 3648 w= 401 h=  86 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        How weight reduction, surface treatment, and installation optimization protect performance across the aircraft lifecycle.
+        .text-p-sm text-gray
+  -- y=3546 --
+  P     x= 955 y= 3546 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        September 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=3582 --
+  H3    x= 955 y= 3582 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Aero Negoce International is moving to a new site in Béziers
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3795 --
+  P     x= 296 y= 3795 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        August 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=3831 --
+  H3    x= 296 y= 3831 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        2026 Automotive & Aerospace Nearshoring Summit Chihuahua, Mexico
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3898 --
+  P     x= 296 y= 3898 w= 401 h=  86 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Bossard Aerospace to Showcase Fastening and Smart Factory Solutions at the 2026 Automotive & Aerospace Nearshoring Summit
+        .text-p-sm text-gray
+  -- y=3795 --
+  A     x= 729 y= 3795 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        May 2026Aerospace and Defense Meeting Sevilla 2026Bossard Aerospace to exhibit at Aerospace & Defense Meetings Sevilla 2026
+        .flex
+  P     x= 955 y= 3795 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        May 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=3831 --
+  H3    x= 955 y= 3831 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Aerospace and Defense Meeting Sevilla 2026
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3898 --
+  P     x= 955 y= 3898 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Bossard Aerospace to exhibit at Aerospace & Defense Meetings Sevilla 2026
+        .text-p-sm text-gray
+  -- y=4029 --
+  P     x= 296 y= 4029 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        April 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=4065 --
+  H3    x= 296 y= 4065 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Meet Bossard Aerospace in MRO America in Orlando
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=4132 --
+  P     x= 296 y= 4132 w= 401 h=  86 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        The global aviation maintenance community will soon gather in Orlando for one of the industry’s key events—and Bossard Aerospace will be there.
+        .text-p-sm text-gray
+  -- y=4029 --
+  P     x= 955 y= 4029 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        April 2026
+        .text-label mb-8 text-blue-dark3
+  -- y=4065 --
+  H3    x= 955 y= 4065 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Join Bossard Aerospace at AIX Hamburg 2026
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=4132 --
+  P     x= 955 y= 4132 w= 401 h= 115 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Bossard Aerospace will be exhibiting at the Aircraft Interiors Expo (AIX) 2026 in Hamburg – the leading event for cabin innovation and passenger experience.
+        .text-p-sm text-gray
+  -- y=4335 --
+  H2    x=  70 y= 4335 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Your Trusted C-Parts Management Partner
+        .text-h3 mb-16 lg:mb-24 text-blue-dark3
+  -- y=5238 --
+  H2    x=  70 y= 5238 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        How We Support You in Aerospace Manufacturing
+        .text-h3 text-blue-dark2 mb-16 lg:mb-24
+  -- y=5480 --
+  H3    x=  83 y= 5480 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Wide Range of High-Availability Products
+        .text-h5 text-black
+  H3    x= 510 y= 5480 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Tailored Engineering Solutions
+        .text-h5 text-black
+  H3    x= 939 y= 5480 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Increase Your Product Quality
+        .text-h5 text-black
+  -- y=5700 --
+  H3    x=  83 y= 5700 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Boost Flexibility in Your Production
+        .text-h5 text-black
+  H3    x= 510 y= 5700 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Simplify and Automate your Supply Chain
+        .text-h5 text-black
+  H3    x= 939 y= 5700 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Enhance Transparency
+        .text-h5 text-black
+  -- y=5866 --
+  H2    x=  70 y= 5866 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Bossard Aerospace Contacts
+        .text-h3 mb-16 lg:mb-24 text-blue-dark2
+  -- y=5964 --
+  H3    x=  95 y= 5964 w= 123 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Germany
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=6051 --
+  P     x=  95 y= 6051 w= 325 h= 244 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Bossard Aerospace Germany GmbHMunich Main OfficeKapellenstr. 985622 FeldkirchenGermanyPhone: +49 (0) 89 427421-0E-Mail: info.aero-de@bossard.com
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6214 --
+  A     x= 163 y= 6214 w= 173 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        +49 (0) 89 427421-0
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6246 --
+  A     x= 165 y= 6246 w= 239 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        info.aero-de@bossard.com
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6295 --
+  P     x=  95 y= 6295 w= 325 h= 212 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Hamburg OfficeSuederstrasse 28820537 HamburgGermanyPhone: +49 (0) 40 2190712-10E-Mail: info.aero-de@bossard.com
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6426 --
+  A     x= 163 y= 6426 w= 194 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        +49 (0) 40 2190712-10
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6458 --
+  A     x= 165 y= 6458 w= 239 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        info.aero-de@bossard.com
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6076 --
+  H3    x=  95 y= 6076 w= 154 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Switzerland
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=6164 --
+  P     x=  95 y= 6164 w= 321 h= 180 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Bossard Aerospace Switzerland AGSteinhauserstrasse 70CH-6301 ZugPhone: +41 41 749 64 16E-Mail: info@bossard-aerospace.ch
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6263 --
+  A     x= 163 y= 6263 w= 147 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        +41 41 749 64 16
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6295 --
+  A     x= 165 y= 6295 w= 247 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        info@bossard-aerospace.ch
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6189 --
+  H3    x=  95 y= 6189 w=  99 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        France
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=6276 --
+  P     x=  95 y= 6276 w= 309 h= 244 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Aero Negoce International FranceZAC de Mercorent33 Rue Alphonse Beau de Rochas34500 BéziersFrancePhone: + 33 4 67 35 33 33E-Mail: contact@aeronegoce.com
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6439 --
+  A     x= 163 y= 6439 w= 157 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        + 33 4 67 35 33 33
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6471 --
+  A     x= 165 y= 6471 w= 228 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        contact@aeronegoce.com
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6301 --
+  H3    x=  95 y= 6301 w=  70 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        USA
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=6388 --
+  P     x=  95 y= 6388 w= 308 h= 180 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Bossard Aerospace U.S. Inc.3050 W. Story RoadIrving, TX 75038, USAPhone: +1 469 629 0660E-Mail: info.aero-us@bossard.com
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6487 --
+  A     x= 163 y= 6487 w= 142 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        +1 469 629 0660
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6519 --
+  A     x= 165 y= 6519 w= 238 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        info.aero-us@bossard.com
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6413 --
+  H3    x=  95 y= 6413 w= 120 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Malaysia
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=6501 --
+  P     x=  95 y= 6501 w= 326 h= 244 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Aero Negoce International MalaysiaUnit 2A - Level 6Jalan Stesen Sentral 550470 Kuala LumpurMalaysiaPhone : +60 (0)327 146 180E-Mail : contact@aeronegoce.com
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=6664 --
+  A     x= 168 y= 6664 w= 164 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        +60 (0)327 146 180
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6696 --
+  A     x= 170 y= 6696 w= 228 h=  26 fs=20px    lh=32px     fw=400  rgb(0, 122, 195)
+        contact@aeronegoce.com
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=6592 --
+  H2    x= 134 y= 6592 w= 193 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        Product Solutions
+        .text-lead text-blue-dark3
+  -- y=6673 --
+  LI    x=  70 y= 6673 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Metric and Imperial Fasteners
+        .pb-16 lg:pb-20
+  A     x=  70 y= 6673 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Metric and Imperial Fasteners
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 6673 w= 274 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Metric and Imperial Fasteners
+        .truncate pr-4
+  -- y=6725 --
+  LI    x=  70 y= 6725 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .pb-16 lg:pb-20
+  A     x=  70 y= 6725 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 6725 w= 179 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .truncate pr-4
+  -- y=6777 --
+  LI    x=  70 y= 6777 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Innovative Solutions for Interior
+        .pb-16 lg:pb-20
+  A     x=  70 y= 6777 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Innovative Solutions for Interior
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 6777 w= 285 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Innovative Solutions for Interior
+        .truncate pr-4
+  -- y=6592 --
+  H2    x= 570 y= 6592 w= 254 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        Engineering & Services
+        .text-lead text-blue-dark3
+  -- y=6673 --
+  LI    x= 506 y= 6673 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Engineering and Services
+        .pb-16 lg:pb-20
+  A     x= 506 y= 6673 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Engineering and Services
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 554 y= 6673 w= 231 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Engineering and Services
+        .truncate pr-4
+  -- y=6725 --
+  LI    x= 506 y= 6725 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .pb-16 lg:pb-20
+  A     x= 506 y= 6725 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 554 y= 6725 w= 179 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Built-to-Print Parts
+        .truncate pr-4
+  -- y=6592 --
+  H2    x=1007 y= 6592 w= 152 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        Supplier Base
+        .text-lead text-blue-dark3
+  -- y=6673 --
+  LI    x= 943 y= 6673 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Supplier Network
+        .pb-16 lg:pb-20
+  A     x= 943 y= 6673 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Supplier Network
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 991 y= 6673 w= 161 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Supplier Network
+        .truncate pr-4
+  -- y=6725 --
+  LI    x= 943 y= 6725 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions
+        .pb-16 lg:pb-20
+  A     x= 943 y= 6725 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 991 y= 6725 w= 199 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions
+        .truncate pr-4
+  -- y=6936 --
+  H2    x= 134 y= 6936 w= 279 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        About Bossard Aerospace
+        .text-lead text-blue-dark3
+  -- y=7017 --
+  LI    x=  70 y= 7017 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Who We Are
+        .pb-16 lg:pb-20
+  A     x=  70 y= 7017 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Who We Are
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 7017 w= 111 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Who We Are
+        .truncate pr-4
+  -- y=7069 --
+  LI    x=  70 y= 7069 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        History
+        .pb-16 lg:pb-20
+  A     x=  70 y= 7069 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        History
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 7069 w=  68 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        History
+        .truncate pr-4
+  -- y=7121 --
+  LI    x=  70 y= 7121 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Career
+        .pb-16 lg:pb-20
+  A     x=  70 y= 7121 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Career
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 118 y= 7121 w=  65 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Career
+        .truncate pr-4
+  -- y=6936 --
+  H2    x= 570 y= 6936 w= 207 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        News and Contacts
+        .text-lead text-blue-dark3
+  -- y=7017 --
+  LI    x= 506 y= 7017 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Aerospace News
+        .pb-16 lg:pb-20
+  A     x= 506 y= 7017 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Aerospace News
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 554 y= 7017 w= 153 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Aerospace News
+        .truncate pr-4
+  -- y=7069 --
+  LI    x= 506 y= 7069 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Contacts and Locations
+        .pb-16 lg:pb-20
+  A     x= 506 y= 7069 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Contacts and Locations
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 554 y= 7069 w= 212 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Contacts and Locations
+        .truncate pr-4
+  -- y=7121 --
+  LI    x= 506 y= 7121 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Follow Us on LinkedIn
+        .pb-16 lg:pb-20
+  A     x= 506 y= 7121 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Follow Us on LinkedIn
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 554 y= 7121 w= 200 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Follow Us on LinkedIn
+        .truncate pr-4
+  -- y=6936 --
+  H2    x=1007 y= 6936 w= 232 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 73, 117)
+        Legal and Downloads
+        .text-lead text-blue-dark3
+  -- y=7017 --
+  LI    x= 943 y= 7017 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions and Certificates
+        .pb-16 lg:pb-20
+  A     x= 943 y= 7017 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions and Certificates
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 991 y= 7017 w= 345 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Terms and Conditions and Certificates
+        .truncate pr-4
+  -- y=7069 --
+  LI    x= 943 y= 7069 w= 412 h=  52 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Imprint
+        .pb-16 lg:pb-20
+  A     x= 943 y= 7069 w= 412 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Imprint
+        .text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:t
+  SPAN  x= 991 y= 7069 w=  70 h=  32 fs=20px    lh=32px     fw=400  rgb(0, 0, 0)
+        Imprint
+        .truncate pr-4

@@ -1,0 +1,6 @@
+# REF REPORT — qa/ref/services-smart-factory-inventory-management.json
+url         https://www.bossard.com/global-en/services/smart-factory/inventory-management/
+title       Inventory and C-Parts Management | Bossard Group
+viewport    1440x1000
+body        8258px   overflow 0px
+sprites     14

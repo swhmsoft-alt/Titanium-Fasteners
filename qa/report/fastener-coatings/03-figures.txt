@@ -1,0 +1,35 @@
+## FIGURES
+ 1 y=  243 x= 745 643x514 ratio=- aspect=auto fit=fill natural=634x507
+     alt : An overview of fastening elements with different coating solutions, such as corrosion protection coatings, functional coatings, sealing coatings and more
+     src : Teaser_Main_800x636px__functional_coatings__ohne_verlauf.webp
+     cls : flex w-full
+ 2 y= 1325 x=  38 812x753 ratio=- aspect=auto fit=cover natural=834x667
+     alt : Different types of screws, nuts and bolts with different types of coating patches, sealing coatings and more.
+     src : functional_coatings.webp
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 3 y= 1365 x= 882 505x673 ratio=- aspect=auto fit=cover natural=530x707
+     alt : A grey and a black bolt with tribological dry coating and a washer on light grey background
+     src : Teaser_Main_444x592px__dry_coatings.webp
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 4 y= 2207 x=  20 942x706 ratio=- aspect=auto fit=cover natural=960x720
+     alt : Corrosion Protection Coating image, screw with water drops
+     src : Teaser_Closing_957x717_75px__corrosion_protection.webp
+     cls : w-full
+ 5 y= 3216 x=  70 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : electroplating zinc flake Icon
+     src : electroplating_zinc_flake.jpg
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+ 6 y= 3216 x= 729 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : fastener finish Icon
+     src : fastener_finish.jpg
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+ 7 y= 3450 x=  70 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : surface finishing Icon
+     src : surface_finishing.jpg
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+ 8 y= 3450 x= 729 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : Notion of appearance in coatings icon
+     src : notion_of_appearance.jpg
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+
+## IMAGES (not in figure)

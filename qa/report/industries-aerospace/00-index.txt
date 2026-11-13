@@ -1,0 +1,6 @@
+# REF REPORT — qa/ref/industries-aerospace.json
+url         https://www.bossard.com/global-en/industries/aerospace/
+title       Bossard Aerospace: Fasteners for Aerospace | Bossard Group
+viewport    1440x1000
+body        7802px   overflow 0px
+sprites     14

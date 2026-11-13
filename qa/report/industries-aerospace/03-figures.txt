@@ -1,0 +1,106 @@
+## FIGURES
+ 1 y=  243 x= 745 643x514 ratio=- aspect=auto fit=fill natural=634x507
+     alt : Airplane with Bossard Aerospace logo in the sky with logo overlay
+     src : Website_Page_Header_entry_page.png
+     cls : flex w-full
+ 2 y=  885 x=  38 812x753 ratio=- aspect=auto fit=cover natural=834x667
+     alt : airplane and parts illustration with gradient overlay
+     src : Aircraft_and_parts_illustration_with_gradient_teaser_tile.png
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 3 y=  925 x= 882 505x673 ratio=- aspect=auto fit=cover natural=530x707
+     alt : Two men reviewing CAD engineering drawings and 3D models on dual computer monitors in a modern office workspace.
+     src : Engineering_service_with_gradient_teaser_tile.png
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 4 y= 1790 x=  38 505x673 ratio=- aspect=auto fit=cover natural=530x707
+     alt : Aerial view and top view cargo plane flying above ship port in the export and import business and Smart logistics international goods. Shipping cargo to harbor by crane stock photo
+     src : iStock-2246103968.jpg
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 5 y= 1750 x= 575 812x753 ratio=- aspect=auto fit=cover natural=834x667
+     alt : Aircraft wing and enging landed with gradient
+     src : About_us_visul_with_gradient_327x261px-24.png
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 6 y= 2616 x=  38 812x753 ratio=- aspect=auto fit=cover natural=834x667
+     alt : Team picture of Bossard Aerospace in front of the warehouse building
+     src : BossardAero_Sommerfest2024__63_.jpg
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 7 y= 2656 x= 882 505x673 ratio=- aspect=auto fit=cover natural=530x707
+     alt : A close-up of an airplane engine situated in a hangar with blue walls, highlighting its mechanical features.
+     src : iStock-1127839292_with_gradient.jpg
+     cls : relative -z-1 h-full rounded-2xl w-full
+ 8 y= 3546 x=  70 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : 3 people reviewing design and fasteners with Bossard Aerospace wall background
+     src : Website_Image_327x261px-28.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+ 9 y= 3546 x= 729 202x218 ratio=- aspect=auto fit=cover natural=202x202
+     alt : Aero Negoce International Logo
+     src : ANI_logo.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+10 y= 3795 x=  70 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : Aerospace Summit Chihuhua 2026 logo
+     src : AAS_Chihuahua_327x261px-29.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+11 y= 3795 x= 729 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : Aerospace and Defense Meeting Sevilla Logo
+     src : ADM_Sevilla_2026_327x261px-15.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+12 y= 4029 x=  70 202x202 ratio=- aspect=auto fit=cover natural=202x202
+     alt : MRO Americas logo
+     src : MRO_America_327x261px.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+13 y= 4029 x= 729 202x218 ratio=- aspect=auto fit=cover natural=202x202
+     alt : Aircraft Interiors Expo logo
+     src : AIX_logo_327x261px.png
+     cls : w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0
+14 y= 5327 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Fasteners icon
+     src : Fasteners.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+15 y= 5327 x= 510 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Design icon
+     src : design.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+16 y= 5327 x= 939 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Increasing product quality icon
+     src : Increasing_Product_Quality.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+17 y= 5546 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Maximizing flexibility in production icon
+     src : Maximizing_Flexibility_in_Production.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+18 y= 5546 x= 510 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Supply chain management icon
+     src : Supply_Chain_Management.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+19 y= 5546 x= 939 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Transparency in process icon
+     src : Transparency_in_Process.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+20 y= 6587 x=  70 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Products solutions - standard icon
+     src : PRODUCTS_SOLUTIONS_-_Standard-Icon.svg
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+21 y= 6587 x= 506 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Engineering icon
+     src : Engineering.svg
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+22 y= 6587 x= 943 48x48 ratio=- aspect=auto fit=fill natural=48x48
+     alt : Suppliers icon
+     src : IconSupplierNetworkAdapted.png
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+23 y= 6931 x=  70 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Aerospace icon
+     src : Aerospace.svg
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+24 y= 6931 x= 506 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Contact icon
+     src : Contact.svg
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+25 y= 6931 x= 943 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Download icon
+     src : Download.svg
+     cls : mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48
+
+## IMAGES (not in figure)
+ 1 y= 4407 x=  70 1285x723 fit=cover
+     alt : Aerospace | Your Trusted C-Parts Management Partner in Aerospace
+     src : maxresdefault.jpg

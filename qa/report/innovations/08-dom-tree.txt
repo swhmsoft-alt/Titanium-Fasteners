@@ -1,0 +1,271 @@
+# DOM TREE — qa/ref/innovations.html
+# <main> found: yes
+
+<astro-island>
+  <link>
+  <header class="container-fluid mb-64 mt-40 flex flex-col wd:mb-72 wd:mt-48 wd:flex-row wd:items-center wd:gap-32 ul:mb-72 ul:mt-48">
+    <div class="max-w-full wd:order-1 wd:grow-0 wd:self-center wd:w-1/2 wd:shrink-0 md:order-2">
+      <nav class="opacity-1 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12">
+        <ol class="flex text-h6-s">
+          <li class="flex items-center">
+            <a class="breadcrumb L0" href="/global-en/">
+              <svg class="h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[2]">
+                <use href="/_astro/sprite.CNhkymMS.svg#home">
+              <span class="sr-only">  "Bossard Group - Fasteners, Engineering, Logistics"
+          <li class="flex items-center">
+            <svg class="h-[16px] w-[16px] inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 ">
+              <use href="/_astro/sprite.CNhkymMS.svg#chevron-right">
+            <a class="breadcrumb L1 whitespace-nowrap" href="/global-en/product-solutions/">  "Product Solutions"
+          <li class="flex-shrink-1 flex-grow-0 truncate whitespace-nowrap">
+            <svg class="h-[16px] w-[16px] inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4">
+              <use href="/_astro/sprite.CNhkymMS.svg#chevron-right">
+            <span>  "Innovations"
+      <p class="text-label mb-8 text-gray-medium lg:mb-12">  "Product Solutions"
+      <h1 class="text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32">  "Innovative Fasteners: The Future of Fastening Technology"
+      <p class="text-lead mb-24 text-gray sm:mb-0">  "Explore new and innovative fastening technologies at Bossard. Or are you an inventor yours"
+    <div class="relative mb-24 md:mb-32 wd:order-2 wd:mb-0 wd:w-1/2 wd:shrink-0 wd:grow-0 sm:mt-24 md:order-1 md:max-wd:mb-56 md:max-wd:pr-[280px]">
+      <figure class="flex w-full">
+        <img class="aspect-5/4 md:object-cover flex-shrink-0 w-full rounded-tl-2xl rounded-tr-2xl md:rounded-2xl" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7K5iSaYq34IFqtyHw5fGlr/5f23bd7dde2118cadb32ddd9d936924b/iStock-64113568" alt="A futuristic drone soaring above a cityscape, symbolizing the advancement of drone delivery technology." width="634" height="507" style="aspect-ratio:5 / 4">
+      <div class="z-1 w-full overflow-x-hidden rounded-bl-lg rounded-br-lg border-[1px] border-[rgba(204,228,243,1)] bg-white p-20 shadow-[0_0_20px_0_rgba(0,0,0,0.05)] md:absolute md:right-0 md:w-[360px] md:rounded-lg ">
+        <form id="c6fb3816-915f-ef11-bfe3-000d3ab92294">
+          <h2 class="mb-24 text-blue-dark3 text-h5">  "Contact Us"
+          <div class="mb-24 text-p-sm-s text-gray lg:text-p-s">
+          <div class="mb-24">
+            <label class="gap-2 text-4 relative flex flex-col">
+              <span class="absolute top-8 ml-12 text-header-s text-gray-medium">  "Country or Region"
+                <span class="pl-2 text-blue">  "*"
+              <select class="mt-2 w-full appearance-none overflow-x-hidden text-ellipsis border-b bg-transparent px-12 pb-8 pr-32 pt-24 text-p-sm-s focus:ring-3 focus-visible:outline-none border-gray-soft focus:border-blue focus:">
+                <option>  "Select"
+                <option class="text-black">  "Other country"
+                <option class="text-black">  "Albania"
+                <option class="text-black">  "Argentina"
+                <option class="text-black">  "Australia"
+                <option class="text-black">  "Austria"
+                <option class="text-black">  "Belarus"
+                <option class="text-black">  "Belgium"
+                <option class="text-black">  "Bosnia and Herzegovina"
+                <option class="text-black">  "Brazil"
+                <option class="text-black">  "Bulgaria"
+                <option class="text-black">  "Canada"
+                <option class="text-black">  "China"
+                <option class="text-black">  "Croatia"
+                <option class="text-black">  "Czech Republic"
+                <option class="text-black">  "Denmark"
+                <option class="text-black">  "Egypt"
+                <option class="text-black">  "Estonia"
+                <option class="text-black">  "Finland"
+                <option class="text-black">  "France"
+                <option class="text-black">  "Germany"
+                <option class="text-black">  "Greece"
+                <option class="text-black">  "Hungary"
+                <option class="text-black">  "Iceland"
+                <option class="text-black">  "India"
+                <option class="text-black">  "Ireland"
+                <option class="text-black">  "Israel"
+                <option class="text-black">  "Italy"
+                <option class="text-black">  "Latvia"
+                <option class="text-black">  "Lithuania"
+                <option class="text-black">  "Malaysia"
+                <option class="text-black">  "Mexico"
+                <option class="text-black">  "Moldova"
+                <option class="text-black">  "Netherlands"
+                <option class="text-black">  "North Macedonia"
+                <option class="text-black">  "Norway"
+                <option class="text-black">  "Poland"
+                <option class="text-black">  "Portugal"
+                <option class="text-black">  "Republic of Korea"
+                <option class="text-black">  "Romania"
+                <option class="text-black">  "Serbia"
+                <option class="text-black">  "Singapore"
+                <option class="text-black">  "Slovakia"
+                <option class="text-black">  "Slovenia"
+                <option class="text-black">  "South Africa"
+                <option class="text-black">  "Spain"
+                <option class="text-black">  "Sweden"
+                <option class="text-black">  "Switzerland"
+                <option class="text-black">  "Taiwan"
+                <option class="text-black">  "Thailand"
+                <option class="text-black">  "Turkey"
+                <option class="text-black">  "Ukraine"
+                <option class="text-black">  "United Kingdom"
+                <option class="text-black">  "United States"
+                <option class="text-black">  "Vietnam"
+              <svg class="absolute right-12 w-16 h-16 top-1/2 -translate-y-1/2 pointer-events-none text-gray-medium">
+                <use href="/_astro/sprite.CNhkymMS.svg#chevron-down">
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "First Name"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "Last Name"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "E-Mail"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "Company"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <textarea class="mt-2 peer w-full border-b px-12 pb-[11px] pt-[21px] focus:ring-3 focus-visible:outline-none text-p-sm-s border-gray-soft focus:border-blue focus:ring-blue-light">
+              <span class="absolute left-12 top-[16px] -translate-y-12 bg-white transition-all duration-500 flex items-center text-[12px] peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:te">  "Your Message"
+          <div class="mb-8">
+            <label class="flex items-center gap-x-3.5 text-4 cursor-pointer">
+              <input class="sr-only">
+              <div class="relative mr-8 py-[3px]">
+                <div class="absolute top-0 h-18 w-18 rounded-full shadow-[0_0_4px_0_rgba(0,0,0,0.25)] outline-transparent transition-all active:rounded-2xl active:outline active:outline-2 active:outline-[rgba(153,202,231,1)] lef">
+                <div class="h-[12px] w-[31px] rounded-3xl transition-all bg-gray-light">
+              <div class="*:inline">
+                <p>  "By submitting this form I consent to the . This site is protected by reCAPTCHA."
+                  <a class="cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark" href="/global-en/privacy-policy/">  "privacy policy"
+                <span class="text-blue">  "*"
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <span class="mt-24 flex flex-col items-stretch">
+            <button class="w-full sm:w-auto sm:min-w-[200px] flex items-center justify-center text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out">  "Submit"
+        <div style="visibility: hidden;">
+          <div>
+            <div>
+              <div class="grecaptcha-badge" style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186">
+                <div class="grecaptcha-logo">
+                  <iframe width="256" height="60" src="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LdrsLkqAAAAAI8XjBqyCXR6Y3IQAu1aw4v3novp&co=aHR0cHM6Ly93d3">
+                <div class="grecaptcha-error">
+                <textarea class="g-recaptcha-response" id="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: non">
+              <iframe style="display: none;">
+<astro-island>
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "At Bossard, we continuously develop innovative fasteners and new processing techniques. Ou"
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "For these innovative fasteners, our R&D Fastening Technology works closely with establishe"
+  <section class="container-fluid mb-80 mt-32 lg:mb-56">
+    <h2 class="text-h3 mb-32 text-blue-dark3 lg:mb-48">  "Our Fastening Innovations"
+    <div class="group relative">
+      <div class="scrollbar scrollbar-area mx-auto snap-x snap-mandatory gap-32 w-full">
+        <div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+          <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+            <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/6hglRCiF1p18XK7eQSHV3W/71b8e7109bea011ed270773e99557d0c/ESKA-HA-Schraub" alt="A high-strength ESKA aluminum fastener on a white background." width="300" height="169" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 text-gray-medium lg:mt-12">  "ESKA® HA-Schraubengarnituren are lightweight, high-strength aluminum fasteners for preload"
+        <div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+          <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+            <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/8c9HMB04XOxRxFefzyaTc/8005e4f50071933d64ecf5f92c093c93/Jextar_Feature.j" alt="Close-up of a Jextar® Titan high-strength titanium fastener" width="300" height="169" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 text-gray-medium lg:mt-12">  "Jextar® Titan high-strength fasteners are designed for extreme temperatures and aggressive"
+        <div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+          <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+            <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/755pzPpdX8INEgXkl9GxiA/8e2c12faa28056020f95cb9ebbf68c80/PEM_Ghost_Featu" alt="PEM® Ghost fasteners for invisible connections" width="300" height="169" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 text-gray-medium lg:mt-12">  "PEM® Ghost is a fastening connection that is invisible, secure, yet easy to release for au"
+        <div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+          <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+            <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7e70otDSSIKjEFYyLdVBqw/43bec9eba496ee9b844466eda08ee978/ecosyn-SEF_inox" alt="ecosyn SEF stainless steel contact fitting fastener" width="300" height="169" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 text-gray-medium lg:mt-12">  "The ecosyn® SEF inox is a 3-in-1 contact fitting made from stainless steel."
+        <div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+          <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+            <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/1k77fzAA7Dzbh3KKUidhZX/d47c9343c9749b151b5c9b2badbe873c/PEM_CastSert_Fe" alt="Two PEM CastSert press-in threaded inserts on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 text-gray-medium lg:mt-12">  "PEM® CastSerts are stainless steel press-in threaded inserts for strong threads in soft me"
+    <dialog class="max-h-full w-full max-w-full backdrop:bg-blue-dark backdrop:bg-opacity-80 bg-white h-full">
+      <span class="sr-only" id="overlay-label">  "Overlay"
+      <article class="container-fluid h-svh">
+        <header class="flex items-center py-16 md:py-20 lg:py-24 justify-between">
+          <div class="text-p-sm">  "/5"
+            <p class="text-p contents text-blue">  "1"
+          <button class="rounded-full border-2 border-blue-dark3 p-[10px] md:p-[11px]">
+            <svg class="w-16 h-16 text-blue-dark3">
+              <use href="/_astro/sprite.CNhkymMS.svg#close">
+            <span id="button-label">  "Close Overlay"
+        <div class="flex h-[90vh] min-h-[700px] flex-col justify-center lg:min-h-[900px] wd:min-h-[1000px]">
+          <figure class="w-full pb-16 lg:pb-20">
+            <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+              <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/6hglRCiF1p18XK7eQSHV3W/71b8e7109bea011ed270773e99557d0c/ESKA-HA-Schraub" alt="A high-strength ESKA aluminum fastener on a white background." width="1300" height="731" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 line-clamp-2 h-56 overflow-hidden md:mt-12">  "ESKA® HA-Schraubengarnituren are lightweight, high-strength aluminum fasteners for preload"
+          <div class="flex items-center">
+            <ul class="justify-left scrollbar-hidden flex snap-x snap-mandatory gap-16 overflow-x-auto pb-0 lg:gap-20">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px]">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/6hglRCiF1p18XK7eQSHV3W/71b8e7109bea011ed270773e99557d0c/ESKA-HA-Schraub" alt="A high-strength ESKA aluminum fastener on a white background." width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/8c9HMB04XOxRxFefzyaTc/8005e4f50071933d64ecf5f92c093c93/Jextar_Feature.j" alt="Close-up of a Jextar® Titan high-strength titanium fastener" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/755pzPpdX8INEgXkl9GxiA/8e2c12faa28056020f95cb9ebbf68c80/PEM_Ghost_Featu" alt="PEM® Ghost fasteners for invisible connections" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7e70otDSSIKjEFYyLdVBqw/43bec9eba496ee9b844466eda08ee978/ecosyn-SEF_inox" alt="ecosyn SEF stainless steel contact fitting fastener" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/1k77fzAA7Dzbh3KKUidhZX/d47c9343c9749b151b5c9b2badbe873c/PEM_CastSert_Fe" alt="Two PEM CastSert press-in threaded inserts on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+  <div class="container-fluid">
+    <h2 class="text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32">  "Your Innovation in Fastening Technology"
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "Do you have an innovative fastening idea? We’ve got the know-how to make it a success! Whe"
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "Why? We strive to find solutions to global fastening challenges every day and we know how "
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "Together, we can make your idea come to life."
+  <article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+    <h2 class="text-h3 text-blue-dark2 mb-16 lg:mb-24">  "What We Offer You"
+    <div class="grid border-collapse grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/4S0aLlp80GPlX7HK6BGT8i/2d66c8fc1018003eca12f84241f419ce/Engineering.svg" alt="Engineering icon">
+        <h3 class="text-h5 text-black">  "Expert Know-How"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Benefit from 190 years of experience and our expertise in materials, technologies, coating"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/5Vo4SbADbfg68BPdQrrUlQ/b77f9ea875928a0dd5e932f3d4d5f633/design.svg" alt="Design icon">
+        <h3 class="text-h5 text-black">  "Development Support"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Our online calculators, CAD portal, and services for prototypes and small series assist yo"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/1hLTfWe0kVx5d2loSmc8ie/d40f3137f1381112883da04ebd976ff2/Examination_und" alt="Inspection of a screw">
+        <h3 class="text-h5 text-black">  "Concept Testing"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "With our technical test labs, you can make sure your products meet necessary requirements."
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7IMyvOEwXPlJ5Lb3kT8OKt/163c178e8c4b761cd663791792d0a736/check.svg" alt="Check Icon">
+        <h3 class="text-h5 text-black">  "Market Check"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "You’ve got an idea but are unsure about its market potential? We can help you assess it."
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/2Ge8evcYDFyxuUBx9ItO3u/855f92a8651355beb8e4a25ca5d53656/Global_Logistic" alt="Global logistic icon">
+        <h3 class="text-h5 text-black">  "Global Network"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Benefit from our strong global sourcing and distribution network."
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/5Bhl7zvkRJaNuJFkICHaxy/6bdd57d7bc135aeff1cddd923c7d20a0/Partnership.svg" alt="Partnership icon">
+        <h3 class="text-h5 text-black">  "Secure Partnership"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Your idea is safe with us. We value transparency as well as fair and reliable partnerships"
+  <div class="container-fluid">
+    <h2 class="text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32">  "Ready to go the Next Step with Your Innovation?"
+  <section class="container-fluid">
+    <div class="flex gap-8 py-8">
+      <button class="text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-[28px] inline-block text-center px-">  "Contact Us"
+      <div>
+        <dialog class="max-w-full backdrop:bg-blue-dark backdrop:bg-opacity-80 overflow-visible my-48 lg:my-0 max-h-[calc(100%-96px)] lg:max-h-full bottom-0 lg:bottom-0 left-0 right-0 bg-transparent h-[calc(100vh-96px)] lg:">
+          <span class="sr-only" id="overlay-label">  "Overlay"
+          <button class="group absolute right-16 top-[-20px] z-10 flex h-40 w-40 items-center justify-center rounded-full border-2 border-blue-dark3 bg-white hover:border-[3px] hover:border-blue lg:fixed lg:right-[708px] lg:t">
+            <span class="sr-only">  "Close"
+            <svg class="h-[16px] w-[16px] inline-block group-hover:text-blue text-blue-dark3 stroke-[1.75]">
+              <use href="/_astro/sprite.CNhkymMS.svg#close">
+          <div class="scrollbar-hidden absolute bottom-0 left-0 right-0 top-0 h-full w-auto overflow-auto lg:bottom-0 lg:left-auto lg:right-0 lg:top-0 lg:mt-0 lg:w-[728px]">
+            <div class="bg-white lg:min-h-full">
+              <figure class="w-full">
+                <img class="aspect-21/9 w-full object-cover" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7ux1sXnY9jNUB5vVFwUnJ9/97abf616fb9454d9f989e9e3d993dd55/_U6A6569_rgb_HE" alt="Two people discussing design of a fastener." width="740" height="317" style="aspect-ratio:21 / 9">
+              <div class="p-16 pb-40 sm:px-24 md:px-48 lg:px-64 lg:pb-48 lg:pt-24">
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">

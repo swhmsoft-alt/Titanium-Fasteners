@@ -1,0 +1,318 @@
+## TEXTS (main region only)
+  -- y=255 --
+  LI    x=  70 y=  255 w=  16 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .flex items-center
+  -- y=260 --
+  A     x=  70 y=  260 w=  16 h=  16 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .breadcrumb L0
+  -- y=275 --
+  SPAN  x=  69 y=  275 w=   1 h=   1 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .sr-only
+  -- y=255 --
+  LI    x=  86 y=  255 w= 101 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Services
+        .flex items-center
+  A     x= 126 y=  255 w=  61 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Services
+        .breadcrumb L1 whitespace-nowrap
+  LI    x= 187 y=  255 w= 142 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Smart Factory
+        .flex items-center
+  A     x= 227 y=  255 w= 102 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Smart Factory
+        .breadcrumb L2 whitespace-nowrap
+  LI    x= 328 y=  255 w= 280 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Inventory & C-Parts Management
+        .flex-shrink-1 flex-grow-0 truncate whitespace-nowrap
+  -- y=257 --
+  SPAN  x= 368 y=  257 w= 240 h=  21 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Inventory & C-Parts Management
+        .
+  -- y=313 --
+  P     x=  70 y=  313 w= 643 h=  28 fs=20px    lh=28px     fw=500  rgb(102, 102, 102)
+        Smart Factory Logistics
+        .text-label mb-8 text-gray-medium lg:mb-12
+  -- y=353 --
+  H1    x=  70 y=  353 w= 643 h= 282 fs=64px    lh=70.4px   fw=700  rgb(0, 73, 117)
+        Build a Resilient Supply Chain with Our Smart Inventory Management Solution
+        .text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32
+  -- y=453 --
+  H2    x= 920 y=  453 w= 362 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 73, 117)
+        Contact an Expert
+        .mb-24 text-blue-dark3 text-h5
+  -- y=510 --
+  SPAN  x= 932 y=  510 w= 103 h=  17 fs=12px    lh=16.8px   fw=400  rgb(102, 102, 102)
+        Country or Region*
+        .absolute top-8 ml-12 text-header-s text-gray-medium
+  SPAN  x=1029 y=  510 w=   6 h=  16 fs=12px    lh=16.8px   fw=400  rgb(0, 122, 195)
+        *
+        .pl-2 text-blue
+  -- y=601 --
+  SPAN  x= 932 y=  601 w=  90 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        First Name*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=600 --
+  SPAN  x=1014 y=  600 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=684 --
+  SPAN  x= 932 y=  684 w=  88 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Last Name*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=683 --
+  SPAN  x=1012 y=  683 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=766 --
+  SPAN  x= 932 y=  766 w=  57 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        E-Mail*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=765 --
+  SPAN  x= 981 y=  765 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=849 --
+  SPAN  x= 932 y=  849 w=  77 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Company*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=848 --
+  SPAN  x=1001 y=  848 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=931 --
+  SPAN  x= 932 y=  931 w=  99 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Your Message
+        .absolute left-12 top-[16px] -translate-y-12 bg-white transition-all duration-500 flex items-center text-[12px] peer-placeholder-shown:translate-y-0 peer-focus:-
+  -- y=1004 --
+  P     x= 959 y= 1004 w= 282 h=  69 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        By submitting this form I consent to the privacy policy. This site is protected by reCAPTCHA.
+        .
+  -- y=1028 --
+  A     x= 959 y= 1028 w=  95 h=  21 fs=16px    lh=24px     fw=400  rgb(0, 122, 195)
+        privacy policy
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=1052 --
+  SPAN  x=1048 y= 1052 w=  12 h=  21 fs=16px    lh=24px     fw=400  rgb(0, 122, 195)
+        *
+        .text-blue
+  -- y=1099 --
+  SPAN  x= 920 y= 1099 w= 362 h=  49 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Contact us
+        .mt-24 flex flex-col items-stretch
+  -- y=892 --
+  P     x=  70 y=  892 w= 782 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Digital Transformation & Modular Solutions
+        .text-p pb-12 text-gray lg:pb-20 max-w-rich-text
+  -- y=1092 --
+  P     x=  70 y= 1092 w= 782 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Central Platform & Real-Time Transparency
+        .text-p pb-12 text-gray lg:pb-20 max-w-rich-text
+  -- y=1260 --
+  P     x=  70 y= 1260 w= 782 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Tailored Solutions & Uninterrupted Production
+        .text-p pb-12 text-gray lg:pb-20 max-w-rich-text
+  -- y=1460 --
+  P     x=  70 y= 1460 w= 782 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Future-Proof Supply Chain
+        .text-p pb-12 text-gray lg:pb-20 max-w-rich-text
+  -- y=1512 --
+  P     x=  70 y= 1512 w= 782 h=  84 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        With the right tools, you can drive smarter decisions and build a supply chain that’s more resilient, responsive, and future-ready.
+        .text-p pb-12 text-gray lg:pb-20 max-w-rich-text
+  -- y=1636 --
+  H2    x=  70 y= 1636 w=1285 h=  97 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Efficiency in Action: How ABB Benefits from Smart Factory Logistics
+        .text-h3 mb-16 lg:mb-24 text-blue-dark3
+  -- y=2491 --
+  P     x=  70 y= 2491 w=1285 h=  29 fs=18px    lh=28.8px   fw=400  rgb(0, 0, 0)
+        The Smart Factory Solution: How ABB transformed their internal logistics
+        .text-p-sm
+  -- y=2576 --
+  H2    x=  70 y= 2576 w= 782 h=  80 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        How We Support You
+        .text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32
+  -- y=2853 --
+  P     x= 296 y= 2853 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Our Main Service
+        .text-label mb-8 text-blue-dark3
+  -- y=2889 --
+  H3    x= 296 y= 2889 w= 401 h=  50 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Leaner B- and C-Parts Management in Real-Time
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=2853 --
+  P     x= 955 y= 2853 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        ARIMS: Your Digital Cockpit
+        .text-label mb-8 text-blue-dark3
+  -- y=2889 --
+  H3    x= 955 y= 2889 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Improve Visibility and Control
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3131 --
+  P     x= 296 y= 3131 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Add-On Supplier Consolidation
+        .text-label mb-8 text-blue-dark3
+  -- y=3167 --
+  H3    x= 296 y= 3167 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        All-in-One Supplier Management
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3131 --
+  P     x= 955 y= 3131 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Intralogistics
+        .text-label mb-8 text-blue-dark3
+  -- y=3167 --
+  H3    x= 955 y= 3167 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Optimize Your Last Mile
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3464 --
+  H2    x=  70 y= 3464 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Proven Productivity Through Our Logistics Services
+        .text-h3 mb-16 lg:mb-24 text-blue-dark3
+  -- y=3555 --
+  P     x=  88 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Take Away 1
+        .text-label mb-12 text-blue-dark3
+  -- y=3595 --
+  H3    x=  88 y= 3595 w= 271 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 122, 195)
+        Up to 60%
+        .text-h3 mb-16 hyphens-auto lg:mb-24
+  -- y=3667 --
+  P     x=  88 y= 3667 w= 271 h=  58 fs=18px    lh=28.8px   fw=400  rgb(0, 122, 195)
+        higher efficiency in production material control.
+        .text-p-sm mb-32
+  -- y=3555 --
+  P     x=  88 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Take Away 1
+        .text-label mb-12 text-blue-dark3
+  P     x= 419 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(255, 255, 255)
+        Take Away 2
+        .text-label mb-12
+  -- y=3595 --
+  H3    x= 419 y= 3595 w= 271 h=  48 fs=44px    lh=48.4px   fw=700  rgb(255, 255, 255)
+        Up to 45%
+        .text-h3 mb-16 hyphens-auto lg:mb-24
+  -- y=3667 --
+  P     x= 419 y= 3667 w= 271 h=  58 fs=18px    lh=28.8px   fw=400  rgb(255, 255, 255)
+        higher throughput in your production.
+        .text-p-sm mb-32
+  -- y=3555 --
+  P     x= 419 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(255, 255, 255)
+        Take Away 2
+        .text-label mb-12
+  P     x= 750 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(255, 255, 255)
+        Take Away 3
+        .text-label mb-12
+  -- y=3595 --
+  H3    x= 750 y= 3595 w= 271 h=  97 fs=44px    lh=48.4px   fw=700  rgb(255, 255, 255)
+        Up to 25% Savings
+        .text-h3 mb-16 hyphens-auto lg:mb-24
+  -- y=3715 --
+  P     x= 750 y= 3715 w= 271 h=  29 fs=18px    lh=28.8px   fw=400  rgb(255, 255, 255)
+        in intralogistic process costs.
+        .text-p-sm mb-32
+  -- y=3555 --
+  P     x= 750 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(255, 255, 255)
+        Take Away 3
+        .text-label mb-12
+  -- y=3595 --
+  P     x= 750 y= 3595 w= 271 h= 144 fs=18px    lh=28.8px   fw=400  rgb(255, 255, 255)
+        Increase productivity through efficient and error-free picking, in-time replenishment, digitized stock inventory and automatized reordering.
+        .text-p-sm mb-32
+  -- y=3555 --
+  P     x=1081 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Take Away 4
+        .text-label mb-12 text-blue-dark3
+  -- y=3595 --
+  H3    x=1081 y= 3595 w= 271 h=  97 fs=44px    lh=48.4px   fw=700  rgb(0, 122, 195)
+        30 Years Experience
+        .text-h3 mb-16 hyphens-auto lg:mb-24 text-blue
+  -- y=3715 --
+  P     x=1081 y= 3715 w= 271 h=  58 fs=18px    lh=28.8px   fw=400  rgb(0, 73, 117)
+        in intelligent logistics solutions and inventory management.
+        .text-p-sm mb-32
+  -- y=3555 --
+  P     x=1081 y= 3555 w= 271 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Take Away 4
+        .text-label mb-12 text-blue-dark3
+  -- y=3595 --
+  P     x=1081 y= 3595 w= 271 h= 144 fs=18px    lh=28.8px   fw=400  rgb(0, 73, 117)
+        We provide standardized but customizable solutions for production and assembly companies of all sizes and industries.
+        .text-p-sm mb-32
+  -- y=3995 --
+  H2    x=  70 y= 3995 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Your Benefits
+        .text-h3 text-blue-dark2 mb-16 lg:mb-24
+  -- y=4237 --
+  H3    x=  83 y= 4237 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        On-Time Restocking
+        .text-h5 text-black
+  H3    x= 510 y= 4237 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Full Supply Chain Control
+        .text-h5 text-black
+  H3    x= 939 y= 4237 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Enhanced Productivity
+        .text-h5 text-black
+  -- y=4457 --
+  H3    x=  83 y= 4457 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Higher Agility
+        .text-h5 text-black
+  H3    x= 510 y= 4457 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Self Optimizing System
+        .text-h5 text-black
+  H3    x= 939 y= 4457 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Maximum Flexibility
+        .text-h5 text-black
+  -- y=4563 --
+  H2    x=  70 y= 4563 w= 782 h= 129 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Smart Factory Logistics in Your Production
+        .text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32
+  -- y=5671 --
+  H2    x=  70 y= 5671 w=1285 h=  35 fs=32px    lh=35.2px   fw=700  rgb(0, 0, 0)
+        Our Valued Customers
+        .text-h4 mb-32 lg:mb-48
+  -- y=6418 --
+  P     x= 874 y= 6418 w= 482 h=  32 fs=20px    lh=32px     fw=400  rgb(102, 102, 102)
+        Your Savings Potential
+        .mb-12 text-p-l text-gray-medium lg:mb-16
+  -- y=6466 --
+  H2    x= 874 y= 6466 w= 482 h=  97 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Start Improving Your Supply Chain Today
+        .text-h3 mb-24 lg:mb-32 text-blue-dark3 hyphens-auto
+  -- y=6595 --
+  P     x= 874 y= 6595 w= 482 h= 154 fs=24px    lh=38.4px   fw=500  rgb(51, 51, 51)
+        Accurately calculating costs is a major challenge in supply chain management. Estimate your potential savings with our calculator and start saving today.
+        .text-lead mb-24 text-gray lg:mb-32
+  -- y=6781 --
+  A     x= 874 y= 6781 w= 130 h=  49 fs=18px    lh=18px     fw=700  rgb(0, 73, 117)
+        Calculate
+        .text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rou
+  -- y=7016 --
+  H3    x=  95 y= 7016 w= 958 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        How can smart B- and C-part inventory management improve supply chain resilience?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=7128 --
+  H3    x=  95 y= 7128 w= 811 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        How does the automated order process work in Smart Factory Logistics?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=7241 --
+  H3    x=  95 y= 7241 w= 802 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Is the solution customizable for different industries and company sizes?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=7328 --
+  P     x=  95 y= 7328 w=1235 h=  84 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Yes. The solution is modular, flexible, and scalable, designed to cover diverse use cases in production and assembly companies across various sectors and sizes.
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=7353 --
+  H3    x=  95 y= 7353 w= 608 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        How does automation help reduce supply chain costs?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=7465 --
+  H3    x=  95 y= 7465 w= 942 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        What are the benefits of starting small with digital transformation in manufacturing?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=7578 --
+  H3    x=  95 y= 7578 w=1067 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Can Smart Factory Logistics help with Environmental, Social and Governance (ESG) compliance?
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24

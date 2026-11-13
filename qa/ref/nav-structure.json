@@ -1,0 +1,1104 @@
+{
+  "Product Solutions": {
+    "panel": {
+      "tag": "div",
+      "cls": "fixed left-0 hidden w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out",
+      "pos": "fixed",
+      "bg": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rg",
+      "x": 0,
+      "y": 195,
+      "w": 1440,
+      "h": 805
+    },
+    "grid": {
+      "cols": "401.328px 401.328px 401.344px",
+      "gap": "48px",
+      "cls": "grid grid-cols-3 gap-48"
+    },
+    "lead": {
+      "text": "Go to Product Solutions",
+      "href": "/global-en/product-solutions/",
+      "fs": "16px",
+      "fw": "700",
+      "color": "rgb(0, 122, 195)"
+    },
+    "columns": [
+      {
+        "index": 0,
+        "x": 70,
+        "w": 401
+      },
+      {
+        "index": 1,
+        "x": 519,
+        "w": 401
+      },
+      {
+        "index": 2,
+        "x": 969,
+        "w": 401
+      }
+    ],
+    "groups": [
+      {
+        "column": 0,
+        "heading": {
+          "text": "eShop",
+          "href": "/global-en/eshop/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 1,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 0,
+        "heading": {
+          "text": "Fastening Technology",
+          "href": "/global-en/eshop/c/01/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 2,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Screws, Nuts, Washers, Pins",
+            "href": "/global-en/eshop/c/01.100/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Direct Assembly Screws",
+            "href": "/global-en/eshop/c/01.200/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Securing & Anti-Loosening Elements",
+            "href": "/global-en/eshop/c/01.300/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Clamping & Positioning Elements",
+            "href": "/global-en/eshop/c/01.400/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 4,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Anchorage Systems",
+            "href": "/global-en/eshop/c/01.500/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 5,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Specific Fastening Technologies",
+          "href": "/global-en/eshop/c/02/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 3,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Clinching Technology",
+            "href": "/global-en/eshop/c/02.100/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Rivet Technology",
+            "href": "/global-en/eshop/c/02.200/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Threaded Inserts",
+            "href": "/global-en/eshop/c/02.300/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Clip Fasteners",
+            "href": "/global-en/eshop/c/02.400/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 4,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Welding Technology",
+            "href": "/global-en/eshop/c/02.500/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 5,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Ultrasonic Welding",
+            "href": "/global-en/eshop/c/02.550/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 6,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Embedding & Surface Bonding",
+            "href": "/global-en/eshop/c/02.600/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 7,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Functional Elements",
+          "href": "/global-en/eshop/c/03/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 4,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Electrical Products",
+            "href": "/global-en/eshop/c/03.100/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Access Solutions",
+            "href": "/global-en/eshop/c/03.200/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Sealing Technology",
+            "href": "/global-en/eshop/c/03.400/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Product Categories and Brands",
+          "href": "/global-en/product-solutions/product-categories-and-brands/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 5,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Special Parts & Custom Fasteners",
+          "href": "/global-en/product-solutions/special-parts-and-custom-fasteners/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 6,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Components and Other Specific Solutions",
+          "href": "/global-en/product-solutions/components-specific-solutions/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 7,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Innovations",
+          "href": "/global-en/product-solutions/innovations/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 8,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      }
+    ]
+  },
+  "Services": {
+    "panel": {
+      "tag": "div",
+      "cls": "fixed left-0 hidden w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out",
+      "pos": "fixed",
+      "bg": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rg",
+      "x": 0,
+      "y": 195,
+      "w": 1440,
+      "h": 547
+    },
+    "grid": {
+      "cols": "401.328px 401.328px 401.344px",
+      "gap": "48px",
+      "cls": "grid grid-cols-3 gap-48"
+    },
+    "lead": {
+      "text": "Go to Services",
+      "href": "/global-en/services/",
+      "fs": "16px",
+      "fw": "700",
+      "color": "rgb(0, 122, 195)"
+    },
+    "columns": [
+      {
+        "index": 0,
+        "x": 70,
+        "w": 401
+      },
+      {
+        "index": 1,
+        "x": 519,
+        "w": 401
+      },
+      {
+        "index": 2,
+        "x": 969,
+        "w": 401
+      }
+    ],
+    "groups": [
+      {
+        "column": 0,
+        "heading": {
+          "text": "Smart Factory",
+          "href": "/global-en/services/smart-factory/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 1,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Inventory & C-Parts Management",
+            "href": "/global-en/services/smart-factory/inventory-management/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Smart Factory Assembly",
+            "href": "/global-en/services/smart-factory/smart-assembly/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 0,
+        "heading": {
+          "text": "Engineering",
+          "href": "/global-en/services/engineering/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 2,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Engineering Services",
+            "href": "/global-en/services/engineering/engineering-services/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Composites",
+            "href": "/global-en/services/engineering/fastening-composites/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Benefits",
+          "href": "/global-en/services/benefits/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 3,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Reduced Time to Market",
+            "href": "/global-en/services/benefits/reduced-time-to-market/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Leaner Processes & Automation",
+            "href": "/global-en/services/benefits/leaner-processes-and-automation/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Cost Saving Rationalization",
+            "href": "/global-en/services/benefits/cost-saving-rationalization/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Higher Quality & Safety",
+            "href": "/global-en/services/benefits/higher-quality-and-safety/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 4,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Design Optimization & Validation",
+            "href": "/global-en/services/benefits/design-optimization-and-validation/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 5,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Total Cost of Ownership (TCO)",
+            "href": "/global-en/services/benefits/tco-in-fastening/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 6,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Success Stories",
+          "href": "/global-en/knowledge-hub/inspiration/success-stories/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 4,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      }
+    ]
+  },
+  "Industries": {
+    "panel": {
+      "tag": "div",
+      "cls": "fixed left-0 hidden w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out",
+      "pos": "fixed",
+      "bg": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rg",
+      "x": 0,
+      "y": 195,
+      "w": 1440,
+      "h": 366
+    },
+    "grid": {
+      "cols": "401.328px 401.328px 401.344px",
+      "gap": "48px",
+      "cls": "grid grid-cols-3 gap-48"
+    },
+    "lead": {
+      "text": "Go to Industries",
+      "href": "/global-en/industries/",
+      "fs": "16px",
+      "fw": "700",
+      "color": "rgb(0, 122, 195)"
+    },
+    "columns": [
+      {
+        "index": 0,
+        "x": 70,
+        "w": 401
+      },
+      {
+        "index": 1,
+        "x": 519,
+        "w": 401
+      },
+      {
+        "index": 2,
+        "x": 969,
+        "w": 401
+      }
+    ],
+    "groups": [
+      {
+        "column": 0,
+        "heading": {
+          "text": "Aerospace",
+          "href": "/global-en/industries/aerospace/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 1,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 0,
+        "heading": {
+          "text": "Data Centers",
+          "href": "/global-en/industries/data-centers/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 2,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 0,
+        "heading": {
+          "text": "Electrical & Electronics",
+          "href": "/global-en/industries/electrical-engineering/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 3,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Electric Vehicles",
+          "href": "/global-en/industries/electric-vehicles/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 4,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Heating, Ventilation, & Air Conditioning",
+          "href": "/global-en/industries/hvac/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 5,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Medical & Life Science",
+          "href": "/global-en/industries/medical/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 6,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Railway Technology",
+          "href": "/global-en/industries/railway/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 7,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Robotics",
+          "href": "/global-en/industries/robotics/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 8,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Semiconductor",
+          "href": "/global-en/industries/semiconductors/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 9,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      }
+    ]
+  },
+  "Knowledge Hub": {
+    "panel": {
+      "tag": "div",
+      "cls": "fixed left-0 hidden w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out",
+      "pos": "fixed",
+      "bg": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rg",
+      "x": 0,
+      "y": 195,
+      "w": 1440,
+      "h": 547
+    },
+    "grid": {
+      "cols": "401.328px 401.328px 401.344px",
+      "gap": "48px",
+      "cls": "grid grid-cols-3 gap-48"
+    },
+    "lead": {
+      "text": "Go to Knowledge Hub",
+      "href": "/global-en/knowledge-hub/",
+      "fs": "16px",
+      "fw": "700",
+      "color": "rgb(0, 122, 195)"
+    },
+    "columns": [
+      {
+        "index": 0,
+        "x": 70,
+        "w": 401
+      },
+      {
+        "index": 1,
+        "x": 519,
+        "w": 401
+      },
+      {
+        "index": 2,
+        "x": 969,
+        "w": 401
+      }
+    ],
+    "groups": [
+      {
+        "column": 0,
+        "heading": {
+          "text": "Inspiration",
+          "href": "/global-en/knowledge-hub/inspiration/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 1,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Bossard Blog",
+            "href": "/global-en/knowledge-hub/inspiration/blog/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Success Stories",
+            "href": "/global-en/knowledge-hub/inspiration/success-stories/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Resources",
+          "href": "/global-en/knowledge-hub/resources/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 2,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Download Center",
+            "href": "/global-en/knowledge-hub/resources/download-center/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Calculators & Converters",
+            "href": "/global-en/knowledge-hub/resources/online-calculators-and-converters/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "White Papers",
+            "href": "/global-en/knowledge-hub/resources/download-center/white-papers/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "CAD Online Portal",
+            "href": "/global-en/knowledge-hub/resources/cad-online-portal/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 4,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Technical Information",
+            "href": "/global-en/knowledge-hub/resources/technical-information/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 5,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Notes on Use / Hazard Symbols",
+            "href": "/global-en/knowledge-hub/resources/notes-on-use/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 6,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "eShop Help Center",
+          "href": "/global-en/knowledge-hub/eshop-information/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 3,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      }
+    ]
+  },
+  "About us": {
+    "panel": {
+      "tag": "div",
+      "cls": "fixed left-0 hidden w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out",
+      "pos": "fixed",
+      "bg": "rgb(255, 255, 255)",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rg",
+      "x": 0,
+      "y": 195,
+      "w": 1440,
+      "h": 520
+    },
+    "grid": {
+      "cols": "401.328px 401.328px 401.344px",
+      "gap": "48px",
+      "cls": "grid grid-cols-3 gap-48"
+    },
+    "lead": {
+      "text": "Go to About us",
+      "href": "/global-en/about-us/",
+      "fs": "16px",
+      "fw": "700",
+      "color": "rgb(0, 122, 195)"
+    },
+    "columns": [
+      {
+        "index": 0,
+        "x": 70,
+        "w": 401
+      },
+      {
+        "index": 1,
+        "x": 519,
+        "w": 401
+      },
+      {
+        "index": 2,
+        "x": 969,
+        "w": 401
+      }
+    ],
+    "groups": [
+      {
+        "column": 0,
+        "heading": {
+          "text": "Careers",
+          "href": "/global-en/about-us/careers/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 1,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Open Positions",
+            "href": "/global-en/about-us/careers/open-positions/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 1,
+        "heading": {
+          "text": "Who we are",
+          "href": "/global-en/about-us/who-we-are/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 2,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": [
+          {
+            "text": "Bossard Group",
+            "href": "/global-en/about-us/who-we-are/company-profile/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 1,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Our Story",
+            "href": "/global-en/about-us/who-we-are/our-story/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 2,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          },
+          {
+            "text": "Our Values & Guiding Principles",
+            "href": "/global-en/about-us/who-we-are/values-and-guiding-principles/",
+            "target": null,
+            "rel": null,
+            "level": "L3",
+            "position": 3,
+            "fs": "24px",
+            "fw": "400",
+            "color": "rgb(102, 102, 102)"
+          }
+        ]
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "News & Media",
+          "href": "/global-en/about-us/news-and-media/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 3,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Investor Portal",
+          "href": "https://ir.bossard.com/",
+          "target": "_blank",
+          "rel": "noreferrer noopener",
+          "level": "L2",
+          "position": 4,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Event Calendar",
+          "href": "/global-en/about-us/event-calendar/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 5,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Sustainability / ESG",
+          "href": "/global-en/about-us/sustainability/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 6,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      },
+      {
+        "column": 2,
+        "heading": {
+          "text": "Supplier Portal",
+          "href": "/global-en/about-us/supplier-portal/",
+          "target": null,
+          "rel": null,
+          "level": "L2",
+          "position": 7,
+          "fs": "18px",
+          "fw": "700",
+          "color": "rgb(0, 0, 0)"
+        },
+        "items": []
+      }
+    ]
+  }
+}

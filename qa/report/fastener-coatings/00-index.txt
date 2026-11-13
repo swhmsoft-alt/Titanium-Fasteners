@@ -1,0 +1,6 @@
+# REF REPORT — qa/ref/fastener-coatings.json
+url         https://www.bossard.com/global-en/product-solutions/components-specific-solutions/fastener-coatings/
+title       Fastener coatings | Bossard Group
+viewport    1440x1000
+body        4261px   overflow 0px
+sprites     12

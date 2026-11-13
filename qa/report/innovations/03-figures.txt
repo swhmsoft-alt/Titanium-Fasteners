@@ -1,0 +1,51 @@
+## FIGURES
+ 1 y=  267 x= 745 643x514 ratio=- aspect=auto fit=cover natural=634x507
+     alt : A futuristic drone soaring above a cityscape, symbolizing the advancement of drone delivery technology.
+     src : iStock-641135686.jpg
+     cls : flex w-full
+ 2 y= 1277 x=  70 316x305 ratio=- aspect=auto fit=fill natural=300x169
+     alt : A high-strength ESKA aluminum fastener on a white background.
+     src : ESKA-HA-Schraubengarnituren.jpg
+     cls : flex flex-col justify-center items-start cursor-pointer w-full
+ 3 y= 1277 x= 418 316x305 ratio=- aspect=auto fit=fill natural=300x169
+     alt : Close-up of a Jextar® Titan high-strength titanium fastener
+     src : Jextar_Feature.jpg
+     cls : flex flex-col justify-center items-start cursor-pointer w-full
+ 4 y= 1277 x= 766 316x276 ratio=- aspect=auto fit=fill natural=300x169
+     alt : PEM® Ghost fasteners for invisible connections
+     src : PEM_Ghost_Feature.jpg
+     cls : flex flex-col justify-center items-start cursor-pointer w-full
+ 5 y= 1277 x=1114 316x276 ratio=- aspect=auto fit=fill natural=300x169
+     alt : ecosyn SEF stainless steel contact fitting fastener
+     src : ecosyn-SEF_inox.png
+     cls : flex flex-col justify-center items-start cursor-pointer w-full
+ 6 y= 1277 x=1462 316x305 ratio=- aspect=auto fit=fill natural=300x169
+     alt : Two PEM CastSert press-in threaded inserts on white background
+     src : PEM_CastSert_Feature.jpg
+     cls : flex flex-col justify-center items-start cursor-pointer w-full
+ 7 y= 2277 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Engineering icon
+     src : Engineering.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+ 8 y= 2277 x= 510 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Design icon
+     src : design.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+ 9 y= 2277 x= 939 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Inspection of a screw
+     src : Examination_under_Production_Conditions.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+10 y= 2496 x=  83 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Check Icon
+     src : check.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+11 y= 2496 x= 510 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Global logistic icon
+     src : Global_Logistic.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+12 y= 2496 x= 939 48x48 ratio=- aspect=auto fit=fill natural=150x150
+     alt : Partnership icon
+     src : Partnership.svg
+     cls : absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48
+
+## IMAGES (not in figure)

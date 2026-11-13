@@ -1,0 +1,129 @@
+﻿              <select class="mt-2 w-full appearance-none overflow-x-hidden text-ellipsis border-b bg-transparent px-12 pb-8 pr-32 pt-24 text-p-sm-s focus:ring-3 focus-visible:outline-none border-gray-soft focus:border-blue focus:">
+                <option>  "Select"
+                <option class="text-black">  "Other country"
+                <option class="text-black">  "Albania"
+                <option class="text-black">  "Argentina"
+                <option class="text-black">  "Australia"
+                <option class="text-black">  "Austria"
+                <option class="text-black">  "Belarus"
+                <option class="text-black">  "Belgium"
+                <option class="text-black">  "Bosnia and Herzegovina"
+                <option class="text-black">  "Brazil"
+                <option class="text-black">  "Bulgaria"
+                <option class="text-black">  "Canada"
+                <option class="text-black">  "China"
+                <option class="text-black">  "Croatia"
+                <option class="text-black">  "Czech Republic"
+                <option class="text-black">  "Denmark"
+                <option class="text-black">  "Egypt"
+                <option class="text-black">  "Estonia"
+                <option class="text-black">  "Finland"
+                <option class="text-black">  "France"
+                <option class="text-black">  "Germany"
+                <option class="text-black">  "Greece"
+                <option class="text-black">  "Hungary"
+                <option class="text-black">  "Iceland"
+                <option class="text-black">  "India"
+                <option class="text-black">  "Ireland"
+                <option class="text-black">  "Israel"
+                <option class="text-black">  "Italy"
+                <option class="text-black">  "Latvia"
+                <option class="text-black">  "Lithuania"
+                <option class="text-black">  "Malaysia"
+                <option class="text-black">  "Mexico"
+                <option class="text-black">  "Moldova"
+                <option class="text-black">  "Netherlands"
+                <option class="text-black">  "North Macedonia"
+                <option class="text-black">  "Norway"
+                <option class="text-black">  "Poland"
+                <option class="text-black">  "Portugal"
+                <option class="text-black">  "Republic of Korea"
+                <option class="text-black">  "Romania"
+                <option class="text-black">  "Serbia"
+                <option class="text-black">  "Singapore"
+                <option class="text-black">  "Slovakia"
+                <option class="text-black">  "Slovenia"
+                <option class="text-black">  "South Africa"
+                <option class="text-black">  "Spain"
+                <option class="text-black">  "Sweden"
+                <option class="text-black">  "Switzerland"
+                <option class="text-black">  "Taiwan"
+                <option class="text-black">  "Thailand"
+                <option class="text-black">  "Turkey"
+                <option class="text-black">  "Ukraine"
+                <option class="text-black">  "United Kingdom"
+                <option class="text-black">  "United States"
+                <option class="text-black">  "Vietnam"
+              <svg class="absolute right-12 w-16 h-16 top-1/2 -translate-y-1/2 pointer-events-none text-gray-medium">
+                <use href="/_astro/sprite.CNhkymMS.svg#chevron-down">
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "First Name"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "Last Name"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "E-Mail"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "Company"
+                <span class="ml-[2px] text-blue">  "*"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <input class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm-s focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:ap">
+              <span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer">  "Zip Code"
+          <div class="relative mb-24 flex flex-col">
+            <label class="relative text-link-s">
+              <textarea class="mt-2 peer w-full border-b px-12 pb-[11px] pt-[21px] focus:ring-3 focus-visible:outline-none text-p-sm-s border-gray-soft focus:border-blue focus:ring-blue-light">
+              <span class="absolute left-12 top-[16px] -translate-y-12 bg-white transition-all duration-500 flex items-center text-[12px] peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:te">  "Your Message"
+          <div class="mb-8">
+            <label class="flex items-center gap-x-3.5 text-4 cursor-pointer">
+              <input class="sr-only">
+              <div class="relative mr-8 py-[3px]">
+                <div class="absolute top-0 h-18 w-18 rounded-full shadow-[0_0_4px_0_rgba(0,0,0,0.25)] outline-transparent transition-all active:rounded-2xl active:outline active:outline-2 active:outline-[rgba(153,202,231,1)] lef">
+                <div class="h-[12px] w-[31px] rounded-3xl transition-all bg-gray-light">
+              <div class="*:inline">
+                <p>  "By submitting this form I consent to the . Thi"
+                  <a class="cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark" href="/global-en/privacy-policy/">  "privacy policy"
+                <span class="text-blue">  "*"
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <input>
+          <span class="mt-24 flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-end">
+            <button class="w-full sm:w-auto sm:min-w-[200px] flex items-center justify-center text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out">  "Submit"
+        <div style="visibility: hidden;">
+          <div>
+            <div>
+              <div class="grecaptcha-badge" style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186">
+                <div class="grecaptcha-logo">
+                  <iframe width="256" height="60" src="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LdrsLkqAAAAAI8XjBqyCXR6Y3IQAu1aw4v3novp&co=aHR0cHM6Ly93d3">
+                <div class="grecaptcha-error">
+                <textarea class="g-recaptcha-response" id="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: non">
+  <article class="container-fluid my-48">
+    <div class="grid grid-cols-1 gap-x-24 gap-y-32 md:grid-cols-2 lg:gap-x-32">
+      <section class="flex">
+        <figure class="w-[101px] lg:w-[105px]">
+          <img class="aspect-3/4 rounded-lg object-cover max-w-max border border-blue-light" src="//images.eu.ctfassets.net/0vp0u5uh75zd/4Tzg0b09PRSvZBAFYhv9XV/86117a64930693fbe2f3661d5d1f4e81/Bossard_Special" alt="Thumbnail Bossard Special Parts Brochure" width="105" height="140" style="aspect-ratio:3 / 4">
+        <div class="pl-16 lg:pl-24">
+          <h3 class="text-h5 mb-16 text-blue-dark">  "Bossard Special Parts Brochure"
+          <p class="text-p-sm pb-16 text-gray">  "Added value from one source 鈥?get an overview "
+          <a class="flex items-center gap-x-4 text-p-s uppercase text-blue" href="//assets.eu.ctfassets.net/0vp0u5uh75zd/4pK1dsqpmjr0jQbWbK4qR2/07f3a401641a698dd72bde0798f6aabc/Bossard_Special">
+            <span class="relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-current">  "1.8 MB | pdf"
+            <svg class="h-12 w-12 fill-blue stroke-blue stroke-[4]">
+              <use href="/_astro/sprite.CNhkymMS.svg#chevron-right">
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">

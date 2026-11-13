@@ -1,0 +1,316 @@
+## TEXTS (main region only)
+  -- y=255 --
+  LI    x=  70 y=  255 w=  16 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .flex items-center
+  -- y=260 --
+  A     x=  70 y=  260 w=  16 h=  16 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .breadcrumb L0
+  -- y=275 --
+  SPAN  x=  69 y=  275 w=   1 h=   1 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .sr-only
+  -- y=255 --
+  LI    x=  86 y=  255 w= 167 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Product Solutions
+        .flex items-center
+  A     x= 126 y=  255 w= 127 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Product Solutions
+        .breadcrumb L1 whitespace-nowrap
+  LI    x= 253 y=  255 w= 135 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Special Parts
+        .flex-shrink-1 flex-grow-0 truncate whitespace-nowrap
+  -- y=257 --
+  SPAN  x= 293 y=  257 w=  95 h=  21 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Special Parts
+        .
+  -- y=313 --
+  P     x=  70 y=  313 w= 643 h=  28 fs=20px    lh=28px     fw=500  rgb(102, 102, 102)
+        Product Solutions
+        .text-label mb-8 text-gray-medium lg:mb-12
+  -- y=353 --
+  H1    x=  70 y=  353 w= 643 h= 282 fs=64px    lh=70.4px   fw=700  rgb(0, 73, 117)
+        Special Parts and Custom Fasteners: Customized to Your Specifications
+        .text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32
+  -- y=892 --
+  H2    x=  70 y=  892 w=1285 h=  97 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Why You Should Procure Your Special Parts and Custom Fasteners from Bossard
+        .text-h3 text-blue-dark2 mb-16 lg:mb-24
+  -- y=1182 --
+  H3    x=  83 y= 1182 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Fewer Suppliers
+        .text-h5 text-black
+  H3    x= 510 y= 1182 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Comprehensive Engineering Services
+        .text-h5 text-black
+  H3    x= 939 y= 1182 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Consistent Quality
+        .text-h5 text-black
+  -- y=1402 --
+  H3    x=  83 y= 1402 w= 402 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Smart B- and C-Parts Management
+        .text-h5 text-black
+  H3    x= 510 y= 1402 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        Flexible Release Quantity
+        .text-h5 text-black
+  H3    x= 939 y= 1402 w= 403 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 0, 0)
+        More Free Capital
+        .text-h5 text-black
+  -- y=1657 --
+  LI    x=  98 y= 1657 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        CNC parts
+        .
+  -- y=1693 --
+  LI    x=  98 y= 1693 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Machining (turned parts and milled parts)
+        .
+  -- y=1729 --
+  LI    x=  98 y= 1729 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Cold-formed and hot-forged parts
+        .
+  -- y=1765 --
+  LI    x=  98 y= 1765 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Punched and bent parts
+        .
+  -- y=1801 --
+  LI    x=  98 y= 1801 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Thread cutting and milling
+        .
+  -- y=1837 --
+  LI    x=  98 y= 1837 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Prototypes for series production
+        .
+  -- y=1873 --
+  LI    x=  98 y= 1873 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Functional coatings and mechanical finishing treatments
+        .
+  -- y=1909 --
+  LI    x=  98 y= 1909 w= 754 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Kitting
+        .
+  -- y=2121 --
+  H2    x=  70 y= 2121 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Our Technological Capabilities
+        .text-h3 mb-16 lg:mb-24 text-blue-dark2
+  -- y=2218 --
+  H3    x=  95 y= 2218 w= 418 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Turned and Milled Parts (Machining)
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=2421 --
+  P     x=  95 y= 2421 w=1235 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Materials:
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=2473 --
+  LI    x= 123 y= 2473 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        All machinable steels
+        .
+  -- y=2509 --
+  LI    x= 123 y= 2509 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Non-ferrous metals and plastic
+        .
+  -- y=2545 --
+  LI    x= 123 y= 2545 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Stainless steels
+        .
+  -- y=2581 --
+  LI    x= 123 y= 2581 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Many special-purpose steels
+        .
+  -- y=2330 --
+  H3    x=  95 y= 2330 w= 580 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Formed Parts (Hot-Forged and Cold-Formed Parts)
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=2534 --
+  P     x=  95 y= 2534 w=1235 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Hot-forged parts materials:
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=2586 --
+  LI    x= 123 y= 2586 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        All established steels, including stainless steels
+        .
+  -- y=2622 --
+  LI    x= 123 y= 2622 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Special-purpose materials such as nimonic on request
+        .
+  -- y=2678 --
+  P     x=  95 y= 2678 w=1235 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Cold-formed parts materials:
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=2730 --
+  LI    x= 123 y= 2730 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        All established steels, including stainless steels
+        .
+  -- y=2766 --
+  LI    x= 123 y= 2766 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Aluminum
+        .
+  -- y=2802 --
+  LI    x= 123 y= 2802 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Brass
+        .
+  -- y=2838 --
+  LI    x= 123 y= 2838 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Special-purpose steel and titanium on request
+        .
+  -- y=2443 --
+  H3    x=  95 y= 2443 w= 286 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Punched and Bent Parts
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=2646 --
+  P     x=  95 y= 2646 w=1235 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Materials:
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=2698 --
+  LI    x= 123 y= 2698 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        All established steels, including stainless steels
+        .
+  -- y=2734 --
+  LI    x= 123 y= 2734 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Spring steels
+        .
+  -- y=2770 --
+  LI    x= 123 y= 2770 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Non-ferrous metals
+        .
+  -- y=2806 --
+  LI    x= 123 y= 2806 w=1207 h=  36 fs=20px    lh=36px     fw=400  rgb(51, 51, 51)
+        Special-purpose materials on request
+        .
+  -- y=2862 --
+  P     x=  95 y= 2862 w=1235 h=  52 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        On request, small production runs can also be cut with laser, plasma, or water jet, depending on the part’s geometry.
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=2819 --
+  H2    x=  70 y= 2819 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Functional Coatings and Mechanical Finishing Treatments
+        .text-h3 mb-16 lg:mb-24 text-blue-dark2
+  -- y=2916 --
+  H3    x=  95 y= 2916 w= 238 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Surface Treatments
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=3029 --
+  H3    x=  95 y= 3029 w= 384 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Mechanical Finishing Treatments
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=3116 --
+  P     x= 523 y= 3116 w= 807 h=  84 fs=20px    lh=32px     fw=400  rgb(51, 51, 51)
+        Mechanical reworking of catalogue or standard elements is often the fastest and most cost-effective solution for small and medium quantities.
+        .text-p pb-12 text-gray lg:pb-20
+  -- y=3141 --
+  H3    x=  95 y= 3141 w= 239 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Functional Coatings
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=3261 --
+  H3    x=  70 y= 3261 w= 782 h=  67 fs=32px    lh=35.2px   fw=700  rgb(0, 73, 117)
+        What to Know About the Final Finish
+        .text-h4 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32
+  -- y=3336 --
+  A     x=  70 y= 3336 w= 147 h=  49 fs=18px    lh=18px     fw=700  rgb(255, 255, 255)
+        Learn More
+        .text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rou
+  -- y=3433 --
+  H2    x=  70 y= 3433 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Other Custom Services
+        .text-h3 mb-16 lg:mb-24 text-blue-dark2
+  -- y=3530 --
+  H3    x=  95 y= 3530 w= 150 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Assemblies
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=3643 --
+  H3    x=  95 y= 3643 w= 337 h=  38 fs=24px    lh=38.4px   fw=500  rgb(0, 49, 78)
+        Mounting and Accessory Kits
+        .text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24
+  -- y=4099 --
+  H2    x= 102 y= 4099 w= 689 h=  48 fs=44px    lh=48.4px   fw=700  rgb(255, 255, 255)
+        You Need Special Parts?
+        .text-white text-h3 mb-16 lg:mb-24 ul:w-[55%]
+  -- y=4171 --
+  P     x= 102 y= 4171 w= 689 h=  64 fs=20px    lh=32px     fw=400  rgb(255, 255, 255)
+        Let's talk about your specific requirements. Together, we'll find the best solution for you.
+        .
+  -- y=4308 --
+  H3    x= 699 y= 4308 w= 623 h=  35 fs=32px    lh=35.2px   fw=700  rgb(0, 73, 117)
+        Contact Us
+        .text-h4 mb-24 text-blue-dark3
+  -- y=4367 --
+  P     x= 699 y= 4367 w= 623 h=  32 fs=20px    lh=32px     fw=400  rgb(153, 153, 153)
+        Please complete the form. *fields are required.
+        .text-p mb-16 text-gray-soft lg:mb-24
+  -- y=4431 --
+  SPAN  x= 711 y= 4431 w= 103 h=  17 fs=12px    lh=16.8px   fw=400  rgb(102, 102, 102)
+        Country or Region*
+        .absolute top-8 ml-12 text-header-s text-gray-medium
+  SPAN  x= 808 y= 4431 w=   6 h=  16 fs=12px    lh=16.8px   fw=400  rgb(0, 122, 195)
+        *
+        .pl-2 text-blue
+  -- y=4522 --
+  SPAN  x= 711 y= 4522 w=  90 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        First Name*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=4521 --
+  SPAN  x= 793 y= 4521 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=4605 --
+  SPAN  x= 711 y= 4605 w=  88 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Last Name*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=4604 --
+  SPAN  x= 791 y= 4604 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=4687 --
+  SPAN  x= 711 y= 4687 w=  57 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        E-Mail*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=4686 --
+  SPAN  x= 760 y= 4686 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=4770 --
+  SPAN  x= 711 y= 4770 w=  77 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Company*
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=4769 --
+  SPAN  x= 780 y= 4769 w=   8 h=  21 fs=16px    lh=19.6px   fw=400  rgb(0, 122, 195)
+        *
+        .ml-[2px] text-blue
+  -- y=4852 --
+  SPAN  x= 711 y= 4852 w=  62 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Zip Code
+        .absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12
+  -- y=4935 --
+  SPAN  x= 711 y= 4935 w=  99 h=  20 fs=16px    lh=19.6px   fw=400  rgb(0, 0, 0)
+        Your Message
+        .absolute left-12 top-[16px] -translate-y-12 bg-white transition-all duration-500 flex items-center text-[12px] peer-placeholder-shown:translate-y-0 peer-focus:-
+  -- y=5007 --
+  P     x= 738 y= 5007 w= 557 h=  45 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        By submitting this form I consent to the privacy policy. This site is protected by reCAPTCHA.
+        .
+  A     x=1024 y= 5007 w=  95 h=  21 fs=16px    lh=24px     fw=400  rgb(0, 122, 195)
+        privacy policy
+        .cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark
+  -- y=5031 --
+  SPAN  x= 827 y= 5031 w=  12 h=  21 fs=16px    lh=24px     fw=400  rgb(0, 122, 195)
+        *
+        .text-blue
+  -- y=5078 --
+  SPAN  x= 699 y= 5078 w= 623 h=  49 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Submit
+        .mt-24 flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-end
+  -- y=5336 --
+  H3    x= 199 y= 5336 w= 498 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Bossard Special Parts Brochure
+        .text-h5 mb-16 text-blue-dark
+  -- y=5377 --
+  P     x= 199 y= 5377 w= 498 h=  74 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Added value from one source – get an overview of your custom fastener options at Bossard.
+        .text-p-sm pb-16 text-gray
+  -- y=5451 --
+  A     x= 199 y= 5451 w= 498 h=  29 fs=18px    lh=28.8px   fw=400  rgb(0, 122, 195)
+        1.8 MB | pdf
+        .flex items-center gap-x-4 text-p-s uppercase text-blue
+  SPAN  x= 199 y= 5451 w= 105 h=  29 fs=18px    lh=28.8px   fw=400  rgb(0, 122, 195)
+        1.8 MB | pdf
+        .relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-current

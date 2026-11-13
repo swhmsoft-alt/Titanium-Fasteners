@@ -1,0 +1,7 @@
+## SECTIONS
+ 1 H2 44px      y= 1801 h=  976 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Our Securing and Anti-Loosening Brands
+     cls : container-fluid my-48
+ 2 H2 21.008px  y= 2910 h=  418 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Buy Securing Elements
+     cls : container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40

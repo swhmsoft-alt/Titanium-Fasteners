@@ -1,0 +1,28 @@
+## SECTIONS
+ 1 H2 32px      y=  829 h=  865 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Aerospace Fastening Solutions
+     cls : container-fluid-wide py-24
+ 2 H2 32px      y= 1694 h=  865 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Supplier Network
+     cls : container-fluid-wide py-24
+ 3 H2 32px      y= 2560 h=  865 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Working at Bossard Aerospace
+     cls : container-fluid-wide py-24
+ 4 H2 44px      y= 3473 h=  774 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: News Overview
+     cls : container-fluid my-48
+ 5 H2 44px      y= 4295 h=  903 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Your Trusted C-Parts Management Partner
+     cls : container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40
+ 6 H2 44px      y= 5238 h=  512 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: How We Support You in Aerospace Manufacturing
+     cls : container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40
+ 7 H2 44px      y= 5866 h=  610 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
+     head: Bossard Aerospace Contacts
+     cls : container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40
+ 8 H2 24px      y= 6533 h=  344 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=500
+     head: Product Solutions
+     cls : container-fluid grid grid-cols-1 gap-40 py-32 md:grid-cols-3 md:gap-16 lg:gap-24 lg:py-48
+ 9 H2 24px      y= 6877 h=  344 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=500
+     head: About Bossard Aerospace
+     cls : container-fluid grid grid-cols-1 gap-40 py-32 md:grid-cols-3 md:gap-16 lg:gap-24 lg:py-48

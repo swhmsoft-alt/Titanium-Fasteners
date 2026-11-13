@@ -1,0 +1,112 @@
+﻿          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/5ndC4BcCrgBVwyeCzordER/93f9e5c20b0a1250a2b076eabc6e5aa3/Engineering___M" alt="Engineering & measurement icon">
+        <h3 class="text-h5 text-black">  "Comprehensive Engineering Services"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Benefit from our engineers鈥?expertise in all t"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7gB1dk8qIqXBVXWbiXAq0F/68e78434cbac5244c7285122cf82397f/Increasing_Prod" alt="Increasing product quality icon">
+        <h3 class="text-h5 text-black">  "Consistent Quality"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "We only work with selected suppliers that fulf"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/d36K0bjEC79UvHxD3kstH/c0158280d5cfada7afd356f796ccd97c/SMART_FACTORY_LO" alt="Smart factory logistics icon">
+        <h3 class="text-h5 text-black">  "Smart B- and C-Parts Management"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Optimize your supply chain further with our sm"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/5WKB75Qtff7KeWOiMszyrD/8e448d8fa9dd231187d4203d9be4ca4d/Maximizing_Flex" alt="Maximizing flexibility in production icon">
+        <h3 class="text-h5 text-black">  "Flexible Release Quantity"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Whether you need bigger quantities or just a f"
+      <section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+        <figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+          <img class="aspect-1/1 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/20K8zNI5Og4hlnG4YTvHcc/cf96f3d0162acaafc15cd888b71da13d/Dollar.svg" alt="Dollar icon">
+        <h3 class="text-h5 text-black">  "More Free Capital"
+        <p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">  "Reduce your inventory, become leaner, and free"
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "We understand that unique challenges demand ta"
+  <div class="container-fluid">
+    <ul class="marker:text-blue pl-[28px] [&>li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20">
+      <li>  "CNC parts"
+      <li>  "Machining (turned parts and milled parts)"
+      <li>  "Cold-formed and hot-forged parts"
+      <li>  "Punched and bent parts"
+      <li>  "Thread cutting and milling"
+      <li>  "Prototypes for series production"
+      <li>  "Functional coatings and mechanical finishing t"
+      <li>  "Kitting"
+  <div class="container-fluid">
+    <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">  "Depending on batch sizes, required delivery ti"
+  <article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+    <h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark2">  "Our Technological Capabilities"
+    <details class="mt-16 rounded-lg border border-blue-light p-16 lg:mt-24 lg:p-24" id="acc-0-Turned-and-Milled-Parts--Machining-">
+      <summary class="relative flex w-full cursor-pointer items-center">
+        <h3 class="text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24">  "Turned and Milled Parts (Machining)"
+        <svg class="absolute right-0 transition-all duration-300 rotate-0 w-16 h-16 md:w-24 md:h-24">
+          <use href="/_astro/sprite.CNhkymMS.svg#minus">
+        <svg class="absolute right-0 transition-all duration-150 -rotate-90 w-16 h-16 md:w-24 md:h-24">
+          <use href="/_astro/sprite.CNhkymMS.svg#minus">
+      <div class="accordion-details mt-16 border-t border-blue-light pt-16 md:flex md:gap-24 lg:mt-24 lg:gap-32 lg:pt-24">
+        <div>
+          <p class="text-p pb-12 text-gray lg:pb-20">  "When you require high precision, low tolerance"
+          <p class="text-p pb-12 text-gray lg:pb-20">
+            <strong>  "Materials:"
+          <ul class="marker:text-blue pl-[28px] [&>li]:pl-8 list-disc text-list-l text-gray pb-12 lg:pb-20">
+            <li>  "All machinable steels"
+            <li>  "Non-ferrous metals and plastic"
+            <li>  "Stainless steels"
+            <li>  "Many special-purpose steels"
+          <p class="text-p pb-12 text-gray lg:pb-20">
+    <details class="mt-16 rounded-lg border border-blue-light p-16 lg:mt-24 lg:p-24" id="acc-1-Formed-Parts--Hot-Forged-and-Cold-Formed-Parts-">
+      <summary class="relative flex w-full cursor-pointer items-center">
+        <h3 class="text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24">  "Formed Parts (Hot-Forged and Cold-Formed Parts"
+        <svg class="absolute right-0 transition-all duration-300 rotate-0 w-16 h-16 md:w-24 md:h-24">
+              <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7tIXFgehaGyb0TdqoOpnhr/ab61d435f207b1d72549cb209d120fb0/CTI_-_cnc_dreje" alt="CNC turned cylinder metal" width="1300" height="731" style="aspect-ratio:16 / 9">
+            <figcaption class="text-p-sm mt-8 line-clamp-2 h-56 overflow-hidden md:mt-12">
+          <div class="flex items-center">
+            <ul class="justify-left scrollbar-hidden flex snap-x snap-mandatory gap-16 overflow-x-auto pb-0 lg:gap-20">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px]">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7tIXFgehaGyb0TdqoOpnhr/ab61d435f207b1d72549cb209d120fb0/CTI_-_cnc_dreje" alt="CNC turned cylinder metal" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/2cHiCJVZZTAlgcdRKumB4w/9dd0d1d9553cf80cff70923baeaa0510/Dreh--und-Frste" alt="A metal special part (base plate), created by cnc machining" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/TfkhHwUm1mKchiM8HTcUU/52b81015a07e6ff3accf065fe2771719/Dreh--und-Frstei" alt="A black turned part, lying on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/3ydlPjYtXKNRFM8bQR5SuF/51349c51b04b1b0f58c4754958feb832/Dreh--und-Frste" alt="A Stainless Steel Swivel Arm special part" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/1j9YrwEgnsawFT1RmUnX1b/7abdba623d52973f5540e663fc369299/Dreh--und-Frste" alt="A stainless steel turned part sleeve guide" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/4Q4YJEPSpagqWEkAKY866X/09921e899cbf7f58f8e018afc52e0011/Dreh--und-Frste" alt="A white lateral guidance part" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/1XhlTDW3hrPyOEHlBpYf3T/f636686548f7f69aa968c9f59a356a0d/Dreh--und-Frste" alt="A brass grid bolt as an example for a Bossard special part" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/M7j7gaQ4pRxXNO8uEcPdO/62f5136f9abe0f126d336b5a90eff343/Fliesspress-Stan" alt="A black bearing bolt on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/2CLvxvAJ65fce3mAJUN7Ua/c8040568dd0daebae8667ef16b31c449/Fliesspress-Sta" alt="A dark blue spacer screw on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/61FmLD9MCBPFERVBBCeR6o/028f3adf4c4d0e84c67997bf4d6db816/Fliesspress-Sta" alt="Close-up of a stainless steel shoulder screw on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7IUU2CoGMnaEtt208WTSgO/6d9bbbeae638bd11517265d4601fb48b/Fliesspress-Sta" alt="A stainless steel formed part (sleeve nut) on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/3486PTSwvM6Ewiqyye2LbN/68e8b18c98a3a9f972f23b0a0fb4419a/Bukket_emne.web" alt="Bent metal component" width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/3TL88Lmjqela8RTZ33zyrv/d1714271baceb6a4c08955667d5ed7b7/Bukning_202x202" alt="Metal hook bracket with a curved end and two screw holes, designed for mounting, on a white background." width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/7MdUgGDUnodjnMianMjBnZ/d756bce694973a9c2d8840a12fbd72fd/Billede_af_stan" alt="Metal bracket with multiple rectangular and keyhole cutouts, labeled K1 to K5, on a white background." width="300" height="169" style="aspect-ratio:16 / 9">
+              <li class="relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px] after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig">
+                <figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+                  <img class="aspect-16/9 w-full" src="//images.eu.ctfassets.net/0vp0u5uh75zd/6edSNNFaA8B5XdpOamkX2c/596790b139183a9c5c634497dda1d77c/Punched-and-ben" alt="Example of a metal punched and bent part (a clamp) on white background" width="300" height="169" style="aspect-ratio:16 / 9">
+  <article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+    <h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark2">  "Functional Coatings and Mechanical Finishing T"

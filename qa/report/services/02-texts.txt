@@ -1,0 +1,160 @@
+## TEXTS (main region only)
+  -- y=255 --
+  LI    x=  70 y=  255 w=  16 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .flex items-center
+  -- y=260 --
+  A     x=  70 y=  260 w=  16 h=  16 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .breadcrumb L0
+  -- y=275 --
+  SPAN  x=  69 y=  275 w=   1 h=   1 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .sr-only
+  -- y=255 --
+  LI    x=  86 y=  255 w= 101 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Services
+        .flex-shrink-1 flex-grow-0 truncate whitespace-nowrap
+  -- y=257 --
+  SPAN  x= 126 y=  257 w=  61 h=  21 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Services
+        .
+  -- y=313 --
+  P     x=  70 y=  313 w=1285 h=  28 fs=20px    lh=28px     fw=500  rgb(102, 102, 102)
+        Elevate Your Production
+        .text-label mb-8 text-gray-medium lg:mb-12
+  -- y=353 --
+  H1    x=  70 y=  353 w=1285 h=  70 fs=64px    lh=70.4px   fw=700  rgb(0, 73, 117)
+        Services
+        .text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32
+  -- y=660 --
+  A     x=  38 y=  660 w= 812 h= 753 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Inventory and C-Parts ManagementBuild a resilient supply chain with our smart inventory management services.
+        .sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))
+  -- y=1181 --
+  H2    x=  86 y= 1181 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Inventory and C-Parts Management
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1240 --
+  P     x=  86 y= 1240 w= 716 h= 109 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Build a resilient supply chain with our smart inventory management services.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=700 --
+  A     x= 882 y=  700 w= 505 h= 673 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Smart AssemblyAccelerate your manufacturing digitalization with our Smart Factory Assembly solution.
+        .md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]
+  -- y=1103 --
+  H2    x= 930 y= 1103 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Smart Assembly
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1162 --
+  P     x= 930 y= 1162 w= 409 h= 147 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Accelerate your manufacturing digitalization with our Smart Factory Assembly solution.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=1565 --
+  A     x=  38 y= 1565 w= 505 h= 673 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Fastening CompositesEliminate trial and error, get the right fastening solutions for your application, and build a resilient supply chain.
+        .md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]
+  -- y=1930 --
+  H2    x=  86 y= 1930 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Fastening Composites
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1989 --
+  P     x=  86 y= 1989 w= 409 h= 186 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Eliminate trial and error, get the right fastening solutions for your application, and build a resilient supply chain.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=1525 --
+  A     x= 575 y= 1525 w= 812 h= 753 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Engineering ServicesRooted in Swiss precision, we push the boundaries of productivity and quality in your products.
+        .sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11 relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))
+  -- y=2047 --
+  H2    x= 623 y= 2047 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Engineering Services
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=2106 --
+  P     x= 623 y= 2106 w= 716 h= 109 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Rooted in Swiss precision, we push the boundaries of productivity and quality in your products.
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=2383 --
+  H2    x=  70 y= 2383 w=1285 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 49, 78)
+        Explore Your Benefits
+        .text-h3 mb-16 text-blue-dark2 lg:mb-24
+  -- y=2455 --
+  A     x=  70 y= 2455 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Benefit No. 1Reduce Time to MarketDiscover your crucial competitive advantage in a global environment where speed counts.
+        .flex
+  P     x= 296 y= 2455 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Benefit No. 1
+        .text-label mb-8 text-blue-dark3
+  -- y=2491 --
+  H3    x= 296 y= 2491 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Reduce Time to Market
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=2532 --
+  P     x= 296 y= 2532 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Discover your crucial competitive advantage in a global environment where speed counts.
+        .text-p-sm text-gray
+  -- y=2455 --
+  A     x= 729 y= 2455 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Benefit No. 2Leaner Processes and AutomationFind out how to boost effectiveness and improve efficiency.
+        .flex
+  P     x= 955 y= 2455 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Benefit No. 2
+        .text-label mb-8 text-blue-dark3
+  -- y=2491 --
+  H3    x= 955 y= 2491 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Leaner Processes and Automation
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=2532 --
+  P     x= 955 y= 2532 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Find out how to boost effectiveness and improve efficiency.
+        .text-p-sm text-gray
+  -- y=2689 --
+  A     x=  70 y= 2689 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Benefit No. 3Cost-Saving RationalizationSaving time, money and resources helps you achieve higher margins. Find out how.
+        .flex
+  P     x= 296 y= 2689 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Benefit No. 3
+        .text-label mb-8 text-blue-dark3
+  -- y=2725 --
+  H3    x= 296 y= 2725 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Cost-Saving Rationalization
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=2766 --
+  P     x= 296 y= 2766 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Saving time, money and resources helps you achieve higher margins. Find out how.
+        .text-p-sm text-gray
+  -- y=2689 --
+  A     x= 729 y= 2689 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Benefit No. 4Higher Quality and SafetyExplore absolute reliability in terms of product, processes, and production safety.
+        .flex
+  P     x= 955 y= 2689 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Benefit No. 4
+        .text-label mb-8 text-blue-dark3
+  -- y=2725 --
+  H3    x= 955 y= 2725 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Higher Quality and Safety
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=2766 --
+  P     x= 955 y= 2766 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Explore absolute reliability in terms of product, processes, and production safety.
+        .text-p-sm text-gray
+  -- y=2923 --
+  A     x=  70 y= 2923 w= 627 h= 202 fs=16px    lh=24px     fw=400  rgb(0, 0, 0)
+        Benefit No. 5Design Optimization and ValidationUncover the potential of optimizing your design, manufacturing, and processes.
+        .flex
+  P     x= 296 y= 2923 w= 401 h=  28 fs=20px    lh=28px     fw=500  rgb(0, 73, 117)
+        Benefit No. 5
+        .text-label mb-8 text-blue-dark3
+  -- y=2959 --
+  H3    x= 296 y= 2959 w= 401 h=  25 fs=21.008px lh=25.2096px fw=700  rgb(0, 24, 39)
+        Design Optimization and Validation
+        .text-h5 mb-16 text-blue-dark group-hover:underline
+  -- y=3000 --
+  P     x= 296 y= 3000 w= 401 h=  58 fs=18px    lh=28.8px   fw=400  rgb(51, 51, 51)
+        Uncover the potential of optimizing your design, manufacturing, and processes.
+        .text-p-sm text-gray
+  -- y=3193 --
+  H2    x=  70 y= 3193 w= 782 h= 129 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Explore Our Services in Our Interactive Blueprint
+        .text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32

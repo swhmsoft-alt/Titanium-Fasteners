@@ -1,0 +1,6 @@
+# REF REPORT — qa/ref/product-solutions.json
+url         https://www.bossard.com/global-en/product-solutions/
+title       Product Solutions For Fastening | Bossard Group
+viewport    1440x1000
+body        3806px   overflow 0px
+sprites     12

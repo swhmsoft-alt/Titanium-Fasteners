@@ -1,0 +1,10 @@
+��probed https://www.bossard.com/global-en/eshop/
+  title      Our product solutions | Bossard Group
+  body       2060px   overflow 0px
+  sections   16
+  figures    16
+  grids      3
+  texts      148
+  links      53
+  -> qa/ref/eshop.json
+  -> qa/ref/eshop.html

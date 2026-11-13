@@ -1,0 +1,6 @@
+# REF REPORT — qa/ref/innovations.json
+url         https://www.bossard.com/global-en/product-solutions/innovations/
+title       Innovative Fasteners | Bossard Group
+viewport    1440x1000
+body        3530px   overflow 0px
+sprites     11

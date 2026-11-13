@@ -1,0 +1,65 @@
+## TEXTS (main region only)
+  -- y=255 --
+  LI    x=  70 y=  255 w=  16 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .flex items-center
+  -- y=260 --
+  A     x=  70 y=  260 w=  16 h=  16 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .breadcrumb L0
+  -- y=275 --
+  SPAN  x=  69 y=  275 w=   1 h=   1 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Bossard Group - Fasteners, Engineering, Logistics
+        .sr-only
+  -- y=255 --
+  LI    x=  86 y=  255 w= 167 h=  26 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Product Solutions
+        .flex-shrink-1 flex-grow-0 truncate whitespace-nowrap
+  -- y=257 --
+  SPAN  x= 126 y=  257 w= 127 h=  21 fs=16px    lh=25.6px   fw=400  rgb(102, 102, 102)
+        Product Solutions
+        .
+  -- y=313 --
+  P     x=  70 y=  313 w=1285 h=  28 fs=20px    lh=28px     fw=500  rgb(102, 102, 102)
+        Master Any Fastening Challenge
+        .text-label mb-8 text-gray-medium lg:mb-12
+  -- y=353 --
+  H1    x=  70 y=  353 w=1285 h=  70 fs=64px    lh=70.4px   fw=700  rgb(0, 73, 117)
+        Product Solutions
+        .text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32
+  -- y=1143 --
+  H2    x=  86 y= 1143 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Product Categories and Brands
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=988 --
+  H2    x= 930 y=  988 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Custom Fasteners
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=1891 --
+  H2    x=  86 y= 1891 w= 409 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Coatings
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=2008 --
+  H2    x= 623 y= 2008 w= 716 h=  59 fs=32px    lh=35.2px   fw=700  rgb(255, 255, 255)
+        Innovations
+        .text-h4 font-bold pb-24 text-white lg:text-h4-l
+  -- y=2067 --
+  P     x= 623 y= 2067 w= 716 h= 147 fs=24px    lh=38.4px   fw=500  rgb(255, 255, 255)
+        Get a glimpse into the future and explore new and innovative fastening technologies. Or are you an inventor yourself? Together we make your idea come to life!
+        .text-lead hidden pb-32 text-white wd:block
+  -- y=2801 --
+  P     x= 873 y= 2801 w= 484 h=  32 fs=20px    lh=32px     fw=400  rgb(102, 102, 102)
+        eShop
+        .mb-12 text-p-l text-gray-medium lg:mb-16
+  -- y=2849 --
+  H2    x= 873 y= 2849 w= 484 h=  48 fs=44px    lh=48.4px   fw=700  rgb(0, 73, 117)
+        Buy Fasteners Online
+        .text-h3 mb-24 lg:mb-32 text-blue-dark3 hyphens-auto
+  -- y=2929 --
+  P     x= 873 y= 2929 w= 484 h= 115 fs=24px    lh=38.4px   fw=500  rgb(51, 51, 51)
+        Browse our large assortment of fastening elements, find more product data and buy directly in our online shop.
+        .text-lead mb-24 text-gray lg:mb-32
+  -- y=3076 --
+  A     x= 873 y= 3076 w= 124 h=  49 fs=18px    lh=18px     fw=700  rgb(0, 73, 117)
+        Buy Now
+        .text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rou

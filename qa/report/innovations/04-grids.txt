@@ -1,0 +1,4 @@
+## GRIDS
+ 1 y= 2260 x=  70 w=1285 gap=normal
+     cols: 428.328px 428.328px 428.344px
+     cls : grid border-collapse grid-cols-1 sm:grid-cols-2 md:grid-cols-3
