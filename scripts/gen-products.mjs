@@ -196,7 +196,7 @@ for (const f of dicts['families.csv']?.rows ?? []) {
 	const dimCsv = readCsv(dimPath);
 	if (!dimCsv) {
 		err('E015', `family "${id}" 缺少维度矩阵 data/products/dimensions/${id}.csv`);
-		families.push({ ...f, paramType: type });
+		families.push({ ...f, paramType: type, status });
 		continue;
 	}
 	const known = new Set(['standard', ...params.map((p) => p.param)]);
@@ -230,7 +230,7 @@ for (const f of dicts['families.csv']?.rows ?? []) {
 	}
 	if (rows.length === 0) err('E022', `dimensions/${id}.csv 没有任何数据行`);
 	dimensions.set(id, rows);
-	families.push({ ...f, paramType: type });
+	families.push({ ...f, paramType: type, status });
 }
 
 /* ── SKU 规范 ────────────────────────────────────────────────────────────

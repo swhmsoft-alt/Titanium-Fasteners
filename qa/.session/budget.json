@@ -1,10 +1,10 @@
 {
   "session": "--reset",
-  "startedAt": "2026-11-13T03:11:55.891Z",
+  "startedAt": "2026-11-13T03:24:59.509Z",
   "reads": {},
   "toolReads": {},
-  "toolCalls": 1,
-  "explorationCalls": 1,
+  "toolCalls": 0,
+  "explorationCalls": 0,
   "writes": [],
   "notes": []
 }

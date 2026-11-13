@@ -89,7 +89,7 @@ export const SEARCH_INDEX: SearchIndex = {
 				80
 			],
 			"size_count": 34,
-			"status": "draft"
+			"status": "published"
 		},
 		{
 			"family_id": "hex-nut",
@@ -131,7 +131,7 @@ export const SEARCH_INDEX: SearchIndex = {
 			],
 			"lengths": [],
 			"size_count": 6,
-			"status": "draft"
+			"status": "published"
 		},
 		{
 			"family_id": "countersunk-head-cap-screws",
@@ -180,7 +180,7 @@ export const SEARCH_INDEX: SearchIndex = {
 				25
 			],
 			"size_count": 5,
-			"status": "draft"
+			"status": "published"
 		},
 		{
 			"family_id": "hex-head-bolts-fully-threaded",
@@ -225,7 +225,7 @@ export const SEARCH_INDEX: SearchIndex = {
 				50
 			],
 			"size_count": 5,
-			"status": "draft"
+			"status": "published"
 		},
 		{
 			"family_id": "plain-washers",
@@ -264,7 +264,7 @@ export const SEARCH_INDEX: SearchIndex = {
 			"threads": [],
 			"lengths": [],
 			"size_count": 5,
-			"status": "draft"
+			"status": "published"
 		}
 	]
 };

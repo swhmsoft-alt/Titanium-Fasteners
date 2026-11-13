@@ -228,7 +228,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"alt": "Hex Socket Head Cap Screws",
 		"description": "Hexagon socket head cap screws in titanium grades with full DIN 912 and ISO 4762 dimensional conformity.",
 		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Black anodized / Plain (as supplied)",
-		"status": "draft",
+		"status": "published",
 		"filters": {
 			"standard": [
 				"din-912"
@@ -279,7 +279,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"alt": "Hex Nuts",
 		"description": "Hexagon nuts in titanium grades to DIN 934 and ISO 4032 style 1.",
 		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain (as supplied)",
-		"status": "draft",
+		"status": "published",
 		"filters": {
 			"standard": [
 				"din-934"
@@ -316,7 +316,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"alt": "Countersunk Head Cap Screws",
 		"description": "Hexagon socket countersunk head screws 90 degrees flat head per DIN 7991 for flush mounting without protruding heads.",
 		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized / Passivated",
-		"status": "draft",
+		"status": "published",
 		"filters": {
 			"standard": [
 				"din-7991"
@@ -357,7 +357,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"alt": "Hex Head Bolts Fully Threaded",
 		"description": "Hexagon head bolts fully threaded per DIN 933 for structural and industrial clamping applications.",
 		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized",
-		"status": "draft",
+		"status": "published",
 		"filters": {
 			"standard": [
 				"din-933"
@@ -397,7 +397,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"alt": "Plain Washers",
 		"description": "Plain washers form A per DIN 125 and ISO 7089 for titanium fastening in chemical and marine environments.",
 		"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Passivated",
-		"status": "draft",
+		"status": "published",
 		"filters": {
 			"standard": [
 				"din-125"
@@ -419,7 +419,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 	}
 ];
 
-export const HAS_PUBLISHED: boolean = false;
+export const HAS_PUBLISHED: boolean = true;
 
 export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 	"screws": {
@@ -454,7 +454,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"alt": "Hex Socket Head Cap Screws",
 				"description": "Hexagon socket head cap screws in titanium grades with full DIN 912 and ISO 4762 dimensional conformity.",
 				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Black anodized / Plain (as supplied)",
-				"status": "draft",
+				"status": "published",
 				"filters": {
 					"standard": [
 						"din-912"
@@ -505,7 +505,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"alt": "Countersunk Head Cap Screws",
 				"description": "Hexagon socket countersunk head screws 90 degrees flat head per DIN 7991 for flush mounting without protruding heads.",
 				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized / Passivated",
-				"status": "draft",
+				"status": "published",
 				"filters": {
 					"standard": [
 						"din-7991"
@@ -536,7 +536,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				}
 			}
 		],
-		"hasPublished": false
+		"hasPublished": true
 	},
 	"bolts": {
 		"id": "bolts",
@@ -570,7 +570,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"alt": "Hex Head Bolts Fully Threaded",
 				"description": "Hexagon head bolts fully threaded per DIN 933 for structural and industrial clamping applications.",
 				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized",
-				"status": "draft",
+				"status": "published",
 				"filters": {
 					"standard": [
 						"din-933"
@@ -600,7 +600,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				}
 			}
 		],
-		"hasPublished": false
+		"hasPublished": true
 	},
 	"nuts": {
 		"id": "nuts",
@@ -634,7 +634,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"alt": "Hex Nuts",
 				"description": "Hexagon nuts in titanium grades to DIN 934 and ISO 4032 style 1.",
 				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain (as supplied)",
-				"status": "draft",
+				"status": "published",
 				"filters": {
 					"standard": [
 						"din-934"
@@ -661,7 +661,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				}
 			}
 		],
-		"hasPublished": false
+		"hasPublished": true
 	},
 	"washers": {
 		"id": "washers",
@@ -695,7 +695,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"alt": "Plain Washers",
 				"description": "Plain washers form A per DIN 125 and ISO 7089 for titanium fastening in chemical and marine environments.",
 				"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Passivated",
-				"status": "draft",
+				"status": "published",
 				"filters": {
 					"standard": [
 						"din-125"
@@ -716,7 +716,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				}
 			}
 		],
-		"hasPublished": false
+		"hasPublished": true
 	}
 };
 
