@@ -1,0 +1,198 @@
+/**
+ * src/data/category-detail/direct-assembly-screws.ts
+ *
+ * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
+ * 参考：https://www.bossard.com/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/
+ */
+
+import type { CategoryDetailPage } from './types';
+
+export const CATEGORY_DETAIL: CategoryDetailPage = {
+	slug: 'direct-assembly-screws',
+	seo: { title: 'Direct Assembly Screws - Products and Brands | Bossard Group', description: 'Discover self-drilling screws, thread-cutting screws, thread-forming screws, and more. Bossard brand overview of direct assembly screws.' },
+	hero: {
+		breadcrumb: [
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
+			{ label: '...' },
+			{ label: 'Direct Assembly Screws' },
+		],
+		eyebrow: 'Product Categories',
+		heading: 'Direct Assembly Screws',
+		lead: 'Save time and money by choosing a screw that can do more than simply connect two parts! Reduce work steps with self-drilling, thread-forming, and thread-cutting screws, or lower the number of parts you need with multifunctional elements.',
+		image: '/images/category-detail-direct-assembly-screws/02-different-types-of-direct-assembly-screws-on-a-w.webp',
+		imageAlt: 'Different types of direct assembly screws on a white background.',
+		imageWidth: 634,
+		imageHeight: 507,
+		buttons: [
+			{ label: 'Go to eShop', kind: 'link', variant: 'primary', href: '/global-en/eshop/c/01.200/' },
+			{ label: 'Contact Us', kind: 'dialog', variant: 'secondary' },
+		],
+	},
+	intro: 'Direct assembly screws are suitable for numerous applications and materials, such as aluminum, thin sheet metal, steel, thermoplastics, wood, and concrete. Different materials require different screw designs to ensure an optimal connection.',
+	video: { heading: 'Find the Right Screw for Your Application', thumbnail: 'https://img.youtube.com/vi/19ozjSem_oI/maxresdefault.jpg', thumbnailAlt: 'PS | Direct Assembly Screws from Bossard', caption: 'Get a quick overview of direct assembly screws and learn which one to use for which application.' },
+	richText: [
+		{ kind: 'heading', text: 'Different Types of Direct Assembly Screws' },
+		{ kind: 'paragraph', text: 'At Bossard, we distinguish between different types of screws for direct assembly:' },
+		{ kind: 'list', items: [
+			{ lead: 'Self-drilling screws', text: 'require no pre-drilling, which makes them ideal for quick and efficient installation.' },
+			{ lead: 'Thread-cutting screws', text: 'create a mating thread in hard materials while still requiring only a low installation torque.' },
+			{ lead: 'Thread-forming screws', text: 'are optimal for high clamp load and providing vibration resistance.' },
+			{ lead: 'Multifunctional screws', text: 'with integrated washers provide increased security while enabling you to reduce C-parts.' },
+		] },
+		{ kind: 'paragraph', text: 'Make your installation process faster, safer, and more durable with versatile and economical products from our many expert partners. We offer a broad range of direct assembly solutions, including the following:' },
+	],
+	brands: {
+		heading: 'Our Direct Assembly Screws Brands',
+		tiles: [
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ejot-altracs-plus/',
+				image: '/images/category-detail-direct-assembly-screws/03-an-ejot-altracs-plus-screw-for-direct-fastening-.webp',
+				alt: 'An EJOT® Altracs Plus screw for direct fastening into metals on a white background.',
+				label: 'Screws for Metal',
+				title: 'ALtracs® Plus',
+				description: 'Thread-forming screws for light metal alloys and other non-ferrous metals such as zinc, copper, or brass.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/delta-pt/',
+				image: '/images/category-detail-direct-assembly-screws/04-a-standard-ejot-delta-pt-screw-on-white-backgrou.webp',
+				alt: 'A standard EJOT Delta PT screw on white background.',
+				label: 'Screws for Plastic',
+				title: 'Delta PT®',
+				description: 'Self-tapping screws for thermoplastics. High strength and vibration resistance. Ideal for lightweight applications.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/din-7500-screw/',
+				image: '/images/category-detail-direct-assembly-screws/05-close-up-of-a-din-7500-self-tapping-screw-for-me.webp',
+				alt: 'Close-up of a DIN 7500 self-tapping screw for metal',
+				label: 'Screws for Metal',
+				title: 'DIN 7500',
+				description: 'ISO metric thread-forming screw that optimizes both technical performance and cost-effectiveness.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ecosyn-drill/',
+				image: '/images/category-detail-direct-assembly-screws/06-a-silver-ecosyn-drill-self-drilling-screw-for-me.webp',
+				alt: 'A silver ecosyn drill self-drilling screw for metal on white background',
+				label: 'Screws for Metal',
+				title: 'ecosyn® drill',
+				description: 'Self-cutting screws made from case-hardened steel. Easy one-step assembly.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ecosyn-imx/',
+				image: '/images/category-detail-direct-assembly-screws/07-an-ecosyn-imx-thread-forming-pan-head-screw-inox.webp',
+				alt: 'An ecosyn IMX thread forming pan head screw INOX on a white background.',
+				label: 'Screws for Metal',
+				title: 'ecosyn® IMX',
+				description: 'Thread-forming screws for stainless steel. High corrosion resistance.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ecosyn-mrx/',
+				image: '/images/category-detail-direct-assembly-screws/08-an-ecosyn-mrx-screw-on-white-background.webp',
+				alt: 'An ecosyn MRX screw on white background',
+				label: 'Screws for Metal',
+				title: 'ecosyn® MRX',
+				description: 'Self-cutting screws for sheet metal construction. High corrosion resistance.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ecosyn-plast/',
+				image: '/images/category-detail-direct-assembly-screws/09-a-close-up-of-an-ecosyn-plast-screw-for-thermopl.webp',
+				alt: 'A close-up of an ecosyn plast screw for thermoplastic applications lying on its side',
+				label: 'Screws for Plastic',
+				title: 'ecosyn® plast',
+				description: 'Self-tapping screws for process-safe and easy fastening into thermoplastics. Excellent load-bearing capacity for a reliable connection.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ejot-fds/',
+				image: '/images/category-detail-direct-assembly-screws/10-close-up-of-an-ejot-fds-flow-drilling-screw-for-.webp',
+				alt: 'Close-up of an EJOT FDS flow drilling screw for lightweight sheet metal connections.',
+				label: 'Screws for Metal',
+				title: 'EJOT FDS®',
+				description: 'Flow drill screws ideal for joining thin sheets of steel or aluminum without component preparation such as pre-drilling or punching.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ejot-pt/',
+				image: '/images/category-detail-direct-assembly-screws/11-an-ejot-pt-screw-for-plastic-on-a-white-backgrou.webp',
+				alt: 'An EJOT PT screw for plastic on a white background.',
+				label: 'Screws for Plastic',
+				title: 'EJOT PT®',
+				description: 'Self-tapping screws for thermoplastics. The classic solution for plastic applications.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/ejot-sheettracs/',
+				image: '/images/category-detail-direct-assembly-screws/12-an-ejot-sheettracs-screw-a-self-tapping-screw-fo.webp',
+				alt: 'An EJOT SHEETtracs screw - a self-tapping screw for thin sheet metals - on white background.',
+				label: 'Screws for Metal',
+				title: 'EJOT SHEETtracs®',
+				description: 'Self-tapping screws designed for thin sheet metals. High-strength, reliable assembly, vibration resistant.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/evo-pt/',
+				image: '/images/category-detail-direct-assembly-screws/13-a-rendering-of-an-ejot-evo-pt-screw-for-thermopl.webp',
+				alt: 'A rendering of an EJOT EVO PT screw for thermoplastics with no background',
+				label: 'Screws for Plastic',
+				title: 'EVO PT®',
+				description: 'Self-tapping screws for thermoplastics. High process safety and consistent installation torque.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/spax/',
+				image: '/images/category-detail-direct-assembly-screws/14-a-spax-direct-assembly-screw-on-a-white-backgrou.webp',
+				alt: 'A Spax direct assembly screw on a white background.',
+				label: 'Screws for Wood',
+				title: 'Spax®',
+				description: 'Screws for diverse indoor and outdoor applications, as well as timber construction and window systems.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/taptite-2000/',
+				image: '/images/category-detail-direct-assembly-screws/15-a-taptite-2000-screw-for-thread-forming-in-metal.webp',
+				alt: 'A Taptite 2000 screw for thread-forming in metals on white background',
+				label: 'Screws for Metal',
+				title: 'Taptite 2000®',
+				description: 'Thread-forming screws with outstanding mechanical, fastening and ergonomic characteristics.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/tecfi/',
+				image: '/images/category-detail-direct-assembly-screws/16-a-tecfi-concrete-screw-with-external-thread-wash.webp',
+				alt: 'A Tecfi concrete screw with external thread, washer DIN 9021 and hex nut on a white background.',
+				label: 'Screws for Concrete',
+				title: 'Tecfi®',
+				description: 'Concrete screws and bolt anchors. High load-bearing capacity in cracked and non-cracked concrete.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/direct-assembly-screws/tox/',
+				image: '/images/category-detail-direct-assembly-screws/17-a-red-all-purpose-wall-plug-tox-tri-on-a-white-b.webp',
+				alt: 'A red all-purpose wall plug TOX TRI on a white background.',
+				label: 'Wall Anchors',
+				title: 'Tox®',
+				description: 'Anchoring systems, wall plugs, and insulation fasteners. Sealing plugs for wet areas.',
+			},
+		],
+	},
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	services: {
+		cards: [
+			{
+				href: '/global-en/eshop/c/01.200/',
+				image: '/images/category-detail-direct-assembly-screws/18-saved-cart-icon.svg',
+				alt: ' Saved Cart Icon',
+				label: 'eShop',
+				title: 'Buy Direct Assembly Screws',
+				description: 'Browse our large assortment of direct assembly screws and find the right solution for your fastening challenge.',
+			},
+			{
+				href: '/global-en/product-solutions/product-categories-and-brands/',
+				image: '/images/category-detail-direct-assembly-screws/19-fasteners-icon.svg',
+				alt: 'Fasteners icon',
+				label: 'Product Categories',
+				title: 'Discover More Fasteners',
+				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
+			},
+			{
+				href: '/global-en/services/benefits/',
+				image: '/images/category-detail-direct-assembly-screws/20-proven-productivity-thumbs-up-icon-surrounded-by.svg',
+				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
+				label: 'About Us',
+				title: 'Proven Productivity',
+				description: 'Learn more about how we enable our customers to develop solutions that are better, faster, and more efficient.',
+			},
+		],
+	},
+};

@@ -1,0 +1,147 @@
+---
+/**
+ * IndustryContact — "You're in Another Industry?" + the SmartBin contact form.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   h2       x=102 y=5058 w=689 44px #004975
+ *   lead p   x=102 y=5131 w=689 20px/32 #333
+ *   form     x=699 y=5233  623 wide   h3 32px, note 20px #999
+ *   fields   country select + 4 inputs + textarea, labels 16px floating
+ *   image    x=71  y=5331  740×555 (4:3)
+ *
+ * The reference markup is reproduced 1:1; only the missing Tailwind utilities
+ * are mapped per docs/RECIPE.md §5 (text-p-sm-s → text-p-sm).
+ */
+import type { ContactBlock, ContactField } from '@data/industries';
+
+interface Props {
+	contact: ContactBlock;
+}
+
+const { contact } = Astro.props;
+const { form } = contact;
+
+const textFields = form.fields.filter((f) => f.type !== 'select' && f.type !== 'textarea');
+const selectField = form.fields.find((f) => f.type === 'select');
+const textareaField = form.fields.find((f) => f.type === 'textarea');
+---
+
+<section class="relative bg-white">
+	<div class="container-fluid z-1 relative py-64 sm:pb-72 lg:pb-96 lg:pt-[80px]">
+		<div class="lg:ml-24 ul:ml-32">
+			<h2 class="text-blue-dark3 text-h3 mb-16 lg:mb-24 ul:w-[55%]">{contact.heading}</h2>
+			<p class="text-gray text-p mb-16 lg:mb-24 ul:w-[55%]">{contact.text}</p>
+
+			<div class="relative flex flex-wrap items-start justify-between lg:flex-nowrap">
+				<div class="w-full border-x-[1px] border-transparent lg:-mr-[82%] lg:w-full wd:-mr-[62%] wd:mt-[110px] ul:-mr-[34%] ul:mt-[112px] ul:w-[65%]">
+					<figure class="rounded-lg lg:w-[72%] ul:w-[740px] wd:w-[50%] w-full">
+						<img
+							class="aspect-4/3 w-full rounded-tl-lg rounded-tr-lg sm:rounded-lg"
+							src={contact.image}
+							alt={contact.imageAlt}
+							width={contact.imageWidth}
+							height={contact.imageHeight}
+							loading="eager"
+							style="aspect-ratio:4 / 3"
+						/>
+					</figure>
+				</div>
+
+				<form
+					class="z-1 relative rounded-bl-lg rounded-br-lg border-[1px] border-[rgba(204,228,243,1)] bg-white px-24 py-40 shadow-[0_0_20px_0_rgba(0,0,0,0.05)] sm:m-16 sm:-mt-[90px] sm:rounded-lg sm:px-32 lg:ml-auto lg:mt-[44%] w-full lg:w-[698px] lg:py-48 lg:mr-0 wd:mt-0 wd:w-[689px] ul:mt-0"
+					action="#"
+					method="post"
+				>
+					<h3 class="text-h4 mb-24 text-blue-dark3">{form.heading}</h3>
+					<p class="text-p mb-16 text-gray-soft lg:mb-24">{form.note}</p>
+
+					<!-- country -->
+					{
+						selectField && (
+							<div class="mb-24">
+								<label class="gap-2 text-4 relative flex flex-col">
+									<span class="absolute top-8 ml-12 text-header-s text-gray-medium">
+										{selectField.label}
+										{selectField.required && <span class="pl-2 text-blue">*</span>}
+									</span>
+									<select
+										name={selectField.name}
+										required={selectField.required}
+										class="mt-2 w-full appearance-none overflow-x-hidden text-ellipsis border-b bg-transparent px-12 pb-8 pr-32 pt-24 text-p-sm focus:ring-3 focus-visible:outline-none border-gray-soft focus:border-blue focus:ring-blue-light"
+									>
+										{selectField.options?.map((o) => <option value={o}>{o}</option>)}
+									</select>
+								</label>
+							</div>
+						)
+					}
+
+					<!-- text + email inputs -->
+					{
+						textFields.map((field) => (
+							<div class="relative mb-24 flex flex-col">
+								<label class="relative text-link-s">
+									<input
+										type={field.type}
+										name={field.name}
+										required={field.required}
+										class="mt-2 peer w-full border-b pl-12 pr-12 pb-[11px] pt-[21px] text-p-sm focus-visible:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-ms-reveal]:hidden focus:ring-3 border-gray-soft focus:border-blue focus:ring-blue-light"
+									/>
+									<span class="absolute left-12 top-[16px] -translate-y-12 items-center text-[12px] transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer-focus:text-[12px] text-gray-medium peer-placeholder-shown:text-black peer-focus:text-gray-medium">
+										{field.label}
+										{field.required && <span class="ml-[2px] text-blue">*</span>}
+									</span>
+								</label>
+							</div>
+						))
+					}
+
+					<!-- message textarea -->
+					{
+						textareaField && (
+							<div class="relative mb-24 flex flex-col">
+								<label class="relative text-link-s">
+									<textarea
+										name={textareaField.name}
+										required={textareaField.required}
+										class="mt-2 peer w-full border-b px-12 pb-[11px] pt-[21px] focus:ring-3 focus-visible:outline-none text-p-sm border-gray-soft focus:border-blue focus:ring-blue-light"
+									/>
+									<span class="absolute left-12 top-[16px] -translate-y-12 bg-white transition-all duration-500 flex items-center text-[12px] peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12 peer-placeholder-shown:text-[16px] peer-focus:text-[12px] text-gray-medium peer-placeholder-shown:text-black peer-focus:text-gray-medium">
+										{textareaField.label}
+									</span>
+								</label>
+							</div>
+						)
+					}
+
+					<!-- consent -->
+					<div class="mb-8">
+						<label class="flex items-center gap-x-3.5 text-4 cursor-pointer">
+							<input type="checkbox" name="privacyPolicy" required class="sr-only" />
+							<p class="text-p-sm">
+								{form.consent.before}{' '}
+								<a
+									class="cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark"
+									href={form.consent.linkHref}
+								>
+									{form.consent.linkLabel}
+								</a>{' '}
+								{form.consent.after}
+								<span class="text-blue">*</span>
+							</p>
+						</label>
+					</div>
+
+					<span class="mt-24 flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-end">
+						<button
+							type="submit"
+							class="w-full sm:w-auto sm:min-w-[200px] flex items-center justify-center text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-[28px] inline-block text-center px-24 pt-[11px] pb-[12px] lg:pt-[13px] lg:pb-[14px] bg-blue text-white border-2 border-blue hover:bg-blue hover:border-blue-dark3 hover:ring-2 hover:ring-blue-dark3 hover:ring-offset-0 active:bg-blue-dark3 active:border-blue-dark3 active:ring-0 active:hover:ring-0 active:hover:ring-offset-0 active:focus:ring-0 active:focus:ring-offset-0 focus:bg-blue focus:border-white focus:ring-2 focus:ring-blue-dark focus:ring-offset-1 focus:ring-offset-white disabled:bg-gray-soft disabled:border-transparent disabled:text-white disabled:ring-0 disabled:cursor-not-allowed"
+						>
+							{form.submitLabel}
+						</button>
+					</span>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

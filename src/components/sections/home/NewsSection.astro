@@ -1,0 +1,51 @@
+---
+/**
+ * NewsSection — homepage block 4.
+ *
+ * PHASE A (1:1 COPY). Reference geometry, measured at 1440×1000
+ * (docs/reference/homepage-outline.txt, lines 56–77):
+ *
+ *   article y=2854 h=457 my-48        .container-fluid.my-48
+ *   h2      44px rgb(0,49,78) mb-24  .text-h3.mb-16.text-blue-dark2.lg:mb-24
+ *   grid    y=2926 h=384  2 × 634px  gap-32
+ *   card    .group.cursor-pointer  → <a class="flex">
+ *
+ * The reference's four cards are NOT equal height (row 1 = 218px,
+ * row 2 = 135px). That asymmetry is reproduced by the content, not
+ * forced — no fixed heights are applied.
+ */
+import Figure from '@components/ui/Figure.astro';
+import { NEWS } from '@data/home';
+---
+
+<article class="container-fluid my-48">
+	<h2 class="text-h3 mb-16 text-blue-dark2 lg:mb-24">{NEWS.heading}</h2>
+
+	<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+		{
+			NEWS.items.map((item) => (
+				<section class="group cursor-pointer">
+					<a href={item.href} class="flex">
+						<figure class="w-108 sm:w-166 md:w-114 lg:w-144 wd:w-176 ul:w-202 shrink-0">
+							<img
+								src={item.image.src}
+								alt={item.image.alt}
+								width="202"
+								height="202"
+								loading="lazy"
+								decoding="async"
+								class="aspect-1/1 rounded-lg object-cover max-w-max w-full"
+								style="aspect-ratio:1 / 1"
+							/>
+						</figure>
+						<div class="pl-16 lg:pl-24">
+							{item.date && <p class="text-label mb-8 text-blue-dark3">{item.date}</p>}
+							<h3 class="text-h5 mb-16 text-blue-dark group-hover:underline">{item.title}</h3>
+							<p class="text-p-sm text-gray">{item.body}</p>
+						</div>
+					</a>
+				</section>
+			))
+		}
+	</div>
+</article>

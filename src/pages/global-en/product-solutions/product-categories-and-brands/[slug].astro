@@ -1,0 +1,105 @@
+---
+/**
+ * /global-en/product-solutions/product-categories-and-brands/<slug>/
+ *
+ * 12 个品类子页共用这一个模板页 —— 每个子页只有一份 data 文件
+ * （src/data/category-detail/<slug>.ts，由 scripts/gen-category-detail.mjs 生成）。
+ *
+ * MEASURED on the reference (direct-assembly-screws, 1440×1000, 2026-11-09):
+ *   body 5610px, footer 517px, h-overflow 0px
+ *   block 1  Find the Right Screw…   y=1002 h=932   h2 44px
+ *   block 2  Our … Brands             y=2587 h=1912  h2 44px
+ *   block 3  Buy …                    y=4632 h=418   h2 21.008px
+ *
+ * 参考站的 <main> 顺序：hero header → 引言段 → 视频文章 → 富文本段 ×4 →
+ * 品牌网格文章 → 提示段 → 服务卡片文章 → 收尾空段。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import PageHero from '@components/sections/category-detail/PageHero.astro';
+import VideoBlock from '@components/sections/category-detail/VideoBlock.astro';
+import RichText from '@components/sections/category-detail/RichText.astro';
+import CategoryTiles from '@components/sections/product-categories-and-brands/CategoryTiles.astro';
+import ServiceCards from '@components/sections/product-categories-and-brands/ServiceCards.astro';
+import { CATEGORY_DETAIL_SLUGS, CATEGORY_DETAIL_PAGES } from '@data/category-detail/index';
+
+export function getStaticPaths() {
+	return CATEGORY_DETAIL_SLUGS.map((slug) => ({
+		params: { slug },
+		props: { page: CATEGORY_DETAIL_PAGES[slug] },
+	}));
+}
+
+const { page } = Astro.props;
+const currentPathname = Astro.url.pathname;
+const canonicalPath = `/global-en/product-solutions/product-categories-and-brands/${page.slug}/`;
+---
+
+<BaseLayout title={page.seo.title} description={page.seo.description} canonicalPath={canonicalPath}>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<PageHero {...page.hero} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{page.intro}</p>
+		</div>
+
+		{
+			/* 参考站并非每个品类子页都有"Find the Right …"视频文章块：
+			 * 没有视频的页面不渲染该 article，否则会多出一个空区块（并产生一张坏图）。 */
+			page.video.thumbnail && (
+				<VideoBlock
+					heading={page.video.heading}
+					thumbnail={page.video.thumbnail}
+					thumbnailAlt={page.video.thumbnailAlt}
+					caption={page.video.caption}
+				/>
+			)
+		}
+
+		<RichText blocks={page.richText} />
+
+		{
+			/* 没有品牌网格的页面（参考站另有别的区块）不要输出空 article，
+			 * 否则 probe 的 main article 列表会与 target 错位。 */
+			page.brands.tiles.length > 0 && (
+				<CategoryTiles
+					heading={page.brands.heading}
+					label={page.brands.tiles[0]?.label ?? ''}
+					tiles={page.brands.tiles}
+				/>
+			)
+		}
+
+		{
+			page.note && (
+				<div class="container-fluid">
+					<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">
+						{page.note.text} <a
+							class="cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark"
+							href={page.note.linkHref}
+						>
+							{page.note.linkLabel}
+						</a>{page.note.linkSuffix}
+					</p>
+				</div>
+			)
+		}
+
+		<ServiceCards cards={page.services.cards} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
+		</div>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

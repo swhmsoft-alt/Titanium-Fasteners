@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 942 706" width="942" height="706" role="img" aria-label="Placeholder">
+  <!--
+    PLACEHOLDER — sustainability key visual, 942×706px (ratio 1.334),
+    measured on the reference site. Replace with own photography.
+  -->
+  <rect width="942" height="706" fill="#cce4f3"/>
+  <g fill="none" stroke="#004975" stroke-width="2" opacity="0.4">
+    <path d="M471 180l190 110v220l-190 110-190-110V290z"/>
+    <path d="M471 180v440M281 290l190 110 190-110"/>
+  </g>
+  <text x="471" y="620" font-family="Archivo, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#004975" text-anchor="middle">Key Visual 1.334</text>
+  <text x="471" y="650" font-family="Archivo, Helvetica, sans-serif" font-size="14" fill="#007ac3" text-anchor="middle">942 × 706</text>
+</svg>

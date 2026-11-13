@@ -1,0 +1,82 @@
+---
+/**
+ * SectionHeading — a block heading.
+ *
+ * The reference site does NOT rely on the default sizing of h1–h6. It
+ * applies explicit `text-*` utility classes, and in several places the
+ * visual size deliberately does NOT match the semantic level — e.g. the
+ * homepage's "Product Solutions" block renders an <h2> at 32px (the
+ * `text-h4` scale), and the product-detail "Download More Information"
+ * heading renders at 24px while its sibling renders at 44px.
+ *
+ * This component therefore takes the SIZE explicitly, and separately takes
+ * the semantic TAG. That lets a caller reproduce the reference's
+ * size/level mismatches exactly instead of silently normalising them.
+ *
+ * MEASURED scale (mobile → ≥1024px):
+ *   h1   42 → 64px / 110% / 700
+ *   h2   38 → 56px / 110% / 700
+ *   h3   30 → 44px / 110% / 700
+ *   h4   25 → 32px / 110% / 700
+ *   lead 21 → 24px / 160% / 500
+ *   card 21px / 160% / 700
+ */
+export type Size = 'h1' | 'h2' | 'h3' | 'h4' | 'lead' | 'card';
+
+interface Props {
+	/** Visual size — the scale to render at. */
+	size?: Size;
+	/**
+	 * Semantic tag. Defaults to the tag matching `size`, but may be
+	 * overridden to reproduce the reference's deliberate mismatches
+	 * (e.g. size="h4" with as="h2").
+	 */
+	as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p';
+	/** Optional eyebrow above the heading. */
+	eyebrow?: string;
+	/** Colour override. Defaults to blue-dark3, the reference's heading colour. */
+	color?: string;
+	class?: string;
+	id?: string;
+}
+
+const {
+	size = 'h3',
+	as,
+	eyebrow,
+	color = 'text-blue-dark3',
+	class: className,
+	id,
+} = Astro.props;
+
+const scale: Record<Size, string> = {
+	h1: 'text-h1',
+	h2: 'text-h2',
+	h3: 'text-h3',
+	h4: 'text-h4',
+	lead: 'text-lead',
+	card: 'text-card',
+};
+
+// Default tag = the tag matching the size; `lead`/`card` are not heading
+// levels, so they default to <p> unless the caller overrides.
+const defaultTag: Record<Size, 'h1' | 'h2' | 'h3' | 'h4' | 'p'> = {
+	h1: 'h1',
+	h2: 'h2',
+	h3: 'h3',
+	h4: 'h4',
+	lead: 'p',
+	card: 'p',
+};
+
+const Tag = (as ?? defaultTag[size]) as 'h1' | 'h2' | 'h3' | 'h4' | 'p';
+---
+
+<Tag
+	id={id}
+	class:list={[`${scale[size]} ${color}`, className]}
+	data-heading-size={size}
+>
+	{eyebrow && <span class="text-label text-gray-medium mb-8 block">{eyebrow}</span>}
+	<slot />
+</Tag>

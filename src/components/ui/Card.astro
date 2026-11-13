@@ -1,0 +1,54 @@
+---
+/**
+ * Card — image + title + text link card.
+ *
+ * MEASURED on the reference site:
+ *   category / news / related-product card — 634×202px in a 2-column grid
+ *   card heading — 21.008px / 700 (the `text-card` scale)
+ *   card link behaves as a group with `cursor-pointer`
+ *
+ * The card is a single link: the whole card is the hit target, matching
+ * the reference's `group cursor-pointer` behaviour.
+ *
+ * The thumbnail is 202×202px on the reference. Inside this card the image
+ * occupies a fixed-width column beside the text, so it is rendered in
+ * `fill` mode within that column.
+ */
+import Figure, { type Ratio } from './Figure.astro';
+
+interface Props {
+	href: string;
+	title: string;
+	body?: string;
+	image?: { src: string; ratio: Ratio };
+	/** Small meta line above the title (used by the news block). */
+	meta?: string;
+	/** Fixed card height. The reference measures 202px for news/related cards. */
+	height?: number;
+	class?: string;
+}
+
+const { href, title, body, image, meta, height, class: className } = Astro.props;
+---
+
+<a
+	href={href}
+	class:list={[
+		'group relative flex flex-row overflow-hidden bg-white transition-transform duration-300 ease-in-out hover:-translate-y-4',
+		className,
+	]}
+	style={height ? `height:${height}px` : undefined}
+>
+	{
+		image && (
+			<div class="w-202 shrink-0 overflow-hidden">
+				<Figure src={image.src} alt="" ratio={image.ratio} fill class="h-full w-full" />
+			</div>
+		)
+	}
+	<div class="flex flex-1 flex-col overflow-hidden p-16">
+		{meta && <span class="text-label text-gray-medium mb-8">{meta}</span>}
+		<h3 class="text-card text-blue-dark3">{title}</h3>
+		{body && <p class="text-p text-gray mt-8">{body}</p>}
+	</div>
+</a>

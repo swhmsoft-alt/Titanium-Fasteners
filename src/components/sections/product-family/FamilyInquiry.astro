@@ -1,0 +1,69 @@
+---
+/**
+ * FamilyInquiry — 族页询盘区块（Phase B 自有版）。
+ *
+ * 整块是静态骨架 + 一个 React 岛（client:visible）：
+ *   · 标题、说明、产品上下文 —— 静态 HTML，SEO 可读，无 JS 也完整；
+ *   · 表单本身 —— React 岛，滚动到才 hydrate。
+ *
+ * 产品上下文在**构建期**由 @data/products 注入，不在运行时抓 DOM。
+ * 规格上下文（standard/thread/length）由 URL query 带进来 —— 用户点规格表某行
+ * 的询盘按钮时，链接是 `#inquiry?thread=M6&length=20`，岛在 hydrate 时读 query。
+ */
+import InquiryForm from '@components/islands/InquiryForm';
+import { INQUIRY } from '@config/site';
+import { MATERIALS, STANDARDS, type Family } from '@data/products';
+
+interface Props {
+	family: Family;
+	canonicalPath: string;
+}
+
+const { family, canonicalPath } = Astro.props;
+
+const list = (v: string) => v.split('|').filter(Boolean);
+const materials = list(family.materials).map((id) => MATERIALS.find((m) => m.id === id)?.name).filter(Boolean);
+const standards = list(family.standards).map((id) => STANDARDS.find((s) => s.id === id)?.label).filter(Boolean);
+
+const context = {
+	familyId: family.family_id,
+	sku: family.sku,
+	productName: family.name,
+	standard: standards.join(' / '),
+	material: materials.join(' / '),
+	sizeRange: '',
+	pageUrl: canonicalPath,
+};
+---
+
+<section id="inquiry" class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+	<div class="rounded-lg border border-blue-light p-24 lg:p-48">
+		<h2 class="text-h4 mb-12 font-normal text-blue-dark3 lg:mb-16">Request a quote</h2>
+		<p class="mb-32 max-w-[720px] text-p text-gray">
+			Tell us the size, material grade and quantity you need. Our engineering team will reply
+			with a quotation and material certificates within one business day. Non-standard sizes are
+			made to order.
+		</p>
+
+		<!--
+			询盘岛用 client:load 而非 client:visible —— 这是本仓库第一个 island，
+			选型理由是**行为正确性**，不是性能：
+
+			client:visible 只在元素滚入视口时 hydrate。规格表在页面上方，用户点
+			表格里的询盘按钮时浏览器会跳到 #inquiry，岛可能尚未 hydrate →
+			表单以原生方式提交 → 页面 GET 刷新 → 询盘内容丢失。这是真实缺陷，
+			不是理论风险。
+
+			代价可接受：询盘表单的 JS 约 6KB，静态骨架仍先渲染（表单 HTML 在
+			HTML 里就存在，JS 只负责接管交互与提交）。
+		-->
+		<InquiryForm
+			client:load
+			endpoint={INQUIRY.endpoint}
+			fallbackEmail={INQUIRY.fallbackEmail}
+			source={INQUIRY.source}
+			trapField={INQUIRY.trapField}
+			context={context}
+		/>
+	</div>
+</section>

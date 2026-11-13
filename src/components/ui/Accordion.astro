@@ -1,0 +1,60 @@
+---
+/**
+ * Accordion — native <details> disclosure.
+ *
+ * MEASURED on the reference site's product detail page:
+ *   collapsed item — 88px tall
+ *   border         — 1px solid #cce4f3 (blue-light)
+ *   radius         — rounded-lg (8px)
+ *   padding        — 16px, 24px at ≥1024px
+ *   summary        — a heading at the `text-card` scale (21px / 700)
+ *   content area   — top border in blue-light, 16px padding,
+ *                    two columns from the `md` breakpoint (840px) with a
+ *                    24px gap, 32px at ≥1024px
+ *
+ * The reference uses the native element rather than a JS widget, so this
+ * does too — it keeps the behaviour keyboard-accessible for free.
+ */
+interface Props {
+	/** Summary heading text. */
+	title: string;
+	/** Open by default. */
+	open?: boolean;
+	class?: string;
+}
+
+const { title, open = false, class: className } = Astro.props;
+---
+
+<details
+	class:list={['rounded-lg border border-blue-light p-16 lg:p-24', className]}
+	open={open}
+>
+	<summary class="relative flex w-full cursor-pointer items-center justify-between gap-16">
+		<h3 class="text-card text-blue-dark3">{title}</h3>
+		<svg
+			class="h-24 w-24 shrink-0 text-blue-dark3 transition-transform duration-300"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<path d="m6 9 6 6 6-6" />
+		</svg>
+	</summary>
+	<div
+		class="accordion-details mt-16 border-t border-blue-light pt-16 md:flex md:gap-24 lg:mt-24 lg:gap-32 lg:pt-24"
+	>
+		<slot />
+	</div>
+</details>
+
+<style>
+	/* Open the chevron when the item is expanded. */
+	details[open] summary svg {
+		transform: rotate(180deg);
+	}
+</style>

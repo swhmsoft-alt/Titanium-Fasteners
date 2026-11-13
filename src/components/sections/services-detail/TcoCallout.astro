@@ -1,0 +1,55 @@
+---
+/**
+ * TcoCallout — the "Discover the Secret of 15-85" callout article that closes
+ * every benefit page.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10,
+ * /global-en/services/benefits/cost-saving-rationalization/):
+ *   article   y=2237 h=969   cls "py-56 lg:py-72 bg-gray-vlight"
+ *   figure    x=20  w=942 h=706 (4/3)
+ *   panel     x=873 w=484 — eyebrow 20px, h2 44px, lead 24px, button 140×49
+ *
+ * The two layout utilities (`media-col` / `panel-pos`) already exist in
+ * src/styles/global.css — they were derived from this exact reference block.
+ */
+import type { ServiceCta } from '@data/services-detail/benefits-cost-saving-rationalization';
+
+interface Props {
+	cta: ServiceCta;
+}
+
+const { cta } = Astro.props;
+---
+
+<article class="py-56 lg:py-72 bg-gray-vlight">
+	<div class="container-fluid-wide relative flex flex-wrap justify-between px-40 md:flex-nowrap ul:px-20">
+		<div class="media-col">
+			<figure class="w-full">
+				<img
+					src={cta.image.src}
+					alt={cta.image.alt}
+					width={cta.image.width}
+					height={cta.image.height}
+					loading="eager"
+					class="aspect-4/3 w-full h-full object-cover rounded-t-lg md:rounded-lg"
+					style="aspect-ratio: 4 / 3;"
+				/>
+			</figure>
+		</div>
+		<div class="panel-pos">
+			<p class="mb-12 text-p-l text-gray-medium lg:mb-16">{cta.eyebrow}</p>
+			<h2 class="text-h3 mb-24 lg:mb-32 text-blue-dark3 hyphens-auto">{cta.heading}</h2>
+			<p class="text-lead mb-24 text-gray lg:mb-32">{cta.lead}</p>
+			{
+				cta.cta && (
+					<a
+						class="text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-pill inline-block text-center px-24 pt-[11px] pb-[12px] lg:pt-[13px] lg:pb-[14px] bg-transparent text-blue-dark3 border-2 border-blue-dark3 hover:bg-transparent hover:text-blue hover:border-blue"
+						href={cta.cta.href}
+					>
+						{cta.cta.label}
+					</a>
+				)
+			}
+		</div>
+	</div>
+</article>

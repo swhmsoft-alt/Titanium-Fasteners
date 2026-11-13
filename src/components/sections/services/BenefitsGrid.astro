@@ -1,0 +1,56 @@
+---
+/**
+ * BenefitsGrid — the "Explore Your Benefits" article of `/global-en/services/`.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   article     y=2383 h=742   h2 44px/48.4 #00314e (mb-24)
+ *   grid        y=2455  2 cols × 626.5px, gap 32, 3 rows
+ *   row         202px tall (icon 202×202 dominates the text column)
+ *   text column x=296 w=401 (pl-24)  label 20px, h3 21px/25.2, desc 18px/28.8
+ *
+ * The reference's markup is copied verbatim: `section.group > a.flex >
+ * figure > img` plus a `div.pl-16.lg:pl-24` text column.
+ */
+import type { Benefit } from '@data/services';
+
+interface Props {
+	heading: string;
+	benefits: Benefit[];
+}
+
+const { heading, benefits } = Astro.props;
+---
+
+<article class="container-fluid my-48">
+	<h2 class="text-h3 mb-16 text-blue-dark2 lg:mb-24">{heading}</h2>
+
+	<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+		{
+			benefits.map((benefit) => (
+				<section class="group cursor-pointer">
+					<a class="flex" href={benefit.href}>
+						<figure
+							class="w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0"
+							data-ratio="1"
+						>
+							<img
+								src={benefit.icon}
+								alt={benefit.iconAlt}
+								width={202}
+								height={202}
+								loading="eager"
+								class="aspect-1/1 rounded-lg object-cover max-w-max w-full"
+								style="aspect-ratio:1 / 1"
+							/>
+						</figure>
+						<div class="pl-16 lg:pl-24">
+							<p class="text-label mb-8 text-blue-dark3">{benefit.label}</p>
+							<h3 class="text-h5-l mb-16 text-blue-dark group-hover:underline">{benefit.heading}</h3>
+							<p class="text-p-sm lg:text-p-s text-gray">{benefit.description}</p>
+						</div>
+					</a>
+				</section>
+			))
+		}
+	</div>
+</article>

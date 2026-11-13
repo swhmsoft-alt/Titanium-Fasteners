@@ -1,0 +1,169 @@
+---
+/**
+ * FamilyHero — 族页头部区块（Phase B 自有版）。
+ *
+ * 与参考站的 product-272 ProductHero 同构（面包屑 / 图 / 标题 / 属性表 / 双 CTA），
+ * 但内容全部来自 @data/products，且属性表是**数据驱动**的：
+ * 属性项由族的 type + 规格矩阵派生，不再硬编码参考站的六行。
+ *
+ * 派生规则（见 docs/PRODUCT-DATA.md）：
+ *   标准    ← family.standards → STANDARDS[].label（多标准并列 = DIN/ISO 交叉）
+ *   材质    ← family.materials → MATERIALS[].name
+ *   表面    ← family.finishes → FINISHES[].name
+ *   螺纹    ← 矩阵行的 thread 去重（螺母/垫圈无此维度则不显示）
+ *   长度    ← 矩阵行的 length 区间（螺母/垫圈无此维度则不显示）
+ */
+import Figure from '@components/ui/Figure.astro';
+import Button from '@components/ui/Button.astro';
+import {
+	DIMENSIONS,
+	FINISHES,
+	MATERIALS,
+	PARAM_SCHEMA,
+	STANDARDS,
+	type DimensionRow,
+	type Family,
+} from '@data/products';
+
+interface Props {
+	family: Family;
+	/** canonical 路径，供询盘回溯来源。 */
+	canonicalPath: string;
+}
+
+const { family, canonicalPath } = Astro.props;
+
+const rows: DimensionRow[] = DIMENSIONS[family.family_id] ?? [];
+const params = PARAM_SCHEMA.filter((p) => p.type === family.type).sort((a, b) => Number(a.order) - Number(b.order));
+
+const list = (v: string) => v.split('|').filter(Boolean);
+const byId = <T extends { id: string }>(arr: T[], ids: string[]) => ids.map((id) => arr.find((x) => x.id === id)).filter(Boolean) as T[];
+
+/* 螺纹范围：M4 … M10 */
+const threads = [...new Set(rows.map((r) => r.thread).filter(Boolean))];
+const threadRange = threads.length ? (threads.length === 1 ? threads[0] : `${threads[0]} – ${threads[threads.length - 1]}`) : '';
+
+/* 长度范围（mm）—— 螺母/垫圈无 length 维度 */
+const lengths = rows.map((r) => Number(r.length)).filter((n) => Number.isFinite(n) && n > 0);
+const lengthRange = lengths.length ? `${Math.min(...lengths)} – ${Math.max(...lengths)}` : '';
+
+const standards = byId(STANDARDS, list(family.standards));
+const materials = byId(MATERIALS, list(family.materials));
+const finishes = byId(FINISHES, list(family.finishes));
+
+const specs: { label: string; value: string }[] = [];
+if (family.sku) {
+	specs.push({ label: 'Article no.', value: family.sku });
+}
+if (standards.length) {
+	specs.push({
+		label: 'Standard',
+		value: standards.map((s) => s.label).join(' / '),
+	});
+}
+if (materials.length) {
+	specs.push({ label: 'Material', value: materials.map((m) => m.name).join(' / ') });
+}
+if (finishes.length) {
+	specs.push({ label: 'Surface', value: finishes.map((f) => f.name).join(' / ') });
+}
+if (threadRange) specs.push({ label: 'Thread', value: threadRange });
+if (lengthRange) specs.push({ label: 'Length', value: `${lengthRange} mm` });
+specs.push({ label: 'Total sizes', value: String(rows.length) });
+
+/* 可订购性区块（MOQ / 包装 / 交期 / 起步价）暂不渲染 ——
+ * 客户尚未交付真实商务数据：展示占位假价比不展示更糟。
+ * 数据到位后：填 data/products/management.csv 的 moq / packaging /
+ * lead_time / price_from / price_to / price_currency / price_unit，
+ * 在这里按「有值才渲染」恢复区块即可。 */
+
+/* 面包屑 */
+const trail = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Products', href: '/global-en/eshop/' },
+	{ label: family.name, href: canonicalPath },
+];
+
+/* 规格矩阵的列（数据驱动） */
+const columns = params.map((p) => ({ key: p.param, label: p.label, unit: p.unit }));
+---
+
+<div class="container-fluid pt-48 pb-29 md:pt-91">
+	<nav class="opacity-100 mb-24 mt-12 text-gray-medium lg:mb-32" aria-label="Breadcrumb">
+		<ol class="flex text-p-l">
+			{
+				trail.map((crumb, i) => (
+					<li class="flex items-center">
+						{i > 0 && (
+							<svg
+								class="h-16 w-16 inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+								aria-hidden="true"
+							>
+								<use href="/images/sprite.svg#chevron-right"></use>
+							</svg>
+						)}
+						{i === 0 ? (
+							<a href={crumb.href}>
+								<svg
+									class="h-16 w-16 fill-gray-medium stroke-gray-medium stroke-[2]"
+									aria-hidden="true"
+								>
+									<use href="/images/sprite.svg#home"></use>
+								</svg>
+								<span class="sr-only">{crumb.label}</span>
+							</a>
+						) : i === trail.length - 1 ? (
+							<span aria-current="page">{crumb.label}</span>
+						) : (
+							<a href={crumb.href} class="whitespace-nowrap">
+								{crumb.label}
+							</a>
+						)}
+					</li>
+				))
+			}
+		</ol>
+	</nav>
+
+	<div class="mt-96 flex flex-col gap-32 lg:flex-row">
+		<div class="lg:w-522 lg:flex-none">
+			<Figure
+				src={family.image || '/placeholder/product-ratio-0-75.svg'}
+				alt={family.name}
+				ratio={1.334}
+				priority
+				class="bg-gray-vlight"
+			/>
+		</div>
+
+		<div class="lg:min-w-0 lg:flex-1">
+			<h1 class="text-h4 mb-12 font-normal text-blue-dark3 lg:mb-16">{family.name}</h1>
+
+			<p class="mb-8 text-p-s font-bold text-gray lg:mb-16">
+				{standards.map((s) => s.label).join(' / ')}
+			</p>
+
+			<p class="mb-24 text-p text-gray">{family.description}</p>
+
+			<ul class="flex flex-col gap-15 text-p text-gray">
+				{
+					specs.map((spec) => (
+						<li class="flex items-baseline">
+							<span class="w-244 shrink-0 text-gray-medium">{spec.label}</span>
+							<span>{spec.value}</span>
+						</li>
+					))
+				}
+			</ul>
+
+			<div class="mt-40 flex flex-wrap gap-16">
+				<Button variant="primary" href="#inquiry">Request a quote</Button>
+				{family.pdf && (
+					<Button variant="secondary" href={family.pdf} ariaLabel={`Download specification sheet for ${family.name}`}>
+						Download specification
+					</Button>
+				)}
+			</div>
+		</div>
+	</div>
+</div>

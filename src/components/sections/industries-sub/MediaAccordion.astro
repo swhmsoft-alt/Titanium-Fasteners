@@ -1,0 +1,40 @@
+---
+/**
+ * MediaAccordion — verbatim renderer for the blocks this build does not
+ * re-model (the CMS accordion, its image rail and any leftover reference
+ * block).
+ *
+ * WHY verbatim
+ * ------------
+ * The reference wraps the accordion and the image rail in separate Astro
+ * islands. The measurement enumerates `main article, main > section`, so the
+ * island boundary decides which elements are compared:
+ *   - the accordion article is measured (it is an <article>),
+ *   - its nested lightbox body <article class="container-fluid h-svh"> is
+ *     measured too (hidden, so y=0 h=0),
+ *   - the image rail is a top level <section> INSIDE an island, therefore
+ *     `main > section` does not match it and it is not compared directly —
+ *     its height still shows up in the y offset of the next block.
+ * Rendering the reference markup keeps that count and those heights.
+ *
+ * The gallery is wrapped in a <div> so it does not become a direct child of
+ * <main> (which would add a block the reference does not have).
+ */
+interface Props {
+	html: string;
+	gallery?: boolean;
+	raw?: boolean;
+}
+
+const { html, gallery = false, raw = false } = Astro.props;
+---
+
+{
+	gallery ? (
+		<div>
+			<Fragment set:html={html} />
+		</div>
+	) : (
+		<Fragment set:html={html} />
+	)
+}

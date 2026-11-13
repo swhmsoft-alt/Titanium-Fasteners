@@ -1,0 +1,70 @@
+---
+/**
+ * Homepage.
+ *
+ * Recreation of the reference homepage's seven blocks, in the reference's
+ * measured order. Every dimension here traces to a measurement recorded in
+ * docs/reference/03-homepage-layout.md.
+ *
+ * Block order (reference, 1440px viewport):
+ *   1 Hero            y=195   h=792   H2 64px   image 2.006
+ *   2 Services        y=987   h=946   H2 44px   image 1.25
+ *   3 Product sol.    y=1933  h=873   H2 32px   image 0.75
+ *   4 News            y=2854  h=524   H2 44px   image 1.0
+ *   5 Pillars         y=3426  h=344   H2 24px   image 1.0
+ *   6 Benefits        y=3770  h=1169  H2 44px   #cce4f3  full-bleed
+ *   7 Sustainability   y=4938  h=1013  H2 44px   white    full-bleed
+ *
+ * The reference also renders a visually hidden H1 as the first child of
+ * <main> for SEO; that is reproduced here.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import { HERO } from '@data/home';
+
+import HeroSection from '@components/sections/home/HeroSection.astro';
+import ServicesSection from '@components/sections/home/ServicesSection.astro';
+import ProductSolutionsSection from '@components/sections/home/ProductSolutionsSection.astro';
+import NewsSection from '@components/sections/home/NewsSection.astro';
+import PillarsSection from '@components/sections/home/PillarsSection.astro';
+import BenefitsSection from '@components/sections/home/BenefitsSection.astro';
+import SustainabilitySection from '@components/sections/home/SustainabilitySection.astro';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<!-- The main landmark owns the page content; the header and footer are siblings. -->
+	<!--
+		pt-48 md:pt-91 clears the fixed header and nothing more (91px header
+		on desktop, 48px on mobile). The reference reserves a 195px lead-in
+		on top of its own header; that extra band was dropped here on
+		purpose so the nav is not followed by a large empty strip — see
+		qa/DEVIATIONS.md.
+	-->
+	<main id="main" class="pt-48 md:pt-91">
+		<!-- Visually hidden H1 — the reference's first child of <main> (16px). -->
+		<h1 class="sr-only">
+			{HERO.heading}
+		</h1>
+
+		<HeroSection />
+		<ServicesSection />
+		<ProductSolutionsSection />
+		<NewsSection />
+		<PillarsSection />
+		<BenefitsSection />
+		<SustainabilitySection />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

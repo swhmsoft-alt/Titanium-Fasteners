@@ -1,0 +1,54 @@
+---
+/**
+ * WhitePapers — the "Learn More About Fastener Coatings" 2×2 icon grid.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   article  y=3144 h=508   container-fluid my-48
+ *   h2       44px #00314e, mb-16 lg:mb-24
+ *   grid     2 cols, gap-24 → lg:gap-32
+ *   icon     202×202 (w-108 → ul:w-202), square
+ *   label    20px #004975   title 21px/140%   desc 16px (lg 18px)
+ */
+import type { WhitePaper } from '@data/fastener-coatings';
+
+interface Props {
+	heading: string;
+	label: string;
+	items: WhitePaper[];
+}
+
+const { heading, label, items } = Astro.props;
+---
+
+<article class="container-fluid my-48">
+	<h2 class="text-h3 mb-16 text-blue-dark2 lg:mb-24">{heading}</h2>
+	<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+		{
+			items.map((item) => (
+				<section class="group cursor-pointer">
+					<a class="flex" href={item.href}>
+						<figure
+							class="w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0"
+							data-ratio="1"
+						>
+							<img
+								src={item.image}
+								alt={item.alt}
+								width={202}
+								height={202}
+								loading="eager"
+								class="aspect-1/1 rounded-lg object-cover max-w-max w-full"
+								style="aspect-ratio:1 / 1"
+							/>
+						</figure>
+						<div class="pl-16 lg:pl-24">
+							<p class="text-label mb-8 text-blue-dark3">{label}</p>
+							<h3 class="text-h5 mb-16 text-blue-dark group-hover:underline">{item.title}</h3>
+							<p class="text-p-sm lg:text-p-s text-gray">{item.description}</p>
+						</div>
+					</a>
+				</section>
+			))
+		}
+	</div>
+</article>

@@ -1,0 +1,26 @@
+---
+/**
+ * RichText — the paragraph blocks of the industry sub pages.
+ *
+ * Reference markup (qa/ref/industries-medical.html):
+ *   <div class="container-fluid">
+ *     <p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">…</p>
+ *   </div>
+ *
+ * One <div> per paragraph, exactly like the reference: the RichText island
+ * renders every paragraph into its own container.
+ */
+interface Props {
+	paragraphs: string[];
+}
+
+const { paragraphs } = Astro.props;
+---
+
+{
+	paragraphs.map((paragraph) => (
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{paragraph}</p>
+		</div>
+	))
+}

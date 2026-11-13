@@ -1,0 +1,96 @@
+---
+/**
+ * Figure — image with a FIXED aspect ratio.
+ *
+ * MEASURED ratios on the reference site:
+ *   2.006 — homepage hero
+ *   1.25  — service cards, product detail hero, product renders
+ *   0.75  — portrait product / document covers
+ *   1     — category and news thumbnails
+ *
+ * The ratio is declared so the box is reserved before the image loads.
+ * Without this the page shifts on image load (CLS) and the visual
+ * comparison against the reference becomes meaningless.
+ *
+ * Two layout modes
+ * ----------------
+ * `ratio` (default)
+ *   The <figure> is a normal block whose height is derived from
+ *   `aspect-ratio`. The <img> fills it with `object-cover`.
+ *
+ * `fill`
+ *   The image must fill an arbitrary box (a background inside a fixed
+ *   panel). The box comes from the parent, and the image is cropped with
+ *   `object-cover` — never distorted.
+ *
+ * IMPORTANT — flex containers
+ * ---------------------------
+ * Inside a flex column, a `flex-shrink: 1` item is compressed by the
+ * flex algorithm and `aspect-ratio` is ignored: the figure collapses to
+ * 0px height (measured). The figure therefore sets `flex: none` so the
+ * ratio always wins. The <img> is absolutely positioned inside, which
+ * keeps it out of the flow and prevents it from adding height of its own.
+ */
+export type Ratio = 2.006 | 1.334 | 1.25 | 1.079 | 1.08 | 0.75 | 1;
+
+interface Props {
+	src: string;
+	alt: string;
+	ratio: Ratio;
+	/** Optional intrinsic dimensions of the SOURCE asset. */
+	width?: number;
+	height?: number;
+	class?: string;
+	/** Eager-load the image (use only for the LCP hero). */
+	priority?: boolean;
+	/** Object-position for cropping control. */
+	position?: string;
+	/**
+	 * Fill the parent box instead of sizing the box to `ratio`.
+	 * The image is cropped with object-cover, never distorted.
+	 */
+	fill?: boolean;
+	/**
+	 * Apply the default `w-full` (figure spans its container).
+	 * Set to false when the caller sets an explicit width — otherwise the
+	 * default utility wins the cascade and the caller's width is ignored.
+	 */
+	full?: boolean;
+}
+
+const {
+	src,
+	alt,
+	ratio,
+	width,
+	height,
+	class: className,
+	priority = false,
+	position = 'center',
+	fill = false,
+	full = true,
+} = Astro.props;
+---
+
+<figure
+	class:list={[
+		'relative overflow-hidden flex-none',
+		fill ? 'h-full w-full' : full ? 'w-full' : '',
+		className,
+	]}
+	style={fill ? undefined : `aspect-ratio:${ratio}`}
+	data-ratio={ratio}
+	data-fill={fill ? 'true' : undefined}
+>
+	<img
+		src={src}
+		alt={alt}
+		width={width}
+		height={height}
+		loading={priority ? 'eager' : 'lazy'}
+		decoding="async"
+		fetchpriority={priority ? 'high' : undefined}
+		class="absolute inset-0 h-full w-full object-cover"
+		style={`object-position:${position}`}
+	/>
+</figure>

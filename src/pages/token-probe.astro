@@ -1,0 +1,42 @@
+---
+/**
+ * Phase 0 probe page — verifies that the design tokens actually resolve to
+ * the values measured on the reference site.
+ *
+ * This page is a diagnostic, not part of the public site. It is excluded
+ * from the sitemap and disallowed in robots.txt. Delete it once Phase 2
+ * ships the real design-system demo page at /design-system/.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Token probe" description="Diagnostic page for design-token verification.">
+	<div class="container-reference py-64">
+		<h1 class="text-h1 text-blue-dark3">Token probe</h1>
+		<p class="text-lead mt-24 max-w-[782px]">
+			Diagnostic page confirming the measured token values resolve correctly.
+		</p>
+
+		<h2 class="text-h3 text-blue-dark3 mt-64">Spacing scale</h2>
+		<p class="text-p mt-16 max-w-[782px]">
+			With <code>--spacing: 1px</code>, <code>p-32</code> must resolve to 32px — not the
+			128px that Tailwind's default 4px base would produce.
+		</p>
+		<div class="mt-16 grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+			<div class="bg-blue-light p-32">p-32</div>
+			<div class="bg-blue-light p-32">p-32</div>
+		</div>
+
+		<h2 class="text-h3 text-blue-dark3 mt-64">Type scale</h2>
+		<div class="mt-16 grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+			<div class="border border-gray-light p-16">
+				<p class="text-label text-gray-medium">text-label · 18→20px / 500</p>
+				<p class="text-card text-blue-dark3 mt-8">text-card · 21px / 700</p>
+			</div>
+			<div class="border border-gray-light p-16">
+				<p class="text-label text-gray-medium">text-label · 18→20px / 500</p>
+				<p class="text-card text-blue-dark3 mt-8">text-card · 21px / 700</p>
+			</div>
+		</div>
+	</div>
+</BaseLayout>

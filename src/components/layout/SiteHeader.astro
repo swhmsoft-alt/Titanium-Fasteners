@@ -1,0 +1,146 @@
+---
+/**
+ * SiteHeader — the global header.
+ *
+ * MEASURED on the reference site (1440×1000):
+ *   position      — fixed
+ *   z-index       — 200
+ *   background    — #ffffff (opaque)
+ *   total height  — 91px
+ *   inner         — .container-fluid, padding 70px, nav row py-[18px]
+ *   logo box      — min-h-[48px] md:min-h-[55px]
+ *   nav items     — 16px / 500 / #000, border-b-2 transparent,
+ *                   hover border #aa465c
+ *   utilities     — Contact outline pill, language round button 36×36,
+ *                   search icon button
+ *
+ * The header stays fixed and fully visible for the whole scroll — the
+ * navigation never collapses or slides away. (The reference site collapses
+ * its header row on scroll; that behaviour was removed on purpose, see
+ * qa/DEVIATIONS.md.)
+ */
+import Container from '@components/ui/Container.astro';
+import Logo from './Logo.astro';
+import PrimaryNav from './PrimaryNav.astro';
+import HeaderUtility from './HeaderUtility.astro';
+
+interface Props {
+	/** Current path, used to mark the active nav item. */
+	currentPathname?: string;
+}
+
+const { currentPathname = '' } = Astro.props;
+---
+
+<header class="fixed z-[200] w-full bg-white">
+	<div id="site-header-inner">
+		<Container class="flex items-center justify-between gap-32 py-0 md:py-18">
+			<!-- Logo -->
+			<a
+				href="/"
+				class="flex min-h-[48px] items-center md:min-h-[55px]"
+				aria-label="Titanium Fasteners homepage"
+			>
+				<Logo variant="claim" class="hidden md:inline-flex" />
+				<Logo variant="compact" class="inline-flex md:hidden" />
+			</a>
+
+			<!-- Primary navigation (desktop) -->
+			<PrimaryNav currentPathname={currentPathname} class="hidden lg:block" />
+
+			<!-- Utility cluster -->
+			<HeaderUtility />
+		</Container>
+	</div>
+</header>
+
+<!--
+	Mega menu interaction.
+
+	MEASURED: the reference renders the top-level items as <button>s that
+	open a fixed panel at top 91px. Whether the trigger is hover or click
+	was not conclusively determined by inspection, so BOTH are supported:
+	hover opens it, and clicking a trigger locks it open (and clicking the
+	active trigger closes it). Pointer users get the panel either way; the
+	click lock is what makes the panel reachable by keyboard and by touch.
+
+	Keyboard: Escape closes the panel and returns focus to the trigger.
+-->
+<script>
+	const menu = document.querySelector<HTMLElement>('[data-mega-menu]');
+	const triggers = Array.from(
+		document.querySelectorAll<HTMLAnchorElement>('[data-nav-trigger]'),
+	);
+	/* One panel per top-level nav item; the open one is revealed by name. */
+	const panels = Array.from(
+		document.querySelectorAll<HTMLElement>('[data-mega-panel]'),
+	);
+
+	if (menu && triggers.length > 0) {
+		let activeIndex: number | null = null;
+		let locked = false;
+		let closeTimer: number | undefined;
+
+		const open = (index: number) => {
+			activeIndex = index;
+			locked = true;
+			menu.hidden = false;
+			const name = triggers[index]?.dataset.navTrigger;
+			panels.forEach((panel) => {
+				panel.hidden = panel.dataset.megaPanel !== name;
+			});
+			triggers.forEach((trigger, i) => {
+				trigger.setAttribute('aria-expanded', String(i === index));
+			});
+		};
+
+		const close = () => {
+			activeIndex = null;
+			locked = false;
+			menu.hidden = true;
+			panels.forEach((panel) => {
+				panel.hidden = true;
+			});
+			triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
+		};
+
+		triggers.forEach((trigger, index) => {
+			// Hover opens the panel (desktop pointer).
+			const enter = () => {
+				window.clearTimeout(closeTimer);
+				open(index);
+			};
+			const leave = () => {
+				if (locked) return;
+				closeTimer = window.setTimeout(close, 120);
+			};
+
+			trigger.addEventListener('mouseenter', enter);
+			trigger.addEventListener('mouseleave', leave);
+			trigger.addEventListener('focus', enter);
+
+			// Click toggles the lock.
+			trigger.addEventListener('click', (event) => {
+				event.preventDefault();
+				if (activeIndex === index && locked) {
+					close();
+				} else {
+					open(index);
+				}
+			});
+		});
+
+		menu.addEventListener('mouseenter', () => window.clearTimeout(closeTimer));
+		menu.addEventListener('mouseleave', () => {
+			if (!locked) close();
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && activeIndex !== null) {
+				const trigger = triggers[activeIndex];
+				close();
+				trigger?.focus();
+			}
+		});
+	}
+</script>

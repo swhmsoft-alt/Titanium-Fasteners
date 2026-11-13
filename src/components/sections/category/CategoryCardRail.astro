@@ -1,0 +1,56 @@
+---
+/**
+ * CategoryCardRail — the horizontal rail of six sub-category cards.
+ *
+ * MEASURED on the reference (`/global-en/eshop/products/.../c/01.100/`,
+ * 1440×1000, 2026-11):
+ *   rail        y=340  h=295   (cards x=70,342,614,886,1158,1430)
+ *   card        w=240  (ul:w-[240px] — the 1440px breakpoint)
+ *   figure      240×160  (aspect-3/2)
+ *   h2          18px/28.8px bold #333   ("Screws" …)
+ *   p           18px/28.8px #666        ("353 Products" …)
+ *   gap         32px between cards
+ *
+ * The last two cards sit OUTSIDE the 1440px viewport (x=1158 / x=1430) —
+ * the reference rail is a horizontal scroll container, so it is reproduced as
+ * one (`snap-x`, `overflow-x-auto`).
+ */
+import { CATEGORY_CARDS } from '@data/products';
+import type { CategoryCardView } from '@data/products';
+
+interface Props {
+	/** 子分类卡；缺省 = 生成产物里的全部分类。 */
+	cards?: CategoryCardView[];
+}
+
+const { cards = CATEGORY_CARDS } = Astro.props;
+---
+
+<div
+	class="scrollbar flex snap-x snap-mandatory gap-32 overflow-x-auto pb-16 lg:pb-20"
+	tabindex="0"
+	role="group"
+	aria-label="Sub-categories"
+>
+	{
+		cards.map((card) => (
+			<article class="w-[167px] shrink-0 cursor-pointer sm:w-[162px] md:w-[237px] lg:w-[160px] wd:w-[208px] ul:w-[240px]">
+				<a href={card.href}>
+					<figure class="aspect-3/2">
+						<img
+							src={card.image}
+							alt={card.alt}
+							class="aspect-3/2 bg-gray-vlight"
+							loading="eager"
+							fetchpriority="high"
+						/>
+					</figure>
+					<h2 class="text-p-sm font-bold mt-8 mb-4 text-gray lg:mt-12 lg:mb-8 lg:text-p-s">
+						{card.title}
+					</h2>
+					<p class="text-p-sm text-gray-medium lg:text-p-s">{card.products} Products</p>
+				</a>
+			</article>
+		))
+	}
+</div>

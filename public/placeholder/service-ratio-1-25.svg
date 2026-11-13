@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800" role="img" aria-label="Placeholder">
+  <!-- PLACEHOLDER — service card image, ratio 1.25 (measured: 834×667). -->
+  <rect width="1000" height="800" fill="#004975"/>
+  <g fill="none" stroke="#007ac3" stroke-width="2" opacity="0.6">
+    <path d="M200 640V380l300-140 300 140v260"/>
+    <path d="M200 380h600M350 640V520M500 640V520M650 640V520"/>
+  </g>
+  <text x="500" y="400" font-family="Archivo, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Service 1.25</text>
+  <text x="500" y="432" font-family="Archivo, Helvetica, sans-serif" font-size="15" fill="#cce4f3" text-anchor="middle">1000 × 800</text>
+</svg>

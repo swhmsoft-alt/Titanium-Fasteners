@@ -1,0 +1,129 @@
+---
+/**
+ * FamilySpecTable — 族页规格矩阵区块（Phase B 自有版）。
+ *
+ * 为什么是静态 HTML <table> 而不是参考站的 flex <ul>：
+ *   规格表是 B2B 长尾关键词的主要载体（"M6 x 20 titanium hex socket head cap
+ *   screw DIN 912" 这类查询），<table> 的语义让搜索引擎正确理解行列关系，
+ *   每行都是一条可被检索的长尾短语。参考站用 flex 是它的设计选择，
+ *   Phase B 自有内容页不继承这个约束。
+ *
+ * 列完全由 param-schema 驱动（该族的 type 决定），行完全由 dimension matrix 驱动。
+ * 没有任何硬编码的列宽或列名。
+ *
+ * 询盘锚点：每行末列是一个链接，href 带该行的规格上下文（standard/thread/length），
+ * 点击后询盘表单自动带入该行的规格。URL 里的 query 由询盘岛读取。
+ */
+import {
+	DIMENSIONS,
+	PARAM_SCHEMA,
+	STANDARDS,
+	type DimensionRow,
+	type Family,
+} from '@data/products';
+
+interface Props {
+	family: Family;
+}
+
+const { family } = Astro.props;
+
+const rows: DimensionRow[] = DIMENSIONS[family.family_id] ?? [];
+const params = PARAM_SCHEMA.filter((p) => p.type === family.type).sort((a, b) => Number(a.order) - Number(b.order));
+
+/** 表格列 = 参数定义（不含 key-only 的 thread 之外的隐性列）。 */
+const columns = params.map((p) => ({
+	key: p.param,
+	label: p.label,
+	unit: p.unit,
+}));
+
+const standardLabel = (id: string) => STANDARDS.find((s) => s.id === id)?.label ?? id;
+
+/** 每行的询盘上下文 query —— 询盘岛读取后带入表单。 */
+const inquiryHref = (row: DimensionRow) => {
+	const q = new URLSearchParams();
+	if (family.sku) q.set('sku', family.sku);
+	q.set('standard', standardLabel(row.standard));
+	if (row.thread) q.set('thread', row.thread);
+	if (row.length) q.set('length', row.length);
+	return `#inquiry?${q.toString()}`;
+};
+---
+
+<section class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+	<details class="rounded-lg border border-blue-light p-16 lg:p-24 [&::-webkit-details-marker]:hidden" open>
+		<summary class="relative flex w-full cursor-pointer items-center list-none">
+			<h2 class="text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24">Dimensions</h2>
+			<svg
+				class="absolute right-0 transition-all duration-300 rotate-0 w-16 h-16 md:w-24 md:h-24"
+				aria-hidden="true"
+			>
+				<use href="/images/sprite.svg#minus"></use>
+			</svg>
+			<svg
+				class="absolute right-0 transition-all duration-150 -rotate-90 w-16 h-16 md:w-24 md:h-24"
+				aria-hidden="true"
+			>
+				<use href="/images/sprite.svg#minus"></use>
+			</svg>
+		</summary>
+
+		<div class="mt-24 overflow-x-auto">
+			<table class="w-full min-w-[720px] border-collapse text-left">
+				<caption class="sr-only">
+					Dimensions of {family.name} — {standardLabel(rows[0]?.standard ?? '')}
+				</caption>
+				<thead>
+					<tr class="border-b border-gray-vlight">
+						<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray lg:text-p-s">
+							Standard
+						</th>
+						{
+							columns.map((col) => (
+								<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray lg:text-p-s">
+									{col.label}
+									{col.unit !== '-' && (
+										<span class="ml-4 text-gray-medium">({col.unit})</span>
+									)}
+								</th>
+							))
+						}
+						<th scope="col" class="py-12 text-p-sm font-medium text-gray lg:text-p-s">
+							<span class="sr-only">Request a quote</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						rows.map((row) => (
+							<tr class="border-b border-gray-vlight">
+								<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">
+									{standardLabel(row.standard)}
+								</td>
+								{columns.map((col) => (
+									<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">{row[col.key] ?? ''}</td>
+								))}
+								<td class="py-12 text-right">
+									<a
+										href={inquiryHref(row)}
+										class="inline-flex h-42 items-center justify-center rounded-pill bg-blue text-white"
+										aria-label={`Request a quote for ${row.thread ?? ''} ${row.length ?? ''} ${standardLabel(row.standard)}`}
+									>
+										<svg class="h-24 w-24 fill-white" aria-hidden="true">
+											<use href="/images/sprite.svg#mail"></use>
+										</svg>
+									</a>
+								</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<p class="mt-24 text-center text-p text-blue-dark">
+			{rows.length} sizes · sizes not listed are made to order
+		</p>
+	</details>
+</section>

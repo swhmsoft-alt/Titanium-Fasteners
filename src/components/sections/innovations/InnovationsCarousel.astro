@@ -1,0 +1,119 @@
+---
+/**
+ * InnovationsCarousel — "Our Fastening Innovations" heading + the 5-card
+ * horizontal carousel and its full-screen overlay dialog.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   h2        y=1181  44px #004975
+ *   cards     y=1277  316 wide, h=305/305/276/276/305, pitch 348 (row scrolls)
+ *   overlay   <dialog> → <article class="container-fluid h-svh"> (closed → 0×0)
+ */
+import type { InnovationItem } from '@data/innovations';
+
+interface Props {
+	heading: string;
+	items: InnovationItem[];
+}
+
+const { heading, items } = Astro.props;
+const active = items[0];
+---
+
+<section class="container-fluid mb-80 mt-32 lg:mb-56">
+	<h2 class="text-h3 mb-32 text-blue-dark3 lg:mb-48">{heading}</h2>
+
+	<div class="group relative">
+		<div class="scrollbar scrollbar-area flex overflow-x-auto mx-auto snap-x snap-mandatory gap-32 w-full">
+			{
+				items.map((item) => (
+					<div class="shrink-0 snap-start md:w-2/5 lg:w-auto lg:min-w-0 lg:max-w-[316px] w-4/5">
+						<figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+							<img
+								class="aspect-16/9 w-full"
+								src={item.image}
+								alt={item.alt}
+								width={item.imageWidth}
+								height={item.imageHeight}
+								loading="lazy"
+								style="aspect-ratio:16 / 9"
+							/>
+							<figcaption class="text-p-s mt-8 text-gray-medium lg:mt-12">
+								{item.caption}
+							</figcaption>
+						</figure>
+					</div>
+				))
+			}
+		</div>
+
+		<dialog
+			class="max-h-full w-full max-w-full backdrop:bg-blue-dark backdrop:bg-opacity-80 bg-white h-full"
+		>
+			<span class="sr-only" id="overlay-label">Overlay</span>
+			<article class="container-fluid h-svh">
+				<header class="flex items-center py-16 md:py-20 lg:py-24 justify-between">
+					<div class="text-p-sm">
+						/{items.length}
+						<p class="text-p contents text-blue">1</p>
+					</div>
+					<button class="rounded-full border-2 border-blue-dark3 p-[10px] md:p-[11px]">
+						<svg class="h-16 w-16 text-blue-dark3" aria-hidden="true">
+							<use href="/images/sprite.svg#close"></use>
+						</svg>
+						<span id="button-label">Close Overlay</span>
+					</button>
+				</header>
+				<div
+					class="flex h-[90vh] min-h-[700px] flex-col justify-center lg:min-h-[900px] wd:min-h-[1000px]"
+				>
+					<figure class="w-full pb-16 lg:pb-20">
+						<figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+							<img
+								class="aspect-16/9 w-full"
+								src={active.image}
+								alt={active.alt}
+								width={1300}
+								height={731}
+								loading="lazy"
+								style="aspect-ratio:16 / 9"
+							/>
+						</figure>
+						<figcaption
+							class="text-p-sm mt-8 line-clamp-2 h-56 overflow-hidden md:mt-12"
+						>
+							{active.caption}
+						</figcaption>
+					</figure>
+					<div class="flex items-center">
+						<ul
+							class="justify-left scrollbar-hidden flex snap-x snap-mandatory gap-16 overflow-x-auto pb-0 lg:gap-20"
+						>
+							{
+								items.map((item, i) => (
+									<li
+										class:list={[
+											'relative flex w-[90px] shrink-0 cursor-pointer snap-start items-center md:w-[120px] lg:w-[150px] lg:max-w-[150px]',
+											i > 0 && 'after:absolute after:bottom-0 after:left-0 after:right-0 after:top-0 after:bg-gray-lig',
+										]}
+									>
+										<figure class="flex flex-col justify-center items-start cursor-pointer w-full">
+											<img
+												class="aspect-16/9 w-full"
+												src={item.image}
+												alt={item.alt}
+												width={item.imageWidth}
+												height={item.imageHeight}
+												loading="lazy"
+												style="aspect-ratio:16 / 9"
+											/>
+										</figure>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</div>
+			</article>
+		</dialog>
+	</div>
+</section>

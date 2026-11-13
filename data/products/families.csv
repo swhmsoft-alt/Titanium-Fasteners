@@ -1,0 +1,6 @@
+family_id,name,category,standards,materials,finishes,description,image
+hex-socket-head-cap-screw,Hex Socket Head Cap Screws,screws,din-912,ti-gr5|ti-gr2,anod-black|plain,Hexagon socket head cap screws in titanium grades with full DIN 912 and ISO 4762 dimensional conformity.,01.webp
+hex-nut,Hex Nuts,nuts,din-934,ti-gr5|ti-gr2,plain,Hexagon nuts in titanium grades to DIN 934 and ISO 4032 style 1.,01.webp
+countersunk-head-cap-screws,Countersunk Head Cap Screws,screws,din-7991,ti-gr5,plain|anod-black|passivated,Hexagon socket countersunk head screws 90 degrees flat head per DIN 7991 for flush mounting without protruding heads.,
+hex-head-bolts-fully-threaded,Hex Head Bolts Fully Threaded,bolts,din-933,ti-gr5,plain|anod-black,Hexagon head bolts fully threaded per DIN 933 for structural and industrial clamping applications.,
+plain-washers,Plain Washers,washers,din-125,ti-gr2|ti-gr5,plain|passivated,Plain washers form A per DIN 125 and ISO 7089 for titanium fastening in chemical and marine environments.,

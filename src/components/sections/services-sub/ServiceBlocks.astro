@@ -1,0 +1,232 @@
+---
+/**
+ * ServiceBlocks — the block renderer for the four CMS-style service sub-pages.
+ *
+ * Each block in `src/data/services-sub/*.ts` carries a `kind` discriminator.
+ * A renderer per kind returns an HTML string; the template injects it with
+ * `set:html`, because Astro templates cannot hold raw HTML inside expressions.
+ *
+ * The markup mirrors the reference site's own class names so the measured
+ * geometry matches (1440x1000).
+ */
+import type { SubBlock } from '@data/services-sub/smart-factory-inventory-management';
+
+interface Props {
+blocks: SubBlock[];
+}
+
+const { blocks } = Astro.props;
+
+/** Escape a value for use inside an HTML attribute. */
+const attr = (s: string) =>
+String(s ?? '')
+.replace(/&/g, '&amp;')
+.replace(/"/g, '&quot;')
+.replace(/</g, '&lt;');
+
+/** A rich-text paragraph; its optional <strong> run is preserved. */
+const richP = (p: any) => {
+const text = String(p?.text ?? '');
+const strong = p?.strong;
+const at = p?.strongAt;
+if (!strong || at === null || at === undefined || at < 0) {
+return `<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">${text}</p>`;
+}
+return (
+`<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">` +
+text.slice(0, at) +
+`<strong>${strong}</strong>` +
+text.slice(at + strong.length) +
+`</p>`
+);
+};
+
+const imgTag = (i: any, cls: string, extra = '') =>
+i
+? `<img src="${attr(i.src)}" alt="${attr(i.alt)}" width="${i.width}" height="${i.height}" loading="lazy" class="${cls}"${extra} />`
+: '';
+
+const RENDERERS: Record<string, (b: any) => string> = {
+richText: (b) => {
+const h = b.heading
+? `<h2 class="text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32">${b.heading}</h2>`
+: '';
+		const tag = b.tag === 'article' ? 'article' : 'div';
+		return `<${tag} class="container-fluid">${h}${(b.body ?? []).map(richP).join('')}</${tag}>`;
+},
+
+video: (b) =>
+`<article class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">` +
+`<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">${b.heading}</h2>` +
+`<div class="relative mb-8 w-full cursor-pointer overflow-hidden pt-[56.25%]">` +
+imgTag(
+b.poster ? { src: b.poster, alt: '', width: 1280, height: 720 } : null,
+'absolute bottom-0 left-0 top-0 h-full w-full rounded-2xl object-cover',
+) +
+`<div class="absolute left-1/2 top-1/2 flex h-72 w-72 -translate-x-1/2 -translate-y-1/2 items-center justify-center">` +
+`<svg class="h-48 w-48 fill-white/90" viewBox="0 0 68 48" aria-hidden="true"><path d="M66.52 7.74a8.06 8.06 0 0 0-8.19-3.3C48.25 7.13 34 7.13 23.5 7.13S-1.25 7.13-10.99 4.44a8.06 8.06 0 0 0-8.19 3.3A8.42 8.42 0 0 0-21 12.83a44.85 44.85 0 0 0 0 22.34A8.42 8.42 0 0 0-19.18 40.3a8.06 8.06 0 0 0 8.19-3.3C-1.25 34.4 12.75 34.4 23.5 34.4s24.75 0 34.83 2.69a8.06 8.06 0 0 0 8.19-3.3A8.42 8.42 0 0 0 68 26.5a44.85 44.85 0 0 0 0-22.34a8.42 8.42 0 0 0-1.47-4.42Z" /></svg>` +
+`</div></div>` +
+(b.caption ? `<p class="text-p-sm text-gray">${b.caption}</p>` : '') +
+`</article>`,
+
+	iconCards: (b) =>
+		`<article class="container-fluid my-48">` +
+		(b.heading ? `<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">${b.heading}</h2>` : '') +
+		`<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">` +
+		(b.items ?? [])
+			.map(
+				(it: any) =>
+					`<section class="group cursor-pointer">` +
+					`<a class="flex" href="${attr(it.href || '/')}">` +
+					(it.icon
+						? `<figure class="w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0">` +
+							imgTag(it.icon, 'aspect-1/1 w-full object-contain', ' style="aspect-ratio:1 / 1"') +
+							`</figure>`
+						: '') +
+					`<div class="pl-16 lg:pl-24">` +
+					(it.label ? `<p class="text-label mb-8 text-blue-dark3">${it.label}</p>` : '') +
+					`<h3 class="text-h5-l mb-16 text-blue-dark group-hover:underline">${it.title}</h3>` +
+					(it.description ? `<p class="text-p-sm text-gray">${it.description}</p>` : '') +
+					`</div></a></section>`,
+			)
+			.join('') +
+		`</div></article>`,
+cardRail: (b) =>
+`<article class="container-fluid pt-64">` +
+(b.heading ? `<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">${b.heading}</h2>` : '') +
+`<div class="scrollbar scrollbar-area mb-56 gap-24 overflow-y-hidden lg:flex lg:overflow-x-auto">` +
+(b.items ?? [])
+.map(
+(it: any) =>
+`<div class="cardWrapper grid shrink-0"><div class="card cardFront cursor-pointer flex h-full flex-col rounded-lg bg-gray-vlight p-24">` +
+(it.label ? `<p class="text-label mb-8 text-blue-dark3">${it.label}</p>` : '') +
+`<h3 class="text-h5-l mb-16 text-blue-dark">${it.title}</h3>` +
+(it.description ? `<p class="text-p-sm text-gray">${it.description}</p>` : '') +
+`</div></div>`,
+)
+.join('') +
+`</div></article>`,
+
+benefitsGrid: (b) =>
+`<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">` +
+(b.heading ? `<h2 class="text-h3 text-blue-dark2 mb-16 lg:mb-24">${b.heading}</h2>` : '') +
+`<div class="grid border-collapse grid-cols-1 sm:grid-cols-2 md:grid-cols-4">` +
+(b.items ?? [])
+.map(
+(it: any) =>
+`<section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border border-blue-light p-24">` +
+(it.icon
+? `<figure class="absolute top-16 left-24">` +
+imgTag(it.icon, 'h-64 w-64 object-contain') +
+`</figure>`
+: '') +
+`<h3 class="text-h5-l mb-8 text-blue-dark group-hover:underline">${it.title}</h3>` +
+(it.description ? `<p class="text-p-sm text-gray">${it.description}</p>` : '') +
+`</section>`,
+)
+.join('') +
+`</div></article>`,
+
+logoRail: (b) =>
+`<article class="u:mt-48 container-fluid my-32 lg:mb-56 lg:mt-64">` +
+(b.heading ? `<h2 class="text-h4 mb-32 lg:mb-48">${b.heading}</h2>` : '') +
+		`<div class="scrollbar overflow-hidden"><div class="scrollbar-area flex flex-nowrap overflow-hidden pb-22 lg:pb-26 gap-32 lg:gap-96">` +
+(b.logos ?? [])
+			.map((l: any) => `<figure class="shrink-0 w-[136px]">${imgTag(l, 'w-full')}</figure>`)
+.join('') +
+`</div></div></article>`,
+
+imageRows: (b) =>
+(b.rows ?? [])
+.map(
+(r: any) =>
+`<article class="container-fluid py-64 md:py-80">` +
+`<div class="mb-20 flex flex-col items-center gap-20 md:flex-row md:gap-24">` +
+`<div class="${r.imageFirst ? 'sm:w-full md:w-1/2' : 'sm:w-full md:order-last md:w-1/2'}">` +
+(r.image
+? `<figure class="h-full w-full">` +
+imgTag(r.image, 'aspect-5/4 w-full h-full rounded-2xl object-cover', ' style="aspect-ratio:5 / 4"') +
+`</figure>`
+: '') +
+`</div>` +
+`<div class="md:w-1/2">` +
+`<h2 class="text-h4 font-bold pb-24 text-blue-dark3 lg:text-h4-l">${r.heading}</h2>` +
+(r.body ? `<p class="text-p pb-12 text-gray lg:pb-20">${r.body}</p>` : '') +
+`</div></div></article>`,
+)
+.join(''),
+
+faq: (b) =>
+`<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">` +
+(b.items ?? [])
+.map(
+(it: any) =>
+`<details class="mt-16 rounded-lg border border-blue-light p-16 lg:mt-24 lg:p-24">` +
+`<summary class="relative flex w-full cursor-pointer items-center">` +
+`<h3 class="text-lead mr-16 pr-16 text-blue-dark2 lg:mr-24 lg:pr-24">${it.question}</h3>` +
+`<svg class="absolute right-0 w-16 rotate-0 transition-all duration-300 stroke-blue-dark3" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" /></svg>` +
+`</summary>` +
+`<div class="accordion-details mt-16 border-t border-blue-light pt-16 text-p-sm text-gray">${it.answer}</div>` +
+`</details>`,
+)
+.join('') +
+`</article>`,
+
+ctaPanel: (b) =>
+`<article class="py-56 lg:py-72 bg-white">` +
+`<div class="container-fluid-wide relative flex flex-wrap justify-between gap-32 overflow-hidden overflow-hidden">` +
+(b.image
+? `<figure class="w-full md:w-[68%] lg:w-[72%]">` +
+imgTag(b.image, 'aspect-4/3 w-full rounded-t-lg object-cover', ' style="aspect-ratio:4 / 3"') +
+`</figure>`
+: '') +
+`<div class="z-1 relative h-fit w-full rounded-b-lg bg-white p-32 md:rounded-lg lg:w-[48%] lg:p-48">` +
+(b.eyebrow ? `<p class="mb-12 text-p-l text-gray-medium">${b.eyebrow}</p>` : '') +
+`<h2 class="text-h3 pb-24 text-blue-dark3 lg:pb-32">${b.heading}</h2>` +
+(b.description ? `<p class="text-p pb-32 text-gray">${b.description}</p>` : '') +
+(b.cta
+? `<a href="${attr(b.cta.href)}" class="text-button appearance-none cursor-pointer inline-block rounded-pill bg-blue px-24 pt-[11px] pb-[12px] font-bold text-white transition-colors duration-100 hover:border-blue-dark3 hover:bg-blue-dark3">${b.cta.label}</a>`
+: '') +
+`</div></div></article>`,
+
+blueprint: (b) =>
+`<div class="container-fluid-wide">` +
+(b.image
+? `<div class="w-full mb-48 mt-32 lg:mb-56 lg:mt-40"><figure class="cursor-pointer w-full">` +
+imgTag(b.image, 'aspect-16/9 w-full rounded-2xl', ' style="aspect-ratio:16 / 9"') +
+`</figure></div>`
+: '') +
+`</div>`,
+
+	relatedTopics: (b) =>
+		`<article class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">` +
+		(b.heading ? `<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">${b.heading}</h2>` : '') +
+		`<div class="grid grid-cols-1 md:grid-cols-3">` +
+		(b.items ?? [])
+			.map(
+				(it: any) =>
+					`<section class="relative cursor-pointer border border-blue-70 first:rounded-t-lg last:rounded-b-lg even:border-b-0 even:border-t-0 hover:bg-blue-light md:first:rounded-l-lg md:first:rounded-r-none md:last:rounded-l-none md:last:rounded-r-lg md:even:border-b md:even:border-l-0 md:even:border-r-0 md:even:border-t">` +
+					`<a class="h-full lg:pb-28 block p-12 pb-24" href="${attr(it.href)}">` +
+					(it.image
+						? `<figure class="mb-40 lg:mb-48 w-40 lg:w-48">` +
+							imgTag(it.image, 'aspect-1/1 w-full', ' style="aspect-ratio:1 / 1"') +
+							`</figure>`
+						: '') +
+					`<div class="mb-12 lg:mb-16">` +
+					(it.label ? `<p class="text-p-sm text-label mb-8 text-blue-dark3">${it.label}</p>` : '') +
+					`<h3 class="text-h5 mb-8 text-black">${it.title}</h3>` +
+					(it.description ? `<p class="text-p-sm mb-24 text-gray lg:mb-32">${it.description}</p>` : '') +
+					`</div>` +
+					`<svg class="absolute bottom-12 h-24 w-24 stroke-blue lg:h-32 lg:w-32"><use href="/images/sprite.svg#arrow-right"></use></svg>` +
+					`</a></section>`,
+			)
+			.join('') +
+		`</div></article>`,
+};
+---
+
+{
+blocks.map((block) => (
+<Fragment set:html={RENDERERS[block.kind] ? RENDERERS[block.kind](block) : ''} />
+))
+}

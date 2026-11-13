@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 530 707" width="530" height="707" role="img" aria-label="Placeholder">
+  <!-- PLACEHOLDER — portrait product image, ratio 0.75 (measured: 530×707). -->
+  <rect width="530" height="707" fill="#f3f3f3"/>
+  <g fill="none" stroke="#004975" stroke-width="2" opacity="0.4">
+    <path d="M265 150l110 55v110l-110 55-110-55V205z"/>
+    <path d="M265 150v220M155 205l110 55 110-55"/>
+  </g>
+  <text x="265" y="500" font-family="Archivo, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#004975" text-anchor="middle">Product 0.75</text>
+  <text x="265" y="528" font-family="Archivo, Helvetica, sans-serif" font-size="14" fill="#007ac3" text-anchor="middle">530 × 707</text>
+</svg>

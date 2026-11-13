@@ -1,0 +1,46 @@
+---
+/**
+ * OfferGrid — "What We Offer You" article: heading + 6 icon cards in a
+ * 3-column grid (2 rows).
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   article   y=2187 h=512  (H2 44px #00314E)
+ *   grid      y=2260  3 cols × 428.33, row pitch 220
+ *   card      h=210, icon 48×48 at top-16, h3 20px, description 18px (h-0)
+ */
+import type { OfferItem } from '@data/innovations';
+
+interface Props {
+	heading: string;
+	items: OfferItem[];
+}
+
+const { heading, items } = Astro.props;
+---
+
+<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+	<h2 class="text-h3 text-blue-dark2 mb-16 lg:mb-24">{heading}</h2>
+	<div class="grid border-collapse grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+		{
+			items.map((item) => (
+				<section class="group relative flex h-[220px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-b">
+					<figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+						<img
+							class="aspect-1/1 w-full"
+							src={item.icon}
+							alt={item.alt}
+							width={150}
+							height={150}
+							loading="lazy"
+							style="aspect-ratio:1 / 1"
+						/>
+					</figure>
+					<h3 class="text-h5-l text-black">{item.title}</h3>
+					<p class="text-p-s h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">
+						{item.description}
+					</p>
+				</section>
+			))
+		}
+	</div>
+</article>

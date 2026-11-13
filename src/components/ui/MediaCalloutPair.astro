@@ -1,0 +1,131 @@
+---
+/**
+ * MediaCalloutPair — the reference site's "image with an overlaid text
+ * callout" block, used by homepage blocks 2 and 3.
+ *
+ * MEASURED structure (reference site, 1440×1000). Both blocks use the
+ * same pattern: TWO units placed side by side, each being an IMAGE with
+ * a TEXT CALLOUT absolutely positioned over the image's lower portion.
+ * They are NOT card grids.
+ *
+ *   Homepage block 2 — services
+ *     left  — image 812×753 (ratio 1.079) at x 38,   top +128px
+ *             callout 812px wide, y +650px, 200px tall
+ *     right — image 505×673 (ratio 0.750) at x 882,  top +168px
+ *             callout 505px wide, y +571px, 238px tall
+ *     gap between the two columns — 32px
+ *
+ *   Homepage block 3 — product solutions
+ *     left  — image 505×673 (ratio 0.750) at x 38,   top +88px
+ *             callout 505px wide, y +452px, 277px tall
+ *     right — image 812×753 (ratio 1.079) at x 575,  top +48px
+ *             callout 812px wide, y +569px, 200px tall
+ *     gap between the two columns — 32px
+ *
+ * Key details reproduced here:
+ *   - the callout is a `container-fluid absolute … px-32 lg:px-48`
+ *     wrapper whose WIDTH equals the image width, so the 48px inline
+ *     padding sits INSIDE the image's own width and the text is inset
+ *     from the image edge;
+ *   - the callout overlays the image's lower part — the image is
+ *     `position: relative` and the callout is `position: absolute`;
+ *   - the two columns use DIFFERENT image widths (812 / 505), which is
+ *     what creates the reference's asymmetry.
+ */
+import Figure, { type Ratio } from '@components/ui/Figure.astro';
+
+export interface Callout {
+	/** Heading text. */
+	title: string;
+	/** Supporting copy. */
+	body: string;
+	href: string;
+	/** Image ratio for this unit. */
+	ratio: Ratio;
+	/** Image source. */
+	src: string;
+	/** Width of this unit in px (measured). */
+	width: number;
+	/** Vertical offset of the IMAGE from the block's top edge, in px. */
+	imageTop: number;
+	/** Vertical offset of the CALLOUT from the block's top edge, in px. */
+	calloutTop: number;
+}
+
+interface Props {
+	left: Callout;
+	right: Callout;
+	/** Total height of the block, in px (measured). */
+	height: number;
+	/** Gap between the two columns, in px (measured: 32). */
+	gap?: number;
+	/** Background colour behind the block. */
+	background?: string;
+	class?: string;
+}
+
+const {
+	left,
+	right,
+	height,
+	gap = 32,
+	background = 'transparent',
+	class: className,
+} = Astro.props;
+---
+
+<div
+	class:list={['relative w-full', className]}
+	style={`height:${height}px;background:${background}`}
+>
+	<!-- Left unit -->
+	<div
+		class="absolute left-0"
+		style={`top:${left.imageTop}px;width:min(${left.width}px, 100%)`}
+	>
+		<div class="relative">
+			<Figure src={left.src} alt="" ratio={left.ratio} class="w-full" />
+			<!--
+				The callout overlays the lower part of the image. It carries the
+				same inline padding the reference uses, so the text is inset
+				from the image's edge rather than bleeding to it.
+			-->
+			<div
+				class="absolute inset-x-0 px-32 lg:px-48"
+				style={`top:${left.calloutTop - left.imageTop}px`}
+			>
+				<div class="p-24 md:p-32">
+					<h2 class="text-h4 text-blue-dark3">
+						<a href={left.href} class="transition-colors duration-300 hover:text-blue">
+							{left.title}
+						</a>
+					</h2>
+					<p class="text-p text-gray mt-12">{left.body}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Right unit -->
+	<div
+		class="absolute"
+		style={`top:${right.imageTop}px;left:calc(${left.width + gap}px);width:min(${right.width}px, 100%)`}
+	>
+		<div class="relative">
+			<Figure src={right.src} alt="" ratio={right.ratio} class="w-full" />
+			<div
+				class="absolute inset-x-0 px-32 lg:px-48"
+				style={`top:${right.calloutTop - right.imageTop}px`}
+			>
+				<div class="p-24 md:p-32">
+					<h2 class="text-h4 text-blue-dark3">
+						<a href={right.href} class="transition-colors duration-300 hover:text-blue">
+							{right.title}
+						</a>
+					</h2>
+					<p class="text-p text-gray mt-12">{right.body}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

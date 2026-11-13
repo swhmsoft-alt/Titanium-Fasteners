@@ -1,0 +1,66 @@
+---
+/**
+ * ServiceGrid — the two "teaser tile" articles of `/global-en/services/`.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   article 1  y= 604 h=865   grid y= 660  18 cols × 44.72px, gap 32
+ *              wide card  812×753  (ul:col-span-11)
+ *              narrow card 505×673 (ul:col-span-7, md:my-40 → 673+80 = 753 row)
+ *   article 2  y=1469 h=865   grid y=1525  same columns, ORDER REVERSED
+ *              (narrow first at x=38, wide second at x=575)
+ *
+ * The reference's own markup is copied verbatim: `a > figure.h-full > img`
+ * plus an absolutely positioned overlay with the heading, lead and arrow.
+ */
+import type { ServiceCard } from '@data/services';
+
+interface Props {
+	cards: ServiceCard[];
+}
+
+const { cards } = Astro.props;
+---
+
+<article class="container-fluid-wide py-24">
+	<div
+		class="my-24 flex flex-col gap-24 md:grid md:grid-cols-6 md:grid-rows-1 lg:my-32 lg:grid-cols-8 lg:gap-32 wd:grid-cols-12 ul:grid-cols-18"
+	>
+		{
+			cards.map((card) => (
+				<a
+					href={card.href}
+					class:list={[
+						'relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]',
+						card.span === 'wide'
+							? 'sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11'
+							: 'md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7',
+					]}
+				>
+					<figure class="relative -z-1 h-full rounded-2xl w-full">
+						<img
+							src={card.image}
+							alt={card.imageAlt}
+							width={card.imageWidth}
+							height={card.imageHeight}
+							loading="eager"
+							class:list={[
+								'w-full h-full object-cover rounded-2xl',
+								card.span === 'wide' ? 'aspect-5/4' : 'aspect-3/4',
+							]}
+							style={`aspect-ratio:${card.span === 'wide' ? '5 / 4' : '3 / 4'}`}
+						/>
+					</figure>
+					<div class="container-fluid absolute bottom-24 px-32 lg:bottom-32 lg:px-48">
+						<h2 class="text-h4 font-bold pb-24 text-white lg:text-h4-l">{card.heading}</h2>
+						<p class="text-lead hidden pb-32 text-white wd:block">{card.body}</p>
+						<div>
+							<svg class="lg:w-32 mb-0 h-24 w-24 pb-0 lg:h-32 stroke-white">
+								<use href="/images/sprite.svg#arrow-right-bold"></use>
+							</svg>
+						</div>
+					</div>
+				</a>
+			))
+		}
+	</div>
+</article>

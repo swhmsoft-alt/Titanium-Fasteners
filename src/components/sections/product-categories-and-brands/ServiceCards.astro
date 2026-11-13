@@ -1,0 +1,53 @@
+---
+/**
+ * ServiceCards — the three "PS | eShop, Coatings, Custom Fasteners" cards.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   article   y=2485 h=446   pt-40 + grid 350 + pb-56
+ *   grid      3 cols, no gap (cols 428.33px), card 1 body x=83 (p-12)
+ *   icon      48×48 at y=2538, mb-48 → label p y=2634 (20px) → h2 y=2670
+ *             (21.008px) → desc p y=2704 (18px/28.8)
+ *
+ * The reference's card markup — the border/radius utilities that collapse the
+ * 1px borders between neighbours — is copied verbatim.
+ */
+import type { ServiceCard } from '@data/product-categories-and-brands';
+
+interface Props {
+	cards: ServiceCard[];
+}
+
+const { cards } = Astro.props;
+---
+
+<article class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+	<div class="grid grid-cols-1 md:grid-cols-3">
+		{
+			cards.map((card) => (
+				<section class="relative cursor-pointer border border-blue-70 first:rounded-t-lg last:rounded-b-lg even:border-b-0 even:border-t-0 hover:bg-blue-light md:first:rounded-l-lg md:first:rounded-r-none md:last:rounded-l-none md:last:rounded-r-lg md:even:border-b md:even:border-l-0 md:even:border-r-0 md:even:border-t">
+					<a class="h-full lg:pb-28 block p-12 pb-24" href={card.href}>
+						<figure class="mb-40 lg:mb-48 w-40 lg:w-48" data-ratio="1">
+							<img
+								src={card.image}
+								alt={card.alt}
+								width={150}
+								height={150}
+								loading="eager"
+								class="aspect-1/1 w-full"
+								style="aspect-ratio:1 / 1"
+							/>
+						</figure>
+						<div class="mb-12 lg:mb-16">
+							<p class="text-label mb-8 text-blue-dark3">{card.label}</p>
+							<h2 class="text-h5-l mb-8 text-black">{card.title}</h2>
+							<p class="text-p-sm lg:text-p-s mb-24 text-gray lg:mb-32">{card.description}</p>
+						</div>
+						<svg class="absolute bottom-12 h-24 w-24 stroke-blue lg:h-32 lg:w-32">
+							<use href="/images/sprite.svg#arrow-right"></use>
+						</svg>
+					</a>
+				</section>
+			))
+		}
+	</div>
+</article>

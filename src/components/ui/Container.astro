@@ -1,0 +1,21 @@
+---
+/**
+ * Container — the reference site's content container.
+ *
+ * Measured: max-width 1440px, centred, padding ramp
+ * 16px → 40px (≥360) → 64px (≥840) → 70px (≥1280).
+ * Implemented in CSS as `.container-reference` (see src/styles/global.css).
+ */
+interface Props {
+	/** Use the wider variant (padding 24 → 40 → 72). */
+	wide?: boolean;
+	class?: string;
+	id?: string;
+}
+
+const { wide = false, class: className, id } = Astro.props;
+---
+
+<div class:list={[wide ? 'container-reference-wide' : 'container-reference', className]} id={id}>
+	<slot />
+</div>

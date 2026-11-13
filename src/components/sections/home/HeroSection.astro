@@ -1,0 +1,54 @@
+---
+/**
+ * HeroSection — homepage block 1.
+ *
+ * PHASE A (1:1 COPY). Class names and geometry are copied from the reference
+ * site (`https://www.bossard.com/global-en/`), measured at 1440×1000:
+ *
+ *   article  y=195  h=792   pt-72 pb-40   .container-fluid-wide
+ *   figure   1364×680       r=2.006      .rounded-2xl.relative.-z-1.h-full.w-full
+ *   overlay  y=422  x=38    w=680        .container-fluid.absolute.bottom-56
+ *   h2       64px / white   .text-h1-s … lg:text-h1-l
+ *   sub      .hidden … wd:block → NOT rendered at 1440 (kept verbatim)
+ *
+ * The article's own top padding was reduced from pt-72 to pt-24/lg:pt-40
+ * so the hero image sits ~40px under the fixed nav instead of ~176px
+ * (reference value pt-72 + the 195px page lead-in). Deviation recorded
+ * in qa/DEVIATIONS.md.
+ *
+ * See docs/reference/homepage-outline.txt (lines 5–19).
+ */
+import Figure from '@components/ui/Figure.astro';
+import { HERO } from '@data/home';
+---
+
+<article class="container-fluid-wide relative pb-32 pt-24 lg:pb-40 lg:pt-40">
+	<a href={HERO.href} class="block">
+		<div
+			class="h-386 overflow-hidden rounded-2xl bg-[linear-gradient(90deg,rgba(0,0,0,0.3),rgba(0,0,0,0))] md:h-544 wd:h-680"
+		>
+			<Figure
+				src={HERO.image.src}
+				alt={HERO.image.alt}
+				ratio={2.006}
+				priority
+				fill
+				class="rounded-2xl relative -z-1 h-full w-full"
+			/>
+		</div>
+
+		<div
+			class="container-fluid absolute bottom-56 px-16 md:max-w-472 lg:bottom-72 lg:max-w-580 wd:max-w-680 ul:px-72"
+		>
+			<h2 class="text-h1-s font-bold text-white max-sm:hyphens-auto lg:text-h1-l">
+				{HERO.title}
+			</h2>
+			<p class="hidden pt-32 text-lead-l text-white wd:block">{HERO.sub}</p>
+			<div class="pt-24 lg:pt-32">
+				<svg class="lg:w-32 mb-0 h-24 w-24 pb-0 lg:h-32 stroke-white">
+					<use href="/images/sprite.svg#arrow-right-bold"></use>
+				</svg>
+			</div>
+		</div>
+	</a>
+</article>

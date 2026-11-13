@@ -1,0 +1,16 @@
+kind,id,code
+type,screw,SHS
+type,bolt,HEX
+type,nut,NUT
+type,washer,WSH
+material,ti-gr5,G5
+material,ti-gr2,G2
+material,ti-gr9,G9
+material,ti-gr23,G23
+finish,plain,PL
+finish,anod-black,BB
+finish,anod-blue,AB
+finish,passivated,PA
+finish,nitric-passivated,NP
+finish,mos2-dry-film,MO
+finish,pickling-oiled,PO

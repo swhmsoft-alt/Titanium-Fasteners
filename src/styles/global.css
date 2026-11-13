@@ -1,0 +1,595 @@
+/*
+ * src/styles/global.css — Design tokens + base layer
+ *
+ * All values below were MEASURED on the reference site (2026-11) via browser
+ * inspection of its compiled stylesheet and live DOM. Nothing here is a guess.
+ * See docs/reference/04-design-system.md for the measurement notes.
+ *
+ * Tailwind CSS v4 — tokens live in @theme and become utilities automatically.
+ */
+
+@import "tailwindcss";
+
+/* ───────────────────────────────────────────────────────────────────────────
+   FONT
+   The reference uses "DIN" (FF DINPaneuropean) — a COMMERCIAL, licensed
+   typeface. Its files are NOT redistributable and are deliberately NOT used
+   here.
+
+   Substitute: "Archivo" (SIL OFL 1.1), self-hosted via @fontsource.
+   Rationale: Archivo is a grotesque with the same slightly-condensed,
+   industrial-neutral proportions as DIN, at matching weights
+   (300/400/500/700 + italic). It carries the same technical/industrial
+   character required by the design without infringing the DIN licence.
+
+   The metric-override fallback below removes the FOUT-induced layout shift
+   (the exact technique proven in the sibling AstroFlow project).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import "@fontsource/archivo/300.css";
+@import "@fontsource/archivo/400.css";
+@import "@fontsource/archivo/500.css";
+@import "@fontsource/archivo/600.css";
+@import "@fontsource/archivo/700.css";
+@import "@fontsource/archivo/400-italic.css";
+
+/* Fallback face with metrics overridden to match Archivo, so the pre-swap
+   layout matches the post-swap layout and CLS stays ~0. */
+@font-face {
+	font-family: "Archivo Fallback";
+	font-style: normal;
+	font-weight: 400;
+	font-display: optional;
+	src: local("Arial");
+	size-adjust: 100%;
+	ascent-override: 92%;
+	descent-override: 24%;
+	line-gap-override: 0%;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   @theme — design tokens
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+	/* ── Typography ────────────────────────────────────────────────────────
+	   Reference scale, measured from its compiled CSS. Each entry lists
+	   the mobile value and the value at the reference's 1024px breakpoint.
+	   The reference rem base is 16px (1rem = 16px) — kept here.
+
+	   Verified pairings (reference emits these as top-level classes
+	   overridden inside `@media (min-width: 1024px)`):
+	     text-h1  2.625rem/110% → 4rem/110%      (42px → 64px)  weight 700
+	     text-h2  2.375rem/110% → 3.5rem/110%    (38px → 56px)  weight 700
+	     text-h3  1.875rem/110% → 2.75rem/110%   (30px → 44px)  weight 700
+	     text-h4  1.563rem/110% → 2rem/110%      (25px → 32px)  weight 700
+	     text-lead 1.313rem/160% → 1.5rem/160%   (21px → 24px)  weight 500
+	     text-p   1.125rem/160% → 1.25rem/160%   (18px → 20px)
+	     text-label 1.125rem/110% → 1.25rem/140% (18px → 20px)  weight 500
+	     text-button 1.125rem/100%                (18px)
+	   Body copy: 1rem/160% at ≥1024px.
+
+	   IMPORTANT: these are NOT defined as `--text-*` theme variables.
+	   Tailwind v4 emits `--text-*` variables as a single static value, so
+   the 1024px override would never apply. The reference's behaviour is
+   reproduced below with `@utility` + `@variant lg`, which is the
+   Tailwind v4 way to get a responsive custom utility.
+	   ─────────────────────────────────────────────────────────────────────────── */
+	--font-sans: "Archivo", "Archivo Fallback", ui-sans-serif, system-ui, sans-serif;
+
+	--text-label-weight: 500;
+
+	/* ──────────────────────────────────────────────────────────────
+	   Colour
+	   Sampled from computed styles on the reference. RGB values are the
+	   raw measurements; hex is the equivalent used in code.
+
+	     #0070ba  primary button fill (cookie consent primary)
+	     #007ac3  accent / link / secondary button text / "Go to" links
+	     #004975  blue-dark3  — h1 + section h2 colour
+	     #00314e  blue-dark2  — article h2 colour
+	     #001827  blue-dark   — near-black navy, card h3 colour
+	     #cce4f3  blue-light  — soft blue panel / card fill / borders
+	     #f3f3f3  gray-vlight — light section background
+	     #f0f0f0  gray-whiteish
+	     #bfbfbf  gray-light
+	     #999999  gray-soft   — hairline borders
+	     #666666  gray-medium — meta / eyebrow / caption copy
+	     #333333  gray        — body copy colour
+	     #21272a  gray-cool
+	     #ffffff  white
+	   ---------------------------------------------------------------- */
+	--color-blue: #007ac3;
+	--color-blue-primary: #0070ba;
+	--color-blue-dark: #001827;
+	--color-blue-dark2: #00314e;
+	--color-blue-dark3: #004975;
+	--color-blue-light: #cce4f3;
+	/* ESTIMATED — the reference uses `border-blue-70` only below the 840px
+	   breakpoint (at ≥840px it switches to border-blue-dark3), so this token is
+	   not observable at the 1440px acceptance viewport. */
+	--color-blue-70: #a9cfe8;
+	--color-gray-vlight: #f3f3f3;
+	--color-gray-whiteish: #f0f0f0;
+	--color-gray-light: #bfbfbf;
+	--color-gray-soft: #999999;
+	--color-gray-medium: #666666;
+	--color-gray: #333333;
+	--color-gray-cool: #21272a;
+	--color-accent-rose: #aa465c;
+
+	/* ── Spacing ─────────────────────────────────────────────────────────
+	   The reference uses a 1px-based spacing scale (Tailwind v4 default is
+	   0.25rem = 4px). Measured proof: `gap-32` renders 32px, `h-48` renders
+	   48px, `my-48` renders 48px, `px-20` renders 20px.
+	   This override is REQUIRED — with the default scale every spacing
+	   utility would be 4× too large. */
+	--spacing: 1px;
+
+	/* ── Breakpoints ──────────────────────────────────────────────────────
+	   Measured from the reference's compiled CSS media queries:
+	   360px, 600px, 840px, 1024px, 1280px, 1440px.
+	   Tailwind defaults are 640/768/1024/1280/1536 — overridden to match. */
+	--breakpoint-xs: 360px;
+	--breakpoint-sm: 600px;
+	--breakpoint-md: 840px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1440px;
+
+	/* ── Reference's own variant names ─────────────────────────────────────
+	   The reference uses `wd:` and `ul:` prefixes. Measured proof that both
+	   are ALREADY ACTIVE at the 1440px viewport:
+	     hero figure      wd:h-[680px]   → rendered 680px
+	     hero overlay     wd:max-w-[680px] → rendered 680px, ul:px-72 → 72px
+	     benefits details ul:pt-[106px]  → rendered padding-top 106px
+	   The only min-width values present in the reference's CSS are
+	   360/600/840/1024/1280/1440, so wd = 1280 and ul = 1440.           */
+	--breakpoint-wd: 1280px;
+	--breakpoint-ul: 1440px;
+
+	/* ── Radii ────────────────────────────────────────────────────────────
+	   Reference button radius measured at 28px (fully pill on a 49px-tall
+	   button). Panel radius 16px (rounded-lg / rounded-2xl seen as 1rem). */
+	--radius-pill: 28px;
+	--radius-panel: 16px;
+	--radius-card: 16px;
+
+	/* ── Layout ───────────────────────────────────────────────────────────
+	   Reference container: max-width 1440px, centred, with a responsive
+	   padding ramp (16 → 20 → 40 → 48 → 70px). */
+	--container-reference: 1440px;
+
+	/* ── Motion ──────────────────────────────────────────────────────────
+	   Reference transition durations measured in its compiled CSS. */
+	--default-transition-duration: 300ms;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Responsive type utilities
+
+   The reference emits `.text-h1 { font-size: 2.625rem }` at the top level and
+   overrides it inside `@media (min-width: 1024px)` with `font-size: 4rem`.
+
+   Tailwind v4's `--text-*` theme variables emit a SINGLE static value, so a
+   theme-variable definition could not reproduce that switch. `@utility` +
+   `@variant lg` is the Tailwind v4 mechanism for a responsive custom
+   utility, and it produces the same cascade as the reference.
+
+   `lg` maps to our overridden 1024px breakpoint (see `--breakpoint-lg`).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@utility text-h1 {
+	font-size: 2.625rem;
+	line-height: 110%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 4rem;
+		line-height: 110%;
+	}
+}
+
+@utility text-h2 {
+	font-size: 2.375rem;
+	line-height: 110%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 3.5rem;
+		line-height: 110%;
+	}
+}
+
+@utility text-h3 {
+	font-size: 1.875rem;
+	line-height: 110%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 2.75rem;
+		line-height: 110%;
+	}
+}
+
+@utility text-h4 {
+	font-size: 1.563rem;
+	line-height: 110%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 2rem;
+		line-height: 110%;
+	}
+}
+
+@utility text-lead {
+	font-size: 1.313rem;
+	line-height: 160%;
+	font-weight: 500;
+
+	@variant lg {
+		font-size: 1.5rem;
+		line-height: 160%;
+	}
+}
+
+@utility text-p {
+	font-size: 1.125rem;
+	line-height: 160%;
+
+	@variant lg {
+		font-size: 1.25rem;
+		line-height: 160%;
+	}
+}
+
+@utility text-label {
+	font-size: 1.125rem;
+	line-height: 110%;
+	font-weight: 500;
+
+	@variant lg {
+		font-size: 1.25rem;
+		line-height: 140%;
+	}
+}
+
+@utility text-button {
+	font-size: 1.125rem;
+	line-height: 100%;
+}
+
+/* Reference "large" / "small" type variants (used by the hero overlay). */
+@utility text-h1-s {
+	font-size: 2.25rem;
+	line-height: 110%;
+	font-weight: 700;
+}
+
+@utility text-h1-l {
+	font-size: 4rem;
+	line-height: 110%;
+	font-weight: 700;
+}
+
+@utility text-lead-l {
+	font-size: 1.5rem;
+	line-height: 160%;
+}
+
+/* Reference small body copy (16px). */
+@utility text-p-l {
+	font-size: 1rem;
+	line-height: 160%;
+}
+
+/* Reference "small" body copy (18px / 160%) — used by the mega-menu group
+   headings (`text-p-s font-bold` on the reference). */
+@utility text-p-s {
+	font-size: 1.125rem;
+	line-height: 160%;
+}
+
+/* Reference's INHERITED default type (html { line-height: 1.5 } → 16px/24px).
+   The reference's mega-menu "Go to X" link carries no size class, so it
+   inherits this. */
+@utility text-body {
+	font-size: 1rem;
+	line-height: 1.5rem;
+}
+
+/* Reference card heading (21px) — used by the news cards. */
+@utility text-h5 {
+	font-size: 1.313rem;
+	line-height: 140%;
+	font-weight: 700;
+}
+
+/* Reference "709 Products" count label on the category page.
+   Measured on the reference: 21px / 25.2px (120%) at ≥840px. */
+@utility text-h5-s {
+	font-size: 1.125rem;
+	line-height: 110%;
+}
+
+@utility text-h5-l {
+	font-size: 1.313rem;
+	line-height: 120%;
+}
+
+/* 面包屑 ol 的字号：参考站实测 16px / 25.6px（160%）。 */
+@utility text-h6-s {
+	font-size: 1rem;
+	line-height: 160%;
+}
+
+/* 富文本列表：参考站实测 20px / 36px（180%）。 */
+@utility text-list-l {
+	font-size: 1.25rem;
+	line-height: 180%;
+}
+
+/* Reference large variant of the h4 scale (32px at ≥1024px). */
+@utility text-h4-l {
+	font-size: 1.563rem;
+	line-height: 110%;
+	font-weight: 700;
+
+	@variant lg {
+		font-size: 2rem;
+		line-height: 110%;
+	}
+}
+
+/* Reference flex-basis ladder for the benefits disclosure items.
+   The reference expresses these as `basis-[calc(50%-12px)]` etc. */
+@utility basis-ladder {
+	@variant md {
+		flex-basis: calc(50% - 12px);
+	}
+
+	@variant lg {
+		flex-basis: calc(50% - 16px);
+	}
+
+	@variant wd {
+		flex-basis: calc(33% - 18px);
+	}
+}
+
+/* Reference small body copy in cards. */
+@utility text-p-sm {
+	font-size: 1rem;
+	line-height: 160%;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Percentage layout utilities.
+
+   The reference expresses these as Tailwind arbitrary values
+   (`md:-mr-[34%] md:w-[68%]` …). This project's build does not emit
+   arbitrary-value utilities, so they are declared explicitly here, with the
+   same breakpoint behaviour (md=840, lg=1024, wd=1280, ul=1440).
+   ─────────────────────────────────────────────────────────────────────────── */
+@utility media-col {
+	width: 100%;
+
+	@variant md {
+		margin-right: -34%;
+		width: 68%;
+	}
+
+	@variant lg {
+		margin-right: -38%;
+		width: 72%;
+	}
+
+	@variant wd {
+		width: 65%;
+	}
+
+	@variant ul {
+		margin-right: -163px;
+		width: 68%;
+	}
+}
+
+@utility panel-pos {
+	@variant md {
+		right: 0;
+		margin-top: 21%;
+		width: 512px;
+	}
+
+	@variant lg {
+		margin-top: 185px;
+		width: 604px;
+	}
+
+	@variant wd {
+		margin-top: 215px;
+		width: 584px;
+	}
+
+	@variant ul {
+		margin-top: 25%;
+		width: 580px;
+	}
+}
+
+/* Functional-card heading. The reference measures 21.008px (= 1.313rem) with
+   weight 700 — the same size as `text-lead` but bold. Kept as a distinct
+   utility so the intent is explicit rather than a `text-lead font-bold`
+   pairing. */
+@utility text-card {
+	font-size: 1.313rem;
+	line-height: 160%;
+	font-weight: 700;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Reference container
+   Measured padding ramp (from the reference's own compiled CSS):
+     base    1rem    (16px)
+     ≥360px  2.5rem  (40px)
+     ≥840px  4rem    (64px)
+     ≥1280px 70px
+   A second, wider variant (.container-fluid-wide) uses
+   24px → 40px → 72px.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+	/* Reference scrollbar styling — measured on the reference's compiled CSS:
+	   `.scrollbar::-webkit-scrollbar{height:6px;width:6px}`. The category
+	   page's horizontal rail scrolls, and the scrollbar's 6px is part of the
+	   measured block geometry. */
+	.scrollbar::-webkit-scrollbar {
+		height: 6px;
+		width: 6px;
+	}
+
+	/* ───────────────────────────────────────────────────────────────────────
+	   Reference containers (measured on the reference site, 1440×1000):
+
+	     .container-fluid       → x=70  w=1300   (70px inline padding)
+	     .container-fluid-wide  → x=38  w=1364   (38px inline padding)
+
+	   The reference uses these two class names directly, so they are reproduced
+	   here verbatim rather than renamed — Phase A copies the reference markup.
+	   ─────────────────────────────────────────────────────────────────────── */
+	.container-fluid {
+		margin-inline: auto;
+		max-width: var(--container-reference);
+		width: 100%;
+		padding-inline: 1rem;
+	}
+
+	.container-fluid-wide {
+		margin-inline: auto;
+		max-width: var(--container-reference);
+		width: 100%;
+		padding-inline: 1.5rem;
+	}
+
+	/* Reference rich-text measure: 782px (measured on the trailing paragraph). */
+	.max-w-rich-text {
+		max-width: 782px;
+	}
+
+	.container-reference {
+		margin-inline: auto;
+		max-width: var(--container-reference);
+		width: 100%;
+		padding-inline: 1rem;
+	}
+
+	.container-reference-wide {
+		margin-inline: auto;
+		max-width: var(--container-reference);
+		width: 100%;
+		padding-inline: 1.5rem;
+	}
+
+	@media (min-width: 360px) {
+		.container-reference {
+			padding-inline: 2.5rem;
+		}
+		.container-reference-wide {
+			padding-inline: 1.5rem;
+		}
+		.container-fluid {
+			padding-inline: 2.5rem;
+		}
+		.container-fluid-wide {
+			padding-inline: 2.5rem;
+		}
+	}
+
+	/* Measured at 1440px: .container-fluid-wide → x=38 w=1364 (38px padding). */
+	@media (min-width: 1024px) {
+		.container-fluid-wide {
+			padding-inline: 38px;
+		}
+	}
+
+	/* Measured at 1440px: .container-fluid → x=70 w=1300 (70px padding). */
+	@media (min-width: 1280px) {
+		.container-fluid {
+			padding-inline: 70px;
+		}
+	}
+
+	@media (min-width: 840px) {
+		.container-reference {
+			padding-inline: 4rem;
+		}
+		.container-reference-wide {
+			padding-inline: 2.5rem;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.container-reference {
+			padding-inline: 70px;
+		}
+	}
+
+	@media (min-width: 1440px) {
+		.container-reference-wide {
+			padding-inline: 4.5rem;
+		}
+	}
+
+	/* Body copy — 16px/160% at ≥1024px, matching the reference. */
+	@media (min-width: 1024px) {
+		body {
+			font-size: 1rem;
+			line-height: 160%;
+		}
+	}
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Base
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		font-family: var(--font-sans);
+		color: var(--color-gray);
+		background-color: #ffffff;
+		font-size: 1rem;
+		line-height: 160%;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: var(--color-blue-dark3);
+		font-weight: 700;
+		text-wrap: balance;
+	}
+
+	/* Visible focus ring — the reference removes outlines without replacing
+	   them, which is an accessibility defect. We keep a visible ring. */
+	:focus-visible {
+		outline: 2px solid var(--color-blue);
+		outline-offset: 2px;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+}

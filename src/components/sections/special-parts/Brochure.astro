@@ -1,0 +1,51 @@
+---
+/**
+ * Brochure — "Bossard Special Parts Brochure" 下载卡。
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   article  y=5336 h=144   h3 21.008px（text-h5）
+ *   缩略图   105×140 (3:4)，圆角 + 蓝色描边
+ */
+interface Props {
+	title: string;
+	text: string;
+	thumb: { src: string; alt: string };
+	file: { label: string; href: string };
+}
+
+const { title, text, thumb, file } = Astro.props;
+---
+
+<article class="container-fluid my-48">
+	<div class="grid grid-cols-1 gap-x-24 gap-y-32 md:grid-cols-2 lg:gap-x-32">
+		<section class="flex">
+			<figure class="w-[101px] lg:w-[105px]">
+				<img
+					class="aspect-3/4 max-w-max rounded-lg border border-blue-light object-cover"
+					src={thumb.src}
+					alt={thumb.alt}
+					width="105"
+					height="140"
+					loading="lazy"
+					style="aspect-ratio:3 / 4"
+				/>
+			</figure>
+			<div class="pl-16 lg:pl-24">
+				<h3 class="text-h5 mb-16 text-blue-dark">{title}</h3>
+				<p class="text-p-sm pb-16 text-gray">{text}</p>
+				<a
+					class="flex items-center gap-x-4 text-p-s uppercase text-blue"
+					href={file.href}
+					download
+				>
+					<span class="relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-current">
+						{file.label}
+					</span>
+					<svg class="h-12 w-12 fill-blue stroke-blue stroke-[4]" aria-hidden="true">
+						<use href="/images/sprite.svg#chevron-right"></use>
+					</svg>
+				</a>
+			</div>
+		</section>
+	</div>
+</article>

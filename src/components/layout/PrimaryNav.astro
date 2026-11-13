@@ -1,0 +1,51 @@
+---
+/**
+ * PrimaryNav — the five top-level navigation items.
+ *
+ * MEASURED on the reference site:
+ *   text     — 16px / 500 / #000000
+ *   border   — 2px solid transparent, becomes #aa465c on hover
+ *   "Product Solutions" button measured at 129×26px
+ *   items    — Product Solutions, Services, Industries, Knowledge Hub, About us
+ *
+ * The reference renders these as <button> elements (they open a mega menu
+ * rather than navigate). Here the top-level entry is an <a> to the section
+ * index AND toggles the mega menu — a deliberate, documented accessibility
+ * improvement (see docs/component-mapping.md §4 item 8): keyboard users
+ * get a real link, while pointer users still get the panel.
+ */
+import { NAVIGATION } from '@config/site';
+
+interface Props {
+	currentPathname?: string;
+	class?: string;
+}
+
+const { currentPathname = '', class: className } = Astro.props;
+
+const isActive = (href: string) =>
+	href === '/' ? currentPathname === '/' : currentPathname.startsWith(href);
+---
+
+<nav class:list={['flex items-center', className]} aria-label="Main">
+	<ul class="flex items-center gap-32">
+		{
+			NAVIGATION.map((item) => (
+				<li class="relative">
+					<a
+						href={item.href}
+						data-nav-trigger={item.name}
+						aria-expanded="false"
+						aria-haspopup="true"
+						class:list={[
+							'block border-b-2 border-transparent font-medium text-label transition-colors duration-300 hover:border-accent-rose',
+							isActive(item.href) ? 'border-accent-rose' : 'border-transparent',
+						]}
+					>
+						{item.name}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

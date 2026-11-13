@@ -1,0 +1,57 @@
+---
+/**
+ * CategoryTiles — the "Discover Our Product Categories" article.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   article        y=993  h=1444   h2 44px/48.4 #00314e  (mb-24)
+ *   grid           y=1065 w=1285 h=1372   2 cols × 6 rows, gap 32
+ *   row            202px tall (figure 202×202 dominates the text column)
+ *   text column    x=296 w=401 (pl-24)  label 20px, h3 21px, desc 18px/28.8
+ *
+ * The reference's tile markup is copied verbatim: `section.group > a.flex >
+ * figure > img` plus a `div.pl-16.lg:pl-24` text column.
+ */
+import type { CategoryTile } from '@data/product-categories-and-brands';
+
+interface Props {
+	heading: string;
+	label: string;
+	tiles: CategoryTile[];
+}
+
+const { heading, label, tiles } = Astro.props;
+---
+
+<article class="container-fluid my-48">
+	<h2 class="text-h3 mb-16 text-blue-dark2 lg:mb-24">{heading}</h2>
+
+	<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+		{
+			tiles.map((tile) => (
+				<section class="group cursor-pointer">
+					<a class="flex" href={tile.href}>
+						<figure
+							class="w-[108px] sm:w-[166px] md:w-[114px] lg:w-[144px] wd:w-[176px] ul:w-[202px] shrink-0"
+							data-ratio="1"
+						>
+							<img
+								src={tile.image}
+								alt={tile.alt}
+								width={202}
+								height={202}
+								loading="eager"
+								class="aspect-1/1 rounded-lg object-cover max-w-max w-full"
+								style="aspect-ratio:1 / 1"
+							/>
+						</figure>
+						<div class="pl-16 lg:pl-24">
+							<p class="text-label mb-8 text-blue-dark3">{tile.label ?? label}</p>
+							<h3 class="text-h5-l mb-16 text-blue-dark group-hover:underline">{tile.title}</h3>
+							<p class="text-p-sm lg:text-p-s text-gray">{tile.description}</p>
+						</div>
+					</a>
+				</section>
+			))
+		}
+	</div>
+</article>

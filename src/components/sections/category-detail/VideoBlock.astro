@@ -1,0 +1,42 @@
+---
+/**
+ * VideoBlock — 品类子页的 "Find the Right Screw …" 文章块。
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   article   y=1002 h=932   h2 44px #004975
+ *   video     y=1115 1285×723（16:9 占位，pt-[56.25%]）
+ *   play      288×288 圆点，居中
+ *   caption   18px
+ */
+interface Props {
+	heading: string;
+	thumbnail: string;
+	thumbnailAlt: string;
+	caption: string;
+}
+
+const { heading, thumbnail, thumbnailAlt, caption } = Astro.props;
+---
+
+<article class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+	<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">{heading}</h2>
+	<div
+		class="relative mb-8 w-full cursor-pointer overflow-hidden pt-[56.25%] sm:pt-[56.25%] lg:mb-12 rounded-2xl"
+		data-testid="video-wrapper"
+	>
+		<img
+			class="[clip-path: inset(0% 0% 0% 0% round 1rem)] absolute bottom-0 left-0 right-0 top-0 h-full w-full border-0 bg-blue-light object-cover"
+			src={thumbnail}
+			alt={thumbnailAlt}
+			loading="lazy"
+		/>
+		<div
+			class="absolute left-1/2 top-1/2 flex h-72 w-72 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center rounded-full bg-blue"
+		>
+			<svg class="h-32 w-32 fill-blue stroke-white">
+				<use href="/images/sprite.svg#play"></use>
+			</svg>
+		</div>
+	</div>
+	<p class="text-p-sm">{caption}</p>
+</article>

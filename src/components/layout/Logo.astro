@@ -1,0 +1,89 @@
+---
+/**
+ * Logo — renders the BOZE brand mark.
+ *
+ * BRAND ASSETS (2026-11 white-background edition — flat 2D, no gradients):
+ *   /brand/logo-claim-mono.svg    — graphite flat wordmark  (white surfaces)
+ *   /brand/logo-claim-reverse.svg — white flat wordmark    (dark surfaces)
+ *   /brand/logo-compact.svg       — simplified wordmark      (<768px header)
+ *   /brand/logo-lockup.svg        — full lockup: mark + rule + "TITANIUM FASTENERS"
+ *
+ * GEOMETRY
+ *   The wordmark artwork is 796×216 (ratio 3.685) with a transparent
+ *   background; it is rendered with `object-fit: contain` inside the
+ *   measured logo box so it is never distorted.
+ *
+ *   claim   — rendered 190×55px on desktop (≥768px), as measured on the
+ *              reference site. The artwork is 3.685, so it is letterboxed by
+ *              ~3px top/bottom inside the box.
+ *   compact — rendered 76×19px below 768px. The reference's 120×19 box held
+ *              a wide wordmark+tagline strip; this brand's compact asset is a
+ *              wordmark only, so the box is trimmed to the artwork's own width
+ *              (120px of empty space would push the header utility cluster
+ *              50px away from the visible mark).
+ *
+ * TONES
+ *   The whole brand system was rebuilt for the opaque white (#fff) header:
+ *   flat 2D solid fills only, no gradients and no drop-shadow filters.
+ *
+ *   `mono`    — deep graphite carbon #1E2225. Default on every light surface.
+ *   `reverse` — pure white #FFFFFF. For dark surfaces (hero, footer, dark
+ *               bands); pair it with `chip` to place it on the graphite
+ *               #1E2225 plate (the same plate the favicon uses).
+ *
+ *   Every cut-out in the artwork is TRUE TRANSPARENT, so the marks read
+ *   correctly on white, on dark plates and in single-colour print.
+ */
+import { LOGO, SITE } from '@config/site';
+
+interface Props {
+	/** Which measured variant to render. */
+	variant?: 'claim' | 'compact';
+	/** Colour treatment. `mono` (graphite #1E2225) for light surfaces, `reverse` (white) for dark ones. */
+	tone?: 'mono' | 'reverse';
+	/** Render the mark on a graphite #1E2225 plate (used with `tone="reverse"`). */
+	chip?: boolean;
+	/** Rendered width in px. Defaults to the measured desktop value. */
+	width?: number;
+	class?: string;
+}
+
+const { variant = 'claim', tone = 'mono', chip = false, width, class: className } = Astro.props;
+
+const spec = LOGO[variant];
+const renderedWidth = width ?? spec.displayWidth;
+// Use the MEASURED rendered box, not a ratio-derived height: the reference
+// pins the height with `min-h-[55px]`, and that box is what determines the
+// header layout.
+const renderedHeight = spec.displayHeight;
+
+// The compact asset is a single simplified wordmark; the claim variant has a
+// dedicated asset per tone.
+const src = variant === 'compact' ? LOGO.assets.compact : LOGO.assets[tone];
+
+// Intrinsic size of the referenced asset — taken from the config so the
+// browser reserves the correct box before the image decodes.
+const intrinsicWidth = spec.width;
+const intrinsicHeight = spec.height;
+---
+
+<span
+	class:list={['inline-flex items-center', chip && 'rounded-[2px] bg-[#1E2225] p-[6px]', className]}
+	style={`width:${renderedWidth}px;height:${renderedHeight}px`}
+	data-logo-variant={variant}
+	data-logo-tone={variant === 'compact' ? 'mono' : tone}
+	data-logo-chip={chip ? 'true' : 'false'}
+>
+	<img
+		src={src}
+		alt={LOGO.alt}
+		width={intrinsicWidth}
+		height={intrinsicHeight}
+		class="h-full w-full object-contain"
+		loading="eager"
+		decoding="async"
+	/>
+</span>
+
+<!-- Screen-reader label for the logo link wrapper. -->
+<span class="sr-only">{SITE.name} homepage</span>

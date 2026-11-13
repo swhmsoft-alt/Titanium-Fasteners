@@ -1,0 +1,72 @@
+---
+/**
+ * LinkCardGrid — 3 列「图标 + 标题 + 箭头链接」网格（本页用了两次）。
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   article  y=6533 / 6877  h=344
+ *            container-fluid grid grid-cols-1 gap-40 py-32 md:grid-cols-3
+ *            md:gap-16 lg:gap-24 lg:py-48
+ *   header   mb-24 flex h-[60px] content-start items-center lg:mb-32
+ *   icon     48×48 .mr-12.lg:mr-16.w-40.lg:w-48.min-w-40.lg:min-w-48
+ *   h2       24px text-blue-dark3（参考站此处刻意比其它区块标题小）
+ *   li       pb-16 lg:pb-20，链接左侧 24px 箭头
+ */
+interface Link {
+	label: string;
+	href: string;
+}
+
+interface Card {
+	icon: string;
+	iconAlt: string;
+	heading: string;
+	links: Link[];
+}
+
+interface Props {
+	cards: Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<article
+	class="container-fluid grid grid-cols-1 gap-40 py-32 md:grid-cols-3 md:gap-16 lg:gap-24 lg:py-48"
+>
+	{
+		cards.map((card) => (
+			<section>
+				<div class="mb-24 flex h-[60px] content-start items-center lg:mb-32">
+					<figure class="mr-12 lg:mr-16 w-40 lg:w-48 min-w-40 lg:min-w-48">
+						<img
+							class="aspect-1/1 w-full"
+							src={card.icon}
+							alt={card.iconAlt}
+							width="48"
+							height="48"
+							loading="lazy"
+							decoding="async"
+							style="aspect-ratio:1 / 1"
+						/>
+					</figure>
+					<h2 class="text-lead text-blue-dark3">{card.heading}</h2>
+				</div>
+				<ul>
+					{card.links.map((link) => (
+						<li class="pb-16 lg:pb-20">
+							<a
+								class="text-p active-text-blue flex cursor-pointer items-center text-black outline-none hover:text-blue hover:underline focus:text-blue focus:underline focus-visible:text-blue focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark"
+								href={link.href}
+							>
+								<svg class="w-24 min-w-24 h-24 lg:w-32 lg:min-w-32 lg:h-32 mr-16" aria-hidden="true">
+									<use class="stroke-blue" href="/images/sprite.svg#arrow-right"></use>
+								</svg>
+								<span class="truncate pr-4">{link.label}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</article>

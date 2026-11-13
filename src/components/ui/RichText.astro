@@ -1,0 +1,18 @@
+---
+/**
+ * RichText — the reference site's constrained body-copy column.
+ *
+ * MEASURED: `p.text-p max-w-rich-text` renders at 782px wide.
+ * That limit is what controls line wrapping on the reference's product
+ * detail pages, so it is reproduced exactly here.
+ */
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['max-w-[782px] text-p text-gray', className]}>
+	<slot />
+</div>

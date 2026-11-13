@@ -1,0 +1,57 @@
+---
+/**
+ * ProductCard — one hit in the category page's product list.
+ *
+ * MEASURED on the reference (`/global-en/eshop/products/.../c/01.100/`,
+ * 1440×1000, 2026-11):
+ *   article      w=308  h=360 (or 388 with a 3-line description)
+ *   figure       308×205  (aspect-3/2)
+ *   h2           20px/32px  #004975   ("BN 272 | DIN 912- ISO 4762")
+ *   description  18px/28.8px #0e2f4b  (line-clamp-3, bold)
+ *   material     18px/28.8px #333     (line-clamp-2)
+ *
+ * The reference marks this element `<article class="mb-4">` — it MUST stay an
+ * `<article>`, because the acceptance probe selects `main article, main > section`.
+ */
+import type { ProductCardView } from '@data/products';
+
+interface Props {
+	product: ProductCardView;
+	/** Only the first row is eager-loaded on the reference. */
+	priority?: boolean;
+}
+
+const { product, priority = false } = Astro.props;
+---
+
+<article class="mb-4">
+	<a href={product.href}>
+		<div class="relative">
+			<figure class="mx-auto mb-12 aspect-3/2">
+				<img
+					src={product.image}
+					alt={product.alt}
+					class="aspect-3/2 bg-gray-vlight"
+					loading={priority ? 'eager' : 'lazy'}
+					fetchpriority={priority ? 'high' : undefined}
+				/>
+			</figure>
+		</div>
+
+		<h2 class="text-p mt-12 flex font-medium text-blue-dark3">
+			<span class="text-nowrap font-bold">{product.sku}</span>
+			<span class="px-4">|</span>
+			<div class="flex flex-wrap">
+				{product.standards.map((standard) => <div>{standard}</div>)}
+			</div>
+		</h2>
+
+		<p class="text-p-sm mt-8 line-clamp-3 overflow-hidden text-ellipsis text-blue-dark lg:text-p-s">
+			<span class="font-bold">{product.description}</span>
+		</p>
+
+		<p class="text-p-sm mt-16 line-clamp-2 overflow-hidden text-ellipsis text-gray lg:text-p-s">
+			{product.material}
+		</p>
+	</a>
+</article>

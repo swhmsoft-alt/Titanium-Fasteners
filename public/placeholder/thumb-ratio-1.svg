@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 202 202" width="202" height="202" role="img" aria-label="Placeholder">
+  <!-- PLACEHOLDER — square thumbnail, ratio 1.0 (measured: 202×202). -->
+  <rect width="202" height="202" fill="#cce4f3"/>
+  <g fill="none" stroke="#004975" stroke-width="1.5" opacity="0.45">
+    <path d="M101 62l34 17v34l-34 17-34-17V79z"/>
+    <path d="M101 62v68M67 79l34 17 34-17"/>
+  </g>
+  <text x="101" y="162" font-family="Archivo, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#004975" text-anchor="middle">Thumb 1.0</text>
+</svg>

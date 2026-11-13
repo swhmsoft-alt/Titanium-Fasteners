@@ -1,0 +1,58 @@
+---
+/**
+ * ServicesSection — homepage block 2.
+ *
+ * PHASE A (1:1 COPY). Reference geometry, measured at 1440×1000
+ * (docs/reference/homepage-outline.txt, lines 22–39):
+ *
+ *   article y=987 h=946 pt-24 pb-24   .container-fluid-wide.py-24
+ *   h2      44px  rgb(0,49,78)        .text-h2.pb-16.lg:pb-24.text-h3.text-blue-dark2
+ *   grid    y=1115 h=761 gap-32       .lg:grid-cols-8
+ *   card 1  821×761  lg:col-span-5   figure r=1.079
+ *   card 2  511×681  lg:col-span-3   md:my-40, figure r=0.75
+ *   overlay .container-fluid.absolute.bottom-24.px-32.lg:bottom-32.lg:px-48
+ *           heading H3 32px, white
+ */
+import Figure from '@components/ui/Figure.astro';
+import { SERVICES } from '@data/home';
+---
+
+<article class="container-fluid-wide py-24">
+	<h2 class="text-h2 pb-16 lg:pb-24 text-h3 text-blue-dark2">{SERVICES.heading}</h2>
+
+	<div
+		class="my-24 flex flex-col gap-24 md:grid md:grid-cols-6 md:grid-rows-1 lg:my-32 lg:grid-cols-8 lg:gap-32 wd:grid-cols-12 ul:grid-cols-18"
+	>
+		{
+			SERVICES.cards.map((card, i) => (
+				<a
+					href={card.href}
+					class:list={[
+						'relative rounded-2xl bg-[linear-gradient(0deg,rgba(0,0,0,0.3),rgba(0,0,0,0))]',
+						i === 0
+							? 'sm:mb-20 md:w-auto md:mb-0 md:col-span-4 lg:col-span-5 wd:col-span-7 ul:col-span-11'
+							: 'md:w-auto md:my-40 md:col-span-2 lg:col-span-3 wd:col-span-5 ul:col-span-7',
+					]}
+				>
+					<Figure
+						src={card.image.src}
+						alt={card.image.alt}
+						ratio={card.image.ratio}
+						class="relative -z-1 rounded-2xl w-full"
+					/>
+					<div class="container-fluid absolute bottom-24 px-32 lg:bottom-32 lg:px-48">
+						<h3 class="text-h4 font-bold pb-24 text-white lg:text-h4-l">
+							{card.heading}
+						</h3>
+						<p class="text-lead hidden pb-32 text-white wd:block">{card.body}</p>
+						<div>
+							<svg class="lg:w-32 mb-0 h-24 w-24 pb-0 lg:h-32 stroke-white">
+								<use href="/images/sprite.svg#arrow-right-bold"></use>
+							</svg>
+						</div>
+					</div>
+				</a>
+			))
+		}
+	</div>
+</article>

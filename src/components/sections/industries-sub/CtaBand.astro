@@ -1,0 +1,73 @@
+---
+/**
+ * CtaBand — the closing "Customer Success" band.
+ *
+ * Reference markup (qa/ref/industries-medical.html):
+ *   <article class="py-56 lg:py-72 bg-gray-vlight">
+ *     <div class="container-fluid-wide relative flex flex-wrap justify-between px-40 md:flex-nowrap ul:px-20">
+ *       <div class="w-full md:-mr-[34%] md:w-[68%] lg:-mr-[38%] lg:w-[72%] wd:w-[65%] ul:-mr-[163px] ul:w-[68%]">
+ *         <figure class="w-full">
+ *           <img class="aspect-4/3 w-full h-full object-cover rounded-t-lg md:rounded-lg">
+ *       <div class="z-1 relative h-fit w-full rounded-b-lg bg-white p-32 md:right-0 md:mt-[21%]
+ *                   md:w-[512px] md:rounded-lg lg:mt-[185px] lg:w-[604px] lg:p-48
+ *                   wd:mt-[215px] wd:w-[584px] ul:mt-[25%] ul:w-[580px]">
+ *         <p class="mb-12 text-p-l text-gray-medium lg:mb-16">
+ *         <h2 class="text-h3 mb-24 lg:mb-32 text-blue-dark3 hyphens-auto">
+ *         <p class="text-lead mb-24 text-gray lg:mb-32">
+ *         <a class="text-button …">
+ */
+import type { Img } from '@data/industries-sub/types';
+
+interface Props {
+	heading: string;
+	eyebrow: string;
+	image: Img;
+	description: string;
+	cta: { label: string; href: string } | null;
+}
+
+const { heading, eyebrow, image, description, cta } = Astro.props;
+
+const BTN_BASE =
+	'text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-[28px] inline-block text-center px-24 pt-[11px] pb-[12px] lg:pt-[13px] lg:pb-[14px]';
+const BTN_SECONDARY =
+	'bg-transparent text-blue-dark3 border-2 border-blue-dark3 hover:bg-transparent hover:text-blue hover:border-blue hover:ring-2 hover:ring-blue hover:ring-offset-0';
+---
+
+<article class="py-56 lg:py-72 bg-gray-vlight">
+	<div
+		class="container-fluid-wide relative flex flex-wrap justify-between px-40 md:flex-nowrap ul:px-20"
+	>
+		<div
+			class="w-full md:-mr-[34%] md:w-[68%] lg:-mr-[38%] lg:w-[72%] wd:w-[65%] ul:-mr-[163px] ul:w-[68%]"
+		>
+			<figure class="w-full">
+				<img
+					class="aspect-4/3 w-full h-full object-cover rounded-t-lg md:rounded-lg"
+					src={image.src}
+					alt={image.alt}
+					width={image.width}
+					height={image.height}
+					loading="lazy"
+					decoding="async"
+					style="aspect-ratio:4 / 3"
+				/>
+			</figure>
+		</div>
+
+		<div
+			class="z-1 relative h-fit w-full rounded-b-lg bg-white p-32 md:right-0 md:mt-[21%] md:w-[512px] md:rounded-lg lg:mt-[185px] lg:w-[604px] lg:p-48 wd:mt-[215px] wd:w-[584px] ul:mt-[25%] ul:w-[580px]"
+		>
+			{eyebrow && <p class="mb-12 text-p-l text-gray-medium lg:mb-16">{eyebrow}</p>}
+			<h2 class="text-h3 mb-24 lg:mb-32 text-blue-dark3 hyphens-auto">{heading}</h2>
+			{description && <p class="text-lead mb-24 text-gray lg:mb-32">{description}</p>}
+			{
+				cta && (
+					<a class={`${BTN_BASE} ${BTN_SECONDARY}`} href={cta.href}>
+						{cta.label}
+					</a>
+				)
+			}
+		</div>
+	</div>
+</article>

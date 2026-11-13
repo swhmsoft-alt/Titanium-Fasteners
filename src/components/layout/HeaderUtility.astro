@@ -1,0 +1,70 @@
+---
+/**
+ * HeaderUtility — the right-hand cluster: Contact, language, search.
+ *
+ * MEASURED on the reference site:
+ *   Contact           — rounded-[28px] border-2 border-blue-dark3, px-20
+ *   Language switcher — 36×36px circle (h-36 w-36 rounded-full)
+ *   Search            — icon button positioned at the right
+ */
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['flex items-center gap-16', className]}>
+	<a
+		href="/contact/"
+		class="hidden rounded-pill border-2 border-blue-dark3 px-20 py-8 text-label text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white md:inline-block"
+	>
+		Contact
+	</a>
+
+	<!-- Language switcher -->
+	<button
+		type="button"
+		class="flex h-36 w-36 items-center justify-center rounded-full border border-gray-light text-blue-dark3 transition-colors duration-300 hover:border-blue"
+		aria-label="Language switcher"
+		aria-haspopup="true"
+		aria-expanded="false"
+	>
+		<svg
+			class="h-20 w-20"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<circle cx="12" cy="12" r="10" />
+			<path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20" />
+		</svg>
+	</button>
+
+	<!-- Search -->
+	<button
+		type="button"
+		class="flex h-36 w-36 items-center justify-center rounded-full text-blue-dark3 transition-colors duration-300 hover:text-blue"
+		aria-label="Open search"
+		aria-haspopup="true"
+		aria-expanded="false"
+	>
+		<svg
+			class="h-20 w-20"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
+			<circle cx="11" cy="11" r="8" />
+			<path d="m21 21-4.3-4.3" />
+		</svg>
+	</button>
+</div>

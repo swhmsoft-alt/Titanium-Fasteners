@@ -1,0 +1,5 @@
+id,name,density_g_cm3,corrosion_1_5,proof_strength_mpa,tensile_mpa,max_temp_c,notes
+ti-gr5,Titanium Grade 5 (Ti-6Al-4V),4.43,5,828,895,315,ASTM F468 / F593 finished fastener values; ASTM B348 bar stock; AMS 4928 for aerospace
+ti-gr2,Titanium Grade 2 (CP-Ti),4.51,4,275,345,300,ASTM B348 bar stock; ASTM F593 finished fastener values up to 345 MPa yield for <= 3/4 inch
+ti-gr9,Titanium Grade 9 (Ti-3Al-2.5V),4.43,4,690,900,600,ASTM B348 high-temp; use above 300 C where Gr5 creep is insufficient
+ti-gr23,Titanium Grade 23 (Ti-6Al-4V ELI),4.43,5,790,860,315,AMS 4928 / medical implant; corrosion_1_5 is for seawater exposure testing

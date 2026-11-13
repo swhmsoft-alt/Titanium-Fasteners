@@ -1,0 +1,94 @@
+---
+/**
+ * MegaMenu — the full-width dropdown panel.
+ *
+ * MEASURED on the reference site (1440×1000, 2026-11, CDP):
+ *   panel      — fixed, w-full, bg #fff, shadow 0 4px 4px rgba(0,0,0,.05),
+ *                overflow-y auto, transition top/max-height 300ms ease-in-out
+ *   inner      — .container-fluid + per-panel `flex flex-col-reverse py-56`;
+ *                the "Go to X" link is a SIBLING of the grid → renders BELOW it
+ *   grid       — `grid grid-cols-3 gap-48` (measured 401.33px columns)
+ *   column     — `flex flex-col gap-48`
+ *   group      — L2 heading LINK (`text-p-s font-bold` = 18px/700/#000) plus
+ *                optionally a `ul.mt-24` of L3 links
+ *   child link — 24px / 400 / #666666 (`text-lead-l text-gray-medium`)
+ *   "Go to X"  — 16px / 700 / #007ac3 + a 16px arrow-right icon
+ *
+ * Driven by NAVIGATION (src/config/site.ts) — the same source as the nav.
+ *
+ * ONE PANEL PER NAV ITEM: the container stays mounted and each top-level
+ * item owns a `[data-mega-panel]` section; the header script reveals the
+ * matching one.
+ *
+ * NOTE: the container must NOT carry Tailwind's `hidden` utility — that
+ * class is `display:none` and would override the HTML `hidden` attribute
+ * the script toggles.
+ */
+import Container from '@components/ui/Container.astro';
+import { NAVIGATION } from '@config/site';
+---
+
+<div
+	id="mega-menu"
+	class="fixed left-0 top-91 z-[190] max-h-[calc(100vh-91px)] w-full overflow-y-auto bg-white shadow-[0_4px_4px_rgba(0,0,0,0.05)] transition-[top,max-height] duration-300 ease-in-out"
+	data-mega-menu
+	hidden
+>
+	<Container>
+	{
+		NAVIGATION.map((item, index) => (
+			<div data-mega-panel={item.name} hidden={index !== 0}>
+				<div class="flex flex-col-reverse py-56">
+					{item.lead && (
+						<a
+							href={item.lead.href}
+							class="mt-48 flex items-center font-bold text-body text-blue"
+						>
+							{item.lead.name}
+							<svg class="h-16 w-16 stroke-blue ml-8" aria-hidden="true">
+								<use href="/images/sprite.svg#arrow-right" />
+							</svg>
+						</a>
+					)}
+
+					<ul class="grid grid-cols-1 gap-48 md:grid-cols-2 lg:grid-cols-3">
+						{item.children?.map((column) => (
+							<li class="flex flex-col gap-48">
+								{column.groups.map((group) => (
+									<div>
+										{group.heading && (
+											<a
+												href={group.headingHref}
+												class="text-p-s font-bold text-black"
+												target={group.headingExternal ? '_blank' : undefined}
+												rel={group.headingExternal ? 'noreferrer noopener' : undefined}
+											>
+											{group.heading}
+										</a>
+									)}
+									{group.items.length > 0 && (
+										<ul class="mt-24">
+											{group.items.map((child) => (
+												<li class="mt-16 text-lead-l text-gray-medium">
+													<a
+														href={child.href}
+														target={child.external ? '_blank' : undefined}
+														rel={child.external ? 'noreferrer noopener' : undefined}
+														class="transition-colors duration-300 hover:text-blue"
+														>
+														{child.name}
+													</a>
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
+							))}
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	))}
+	</Container>
+</div>

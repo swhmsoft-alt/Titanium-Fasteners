@@ -1,0 +1,194 @@
+---
+/**
+ * ProductGrid — the filter rail + the product hit list.
+ *
+ * MEASURED on the reference (`/global-en/eshop/products/.../c/01.100/`,
+ * 1440×1000, 2026-11):
+ *   outer grid   x=70  y=741  w=1285  cols 297.25×4  gap 32
+ *                 (grid gap-32 md:grid-cols-3 lg:grid-cols-4)
+ *   filter rail  col 1 of 4 (297.25px)
+ *   hits list    x=399  y=798  w=956  cols 307.9×3  gap 16
+ *                 (ais-InfiniteHits-list grid sm:grid-cols-2 lg:grid-cols-3 gap-16 mb-72)
+ *   count label  709 Products — 21px/25.2px #004975 (text-h5-l at ≥840px)
+ *   filter head  16px/25.6px #333, one per accordion, 63px apart
+ */
+import ProductCard from './ProductCard.astro';
+import type { FilterGroupView, ProductCardView } from '@data/products';
+
+interface Props {
+	/** 该页展示的族卡。 */
+	products: ProductCardView[];
+	/** 左侧筛选栏的维度组。 */
+	filterGroups: FilterGroupView[];
+	/** 产品总数（网格左上角计数）。 */
+	productCount: number;
+}
+
+const { products, filterGroups, productCount } = Astro.props;
+
+/** 卡片 → 维度取值表，序列化进 data 属性供客户端筛选用。 */
+const filtersJson = (p: ProductCardView) => JSON.stringify(p.filters);
+---
+
+<div class="grid gap-32 md:grid-cols-3 lg:grid-cols-4" data-filter-root>
+	<!-- ── Filter rail (column 1) ─────────────────────────────────────── -->
+	<div>
+		{
+			filterGroups.map((group) => (
+				<details class="group border-b py-20 text-gray md:px-20 md:pt-16 border-gray-soft" data-filter-group={group.id}>
+					<summary class="flex cursor-pointer items-center justify-between normal-case list-none">
+						<div class="flex items-center overflow-hidden text-p-sm">
+							<span>{group.label}</span>
+						</div>
+						<svg class="w-16 h-16 text-gray-medium ml-8 transition-transform group-open:rotate-180" aria-hidden="true">
+							<use href="/images/sprite.svg#chevron-down"></use>
+						</svg>
+					</summary>
+					<div class="mt-16 flex flex-col gap-8">
+						{group.options.map((opt) => (
+							<label class="flex cursor-pointer items-center gap-8 text-p-sm text-gray">
+								<input
+									type="checkbox"
+									class="h-16 w-16 shrink-0 accent-blue"
+									value={opt.id}
+									data-filter-value={group.id}
+								/>
+								<span>{opt.label}</span>
+							</label>
+						))}
+					</div>
+				</details>
+			))
+		}
+		<button
+			type="button"
+			class="mt-16 text-p-sm text-blue underline"
+			data-filter-clear
+			hidden
+		>
+			Clear filters
+		</button>
+	</div>
+
+	<!-- ── Product hits (columns 2-4) ──────────────────────────────────── -->
+	<div class="md:col-span-2 lg:col-span-3">
+		<div class="mb-16 text-h5-s text-blue-dark3 md:mb-32 md:text-h5-l">
+			<span class="font-bold" data-filter-count>{productCount}</span> Products
+		</div>
+
+		<ol class="ais-InfiniteHits-list grid sm:grid-cols-2 lg:grid-cols-3 gap-16 mb-72" data-filter-list>
+			{
+				products.map((product, i) => (
+					<li class="ais-InfiniteHits-item w-full" data-filter-item data-filters={filtersJson(product)}>
+						<ProductCard product={product} priority={i < 3} />
+					</li>
+				))
+			}
+		</ol>
+
+		<p class="text-p-sm text-gray" data-filter-empty hidden>
+			No product family matches this combination. Clear a filter — sizes not listed are made to
+			order.
+		</p>
+	</div>
+</div>
+
+<!--
+	客户端筛选 —— 纯 vanilla，不用框架、不加岛。
+
+	为什么不用 React 岛：左侧筛选栏是**版式**（参考站已验收：col 1 of 4），
+	筛选只是让它动起来。用一个 <script> 就够，引一个岛反而把整页拖进 hydration。
+
+	渐进增强：无 JS 时左侧是 <details> 折叠的完整选项列表（可展开查看），
+	右侧产品列表完整可见 —— 与参考站的静态形态一致。
+
+	URL 同步：history.replaceState（不产生历史记录，不打断页面）。
+-->
+<script>
+	for (const root of document.querySelectorAll('[data-filter-root]')) {
+		const list = root.querySelector('[data-filter-list]');
+		const items = Array.from(root.querySelectorAll<HTMLElement>('[data-filter-item]'));
+		const countEl = root.querySelector<HTMLElement>('[data-filter-count]');
+		const emptyEl = root.querySelector<HTMLElement>('[data-filter-empty]');
+		const clearBtn = root.querySelector<HTMLButtonElement>('[data-filter-clear]');
+		if (!list || items.length === 0) continue;
+
+		const readUrl = (): Record<string, string[]> => {
+			const q = new URLSearchParams(window.location.search);
+			const sel: Record<string, string[]> = {};
+			for (const g of root.querySelectorAll<HTMLElement>('[data-filter-group]')) {
+				const id = g.getAttribute('data-filter-group') ?? '';
+				sel[id] = [];
+				g.querySelectorAll<HTMLInputElement>('[data-filter-value]').forEach((cb) => {
+					const on = (q.get(id) ?? '').split(',').includes(cb.value);
+					cb.checked = on;
+					if (on) sel[id].push(cb.value);
+				});
+			}
+			return sel;
+		};
+
+		const writeUrl = (sel: Record<string, string[]>) => {
+			const q = new URLSearchParams(window.location.search);
+			for (const [id, vals] of Object.entries(sel)) {
+				q.delete(id);
+				if (vals.length) q.set(id, vals.join(','));
+			}
+			const qs = q.toString();
+			window.history.replaceState(
+				null,
+				'',
+				qs ? `${window.location.pathname}?${qs}` : window.location.pathname,
+			);
+		};
+
+		const apply = (sel: Record<string, string[]>) => {
+			let shown = 0;
+			for (const item of items) {
+				const f = JSON.parse(item.getAttribute('data-filters') ?? '{}') as Record<
+					string,
+					string[]
+				>;
+				const hit = Object.entries(sel).every(([id, vals]) => {
+					if (!vals || vals.length === 0) return true;
+					const have = f[id] ?? [];
+					return vals.some((v) => have.includes(v));
+				});
+				item.hidden = !hit;
+				if (hit) shown++;
+			}
+			if (countEl) countEl.textContent = String(shown);
+			if (emptyEl) emptyEl.hidden = shown > 0;
+			const active = Object.values(sel).some((v) => v.length > 0);
+			if (clearBtn) clearBtn.hidden = !active;
+		};
+
+		const current = readUrl();
+		apply(current);
+		writeUrl(current);
+
+		root.addEventListener('change', () => {
+			const sel: Record<string, string[]> = {};
+			for (const g of root.querySelectorAll<HTMLElement>('[data-filter-group]')) {
+				const id = g.getAttribute('data-filter-group') ?? '';
+				sel[id] = Array.from(g.querySelectorAll<HTMLInputElement>('[data-filter-value]'))
+					.filter((cb) => cb.checked)
+					.map((cb) => cb.value);
+			}
+			apply(sel);
+			writeUrl(sel);
+		});
+
+		clearBtn?.addEventListener('click', () => {
+			root
+				.querySelectorAll<HTMLInputElement>('[data-filter-value]')
+				.forEach((cb) => (cb.checked = false));
+			const sel: Record<string, string[]> = {};
+			for (const g of root.querySelectorAll<HTMLElement>('[data-filter-group]')) {
+				sel[g.getAttribute('data-filter-group') ?? ''] = [];
+			}
+			apply(sel);
+			writeUrl(sel);
+		});
+	}
+</script>

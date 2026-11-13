@@ -1,0 +1,32 @@
+# build output
+dist/
+.output/
+.astro/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.production
+.env.local
+
+# logs
+npm-debug.log*
+yarn-error.log*
+*.log
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# QA artefacts — keep only the audited sub-trees, ignore the scratch output
+qa/*
+!qa/targets/
+!qa/backup-home-sections/
+!qa/DEVIATIONS.md
+
+# scratch
+*.tmp

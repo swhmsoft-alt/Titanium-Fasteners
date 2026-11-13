@@ -1,0 +1,44 @@
+{
+  "name": "titanium-fasteners",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Titanium fasteners manufacturer website — reference-guided reconstruction (information architecture and design system derived from a public B2B fastening-industry reference site; all branding, copy, imagery and data are original)",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/astro-build.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "measure": "node scripts/measure-page.mjs",
+    "measure:home": "node scripts/measure-page.mjs / --target qa/targets/home.json",
+    "probe": "node scripts/probe-ref.mjs",
+    "assets": "node scripts/dl-assets.mjs",
+    "target": "node scripts/gen-target.mjs",
+    "recipe": "node scripts/recipe.mjs",
+    "grep": "node scripts/safe-grep.mjs",
+    "preflight": "node scripts/preflight.mjs",
+    "budget": "node scripts/lib/session-budget.mjs status",
+    "gen:industries": "node scripts/gen-industries.mjs",
+    "gen:industries-aerospace": "node scripts/gen-industries-aerospace.mjs",
+    "gen:industries-sub": "node scripts/gen-industries-sub.mjs",
+    "gen:products": "node scripts/gen-products.mjs",
+    "products": "node scripts/products.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/archivo": "^5.3.0",
+    "@tailwindcss/vite": "^4.1.17",
+    "astro": "^5.16.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.1.17"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}

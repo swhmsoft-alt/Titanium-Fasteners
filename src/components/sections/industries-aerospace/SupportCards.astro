@@ -1,0 +1,58 @@
+---
+/**
+ * SupportCards — "How We Support You in Aerospace Manufacturing" 6 卡网格。
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   article  y=5238 h=512   container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40
+ *   h2      44px
+ *   grid    3 cols (sm:2) border-collapse
+ *   card    210px base (sm:250px, wd:220px) flex justify-end, 1px border-blue-70 三边
+ *           the reference card height is responsive: h-[210px] base, sm:h-[250px],
+ *           wd:h-[220px] — at 1440px the card therefore measures 220px.
+ *           (The DOM tree report truncates long class attributes, so the
+ *           responsive part is only visible in the raw reference HTML.)
+ *   icon    48×48 absolute top-16, hover 时上移
+ */
+interface Card {
+	icon: string;
+	iconAlt: string;
+	title: string;
+	description: string;
+}
+
+interface Props {
+	heading: string;
+	cards: Card[];
+}
+
+const { heading, cards } = Astro.props;
+---
+
+<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">
+	<h2 class="text-h3 text-blue-dark2 mb-16 lg:mb-24">{heading}</h2>
+
+	<div class="grid border-collapse grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+		{
+			cards.map((card) => (
+				<section class="group relative flex h-[210px] flex-col justify-end overflow-hidden border-b border-l border-r border-blue-70 p-12 pb-24 transition-colors duration-500 first:rounded-tl-lg first:border-t last:rounded-br-lg hover:bg-blue-light max-sm:first:rounded-tr-lg max-sm:last:rounded-bl-lg sm:h-[250px] sm:even:border-l-0 md:first:border-l wd:h-[220px] md:odd:[&:not(:nth-of-type(1))]:border-l-0 sm:[&:nth-of-type(2)]:border-t sm:max-md:[&:nth-of-type(2)]:rounded-tr-lg md:[&:nth-of-type(3)]:rounded-tr-lg md:[&:nth-of-type(3)]:border-t md:[&:nth-of-type(4)]:border-l sm:max-md:[&:nth-of-type(5)]:rounded-bl-lg md:[&:nth-of-type(4)]:rounded-bl-lg">
+					<figure class="absolute top-16 group-hover:-top-64 duration-500 transition-all w-40 lg:w-48">
+						<img
+							class="aspect-1/1 w-full"
+							src={card.icon}
+							alt={card.iconAlt}
+							width="48"
+							height="48"
+							loading="lazy"
+							decoding="async"
+							style="aspect-ratio:1 / 1"
+						/>
+					</figure>
+					<h3 class="text-h5 text-black">{card.title}</h3>
+					<p class="text-p-sm h-0 overflow-hidden text-gray transition-all duration-500 group-hover:h-[100px] sm:group-hover:h-[140px] wd:group-hover:h-[100px]">
+						{card.description}
+					</p>
+				</section>
+			))
+		}
+	</div>
+</article>

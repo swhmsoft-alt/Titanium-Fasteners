@@ -1,0 +1,86 @@
+---
+/**
+ * /global-en/industries/aerospace/
+ * Reference: https://www.bossard.com/global-en/industries/aerospace/
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   hero     breadcrumb 3 级 | label 20px | h1 64px | lead 24px | 图 634×507 aspect-5/4
+ *   block 1  Aerospace Fastening Solutions      y= 829 h=865  H2 32px
+ *   block 2  Supplier Network                   y=1694 h=865  H2 32px
+ *   block 3  Working at Bossard Aerospace       y=2560 h=865  H2 32px
+ *   block 4  News Overview                      y=3473 h=774  H2 44px
+ *   block 5  Your Trusted C-Parts Management…   y=4295 h=903  H2 44px
+ *   block 6  How We Support You in Aerospace…   y=5238 h=512  H2 44px
+ *   block 7  Bossard Aerospace Contacts         y=5866 h=610  H2 44px
+ *   block 8  Product Solutions                  y=6533 h=344  H2 24px
+ *   block 9  About Bossard Aerospace            y=6877 h=344  H2 24px
+ *
+ * The reference's <main> holds the hero <header>, three teaser <article>s
+ * (container-fluid-wide py-24), the news / video / support / contacts
+ * articles and two 3-column link grids.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import IndustryCards from '@components/sections/industries/IndustryCards.astro';
+import Hero from '@components/sections/industries-aerospace/Hero.astro';
+import NewsOverview from '@components/sections/industries-aerospace/NewsOverview.astro';
+import CpartsVideo from '@components/sections/industries-aerospace/CpartsVideo.astro';
+import SupportCards from '@components/sections/industries-aerospace/SupportCards.astro';
+import ContactsAccordion from '@components/sections/industries-aerospace/ContactsAccordion.astro';
+import LinkCardGrid from '@components/sections/industries-aerospace/LinkCardGrid.astro';
+import RichTextSlot from '@components/sections/industries-aerospace/RichTextSlot.astro';
+import { AEROSPACE as PAGE } from '@data/industries-aerospace';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/global-en/industries/aerospace/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<Hero
+			breadcrumb={PAGE.hero.breadcrumb}
+			eyebrow={PAGE.hero.eyebrow}
+			heading={PAGE.hero.heading}
+			lead={PAGE.hero.lead}
+			image={PAGE.hero.image}
+		/>
+
+		<IndustryCards cards={PAGE.teasers[0]} />
+		<IndustryCards cards={PAGE.teasers[1]} />
+		<IndustryCards cards={PAGE.teasers[2]} />
+
+		<NewsOverview heading={PAGE.news.heading} items={PAGE.news.items} />
+
+		<CpartsVideo
+			heading={PAGE.video.heading}
+			poster={PAGE.video.poster}
+			posterAlt={PAGE.video.posterAlt}
+		/>
+
+		<SupportCards heading={PAGE.support.heading} cards={PAGE.support.cards} />
+
+		<RichTextSlot />
+
+		<ContactsAccordion heading={PAGE.contacts.heading} countries={PAGE.contacts.countries} />
+
+		<LinkCardGrid cards={PAGE.linkGrids[0].cards} />
+		<LinkCardGrid cards={PAGE.linkGrids[1].cards} />
+
+		<RichTextSlot />
+		<RichTextSlot />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

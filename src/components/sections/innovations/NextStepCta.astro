@@ -1,0 +1,84 @@
+---
+/**
+ * NextStepCta — closing call to action of
+ * `/global-en/product-solutions/innovations/`: heading + "Contact Us" button
+ * and its side drawer dialog.
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   h2      y=2756  44px #004975, 2 lines (w=782)
+ *   button  y=2892 x=70 140×49, radius 28, bg #007ac3
+ *   dialog  right drawer 728px wide, image 740×317 (21:9)
+ */
+interface Props {
+	heading: string;
+	buttonLabel: string;
+	dialogImage: string;
+	dialogImageAlt: string;
+	dialogImageWidth: number;
+	dialogImageHeight: number;
+}
+
+const {
+	heading,
+	buttonLabel,
+	dialogImage,
+	dialogImageAlt,
+	dialogImageWidth,
+	dialogImageHeight,
+} = Astro.props;
+---
+
+<div class="container-fluid">
+	<h2 class="text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32">{heading}</h2>
+</div>
+
+<section class="container-fluid">
+	<div class="flex gap-8 py-8">
+		<button
+			class="text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-[28px] inline-block text-center px-24 py-16 bg-blue text-white hover:bg-blue-dark3"
+		>
+			{buttonLabel}
+		</button>
+		<div>
+			<dialog
+				class="max-w-full backdrop:bg-blue-dark backdrop:bg-opacity-80 overflow-visible my-48 lg:my-0 max-h-[calc(100%-96px)] lg:max-h-full bottom-0 lg:bottom-0 left-0 right-0 bg-transparent h-[calc(100vh-96px)] lg:h-full lg:w-[728px]"
+			>
+				<span class="sr-only" id="overlay-label">Overlay</span>
+				<button
+					class="group absolute right-16 top-[-20px] z-10 flex h-40 w-40 items-center justify-center rounded-full border-2 border-blue-dark3 bg-white hover:border-[3px] hover:border-blue lg:fixed lg:right-[708px] lg:top-16"
+				>
+					<span class="sr-only">Close</span>
+					<svg
+						class="h-[16px] w-[16px] inline-block group-hover:text-blue text-blue-dark3 stroke-[1.75]"
+						aria-hidden="true"
+					>
+						<use href="/images/sprite.svg#close"></use>
+					</svg>
+				</button>
+				<div
+					class="scrollbar-hidden absolute bottom-0 left-0 right-0 top-0 h-full w-auto overflow-auto lg:bottom-0 lg:left-auto lg:right-0 lg:top-0 lg:mt-0 lg:w-[728px]"
+				>
+					<div class="bg-white lg:min-h-full">
+						<figure class="w-full">
+							<img
+								class="aspect-21/9 w-full object-cover"
+								src={dialogImage}
+								alt={dialogImageAlt}
+								width={dialogImageWidth}
+								height={dialogImageHeight}
+								loading="lazy"
+								style="aspect-ratio:21 / 9"
+							/>
+						</figure>
+						<div
+							class="p-16 pb-40 sm:px-24 md:px-48 lg:px-64 lg:pb-48 lg:pt-24"
+						>
+							<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
+							<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
+						</div>
+					</div>
+				</div>
+			</dialog>
+		</div>
+	</div>
+</section>

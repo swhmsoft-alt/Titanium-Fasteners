@@ -1,0 +1,55 @@
+---
+/**
+ * Button — the reference site's button system.
+ *
+ * MEASURED on the reference site:
+ *   primary   — background #007ac3, colour #fff, radius 28px,
+ *               padding 13px 24px 14px, font-size 18px, height 49px
+ *   secondary — background transparent, colour #004975, same box
+ *   outline   — 2px solid #004975 border, radius 28px, padding-inline 20px
+ *
+ * The reference's `text-button` class renders 140px wide for "Contact Us"
+ * and 149px for "Request a quote" — width follows the label, not a fixed
+ * value, so no width is set here.
+ */
+type Variant = 'primary' | 'secondary' | 'outline';
+
+interface Props {
+	variant?: Variant;
+	href?: string;
+	type?: 'button' | 'submit';
+	class?: string;
+	/** Accessible label when the visible text is not descriptive. */
+	ariaLabel?: string;
+}
+
+const { variant = 'primary', href, type = 'button', class: className, ariaLabel } = Astro.props;
+
+const base =
+	'inline-flex items-center justify-center text-button font-normal leading-none transition-[background-color,color,border-color,box-shadow] duration-300 ease-in-out';
+
+const styles: Record<Variant, string> = {
+	primary: 'bg-blue text-white hover:bg-blue-dark3',
+	secondary: 'bg-transparent text-blue-dark3 hover:bg-blue-light',
+	outline: 'border-2 border-blue-dark3 bg-transparent text-blue-dark3 hover:bg-blue-dark3 hover:text-white',
+};
+
+const shape =
+	variant === 'outline'
+		? 'rounded-pill px-20 py-8'
+		: 'rounded-pill px-24 py-13 pb-14';
+
+const classes = `${base} ${styles[variant]} ${shape} ${className ?? ''}`;
+---
+
+{
+	href ? (
+		<a href={href} class={classes} aria-label={ariaLabel}>
+			<slot />
+		</a>
+	) : (
+		<button type={type} class={classes} aria-label={ariaLabel}>
+			<slot />
+		</button>
+	)
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Placeholder">
+  <!-- PLACEHOLDER — pillar icon, 48×48px (measured on the reference site). -->
+  <circle cx="24" cy="24" r="22" fill="none" stroke="#004975" stroke-width="2" opacity="0.55"/>
+  <path d="M24 10l12 7v14l-12 7-12-7V17z" fill="none" stroke="#007ac3" stroke-width="2"/>
+</svg>

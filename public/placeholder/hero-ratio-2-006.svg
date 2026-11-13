@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 499" width="1000" height="499" role="img" aria-label="Placeholder">
+  <!--
+    PLACEHOLDER — hero image, ratio 2.006 (measured on the reference site).
+    Replace with own industrial photography.
+
+    NOTE: the filename deliberately contains no dots. A name like
+    "hero-2.006.svg" is parsed by the static server as a file with the
+    extension "006.svg" and fails to resolve — which silently produced a
+    broken image on the homepage.
+  -->
+  <rect width="1000" height="499" fill="#cce4f3"/>
+  <g fill="none" stroke="#004975" stroke-width="2" opacity="0.35">
+    <circle cx="500" cy="250" r="150"/>
+    <path d="M500 100v300M350 250h300"/>
+  </g>
+  <text x="500" y="245" font-family="Archivo, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#004975" text-anchor="middle">Hero 2.006</text>
+  <text x="500" y="275" font-family="Archivo, Helvetica, sans-serif" font-size="15" fill="#007ac3" text-anchor="middle">1000 × 499</text>
+</svg>

@@ -1,0 +1,81 @@
+---
+/**
+ * SiteFooter — the site footer.
+ *
+ * MEASURED on the reference site: a single `.container-fluid` measuring
+ * 461px tall, with five link columns spanning the site's sections, then a
+ * legal row (Privacy Policy, Imprint), then social icons (LinkedIn,
+ * Youtube), then a copyright line with the current year.
+ */
+import Container from '@components/ui/Container.astro';
+import { FOOTER_COLUMNS, SITE, SOCIAL_LINKS } from '@config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-96 bg-blue-dark text-white">
+	<Container class="py-64">
+		<div class="grid grid-cols-2 gap-32 md:grid-cols-3 lg:grid-cols-5">
+			{
+				FOOTER_COLUMNS.map((column) => (
+					<nav aria-label={column.heading}>
+						<h2 class="text-label text-white font-bold">{column.heading}</h2>
+						<ul class="mt-16 flex flex-col gap-8">
+							{column.items.map((item) => (
+								<li>
+									<a
+										href={item.href}
+										class="text-p text-blue-light transition-colors duration-300 hover:text-white hover:underline"
+									>
+										{item.name}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				))
+			}
+		</div>
+
+		<!-- Legal + social -->
+		<div class="mt-64 flex flex-col gap-24 border-t border-blue-dark2 pt-32 md:flex-row md:items-center md:justify-between">
+			<ul class="flex flex-wrap gap-24">
+				<li>
+					<a href="/legal/privacy-policy/" class="text-label text-blue-light hover:text-white">
+						Privacy Policy
+					</a>
+				</li>
+				<li>
+					<a href="/legal/imprint/" class="text-label text-blue-light hover:text-white">
+						Imprint
+					</a>
+				</li>
+			</ul>
+
+			<div class="flex items-center gap-24">
+				<a
+					href={SOCIAL_LINKS.linkedin}
+					class="flex h-48 w-48 items-center justify-center rounded-full bg-blue-dark2 text-white transition-colors duration-300 hover:bg-blue"
+					aria-label="LinkedIn"
+				>
+					<svg class="h-24 w-24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8.09h4.56V23H.22V8.09zM8.34 8.09h4.37v2.04h.06c.61-1.15 2.1-2.37 4.32-2.37 4.62 0 5.47 3.04 5.47 7v8.24h-4.56v-7.3c0-1.74-.03-3.98-2.43-3.98-2.43 0-2.8 1.9-2.8 3.86V23H8.34V8.09z" />
+					</svg>
+				</a>
+				<a
+					href={SOCIAL_LINKS.youtube}
+					class="flex h-48 w-48 items-center justify-center rounded-full bg-blue-dark2 text-white transition-colors duration-300 hover:bg-blue"
+					aria-label="YouTube"
+				>
+					<svg class="h-24 w-24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+					</svg>
+				</a>
+			</div>
+		</div>
+
+		<p class="text-label text-blue-light mt-32">
+			© {year} {SITE.legalName}
+		</p>
+	</Container>
+</footer>

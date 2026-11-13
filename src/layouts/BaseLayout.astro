@@ -1,0 +1,86 @@
+---
+/**
+ * BaseLayout — the global document shell.
+ *
+ * Phase 0 scope: SEO head, canonical/hreflang, fonts, skip-link.
+ * Header, Footer, Mega Menu, cookie bar and back-to-top are added in
+ * Phase 2 (component library) per docs/component-mapping.md §1.1 — they are
+ * deliberately not stubbed here so that Phase 2 builds them once, correctly,
+ * against the measured reference geometry.
+ */
+import '../styles/global.css';
+import { SITE } from '@config/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** Path-only canonical, e.g. "/products/bolts/". Defaults to the current URL path. */
+	canonicalPath?: string;
+	ogImage?: string;
+	/** JSON-LD object injected as-is. */
+	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+	title,
+	description = SITE.description,
+	canonicalPath,
+	ogImage = '/og-default.png',
+	jsonLd,
+} = Astro.props;
+
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+
+		<!-- Open Graph / Twitter -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={SITE.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<!-- Icons / manifest. Favicon = graphite plate (#1E2225) with the white BO monogram. -->
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta name="theme-color" content={SITE.themeColor} />
+
+		{jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+	</head>
+
+	<body class="flex min-h-screen flex-col bg-white text-gray antialiased">
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:absolute focus:left-24 focus:top-24 focus:z-[300] focus:bg-blue focus:px-24 focus:py-12 focus:text-white"
+		>
+			Skip to content
+		</a>
+
+		<!--
+			NOTE: the page content is rendered through the slot WITHOUT an
+			extra <main>. Pages supply their own <main id="main"> so that the
+			skip link and the header live as siblings of it, not nested
+			inside it. A nested <main> is invalid HTML and, more importantly,
+			it pulls the fixed header into the document flow.
+		-->
+		<div class="flex-1">
+			<slot />
+		</div>
+	</body>
+</html>

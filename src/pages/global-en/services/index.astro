@@ -1,0 +1,113 @@
+---
+/**
+ * /global-en/services/
+ * Reference: https://www.bossard.com/global-en/services/
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-10):
+ *   body 4853px, footer 517px, h-overflow 0px
+ *   hero    breadcrumb y=255 | label y=313 20px/28 #666
+ *           h1 y=353 64px/70.4 #004975 | lead 24px/38.4 (2 lines)
+ *   block 1 Inventory and C-Parts Management  y= 604 h=865
+ *   block 2 Fastening Composites              y=1469 h=865
+ *   block 3 Explore Your Benefits             y=2383 h=742
+ *   tail    h2 y=3193 44px/48.4 (782px measure) | figure y=3478 1349×759 (16/9)
+ *
+ * The reference's <main> holds the hero <header>, two <article> teaser-tile
+ * grids, the benefits <article> and the trailing rich-text blocks.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import ServiceGrid from '@components/sections/services/ServiceGrid.astro';
+import BenefitsGrid from '@components/sections/services/BenefitsGrid.astro';
+import { SERVICES as PAGE } from '@data/services';
+
+const currentPathname = Astro.url.pathname;
+const { breadcrumb, eyebrow, heading, lead } = PAGE.hero;
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/global-en/services/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<header
+			class="container-fluid mb-64 mt-40 flex flex-col wd:mb-72 wd:mt-48 wd:flex-row wd:items-center wd:gap-32 ul:mb-72 ul:mt-48"
+		>
+			<div class="max-w-full wd:order-1 wd:grow-0 wd:self-center order-2">
+				<nav
+					class="opacity-100 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+					aria-label="Breadcrumb"
+				>
+					<ol class="flex text-h6-s">
+						<li class="flex items-center">
+							<a href={breadcrumb[0].href} class="breadcrumb L0">
+								<svg
+									class="h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[2]"
+									aria-hidden="true"
+								>
+									<use href="/images/sprite.svg#home"></use>
+								</svg>
+								<span class="sr-only">{breadcrumb[0].label}</span>
+							</a>
+						</li>
+						<li class="flex-shrink-1 flex-grow-0 truncate whitespace-nowrap">
+							<svg
+								class="h-[16px] w-[16px] inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+								aria-hidden="true"
+							>
+								<use href="/images/sprite.svg#chevron-right"></use>
+							</svg>
+							<span aria-current="page">{breadcrumb[1].label}</span>
+						</li>
+					</ol>
+				</nav>
+
+				<p class="text-label mb-8 text-gray-medium lg:mb-12">{eyebrow}</p>
+				<h1 class="text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32">{heading}</h1>
+				<p class="text-lead mb-24 text-gray sm:mb-0">{lead}</p>
+			</div>
+		</header>
+
+		<ServiceGrid cards={PAGE.smartFactory} />
+		<ServiceGrid cards={PAGE.engineering} />
+
+		<BenefitsGrid heading={PAGE.benefits.heading} benefits={PAGE.benefits.items} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
+		</div>
+		<div class="container-fluid">
+			<h2 class="text-h3 pb-24 text-blue-dark3 max-w-rich-text lg:pb-32">{PAGE.blueprint.heading}</h2>
+		</div>
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{PAGE.blueprint.body}</p>
+		</div>
+		<div class="container-fluid-wide">
+			<div class="w-full mb-48 mt-32 lg:mb-56 lg:mt-40">
+				<figure class="cursor-pointer w-full">
+					<img
+						src={PAGE.blueprint.image}
+						alt={PAGE.blueprint.imageAlt}
+						width={PAGE.blueprint.imageWidth}
+						height={PAGE.blueprint.imageHeight}
+						loading="eager"
+						class="aspect-16/9 w-full rounded-2xl"
+						style="aspect-ratio: 16 / 9;"
+					/>
+				</figure>
+			</div>
+		</div>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

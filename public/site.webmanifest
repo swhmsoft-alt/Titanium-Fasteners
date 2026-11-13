@@ -1,0 +1,19 @@
+{
+  "name": "Titanium Fasteners",
+  "short_name": "Ti Fasteners",
+  "description": "Titanium fasteners manufacturing — bolts, screws, studs, nuts and washers, with engineering services and supply-chain programs.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1E2225",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
