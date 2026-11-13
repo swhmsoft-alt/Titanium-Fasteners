@@ -22,11 +22,10 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# QA artefacts — keep only the audited sub-trees, ignore the scratch output
+# QA artefacts — keep only the session ledger and cost log
 qa/*
-!qa/targets/
-!qa/backup-home-sections/
-!qa/DEVIATIONS.md
+!qa/.session/
+!qa/cost-log.jsonl
 
 # scratch
 *.tmp

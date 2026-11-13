@@ -40,7 +40,9 @@
  *   node scripts/gen-bossard-dimensions.mjs --apply                 # 抓取并合并入库
  *   node scripts/gen-bossard-dimensions.mjs --out x.csv din-125     # 只看一个标准
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 const args = process.argv.slice(2);
 const outIdx = args.indexOf('--out');
 const OUT = outIdx >= 0 ? args[outIdx + 1] : null;
@@ -69,6 +71,12 @@ const TARGETS = [
 	{ std: 'din-7991', codes: ['616'], type: 'screw' },
 	{ std: 'din-933', codes: ['54'], type: 'bolt' },
 	{ std: 'din-125', codes: ['671'], type: 'washer' },
+	/* 本波新增（Wave 1）—— 代表 BN 的选择依据见 docs/TIER-A-BATCH-SPEC.md §1b */
+	{ std: 'din-7380', codes: ['19'], type: 'screw' },   // ISO 7380-1 盘头内六角（b="-" → 全牙）
+	{ std: 'din-7984', codes: ['16'], type: 'screw' },   // DIN 7984 低头内六角（b="-"）
+	{ std: 'din-6912', codes: ['15'], type: 'screw' },   // DIN 6912 带导向凸台低头内六角（b="-"）
+	{ std: 'din-931', codes: ['57'], type: 'bolt' },     // DIN 931 半牙外六角（**有真 b**）
+	{ std: 'din-6921', codes: ['2112'], type: 'bolt' },  // DIN 6921 六角法兰螺栓（b="-"）
 ];
 
 const num = (raw) => String(raw ?? '').replace(',', '.');
@@ -78,6 +86,18 @@ function acrossFlats(raw) {
 	const s = String(raw ?? '');
 	const m = s.match(/s(\d+(?:[.,]\d+)?)\s*$/);
 	return m ? num(m[1]) : num(s);
+}
+
+/**
+ * 同一 (螺纹, 长度) 下 Bossard 同时挂着 DIN 与 ISO 两套变体
+ * （如 BN 57 = DIN 931 | ISO 4014：s=DIN/s17 与 ISO/s16、e=18.9 与 17.77）。
+ * 本站标准库以 DIN 为准 → 同规格取 DIN 侧。
+ */
+function variantRank(r) {
+	const s = String(r.s ?? '');
+	if (s.startsWith('DIN/')) return 2;
+	if (s.startsWith('ISO/')) return 0;
+	return 1;
 }
 
 /**
@@ -125,8 +145,10 @@ async function variantsOf(code) {
 			const f = h.variantFeatures ?? {};
 			const g = (k) => (f[k] ?? [])[0] ?? '';
 			out.push({
-				thread: g('d%3Csub%3E1%3C%2Fsub%3E'),
-				d1: g('d%3Csub%3E1%3C%2Fsub%3E'),
+				/* 线程名：Bossard 用欧式小数逗号（M2,5）—— 统一成点号，
+				 * 否则 CSV 里会多出一列，且 D1_MAX 查不到该螺纹。 */
+				thread: g('d%3Csub%3E1%3C%2Fsub%3E').replace(/,/g, '.'),
+				d1: g('d%3Csub%3E1%3C%2Fsub%3E').replace(/,/g, '.'),
 				d2: g('d%3Csub%3E2%3C%2Fsub%3E'),
 				d2max: g('d%3Csub%3E2%3C%2Fsub%3E+max.'),
 				k: g('k'),
@@ -139,6 +161,9 @@ async function variantsOf(code) {
 				mmax: g('m+max.'),
 				forT: g('for+thread'),
 				L: g('L'),
+				/* 部分螺纹件的螺纹长 b —— DIN 931 半牙必带此键；
+				 * 全牙件该键写 "-"（占位），非 DIN 变体也写 "-"。 */
+				b: g('b'),
 			});
 		}
 		if (p + 1 >= pages) break;
@@ -157,19 +182,24 @@ for (const t of TARGETS) {
 		say(`# ${t.std}: NO HITS`);
 		continue;
 	}
-	// 按 (线程, 长度) 去重 —— 同一规格可能有多条 EAN/表面记录
-	const seen = new Set();
-	const out = [];
+	// 按 (线程, 长度) 去重 —— 同一规格可能有多条 EAN/表面记录；
+	// 同规格还可能是 DIN/ISO 两套变体（s、e 不同）→ 取 DIN 侧。
+	const picked = new Map();
 	for (const r of rows) {
 		const key = `${r.thread}|${r.L}`;
-		if (seen.has(key)) continue;
-		seen.add(key);
+		const prev = picked.get(key);
+		if (prev && variantRank(r) <= variantRank(prev)) continue;
+		picked.set(key, r);
+	}
+	const out = [];
+	for (const r of picked.values()) {
 		if (t.type === 'washer') {
 			// washer 列：d1=外径 · d2=内径 · h=厚度
 			// （与 bulk-import 的 washer 迷你语法「外径x内径x厚度」一致：
 			//   given.d1 = 外径、given.d2 = 内径、given.h = 厚度，三者都是查表键）
 			// Bossard 的 d1 = 内径、d2 = 外径 —— 位置与本站相反，故对调。
-			out.push([t.std, r.forT, '', num(r.d2), num(r.d1), '', '', '', '', '', num(r.s)].join(','));
+			// for+thread 用欧式小数逗号（M1,6）→ 去逗号，否则 CSV 多出一列。
+			out.push([t.std, String(r.forT ?? '').replace(/,/g, '.'), '', num(r.d2), num(r.d1), '', '', '', '', '', num(r.s)].join(','));
 		} else {
 			// screw / bolt 列：d1=螺纹外径 · d2=头径 · s=对边 · k=头高 · b=螺纹长 · t=头厚下限
 			const d1 = D1_MAX[r.thread] ?? '';
@@ -177,8 +207,10 @@ for (const t of TARGETS) {
 				missing.push(`${t.std} ${r.thread} 线程外径未定义 —— 需补 D1_MAX`);
 				continue;
 			}
-			// 全螺纹件：螺纹长度 = 全长 L（部分螺纹件索引另给 b 字段，不在此处理）
-			const b = r.b || r.L;
+			// 螺纹长 b：Bossard 对全牙件写 b="-"（占位）→ 视作无 b，按全牙处理（b = 全长 L）；
+			// 部分螺纹件（DIN 931 半牙、DIN 6912/7984/7380/6921 的长规格）写真值 → 直接用。
+			// 注意 b="-" 是**逐行**属性，不是逐标准属性 —— 同一标准内长短规格混用。
+			const b = r.b && r.b !== '-' ? r.b : r.L;
 			// ISO 4017 外六角：Bossard 给 e=对角 / s=对边，本站 d2=头径取 e
 			const d2 = num(r.d2 || r.d2max || r.e);
 			// t = 头厚下限：Bossard 的 t 字段（无 min 后缀，如 ISO 10642）或 t min. 字段（如 ISO 4762）
@@ -215,8 +247,19 @@ if (OUT) {
 /* ── --apply：合并进 dimension-library.csv ───────────────────────────── */
 if (APPLY) {
 	const LIB = 'data/products/dimension-library.csv';
-	/* 只并入这三个新标准 —— 既有 din-912 / din-934 行的列语义不同源，不动。 */
-	const NEW_STDS = new Set(['din-7991', 'din-933', 'din-125']);
+	/* 只并入新标准 —— 既有 din-912 / din-934 行的列语义不同源，不动。 */
+	const NEW_STDS = new Set([
+		'din-7991',
+		'din-933',
+		'din-125',
+		'din-7380',
+		'din-7984',
+		'din-6912',
+		'din-931',
+		'din-6921',
+	]);
+	/* 本波新增的标准按抽取结果整体重建 → 先剔除，保证脚本幂等。 */
+	const REBUILD_STDS = new Set(['din-7380', 'din-7984', 'din-6912', 'din-931', 'din-6921']);
 
 	const cur = readFileSync(LIB, 'utf8')
 		.split(/\r?\n/)
@@ -225,7 +268,10 @@ if (APPLY) {
 	const header = cur[0];
 	const curRows = cur.slice(1);
 	/* din-125 按新语义（d1=外径）整体重建 → 先剔除，保证脚本幂等。 */
-	const keptRows = curRows.filter((l) => !l.startsWith('din-125,'));
+	const keptRows = curRows.filter((l) => {
+		const std = l.split(',')[0];
+		return !REBUILD_STDS.has(std) && !l.startsWith('din-125,');
+	});
 	const curKey = new Set(
 		keptRows.map((l) => {
 			const c = l.split(',');

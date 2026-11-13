@@ -21,7 +21,7 @@
  *   多个 standard id；dimension 矩阵以 standard 为外键。一族挂 DIN 与 ISO
  *   两张表只是两张矩阵，交叉关系不需要额外数据结构。
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { scanAssets } from './lib/assets.mjs';
 
@@ -737,6 +737,32 @@ if (warnings.length) {
 	console.log(`\nWARNINGS (${warnings.length}):`);
 	for (const w of warnings) console.log(`  ${w}`);
 }
+	/* 闸门报告落盘 —— 供 scripts/preflight.mjs 读取（机器可校验，不靠对话记忆）。 */
+	try {
+		mkdirSync(join(ROOT, 'qa/.session'), { recursive: true });
+		writeFileSync(
+			join(ROOT, 'qa/.session/products-gate.json'),
+			`${JSON.stringify(
+				{
+					errors: errors.length,
+					warnings: warnings.length,
+					truthMtime: Math.max(
+						...readdirSync(IN_DIR)
+							.filter((f) => f.endsWith('.csv'))
+							.map((f) => statSync(join(IN_DIR, f)).mtimeMs),
+					),
+					families: families.length,
+					skus: skuTotal,
+					at: new Date().toISOString(),
+				},
+				null,
+				2,
+			)}\n`,
+			'utf8',
+		);
+	} catch {
+		/* 报告写不进去不阻塞闸门本身 */
+	}
 if (errors.length) {
 	console.log(`\nERRORS (${errors.length}):`);
 	for (const e of errors) console.log(`  ${e}`);

@@ -1,7 +1,0 @@
-## SECTIONS
- 1 --           y=    0 h=    0 x=   0 w=   0 bg=rgba(0, 0, 0, 0) weight=
-     head: (none)
-     cls : container-fluid h-svh
- 2 H2 44px      y= 2187 h=  512 x=   0 w=1425 bg=rgba(0, 0, 0, 0) weight=700
-     head: What We Offer You
-     cls : container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40

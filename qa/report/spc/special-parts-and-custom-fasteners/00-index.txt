@@ -1,6 +1,0 @@
-# REF REPORT — qa/ref/special-parts-and-custom-fasteners.json
-url         https://www.bossard.com/global-en/product-solutions/special-parts-and-custom-fasteners/
-title       One-Stop Shop for Special Parts and Custom Fasteners | Bossard Group
-viewport    1440x1000
-body        6089px   overflow 0px
-sprites     13

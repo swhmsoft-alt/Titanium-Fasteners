@@ -1,6 +1,0 @@
-# REF REPORT — qa/ref/industries.json
-url         https://www.bossard.com/global-en/industries/
-title       Fastening Technology for All Industries | Bossard Group
-viewport    1440x1000
-body        6808px   overflow 0px
-sprites     12

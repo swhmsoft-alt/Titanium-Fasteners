@@ -1,6 +1,0 @@
-# REF REPORT — qa/ref/services.json
-url         https://www.bossard.com/global-en/services/
-title       Bossard Services Overview | Bossard Group
-viewport    1440x1000
-body        4853px   overflow 0px
-sprites     12

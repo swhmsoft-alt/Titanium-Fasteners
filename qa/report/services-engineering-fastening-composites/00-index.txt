@@ -1,6 +1,0 @@
-# REF REPORT — qa/ref/services-engineering-fastening-composites.json
-url         https://www.bossard.com/global-en/services/engineering/fastening-composites/
-title       Composite Fastening Elements | Bossard Group
-viewport    1440x1000
-body        8857px   overflow 0px
-sprites     14

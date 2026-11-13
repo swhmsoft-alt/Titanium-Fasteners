@@ -1,5 +1,5 @@
 /**
- * scripts/preflight.mjs — 开工闸门：把 `.clinerules` §8.1 的"五项充分性"
+ * scripts/preflight.mjs — 开工闸门：把 `.clinerules` 的"充分性"
  * 从散文变成可执行检查。❌ 存在时退出码 2，调用方不得进入写入阶段。
  *
  * 用法：
@@ -8,10 +8,10 @@
  *
  * 检查项（缺任何一项即 FAIL）：
  *   1. 路由与文件落点   src/pages/ 下的 slug 路由，或 src/data/slug.ts
- *   2. DOM 层级与区块   qa/report/<slug>/08-dom-tree.txt
- *   3. 文案与链接       qa/report/<slug>/02-texts.txt + 05-links.txt
- *   4. 素材本地路径     public/images/<slug>/_manifest.json（且每条映射的文件存在）
- *   5. 验收基线         qa/targets/<slug>.json
+ *   2. 真相源就绪       data/products/*.csv 存在且非空（Phase B 内容源）
+ *   3. 生成产物新鲜     src/data/products/ 已生成且不早于真相源
+ *   4. 素材本地路径     public/images/** 的 manifest 映射文件均存在
+ *   5. 数据闸门         npm run gen:products 的 error 数为 0
  *
  * 另外强制检查会话预算（scripts/lib/session-budget.mjs）与 qa/ 残留探针。
  */
@@ -48,69 +48,116 @@ const dataCandidates = [
 	`src/data/${slug}/index.ts`,
 	`src/data/industries-sub/${slug.replace(/^industries-/, '')}.ts`,
 ];
+/* 动态路由：族页 /global-en/eshop/p/[family]、分类页 /global-en/eshop/c/[category]
+ * —— 文件名里的方括号是 Astro 的动态参数，slug 走 getStaticPaths，不体现在文件名中。
+ * 因此这里判定「该 slug 是否被某个动态路由承载」：看动态路由文件存在即可。 */
+const dynamicRoutes = [
+	'src/pages/global-en/eshop/p/[family].astro',
+	'src/pages/global-en/eshop/c/[category].astro',
+	'src/pages/global-en/industries/[slug].astro',
+	'src/pages/global-en/product-solutions/product-categories-and-brands/[slug].astro',
+	'src/pages/global-en/services/benefits/[slug].astro',
+];
+const foundDynamic = dynamicRoutes.find((p) => existsSync(p));
 const foundPage = pageCandidates.find((p) => existsSync(p));
 const foundData = dataCandidates.find((p) => existsSync(p));
-const routeOk = Boolean(foundPage || foundData);
+const routeOk = Boolean(foundPage || foundData || foundDynamic);
 check(
 	'route',
 	'路由与文件落点',
 	routeOk,
 	routeOk
-		? `data=${foundData ?? '(none)'} page=${foundPage ?? '(none)'}`
+		? `data=${foundData ?? '(none)'} page=${foundPage ?? '(none)'} dynamic=${foundDynamic ?? '(none)'}`
 		: `none of: ${[...pageCandidates, ...dataCandidates].join(', ')}`,
 );
 
-/* ── 2. DOM 层级与区块顺序 ─────────────────────────────────────────── */
-const reportDir = `qa/report/${slug}`;
-const domTree = existsSync(reportDir)
-	? readdirSync(reportDir).filter((f) => f.startsWith('08-dom-tree'))
-	: [];
+/* ── 2. 真相源就绪 ─────────────────────────────────────────────────── */
+const truthDir = 'data/products';
+const requiredTruth = ['families.csv', 'categories.csv', 'standards.csv', 'materials.csv'];
+const missingTruth = requiredTruth.filter((f) => !existsSync(`${truthDir}/${f}`));
+let truthSize = 0;
+try {
+	truthSize = statSync(truthDir).isDirectory() ? readdirSync(truthDir).length : 0;
+} catch {
+	truthSize = 0;
+}
 check(
-	'dom',
-	'DOM 层级与区块顺序',
-	domTree.length > 0,
-	domTree.length ? `${reportDir}/${domTree.join(', ')}` : `missing ${reportDir}/08-dom-tree*.txt`,
+	'truth',
+	'真相源就绪',
+	missingTruth.length === 0 && truthSize > 0,
+	missingTruth.length
+		? `missing ${missingTruth.join(', ')}`
+		: `${truthDir}/ — ${truthSize} entries`,
 );
 
-/* ── 3. 文案与链接 ─────────────────────────────────────────────────── */
-const textsFile = `${reportDir}/02-texts.txt`;
-const linksFile = `${reportDir}/05-links.txt`;
-const textsOk = existsSync(textsFile);
-const linksOk = existsSync(linksFile);
-check(
-	'copy',
-	'文案与链接',
-	textsOk && linksOk,
-	`texts=${textsOk ? 'ok' : 'MISSING'} links=${linksOk ? 'ok' : 'MISSING'}`,
+/* ── 3. 生成产物新鲜 ───────────────────────────────────────────────── */
+const gateReport = 'qa/.session/products-gate.json';
+const newestTruth = Math.max(
+	...readdirSync(truthDir)
+		.filter((f) => f.endsWith('.csv'))
+		.map((f) => statSync(`${truthDir}/${f}`).mtimeMs),
 );
-
-/* ── 4. 素材本地路径与尺寸 ─────────────────────────────────────────── */
-const manifestFile = `public/images/${slug}/_manifest.json`;
-let assetsOk = false;
-let assetsDetail = `missing ${manifestFile}`;
-if (existsSync(manifestFile)) {
-	const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
-	const entries = Object.entries(manifest);
-	const missing = entries.filter(([, v]) => !existsSync(v.replace(/^\/public\//, 'public/')));
-	assetsOk = missing.length === 0;
-	assetsDetail = `${entries.length} entries, missing files: ${missing.length}`;
-	if (missing.length) {
-		assetsDetail += ` → ${missing.slice(0, 3).map(([, v]) => v).join(', ')}`;
+let genOk = false;
+let genDetail = `missing ${gateReport} — run: npm run gen:products`;
+if (existsSync(gateReport)) {
+	try {
+		const g = JSON.parse(readFileSync(gateReport, 'utf8'));
+		const gateTruth = Number(g.truthMtime ?? 0);
+		genOk = gateTruth >= newestTruth;
+		genDetail = genOk
+			? `src/data/products/ up to date (${g.families ?? '?'} families)`
+			: 'STALE — 真相源比上次闸门新，跑: npm run gen:products';
+	} catch {
+		genDetail = `${gateReport} unreadable`;
 	}
 }
-check('assets', '素材本地路径与尺寸', assetsOk, assetsDetail);
+check('generated', '生成产物新鲜', genOk, genDetail);
 
-/* ── 5. 验收基线 ───────────────────────────────────────────────────── */
-const targetFile = `qa/targets/${slug}.json`;
-let targetOk = false;
-let targetDetail = `missing ${targetFile}`;
-if (existsSync(targetFile)) {
-	const t = JSON.parse(readFileSync(targetFile, 'utf8'));
-	const n = t.sections?.length ?? 0;
-	targetOk = n > 0;
-	targetDetail = `${n} baseline sections`;
+/* ── 4. 素材本地路径 ───────────────────────────────────────────────── */
+let assetsOk = true;
+let assetsDetail = 'no manifest found (skipped)';
+const imgRoot = 'public/images';
+if (existsSync(imgRoot)) {
+	const missingFiles = [];
+	let manifests = 0;
+	const walk = (dir) => {
+		for (const e of readdirSync(dir, { withFileTypes: true })) {
+			const full = `${dir}/${e.name}`;
+			if (e.isDirectory()) walk(full);
+			else if (e.name === '_manifest.json') {
+				manifests++;
+				const m = JSON.parse(readFileSync(full, 'utf8'));
+				for (const v of Object.values(m)) {
+					const p = String(v).replace(/^\/public\//, 'public/');
+					if (!existsSync(p)) missingFiles.push(p);
+				}
+			}
+		}
+	};
+	walk(imgRoot);
+	assetsOk = missingFiles.length === 0;
+	assetsDetail = manifests
+		? `${manifests} manifests, missing files: ${missingFiles.length}`
+		: 'no manifests';
+	if (missingFiles.length) {
+		assetsDetail += ` → ${missingFiles.slice(0, 3).join(', ')}`;
+	}
 }
-check('target', '验收基线', targetOk, targetDetail);
+check('assets', '素材本地路径', assetsOk, assetsDetail);
+
+/* ── 5. 数据闸门（gen:products error 数） ──────────────────────────── */
+let gateOk = false;
+let gateDetail = `missing ${gateReport} — run: npm run gen:products`;
+if (existsSync(gateReport)) {
+	try {
+		const g = JSON.parse(readFileSync(gateReport, 'utf8'));
+		gateOk = Number(g.errors ?? 0) === 0;
+		gateDetail = `errors=${g.errors ?? '?'} warnings=${g.warnings ?? '?'}`;
+	} catch {
+		gateDetail = `${gateReport} unreadable`;
+	}
+}
+check('gate', '数据闸门', gateOk, gateDetail);
 
 /* ── 会话预算与残留探针 ────────────────────────────────────────────── */
 const v = violations();

@@ -3,8 +3,8 @@
  *
  * WHY
  * ---
- * `qa/ref/*.html` 是 372KB–1MB 的**单行**文件。任何不做长度保护的检索
- * （grep / search_codebase）命中其中一行，都会把整份 HTML 灌进上下文：
+ * 大体积**单行**文件（HTML / 压缩 JSON）任何不做长度保护的检索
+ * （grep / search_codebase）命中其中一行，都会把整份文件灌进上下文：
  * 一次 ≈ 10–20 万 token，三次即千万级。这是本项目最大的 token 事故源，
  * 因此必须在工具层堵死，而不是靠"记得别这么干"。
  *
@@ -12,7 +12,7 @@
  *   1. assertScannable()   命中保护名单 → 抛错并给出替代命令
  *   2. capLine()/capHits() 单行长度 / 命中数 双封顶
  *   3. grepFiles()         遍历时排除保护目录，只回 file:line + 截断行
- *   4. projectRefJson()    qa/ref/*.json → 字段投影（绝不吐原始行）
+ *   4. projectRefJson()    大 JSON → 字段投影（绝不吐原始行）
  *
  * CLI 封装见 scripts/safe-grep.mjs。
  */
@@ -20,7 +20,6 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 export const PROTECTED_DIRS = [
-	'qa/ref',
 	'node_modules',
 	'.git',
 	'dist',
@@ -80,11 +79,11 @@ export function assertScannable(p, { project = false } = {}) {
 	if (project && n.endsWith('.json')) return true;
 	const err = new Error(
 		`[safe-read] REFUSED to scan protected path: ${toPosix(p)}\n` +
-			'  qa/ref/*.html are 372KB-1MB SINGLE-LINE files; one raw line = 100k+ tokens.\n' +
+			'  Large single-line files (HTML / minified JSON) blow up the context:\n' +
+			'  one raw line = 100k+ tokens.\n' +
 			'  Use one of these instead:\n' +
-			'    npm run grep -- <pattern> --path qa/ref/<page>.json   (field projection)\n' +
-			'    node scripts/ref-dom-tree.mjs qa/ref/<page>.html --out qa/report/<page>/08-dom-tree.txt\n' +
-			'    node scripts/ref-report.mjs qa/ref/<page>.json --dir qa/report',
+			'    npm run grep -- <pattern> --path <file.json> --fields a,b   (field projection)\n' +
+			'    npm run grep -- <pattern> --path <dir> --max-hits 10',
 	);
 	err.code = 'EPROTECTED';
 	throw err;
