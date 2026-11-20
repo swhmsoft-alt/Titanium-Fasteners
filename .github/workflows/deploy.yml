@@ -61,17 +61,17 @@ jobs:
 
       # Explicit FTPS (FTPES / AUTH TLS) on the standard control port 21.
       #
-      # Implemented with lftp rather than a third-party action:
-      #   • lftp ships with the GitHub Ubuntu runner image (apt fallback below);
-      #   • explicit FTPS is `ftp:ssl-force` + `ftp:ssl-protect-data` (AUTH TLS),
-      #     which is exactly the "显式 FTPS / port 21" mode cPanel offers;
-      #   • `mirror` preserves the directory tree, which the site needs because
-      #     Astro is built with trailingSlash: 'always' (page → dir/index.html).
+      # The upload runs through Python's ftplib (stdlib, preinstalled on the
+      # runner) instead of lftp, because cPanel subdomain accounts log in as
+      # "user@domain" — a form lftp re-parses as a host qualifier, while
+      # ftplib passes the login string to the server verbatim.
       #
-      # FTP_DIR is relative to the account's FTP root (cPanel chroots FTP logins
-      # to /home/safetipa, so an absolute path like /home/safetipa/... is
-      # rejected by the server with "Access denied: change to the given
-      # directory"). It resolves to the document root of the subdomain.
+      # ftplib.FTP_TLS performs:
+      #   • AUTH TLS on the control connection (explicit FTPS, not implicit),
+      #   • PROT P, so the data channel is encrypted too.
+      #
+      # The account is chrooted into the subdomain document root, so the local
+      # dist/ tree is mirrored onto the FTP root itself.
       #
       # Credentials live in repository secrets — never in the workflow file.
       - name: Upload to cPanel over FTPS
@@ -81,15 +81,9 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_PORT: ${{ secrets.FTP_PORT }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
+          SYNC_DELETE: ${{ vars.SYNC_DELETE }}
         run: |
           set -euo pipefail
-          command -v lftp >/dev/null 2>&1 || {
-            sudo apt-get update -qq
-            sudo apt-get install -y -qq lftp
-          }
-
-          # Reject the upload if any credential is missing, BEFORE contacting
-          # the server — fail fast and loudly instead of half-deploying.
           for v in FTP_HOST FTP_USERNAME FTP_PASSWORD FTP_PORT FTP_DIR; do
             if [ -z "${!v}" ]; then
               echo "::error::Missing repository secret: $v"
@@ -97,31 +91,102 @@ jobs:
             fi
           done
 
-          # --delete removes server files that no longer exist in dist/.
-          # Opt-in via the SYNC_DELETE repository variable (default: keep),
-          # because the docroot may hold server-owned files (.well-known, ...).
-          MIRROR_ARGS="--verbose --overwrite --parallel=4"
+          # Server-side deletion stays opt-in: the docroot may hold files that
+          # this repository does not own (.well-known, mail/verifier files).
           if [ "${SYNC_DELETE:-false}" = "true" ]; then
-            MIRROR_ARGS="$MIRROR_ARGS --delete"
             echo "sync-delete enabled"
           else
             echo "sync-delete disabled (set repository variable SYNC_DELETE=true to enable)"
           fi
 
-          # The password contains shell-special characters (! and *), so it is
-          # passed as a single quoted argument and never interpolated into the
-          # lftp command string (where lftp's own parser would re-interpret it).
-          lftp -p "$FTP_PORT" -u "$FTP_USERNAME","$FTP_PASSWORD" \
-            -e "
-              set ftp:ssl-allow no;
-              set ssl:verify-certificate no;
-              set ftp:ssl-force true;
-              set ftp:ssl-protect-data true;
-              set net:max-retries 3;
-              set net:timeout 30;
-              set xfer:clobber true;
-              open $FTP_HOST;
-              mirror $MIRROR_ARGS $GITHUB_WORKSPACE/dist $FTP_DIR;
-              bye;
-            "
-          echo "Uploaded dist/ to $FTP_DIR over explicit FTPS"
+          python3 - <<'PY'
+          import ftplib, os, posixpath, sys
+          from ftplib import FTP_TLS
+
+          HOST = os.environ["FTP_HOST"]
+          USER = os.environ["FTP_USERNAME"]
+          PASSWORD = os.environ["FTP_PASSWORD"]
+          PORT = int(os.environ["FTP_PORT"])
+          ROOT = os.environ.get("FTP_DIR", ".").strip() or "."
+          DELETE = os.environ.get("SYNC_DELETE", "false").strip().lower() == "true"
+          LOCAL = os.path.join(os.environ["GITHUB_WORKSPACE"], "dist")
+
+          ftp = FTP_TLS(timeout=60)
+          ftp.connect(HOST, PORT)
+          ftp.login(USER, PASSWORD)
+          try:
+              ftp.prot_p()          # encrypted data channel
+          except ftplib.error_perm:
+              print("::warning::Server refused PROT P; continuing with the control channel only")
+          print("Connected to %s:%d as %s (explicit FTPS)" % (HOST, PORT, USER))
+          print("Remote PWD:", ftp.pwd())
+
+          def remote_join(*parts):
+              return posixpath.join(ROOT, *parts) if ROOT not in ("", ".") else posixpath.join(*parts)
+
+          def ensure_dir(path):
+              if path in ("", "/", "."):
+                  return
+              parts = path.strip("/").split("/")
+              cur = ""
+              for p in parts:
+                  cur = cur + "/" + p
+                  try:
+                      ftp.mkd(cur)
+                  except ftplib.error_perm:
+                      pass  # already exists
+
+          def walk_remote(path):
+              """Return the set of relative file paths under the remote root."""
+              found = set()
+              stack = [""]
+              while stack:
+                  rel = stack.pop()
+                  try:
+                      ftp.cwd(remote_join(rel) if rel else ROOT)
+                  except ftplib.error_perm:
+                      continue
+                  items = []
+                  ftp.retrlines("LIST", items.append)
+                  for line in items:
+                      name = line.split()[-1]
+                      if name in (".", ".."):
+                          continue
+                      child = posixpath.join(rel, name) if rel else name
+                      if line.startswith("d"):
+                          stack.append(child)
+                      else:
+                          found.add(child)
+              return found
+
+          # 1) Upload every local file.
+          uploaded = 0
+          local_files = set()
+          for dirpath, _dirs, files in os.walk(LOCAL):
+              for name in files:
+                  full = os.path.join(dirpath, name)
+                  rel = os.path.relpath(full, LOCAL).replace(os.sep, "/")
+                  local_files.add(rel)
+                  remote = remote_join(rel)
+                  ensure_dir(posixpath.dirname(remote))
+                  with open(full, "rb") as fh:
+                      ftp.storbinary("STOR " + remote, fh)
+                  uploaded += 1
+          print("Uploaded %d files to %s" % (uploaded, HOST))
+
+          # 2) Optionally remove remote files that are no longer in dist/.
+          if DELETE:
+              stale = walk_remote("") - local_files
+              for rel in sorted(stale):
+                  try:
+                      ftp.delete(remote_join(rel))
+                      print("Deleted stale:", rel)
+                  except ftplib.error_perm as exc:
+                      print("::warning::Could not delete %s: %s" % (rel, exc))
+          else:
+              print("Remote files not present in dist/ were left untouched")
+
+          ftp.quit()
+          print("FTPS upload finished")
+          PY
+          echo "Uploaded dist/ to ${FTP_DIR} over explicit FTPS"
