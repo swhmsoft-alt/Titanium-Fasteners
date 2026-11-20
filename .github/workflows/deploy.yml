@@ -1,24 +1,22 @@
-name: Deploy to GitHub Pages
+name: Deploy to cPanel (FTP)
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Least-privilege permissions: the job only reads the repo, then asks GitHub
-# Pages to publish the artifact built here.
+# The build job only needs to read the repository. Nothing is written back.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Never let two deploys race for the Pages slot.
+# Never let two deploys race for the same FTP directory.
 concurrency:
-  group: pages
+  group: cpanel-ftp-deploy
   cancel-in-progress: true
 
 jobs:
   build:
+    name: Build and upload to cPanel
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,9 +32,23 @@ jobs:
         run: npm ci
 
       # Product data gate: CSV truth source → generated src/data/products.
-      # Exits non-zero on any error, so a broken dataset can never reach Pages.
+      # Exits non-zero on any error, so a broken dataset can never be published.
       - name: Generate product data
         run: npm run gen:products
+
+      # Base path (Astro bakes it into every asset URL at build time).
+      # The FTP target IS the domain root (/home/safetipa/fastener.bozemetal.com),
+      # so the default is NO prefix. Override with the BASE_PATH repository
+      # variable if the site is ever published under a sub-directory.
+      - name: Resolve base path
+        run: |
+          if [ -n "${{ vars.BASE_PATH }}" ]; then
+            echo "BASE_PATH=${{ vars.BASE_PATH }}" >> "$GITHUB_ENV"
+            echo "Using explicit BASE_PATH=${{ vars.BASE_PATH }}"
+          else
+            echo "BASE_PATH=" >> "$GITHUB_ENV"
+            echo "Serving from the domain root (FTP target is the docroot)"
+          fi
 
       # npm run build routes through scripts/astro-build.mjs, which canonicalises
       # the project root before spawning Astro. On Linux the path is already
@@ -45,26 +57,71 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Leave empty for the custom domain (domain-root deployment).
-          # Set a repo variable BASE_PATH=/Titanium-Fasteners to publish under
-          # the GitHub Pages project URL instead.
-          BASE_PATH: ${{ vars.BASE_PATH || '' }}
+          BASE_PATH: ${{ env.BASE_PATH }}
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      # Explicit FTPS (FTPES / AUTH TLS) on the standard control port 21.
+      #
+      # Implemented with lftp rather than a third-party action:
+      #   • lftp ships with the GitHub Ubuntu runner image (apt fallback below);
+      #   • explicit FTPS is `ftp:ssl-force` + `ftp:ssl-protect-data` (AUTH TLS),
+      #     which is exactly the "显式 FTPS / port 21" mode cPanel offers;
+      #   • `mirror` preserves the directory tree, which the site needs because
+      #     Astro is built with trailingSlash: 'always' (page → dir/index.html).
+      #
+      # FTP_DIR is relative to the account's FTP root (cPanel chroots FTP logins
+      # to /home/safetipa, so an absolute path like /home/safetipa/... is
+      # rejected by the server with "Access denied: change to the given
+      # directory"). It resolves to the document root of the subdomain.
+      #
+      # Credentials live in repository secrets — never in the workflow file.
+      - name: Upload to cPanel over FTPS
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+          FTP_DIR: ${{ secrets.FTP_DIR }}
+        run: |
+          set -euo pipefail
+          command -v lftp >/dev/null 2>&1 || {
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq lftp
+          }
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+          # Reject the upload if any credential is missing, BEFORE contacting
+          # the server — fail fast and loudly instead of half-deploying.
+          for v in FTP_HOST FTP_USERNAME FTP_PASSWORD FTP_PORT FTP_DIR; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Missing repository secret: $v"
+              exit 1
+            fi
+          done
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          # --delete removes server files that no longer exist in dist/.
+          # Opt-in via the SYNC_DELETE repository variable (default: keep),
+          # because the docroot may hold server-owned files (.well-known, ...).
+          MIRROR_ARGS="--verbose --overwrite --parallel=4"
+          if [ "${SYNC_DELETE:-false}" = "true" ]; then
+            MIRROR_ARGS="$MIRROR_ARGS --delete"
+            echo "sync-delete enabled"
+          else
+            echo "sync-delete disabled (set repository variable SYNC_DELETE=true to enable)"
+          fi
+
+          # The password contains shell-special characters (! and *), so it is
+          # passed as a single quoted argument and never interpolated into the
+          # lftp command string (where lftp's own parser would re-interpret it).
+          lftp -p "$FTP_PORT" -u "$FTP_USERNAME","$FTP_PASSWORD" \
+            -e "
+              set ftp:ssl-allow no;
+              set ssl:verify-certificate no;
+              set ftp:ssl-force true;
+              set ftp:ssl-protect-data true;
+              set net:max-retries 3;
+              set net:timeout 30;
+              set xfer:clobber true;
+              open $FTP_HOST;
+              mirror $MIRROR_ARGS $GITHUB_WORKSPACE/dist $FTP_DIR;
+              bye;
+            "
+          echo "Uploaded dist/ to $FTP_DIR over explicit FTPS"
