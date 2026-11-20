@@ -1,0 +1,63 @@
+name: Deploy channel probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe channels
+        env:
+          HOST: fastener.bozemetal.com
+          FTP_PORT: '21'
+          U1: ${{ secrets.FTP_USERNAME }}
+          P1: ${{ secrets.FTP_PASSWORD }}
+          U2: ${{ secrets.FTP2_USERNAME }}
+          P2: ${{ secrets.FTP2_PASSWORD }}
+        run: |
+          set -uo pipefail
+          echo "== TCP reachability =="
+          for p in 21 22 443 2083; do
+            if timeout 10 bash -c "</dev/tcp/$HOST/$p" 2>/dev/null; then
+              echo "PORT $p OPEN"
+            else
+              echo "PORT $p closed/filtered"
+            fi
+          done
+
+          echo "== FTPS login matrix =="
+          python3 - <<'PY'
+          import ftplib, os
+          HOST = os.environ["HOST"]
+          PORT = int(os.environ["FTP_PORT"])
+          combos = [
+              ("main-old", os.environ.get("U2", ""), os.environ.get("P2", "")),
+              ("sub-new", os.environ.get("U1", ""), os.environ.get("P1", "")),
+              ("sub-bare", "fastener", os.environ.get("P1", "")),
+          ]
+          for tag, user, pw in combos:
+              if not user or not pw:
+                  continue
+              try:
+                  f = ftplib.FTP_TLS(timeout=30)
+                  f.connect(HOST, PORT)
+                  f.login(user, pw)
+                  try:
+                      f.prot_p()
+                  except ftplib.error_perm:
+                      pass
+                  print("LOGIN-OK %s user=%s pwd=%s" % (tag, user, f.pwd()))
+                  try:
+                      f.retrlines("LIST")
+                  except Exception as exc:
+                      print("  LIST failed: %s" % exc)
+                  f.quit()
+              except ftplib.error_perm as exc:
+                  print("LOGIN-PERM %s user=%s -> %s" % (tag, user, exc))
+              except Exception as exc:
+                  print("LOGIN-ERR %s user=%s -> %s: %s" % (tag, user, type(exc).__name__, exc))
+          PY
