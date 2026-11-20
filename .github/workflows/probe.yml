@@ -29,35 +29,27 @@ jobs:
             fi
           done
 
-          echo "== FTPS login matrix =="
+          echo "== directory layout =="
           python3 - <<'PY'
           import ftplib, os
           HOST = os.environ["HOST"]
           PORT = int(os.environ["FTP_PORT"])
-          combos = [
-              ("main-old", os.environ.get("U2", ""), os.environ.get("P2", "")),
-              ("sub-new", os.environ.get("U1", ""), os.environ.get("P1", "")),
-              ("sub-bare", "fastener", os.environ.get("P1", "")),
-          ]
-          for tag, user, pw in combos:
-              if not user or not pw:
-                  continue
+          user = os.environ.get("U2", "")
+          pw = os.environ.get("P2", "")
+          f = ftplib.FTP_TLS(timeout=30)
+          f.connect(HOST, PORT)
+          f.login(user, pw)
+          try:
+              f.prot_p()
+          except ftplib.error_perm:
+              pass
+          print("PWD:", f.pwd())
+          for d in ["fastener.bozemetal.com", "cnc.bozemetal.com", "bozemetal.com"]:
               try:
-                  f = ftplib.FTP_TLS(timeout=30)
-                  f.connect(HOST, PORT)
-                  f.login(user, pw)
-                  try:
-                      f.prot_p()
-                  except ftplib.error_perm:
-                      pass
-                  print("LOGIN-OK %s user=%s pwd=%s" % (tag, user, f.pwd()))
-                  try:
-                      f.retrlines("LIST")
-                  except Exception as exc:
-                      print("  LIST failed: %s" % exc)
-                  f.quit()
-              except ftplib.error_perm as exc:
-                  print("LOGIN-PERM %s user=%s -> %s" % (tag, user, exc))
+                  f.cwd(d)
+                  print("--- %s ---" % d)
+                  f.retrlines("LIST")
               except Exception as exc:
-                  print("LOGIN-ERR %s user=%s -> %s: %s" % (tag, user, type(exc).__name__, exc))
+                  print("--- %s -> %s" % (d, exc))
+          f.quit()
           PY
