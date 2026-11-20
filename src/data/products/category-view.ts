@@ -4,42 +4,42 @@
  */
 import type { CategoryCardView, CategoryView, FilterGroupView, ProductCardView } from './types';
 
-export const ESHOP_ROUTE_BASE = "/global-en/eshop/";
+export const PRODUCT_ROUTE_BASE = "/products/";
 
-export function familyPath(id: string): string {
-	return ESHOP_ROUTE_BASE + 'p/' + id + '/';
+export function familyPath(category: string, id: string): string {
+	return PRODUCT_ROUTE_BASE + category + '/' + id + '/';
 }
 
 export function categoryPath(id: string): string {
-	return ESHOP_ROUTE_BASE + 'c/' + id + '/';
+	return PRODUCT_ROUTE_BASE + id + '/';
 }
 
 export const CATEGORY_CARDS: CategoryCardView[] = [
 	{
 		"title": "Screws",
 		"products": 2,
-		"href": "/global-en/eshop/c/screws/",
+		"href": "/products/screws/",
 		"image": "/images/category/01-screws.webp",
 		"alt": "Screws"
 	},
 	{
 		"title": "Bolts",
-		"products": 1,
-		"href": "/global-en/eshop/c/bolts/",
+		"products": 11,
+		"href": "/products/bolts/",
 		"image": "/images/category/05-tools-and-equipment-for-standard-fasteners-eleme.webp",
 		"alt": "Bolts"
 	},
 	{
 		"title": "Nuts",
 		"products": 1,
-		"href": "/global-en/eshop/c/nuts/",
+		"href": "/products/nuts/",
 		"image": "/images/category/02-nuts.webp",
 		"alt": "Nuts"
 	},
 	{
 		"title": "Washers",
 		"products": 1,
-		"href": "/global-en/eshop/c/washers/",
+		"href": "/products/washers/",
 		"image": "/images/category/03-washers.webp",
 		"alt": "Washers"
 	}
@@ -51,8 +51,24 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 		"label": "Standard",
 		"options": [
 			{
+				"id": "custom",
+				"label": "Custom / non-standard"
+			},
+			{
 				"id": "din-125",
 				"label": "DIN 125"
+			},
+			{
+				"id": "din-34800",
+				"label": "DIN 34800"
+			},
+			{
+				"id": "din-6921",
+				"label": "DIN 6921"
+			},
+			{
+				"id": "din-7380",
+				"label": "DIN 7380"
 			},
 			{
 				"id": "din-7991",
@@ -63,12 +79,28 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 				"label": "DIN 912"
 			},
 			{
+				"id": "din-931",
+				"label": "DIN 931"
+			},
+			{
 				"id": "din-933",
 				"label": "DIN 933"
 			},
 			{
 				"id": "din-934",
 				"label": "DIN 934"
+			},
+			{
+				"id": "din-938",
+				"label": "DIN 938"
+			},
+			{
+				"id": "din-939",
+				"label": "DIN 939"
+			},
+			{
+				"id": "iso-7380-2",
+				"label": "ISO 7380-2"
 			}
 		]
 	},
@@ -89,6 +121,10 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 				"label": "Screw"
 			},
 			{
+				"id": "stud",
+				"label": "Stud"
+			},
+			{
 				"id": "washer",
 				"label": "Washer"
 			}
@@ -105,6 +141,18 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 			{
 				"id": "M12",
 				"label": "M12"
+			},
+			{
+				"id": "M16",
+				"label": "M16"
+			},
+			{
+				"id": "M20",
+				"label": "M20"
+			},
+			{
+				"id": "M3",
+				"label": "M3"
 			},
 			{
 				"id": "M4",
@@ -143,8 +191,8 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 		"label": "Surface",
 		"options": [
 			{
-				"id": "anod-black",
-				"label": "Black anodized"
+				"id": "anod",
+				"label": "Anodizing"
 			},
 			{
 				"id": "passivated",
@@ -152,7 +200,11 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 			},
 			{
 				"id": "plain",
-				"label": "Plain (as supplied)"
+				"label": "Plain"
+			},
+			{
+				"id": "pvd",
+				"label": "PVD"
 			}
 		]
 	},
@@ -175,6 +227,10 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 			{
 				"id": "12",
 				"label": "12"
+			},
+			{
+				"id": "15",
+				"label": "15"
 			},
 			{
 				"id": "16",
@@ -201,6 +257,10 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 				"label": "40"
 			},
 			{
+				"id": "45",
+				"label": "45"
+			},
+			{
 				"id": "50",
 				"label": "50"
 			},
@@ -209,8 +269,20 @@ export const FILTER_GROUPS: FilterGroupView[] = [
 				"label": "60"
 			},
 			{
+				"id": "65",
+				"label": "65"
+			},
+			{
 				"id": "80",
 				"label": "80"
+			},
+			{
+				"id": "100",
+				"label": "100"
+			},
+			{
+				"id": "120",
+				"label": "120"
 			}
 		]
 	}
@@ -222,12 +294,12 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"standards": [
 			"DIN 912"
 		],
-		"title": "Hex Socket Head Cap Screws",
-		"href": "/global-en/eshop/p/hex-socket-head-cap-screw/",
-		"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-01.webp",
-		"alt": "Hex Socket Head Cap Screws",
-		"description": "Hexagon socket head cap screws in titanium grades with full DIN 912 and ISO 4762 dimensional conformity.",
-		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Black anodized / Plain (as supplied)",
+		"title": "Titanium Hex Socket Head Cap Screws Full Thread",
+		"href": "/products/screws/hex-socket-head-cap-screw/",
+		"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-BZ-201-screws-titanium.webp",
+		"alt": "Titanium Hex Socket Head Cap Screws Full Thread",
+		"description": "Hexagon socket head cap screws full thread per DIN 912 for aerospace and medical applications.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Anodizing / Plain",
 		"status": "published",
 		"filters": {
 			"standard": [
@@ -248,7 +320,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 				"ti-gr2"
 			],
 			"finish": [
-				"anod-black",
+				"anod",
 				"plain"
 			],
 			"length": [
@@ -273,12 +345,12 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"standards": [
 			"DIN 934"
 		],
-		"title": "Hex Nuts",
-		"href": "/global-en/eshop/p/hex-nut/",
-		"image": "/images/products/TI-HEX-NUT-01.webp",
-		"alt": "Hex Nuts",
-		"description": "Hexagon nuts in titanium grades to DIN 934 and ISO 4032 style 1.",
-		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain (as supplied)",
+		"title": "Titanium Hexagon Full Nuts",
+		"href": "/products/nuts/hex-nut/",
+		"image": "/images/products/TI-HEX-NUT-BZ-301-nuts-titanium.webp",
+		"alt": "Titanium Hexagon Full Nuts",
+		"description": "Hexagon nuts style 1 per DIN 934 for high temperature applications.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain",
 		"status": "published",
 		"filters": {
 			"standard": [
@@ -310,12 +382,12 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"standards": [
 			"DIN 7991"
 		],
-		"title": "Countersunk Head Cap Screws",
-		"href": "/global-en/eshop/p/countersunk-head-cap-screws/",
-		"image": "",
-		"alt": "Countersunk Head Cap Screws",
+		"title": "Titanium Countersunk Head Cap Screws",
+		"href": "/products/screws/countersunk-head-cap-screws/",
+		"image": "/images/products/TI-COUNTERSUNK-HEAD-CAP-SCREWS-BZ-202-screws-titanium.webp",
+		"alt": "Titanium Countersunk Head Cap Screws",
 		"description": "Hexagon socket countersunk head screws 90 degrees flat head per DIN 7991 for flush mounting without protruding heads.",
-		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized / Passivated",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing",
 		"status": "published",
 		"filters": {
 			"standard": [
@@ -335,8 +407,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 			],
 			"finish": [
 				"plain",
-				"anod-black",
-				"passivated"
+				"anod"
 			],
 			"length": [
 				"10",
@@ -352,11 +423,11 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 			"DIN 933"
 		],
 		"title": "Hex Head Bolts Fully Threaded",
-		"href": "/global-en/eshop/p/hex-head-bolts-fully-threaded/",
-		"image": "",
+		"href": "/products/bolts/hex-head-bolts-fully-threaded/",
+		"image": "/images/products/TI-HEX-HEAD-BOLTS-FULLY-THREADED-BZ-102-bolts-titanium.webp",
 		"alt": "Hex Head Bolts Fully Threaded",
 		"description": "Hexagon head bolts fully threaded per DIN 933 for structural and industrial clamping applications.",
-		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing",
 		"status": "published",
 		"filters": {
 			"standard": [
@@ -376,7 +447,7 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 			],
 			"finish": [
 				"plain",
-				"anod-black"
+				"anod"
 			],
 			"length": [
 				"20",
@@ -391,12 +462,12 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 		"standards": [
 			"DIN 125"
 		],
-		"title": "Plain Washers",
-		"href": "/global-en/eshop/p/plain-washers/",
-		"image": "",
-		"alt": "Plain Washers",
+		"title": "Titanium Plain Washers",
+		"href": "/products/washers/plain-washers/",
+		"image": "/images/products/TI-PLAIN-WASHERS-BZ-401-washers-titanium.webp",
+		"alt": "Titanium Plain Washers",
 		"description": "Plain washers form A per DIN 125 and ISO 7089 for titanium fastening in chemical and marine environments.",
-		"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Passivated",
+		"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain / Passivated",
 		"status": "published",
 		"filters": {
 			"standard": [
@@ -416,6 +487,442 @@ export const ALL_PRODUCTS: ProductCardView[] = [
 			],
 			"length": []
 		}
+	},
+	{
+		"sku": "TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD",
+		"standards": [
+			"DIN 912"
+		],
+		"title": "Titanium Hex Socket Head Cap Bolts Full Thread",
+		"href": "/products/bolts/hex-socket-head-cap-bolts-full-thread/",
+		"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD-BZ-101-bolts-titanium.webp",
+		"alt": "Titanium Hex Socket Head Cap Bolts Full Thread",
+		"description": "Hexagon socket head cap bolts full thread per DIN 912 for aerospace and medical applications.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-912"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M4",
+				"M5"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod"
+			],
+			"length": [
+				"10",
+				"12",
+				"16"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEXAGON-HEAD-BOLTS-FULL-THREAD",
+		"standards": [
+			"DIN 933"
+		],
+		"title": "Titanium Hexagon Head Bolts Full Thread",
+		"href": "/products/bolts/hexagon-head-bolts-full-thread/",
+		"image": "/images/products/TI-HEXAGON-HEAD-BOLTS-FULL-THREAD-BZ-103-bolts-titanium.webp",
+		"alt": "Titanium Hexagon Head Bolts Full Thread",
+		"description": "Full thread hexagon head titanium bolts per DIN 933 / ISO 4017 for chemical processing, marine, and general industrial assemblies.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-933"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M4",
+				"M6",
+				"M8",
+				"M10",
+				"M12",
+				"M16"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"10",
+				"20",
+				"25",
+				"30",
+				"40",
+				"50"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD",
+		"standards": [
+			"DIN 931"
+		],
+		"title": "Titanium Hexagon Head Bolts Partial Thread",
+		"href": "/products/bolts/hexagon-head-bolts-partial-thread/",
+		"image": "/images/products/TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD-BZ-104-bolts-titanium.webp",
+		"alt": "Titanium Hexagon Head Bolts Partial Thread",
+		"description": "Partial thread hex head structural titanium bolts per DIN 931 / ISO 4014 designed for high shear strength and heavy-duty load bearing.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-931"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M6",
+				"M8",
+				"M10",
+				"M12",
+				"M16",
+				"M20"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod"
+			],
+			"length": [
+				"35",
+				"45",
+				"60",
+				"80",
+				"100",
+				"120"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEXAGON-FLANGE-BOLTS",
+		"standards": [
+			"DIN 6921"
+		],
+		"title": "Titanium Hexagon Flange Bolts",
+		"href": "/products/bolts/hexagon-flange-bolts/",
+		"image": "/images/products/TI-HEXAGON-FLANGE-BOLTS-BZ-105-bolts-titanium.webp",
+		"alt": "Titanium Hexagon Flange Bolts",
+		"description": "Titanium hex flange bolts per DIN 6921 with integrated washer base for automotive, racing, and high-vibration equipment.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-6921"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M5",
+				"M6",
+				"M8",
+				"M10",
+				"M12"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"12",
+				"16",
+				"20",
+				"25",
+				"35"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEX-SOCKET-HEAD-CAP-BOLTS",
+		"standards": [
+			"DIN 912"
+		],
+		"title": "Titanium Hex Socket Head Cap Bolts",
+		"href": "/products/bolts/hex-socket-head-cap-bolts/",
+		"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-BZ-106-bolts-titanium.webp",
+		"alt": "Titanium Hex Socket Head Cap Bolts",
+		"description": "High-precision cylindrical socket head cap titanium bolts per DIN 912 / ISO 4762 for aerospace, medical devices, and robotics.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-912"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M3",
+				"M4",
+				"M5",
+				"M6",
+				"M8",
+				"M10"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"8",
+				"12",
+				"16",
+				"20",
+				"30",
+				"40"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEX-SOCKET-BUTTON-HEAD-BOLTS",
+		"standards": [
+			"DIN 7380"
+		],
+		"title": "Titanium Hex Socket Button Head Bolts",
+		"href": "/products/bolts/hex-socket-button-head-bolts/",
+		"image": "/images/products/TI-HEX-SOCKET-BUTTON-HEAD-BOLTS-BZ-107-bolts-titanium.webp",
+		"alt": "Titanium Hex Socket Button Head Bolts",
+		"description": "Low-profile dome head hex socket titanium bolts per ISO 7380 offering snag-free aesthetics for electronics, UAVs, and bicycles.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-7380"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M3",
+				"M4",
+				"M5",
+				"M6",
+				"M8"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"6",
+				"10",
+				"12",
+				"16",
+				"20"
+			]
+		}
+	},
+	{
+		"sku": "TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS",
+		"standards": [
+			"DIN 7991"
+		],
+		"title": "Titanium Hex Socket Countersunk Flat Head Bolts",
+		"href": "/products/bolts/hex-socket-countersunk-flat-head-bolts/",
+		"image": "/images/products/TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS-BZ-108-bolts-titanium.webp",
+		"alt": "Titanium Hex Socket Countersunk Flat Head Bolts",
+		"description": "Flush-mount 90-degree countersunk flat head titanium bolts per DIN 7991 for aerodynamic surfaces and precision machinery.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-7991"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M3",
+				"M4",
+				"M5",
+				"M6",
+				"M8"
+			],
+			"material": [
+				"ti-gr5",
+				"ti-gr2"
+			],
+			"finish": [
+				"plain",
+				"anod"
+			],
+			"length": [
+				"8",
+				"12",
+				"16",
+				"20",
+				"25"
+			]
+		}
+	},
+	{
+		"sku": "TI-TORX-FLANGE-HEAD-BOLTS",
+		"standards": [
+			"ISO 7380-2",
+			"Custom / non-standard"
+		],
+		"title": "Titanium Torx Flange Head Bolts",
+		"href": "/products/bolts/torx-flange-head-bolts/",
+		"image": "/images/products/TI-TORX-FLANGE-HEAD-BOLTS-BZ-109-bolts-titanium.webp",
+		"alt": "Titanium Torx Flange Head Bolts",
+		"description": "Star-drive Torx flange titanium bolts providing superior torque transfer and anti-cam-out performance for motorsport and defense.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"iso-7380-2",
+				"custom"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M4",
+				"M5",
+				"M6",
+				"M8",
+				"M10"
+			],
+			"material": [
+				"ti-gr5"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"10",
+				"15",
+				"20",
+				"25",
+				"30"
+			]
+		}
+	},
+	{
+		"sku": "TI-DOUBLE-END-STUD-BOLTS",
+		"standards": [
+			"DIN 938",
+			"DIN 939"
+		],
+		"title": "Titanium Double End Stud Bolts",
+		"href": "/products/bolts/double-end-stud-bolts/",
+		"image": "/images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp",
+		"alt": "Titanium Double End Stud Bolts",
+		"description": "Threaded double-end titanium stud bolts per DIN 938 / DIN 939 for high-pressure flanges, heat exchangers, and exhaust manifolds.",
+		"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-938",
+				"din-939"
+			],
+			"type": [
+				"stud"
+			],
+			"thread": [
+				"M6",
+				"M8",
+				"M10",
+				"M12",
+				"M16"
+			],
+			"material": [
+				"ti-gr2",
+				"ti-gr5"
+			],
+			"finish": [
+				"plain"
+			],
+			"length": [
+				"40",
+				"50",
+				"65",
+				"80",
+				"100"
+			]
+		}
+	},
+	{
+		"sku": "TI-12-POINT-FLANGE-BOLTS",
+		"standards": [
+			"DIN 34800"
+		],
+		"title": "Titanium 12-Point Flange Bolts",
+		"href": "/products/bolts/12-point-flange-bolts/",
+		"image": "/images/products/TI-12-POINT-FLANGE-BOLTS-BZ-112-bolts-titanium.webp",
+		"alt": "Titanium 12-Point Flange Bolts",
+		"description": "High-tensile 12-point aerospace-style titanium flange bolts engineered for extreme weight reduction and high-torque clamping.",
+		"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing / PVD",
+		"status": "published",
+		"filters": {
+			"standard": [
+				"din-34800"
+			],
+			"type": [
+				"bolt"
+			],
+			"thread": [
+				"M6",
+				"M8",
+				"M10",
+				"M12"
+			],
+			"material": [
+				"ti-gr5"
+			],
+			"finish": [
+				"plain",
+				"anod",
+				"pvd"
+			],
+			"length": [
+				"20",
+				"25",
+				"30",
+				"40"
+			]
+		}
 	}
 ];
 
@@ -434,11 +941,11 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 			},
 			{
 				"label": "Products",
-				"href": "/global-en/eshop/"
+				"href": "/products/"
 			},
 			{
 				"label": "Screws",
-				"href": "/global-en/eshop/c/screws/"
+				"href": "/products/screws/"
 			}
 		],
 		"productCount": 2,
@@ -448,12 +955,12 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"standards": [
 					"DIN 912"
 				],
-				"title": "Hex Socket Head Cap Screws",
-				"href": "/global-en/eshop/p/hex-socket-head-cap-screw/",
-				"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-01.webp",
-				"alt": "Hex Socket Head Cap Screws",
-				"description": "Hexagon socket head cap screws in titanium grades with full DIN 912 and ISO 4762 dimensional conformity.",
-				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Black anodized / Plain (as supplied)",
+				"title": "Titanium Hex Socket Head Cap Screws Full Thread",
+				"href": "/products/screws/hex-socket-head-cap-screw/",
+				"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-BZ-201-screws-titanium.webp",
+				"alt": "Titanium Hex Socket Head Cap Screws Full Thread",
+				"description": "Hexagon socket head cap screws full thread per DIN 912 for aerospace and medical applications.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Anodizing / Plain",
 				"status": "published",
 				"filters": {
 					"standard": [
@@ -474,7 +981,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 						"ti-gr2"
 					],
 					"finish": [
-						"anod-black",
+						"anod",
 						"plain"
 					],
 					"length": [
@@ -499,12 +1006,12 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"standards": [
 					"DIN 7991"
 				],
-				"title": "Countersunk Head Cap Screws",
-				"href": "/global-en/eshop/p/countersunk-head-cap-screws/",
-				"image": "",
-				"alt": "Countersunk Head Cap Screws",
+				"title": "Titanium Countersunk Head Cap Screws",
+				"href": "/products/screws/countersunk-head-cap-screws/",
+				"image": "/images/products/TI-COUNTERSUNK-HEAD-CAP-SCREWS-BZ-202-screws-titanium.webp",
+				"alt": "Titanium Countersunk Head Cap Screws",
 				"description": "Hexagon socket countersunk head screws 90 degrees flat head per DIN 7991 for flush mounting without protruding heads.",
-				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized / Passivated",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing",
 				"status": "published",
 				"filters": {
 					"standard": [
@@ -524,8 +1031,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 					],
 					"finish": [
 						"plain",
-						"anod-black",
-						"passivated"
+						"anod"
 					],
 					"length": [
 						"10",
@@ -550,14 +1056,14 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 			},
 			{
 				"label": "Products",
-				"href": "/global-en/eshop/"
+				"href": "/products/"
 			},
 			{
 				"label": "Bolts",
-				"href": "/global-en/eshop/c/bolts/"
+				"href": "/products/bolts/"
 			}
 		],
-		"productCount": 1,
+		"productCount": 11,
 		"products": [
 			{
 				"sku": "TI-HEX-HEAD-BOLTS-FULLY-THREADED",
@@ -565,11 +1071,11 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 					"DIN 933"
 				],
 				"title": "Hex Head Bolts Fully Threaded",
-				"href": "/global-en/eshop/p/hex-head-bolts-fully-threaded/",
-				"image": "",
+				"href": "/products/bolts/hex-head-bolts-fully-threaded/",
+				"image": "/images/products/TI-HEX-HEAD-BOLTS-FULLY-THREADED-BZ-102-bolts-titanium.webp",
 				"alt": "Hex Head Bolts Fully Threaded",
 				"description": "Hexagon head bolts fully threaded per DIN 933 for structural and industrial clamping applications.",
-				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Black anodized",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing",
 				"status": "published",
 				"filters": {
 					"standard": [
@@ -589,13 +1095,449 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 					],
 					"finish": [
 						"plain",
-						"anod-black"
+						"anod"
 					],
 					"length": [
 						"20",
 						"30",
 						"40",
 						"50"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD",
+				"standards": [
+					"DIN 912"
+				],
+				"title": "Titanium Hex Socket Head Cap Bolts Full Thread",
+				"href": "/products/bolts/hex-socket-head-cap-bolts-full-thread/",
+				"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD-BZ-101-bolts-titanium.webp",
+				"alt": "Titanium Hex Socket Head Cap Bolts Full Thread",
+				"description": "Hexagon socket head cap bolts full thread per DIN 912 for aerospace and medical applications.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-912"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M4",
+						"M5"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod"
+					],
+					"length": [
+						"10",
+						"12",
+						"16"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEXAGON-HEAD-BOLTS-FULL-THREAD",
+				"standards": [
+					"DIN 933"
+				],
+				"title": "Titanium Hexagon Head Bolts Full Thread",
+				"href": "/products/bolts/hexagon-head-bolts-full-thread/",
+				"image": "/images/products/TI-HEXAGON-HEAD-BOLTS-FULL-THREAD-BZ-103-bolts-titanium.webp",
+				"alt": "Titanium Hexagon Head Bolts Full Thread",
+				"description": "Full thread hexagon head titanium bolts per DIN 933 / ISO 4017 for chemical processing, marine, and general industrial assemblies.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-933"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M4",
+						"M6",
+						"M8",
+						"M10",
+						"M12",
+						"M16"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"10",
+						"20",
+						"25",
+						"30",
+						"40",
+						"50"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD",
+				"standards": [
+					"DIN 931"
+				],
+				"title": "Titanium Hexagon Head Bolts Partial Thread",
+				"href": "/products/bolts/hexagon-head-bolts-partial-thread/",
+				"image": "/images/products/TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD-BZ-104-bolts-titanium.webp",
+				"alt": "Titanium Hexagon Head Bolts Partial Thread",
+				"description": "Partial thread hex head structural titanium bolts per DIN 931 / ISO 4014 designed for high shear strength and heavy-duty load bearing.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-931"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M6",
+						"M8",
+						"M10",
+						"M12",
+						"M16",
+						"M20"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod"
+					],
+					"length": [
+						"35",
+						"45",
+						"60",
+						"80",
+						"100",
+						"120"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEXAGON-FLANGE-BOLTS",
+				"standards": [
+					"DIN 6921"
+				],
+				"title": "Titanium Hexagon Flange Bolts",
+				"href": "/products/bolts/hexagon-flange-bolts/",
+				"image": "/images/products/TI-HEXAGON-FLANGE-BOLTS-BZ-105-bolts-titanium.webp",
+				"alt": "Titanium Hexagon Flange Bolts",
+				"description": "Titanium hex flange bolts per DIN 6921 with integrated washer base for automotive, racing, and high-vibration equipment.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-6921"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M5",
+						"M6",
+						"M8",
+						"M10",
+						"M12"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"12",
+						"16",
+						"20",
+						"25",
+						"35"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEX-SOCKET-HEAD-CAP-BOLTS",
+				"standards": [
+					"DIN 912"
+				],
+				"title": "Titanium Hex Socket Head Cap Bolts",
+				"href": "/products/bolts/hex-socket-head-cap-bolts/",
+				"image": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-BZ-106-bolts-titanium.webp",
+				"alt": "Titanium Hex Socket Head Cap Bolts",
+				"description": "High-precision cylindrical socket head cap titanium bolts per DIN 912 / ISO 4762 for aerospace, medical devices, and robotics.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-912"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M3",
+						"M4",
+						"M5",
+						"M6",
+						"M8",
+						"M10"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"8",
+						"12",
+						"16",
+						"20",
+						"30",
+						"40"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEX-SOCKET-BUTTON-HEAD-BOLTS",
+				"standards": [
+					"DIN 7380"
+				],
+				"title": "Titanium Hex Socket Button Head Bolts",
+				"href": "/products/bolts/hex-socket-button-head-bolts/",
+				"image": "/images/products/TI-HEX-SOCKET-BUTTON-HEAD-BOLTS-BZ-107-bolts-titanium.webp",
+				"alt": "Titanium Hex Socket Button Head Bolts",
+				"description": "Low-profile dome head hex socket titanium bolts per ISO 7380 offering snag-free aesthetics for electronics, UAVs, and bicycles.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-7380"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M3",
+						"M4",
+						"M5",
+						"M6",
+						"M8"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"6",
+						"10",
+						"12",
+						"16",
+						"20"
+					]
+				}
+			},
+			{
+				"sku": "TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS",
+				"standards": [
+					"DIN 7991"
+				],
+				"title": "Titanium Hex Socket Countersunk Flat Head Bolts",
+				"href": "/products/bolts/hex-socket-countersunk-flat-head-bolts/",
+				"image": "/images/products/TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS-BZ-108-bolts-titanium.webp",
+				"alt": "Titanium Hex Socket Countersunk Flat Head Bolts",
+				"description": "Flush-mount 90-degree countersunk flat head titanium bolts per DIN 7991 for aerodynamic surfaces and precision machinery.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain / Anodizing",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-7991"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M3",
+						"M4",
+						"M5",
+						"M6",
+						"M8"
+					],
+					"material": [
+						"ti-gr5",
+						"ti-gr2"
+					],
+					"finish": [
+						"plain",
+						"anod"
+					],
+					"length": [
+						"8",
+						"12",
+						"16",
+						"20",
+						"25"
+					]
+				}
+			},
+			{
+				"sku": "TI-TORX-FLANGE-HEAD-BOLTS",
+				"standards": [
+					"ISO 7380-2",
+					"Custom / non-standard"
+				],
+				"title": "Titanium Torx Flange Head Bolts",
+				"href": "/products/bolts/torx-flange-head-bolts/",
+				"image": "/images/products/TI-TORX-FLANGE-HEAD-BOLTS-BZ-109-bolts-titanium.webp",
+				"alt": "Titanium Torx Flange Head Bolts",
+				"description": "Star-drive Torx flange titanium bolts providing superior torque transfer and anti-cam-out performance for motorsport and defense.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"iso-7380-2",
+						"custom"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M4",
+						"M5",
+						"M6",
+						"M8",
+						"M10"
+					],
+					"material": [
+						"ti-gr5"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"10",
+						"15",
+						"20",
+						"25",
+						"30"
+					]
+				}
+			},
+			{
+				"sku": "TI-DOUBLE-END-STUD-BOLTS",
+				"standards": [
+					"DIN 938",
+					"DIN 939"
+				],
+				"title": "Titanium Double End Stud Bolts",
+				"href": "/products/bolts/double-end-stud-bolts/",
+				"image": "/images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp",
+				"alt": "Titanium Double End Stud Bolts",
+				"description": "Threaded double-end titanium stud bolts per DIN 938 / DIN 939 for high-pressure flanges, heat exchangers, and exhaust manifolds.",
+				"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-938",
+						"din-939"
+					],
+					"type": [
+						"stud"
+					],
+					"thread": [
+						"M6",
+						"M8",
+						"M10",
+						"M12",
+						"M16"
+					],
+					"material": [
+						"ti-gr2",
+						"ti-gr5"
+					],
+					"finish": [
+						"plain"
+					],
+					"length": [
+						"40",
+						"50",
+						"65",
+						"80",
+						"100"
+					]
+				}
+			},
+			{
+				"sku": "TI-12-POINT-FLANGE-BOLTS",
+				"standards": [
+					"DIN 34800"
+				],
+				"title": "Titanium 12-Point Flange Bolts",
+				"href": "/products/bolts/12-point-flange-bolts/",
+				"image": "/images/products/TI-12-POINT-FLANGE-BOLTS-BZ-112-bolts-titanium.webp",
+				"alt": "Titanium 12-Point Flange Bolts",
+				"description": "High-tensile 12-point aerospace-style titanium flange bolts engineered for extreme weight reduction and high-torque clamping.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Plain / Anodizing / PVD",
+				"status": "published",
+				"filters": {
+					"standard": [
+						"din-34800"
+					],
+					"type": [
+						"bolt"
+					],
+					"thread": [
+						"M6",
+						"M8",
+						"M10",
+						"M12"
+					],
+					"material": [
+						"ti-gr5"
+					],
+					"finish": [
+						"plain",
+						"anod",
+						"pvd"
+					],
+					"length": [
+						"20",
+						"25",
+						"30",
+						"40"
 					]
 				}
 			}
@@ -614,11 +1556,11 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 			},
 			{
 				"label": "Products",
-				"href": "/global-en/eshop/"
+				"href": "/products/"
 			},
 			{
 				"label": "Nuts",
-				"href": "/global-en/eshop/c/nuts/"
+				"href": "/products/nuts/"
 			}
 		],
 		"productCount": 1,
@@ -628,12 +1570,12 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"standards": [
 					"DIN 934"
 				],
-				"title": "Hex Nuts",
-				"href": "/global-en/eshop/p/hex-nut/",
-				"image": "/images/products/TI-HEX-NUT-01.webp",
-				"alt": "Hex Nuts",
-				"description": "Hexagon nuts in titanium grades to DIN 934 and ISO 4032 style 1.",
-				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain (as supplied)",
+				"title": "Titanium Hexagon Full Nuts",
+				"href": "/products/nuts/hex-nut/",
+				"image": "/images/products/TI-HEX-NUT-BZ-301-nuts-titanium.webp",
+				"alt": "Titanium Hexagon Full Nuts",
+				"description": "Hexagon nuts style 1 per DIN 934 for high temperature applications.",
+				"material": "Titanium Grade 5 (Ti-6Al-4V) / Titanium Grade 2 (CP-Ti) / Plain",
 				"status": "published",
 				"filters": {
 					"standard": [
@@ -675,11 +1617,11 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 			},
 			{
 				"label": "Products",
-				"href": "/global-en/eshop/"
+				"href": "/products/"
 			},
 			{
 				"label": "Washers",
-				"href": "/global-en/eshop/c/washers/"
+				"href": "/products/washers/"
 			}
 		],
 		"productCount": 1,
@@ -689,12 +1631,12 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 				"standards": [
 					"DIN 125"
 				],
-				"title": "Plain Washers",
-				"href": "/global-en/eshop/p/plain-washers/",
-				"image": "",
-				"alt": "Plain Washers",
+				"title": "Titanium Plain Washers",
+				"href": "/products/washers/plain-washers/",
+				"image": "/images/products/TI-PLAIN-WASHERS-BZ-401-washers-titanium.webp",
+				"alt": "Titanium Plain Washers",
 				"description": "Plain washers form A per DIN 125 and ISO 7089 for titanium fastening in chemical and marine environments.",
-				"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain (as supplied) / Passivated",
+				"material": "Titanium Grade 2 (CP-Ti) / Titanium Grade 5 (Ti-6Al-4V) / Plain / Passivated",
 				"status": "published",
 				"filters": {
 					"standard": [

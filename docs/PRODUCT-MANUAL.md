@@ -14,7 +14,7 @@ data/products/*.csv          ← 真相源（人工维护 / Excel 可编辑）
 src/data/products/*.ts       ← 生成产物（禁止手改）
       │  页面只从 @data/products import
       ▼
-/global-en/eshop/…           ← 总览 / 分类页 / 族页
+/products/…                 ← 总览 / 分类页 / 族页
 ```
 
 **改产品 = 改 CSV → 跑 `npm run gen:products` → build。** 直接改 `src/data/products/**` 会在下次生成时被覆盖。
@@ -49,12 +49,15 @@ src/data/products/*.ts       ← 生成产物（禁止手改）
 
 | 页面 | 路由 | 数据来源 |
 | --- | --- | --- |
-| 产品总览 | `/global-en/eshop/` | 全部族 + 左侧筛选栏 |
-| 分类页 | `/global-en/eshop/c/<category_id>/` | 该分类下的族 + 左侧筛选栏 |
-| 族详情页 | `/global-en/eshop/p/<family_id>/` | 规格矩阵表 + 询盘岛 |
+| 产品总览 | `/products/` | 全部族 + 左侧筛选栏 |
+| 分类页 | `/products/<category_id>/` | 该分类下的族 + 左侧筛选栏 |
+| 族详情页 | `/products/<category_id>/<family_id>/` | 规格矩阵表 + 询盘岛 |
 
 - 分类 id 来自 `categories.csv`（如 `screws` / `nuts`）。
 - 族 id 来自 `families.csv` 的 `family_id`（小写连字符，如 `hex-socket-head-cap-screw`）。
+- 族页的分类段取自该族在 `families.csv` 的 `category` 列 —— 不用另填。
+- **分类 id 不能与族 id 同名**（否则 Astro 路由冲突）—— 闸门 **E036** 会在
+  `npm run gen:products` 阶段报 error 并列出冲突 id。
 - **仓库禁止任何跳转/重定向** —— 改路径就是直接改，不留 301。
 
 ---

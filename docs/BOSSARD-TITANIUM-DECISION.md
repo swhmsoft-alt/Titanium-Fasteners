@@ -213,7 +213,7 @@ ISO 7042 属 ISO 7040 系列，而 7040 系列（7040 / 7043）按三份报告�
    标题公式：`Titanium <品类> <标准> — Bossard BN <n> Equivalent`
    H1 放「BN n Cross-Reference」；正文固定七段：
    原 Bossard 规格表 → 钛牌号对应理由 → ISO/DIN 双标准尺寸对照 → 减重率（Gr5 −43.6 % vs 8.8 / −44.6 % vs A4） → 预紧力折算 → **我们实测的扭矩值** → 询盘岛。
-2. **反向索引页**（`/global-en/eshop/bossard-equivalent/`）：把覆盖表做成可下载 PDF/Excel。
+2. **反向索引页**（`/products/bossard-equivalent/`）：把覆盖表做成可下载 PDF/Excel。
    钩子文案：**「Bossard 目录 998 个 SKU 中，我们可提供 N 个的钛替代，覆盖率 X %」** —— 全站最强的单页钩子。
 3. **族页内嵌交叉引用块**：每个族页固定「等效 Bossard 料号 / 等效 DIN / 等效 ISO / 原材质等级」四行表 + 一键询盘。
 
@@ -289,7 +289,7 @@ Gr2 平垫圈 DIN 125 A／ISO 7089  →  Gr5 内六角圆柱头 ISO 4762（M3–
 | 7 | `sku-codes.csv` 补新 finish 的短码 | `data/products/sku-codes.csv` | ✅ 已完成 |
 | 8 | 批量导入 + 发布 | 模板 → `bulk-import` → `fam-set` | ✅ 已完成（3 个新族已导入并 published） |
 
-> **已上架的 P0 五族**（`status=published`，路由 `/global-en/eshop/p/<family_id>/`）：
+> **已上架的 P0 五族**（`status=published`，路由 `/products/<category_id>/<family_id>/`）：
 > `hex-socket-head-cap-screw` · `hex-nut` · `countersunk-head-cap-screws` · `hex-head-bolts-fully-threaded` · `plain-washers`
 >
 > ⚠️ **未填的字段**：三个新族暂无主图（W001 警告，客户素材未到位）；`management.csv` 的商务字段（`moq` / `packaging` / `lead_time` / `price_*`）**按仓库既定决策留空** —— 见 `docs/PRODUCT-DATA.md`「商务字段当前不在表里」，由业务侧提供，站点不编造。

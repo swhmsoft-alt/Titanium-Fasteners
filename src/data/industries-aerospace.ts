@@ -69,8 +69,8 @@ export const AEROSPACE = {
 	},
 	hero: {
 		breadcrumb: [
-			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/global-en/" },
-			{ label: "Industries", href: "/global-en/industries/" },
+			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/" },
+			{ label: "Industries", href: "/industries/" },
 			{ label: "Aerospace" },
 		] as BreadcrumbItem[],
 		eyebrow: "Bossard Aerospace",
@@ -86,7 +86,7 @@ export const AEROSPACE = {
 	teasers: [
 		[
 			{
-				href: "/global-en/industries/aerospace/aerospace-fastening-solutions/",
+				href: "/industries/aerospace/aerospace-fastening-solutions/",
 				image: "/images/industries-aerospace/02-airplane-and-parts-illustration-with-gradient-ov.webp",
 				alt: "airplane and parts illustration with gradient overlay",
 				imageWidth: 834,
@@ -96,7 +96,7 @@ export const AEROSPACE = {
 				description: "From metrics and imperial standard parts, to built-to-print part according to your requirements.",
 			},
 			{
-				href: "/global-en/industries/aerospace/aerospace-engineering-and-services/",
+				href: "/industries/aerospace/aerospace-engineering-and-services/",
 				image: "/images/industries-aerospace/03-two-men-reviewing-cad-engineering-drawings-and-3.webp",
 				alt: "Two men reviewing CAD engineering drawings and 3D models on dual computer monitors in a modern office workspace.",
 				imageWidth: 530,
@@ -108,7 +108,7 @@ export const AEROSPACE = {
 		],
 		[
 			{
-				href: "/global-en/industries/aerospace/supplier-network-aerospace/",
+				href: "/industries/aerospace/supplier-network-aerospace/",
 				image: "/images/industries-aerospace/04-aerial-view-and-top-view-cargo-plane-flying-abov.webp",
 				alt: "Aerial view and top view cargo plane flying above ship port in the export and import business and Smart logistics international goods. Shipping cargo to harbor by crane stock photo",
 				imageWidth: 530,
@@ -118,7 +118,7 @@ export const AEROSPACE = {
 				description: "Partner with Bossard Aerospace for exceptional C-parts distribution.",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/",
+				href: "/industries/aerospace/about-bossard-aerospace/",
 				image: "/images/industries-aerospace/05-aircraft-wing-and-enging-landed-with-gradient.webp",
 				alt: "Aircraft wing and enging landed with gradient",
 				imageWidth: 834,
@@ -130,7 +130,7 @@ export const AEROSPACE = {
 		],
 		[
 			{
-				href: "/global-en/industries/aerospace/working-at-bossard-aerospace/",
+				href: "/industries/aerospace/working-at-bossard-aerospace/",
 				image: "/images/industries-aerospace/06-team-picture-of-bossard-aerospace-in-front-of-th.webp",
 				alt: "Team picture of Bossard Aerospace in front of the warehouse building",
 				imageWidth: 834,
@@ -140,7 +140,7 @@ export const AEROSPACE = {
 				description: "Want to join a team of passionate people in an exciting industry? Find out more about career opportunities at Bossard Aerospace.",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/contacts-and-locations/",
+				href: "/industries/aerospace/about-bossard-aerospace/contacts-and-locations/",
 				image: "/images/industries-aerospace/07-a-close-up-of-an-airplane-engine-situated-in-a-h.webp",
 				alt: "A close-up of an airplane engine situated in a hangar with blue walls, highlighting its mechanical features.",
 				imageWidth: 530,
@@ -155,7 +155,7 @@ export const AEROSPACE = {
 		heading: "News Overview",
 		items: [
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/beyond-the-catalog-why-aerospace-fastener-design-review-drives-weight-safety-and-schedule/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/beyond-the-catalog-why-aerospace-fastener-design-review-drives-weight-safety-and-schedule/",
 				image: "/images/industries-aerospace/08-3-people-reviewing-design-and-fasteners-with-bos.webp",
 				alt: "3 people reviewing design and fasteners with Bossard Aerospace wall background",
 				date: "October 2026",
@@ -163,7 +163,7 @@ export const AEROSPACE = {
 				body: "How weight reduction, surface treatment, and installation optimization protect performance across the aircraft lifecycle.",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/aero-negoce-international-is-moving-to-a-new-site-in-beziers/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/aero-negoce-international-is-moving-to-a-new-site-in-beziers/",
 				image: "/images/industries-aerospace/09-aero-negoce-international-logo.webp",
 				alt: "Aero Negoce International Logo",
 				date: "September 2026",
@@ -171,7 +171,7 @@ export const AEROSPACE = {
 				body: "Aero Negoce International, a Bossard company, is preparing to relocate its operations to a new site in Béziers. A modern, larger site to support the continued development of our operations.",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/2026-automotive-and-aerospace-nearshoring-summit-chihuahua-mexico/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/2026-automotive-and-aerospace-nearshoring-summit-chihuahua-mexico/",
 				image: "/images/industries-aerospace/10-aerospace-summit-chihuhua-2026-logo.webp",
 				alt: "Aerospace Summit Chihuhua 2026 logo",
 				date: "August 2026",
@@ -179,7 +179,7 @@ export const AEROSPACE = {
 				body: "Bossard Aerospace to Showcase Fastening and Smart Factory Solutions at the 2026 Automotive & Aerospace Nearshoring Summit",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/aerospace-and-defense-meeting-sevilla-2026/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/aerospace-and-defense-meeting-sevilla-2026/",
 				image: "/images/industries-aerospace/11-aerospace-and-defense-meeting-sevilla-logo.webp",
 				alt: "Aerospace and Defense Meeting Sevilla Logo",
 				date: "May 2026",
@@ -187,7 +187,7 @@ export const AEROSPACE = {
 				body: "Bossard Aerospace to exhibit at Aerospace & Defense Meetings Sevilla 2026",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/mro-america-orlando-2026/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/mro-america-orlando-2026/",
 				image: "/images/industries-aerospace/12-mro-americas-logo.webp",
 				alt: "MRO Americas logo",
 				date: "April 2026",
@@ -195,7 +195,7 @@ export const AEROSPACE = {
 				body: "The global aviation maintenance community will soon gather in Orlando for one of the industry’s key events—and Bossard Aerospace will be there.",
 			},
 			{
-				href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/aix-hamburg-2026/",
+				href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/aix-hamburg-2026/",
 				image: "/images/industries-aerospace/13-aircraft-interiors-expo-logo.webp",
 				alt: "Aircraft Interiors Expo logo",
 				date: "April 2026",
@@ -324,9 +324,9 @@ export const AEROSPACE = {
 					iconAlt: "Products solutions - standard icon",
 					heading: "Product Solutions",
 					links: [
-						{ label: "Metric and Imperial Fasteners", href: "/global-en/industries/aerospace/aerospace-fastening-solutions/metric-and-imperial-fasteners-for-aerospace/" },
-						{ label: "Built-to-Print Parts", href: "/global-en/industries/aerospace/aerospace-fastening-solutions/built-to-print-parts/" },
-						{ label: "Innovative Solutions for Interior", href: "/global-en/product-solutions/product-categories-and-brands/welding-technology/mm-welding/" },
+						{ label: "Metric and Imperial Fasteners", href: "/industries/aerospace/aerospace-fastening-solutions/metric-and-imperial-fasteners-for-aerospace/" },
+						{ label: "Built-to-Print Parts", href: "/industries/aerospace/aerospace-fastening-solutions/built-to-print-parts/" },
+						{ label: "Innovative Solutions for Interior", href: "/product-solutions/product-categories-and-brands/welding-technology/mm-welding/" },
 					],
 				},
 				{
@@ -334,8 +334,8 @@ export const AEROSPACE = {
 					iconAlt: "Engineering icon",
 					heading: "Engineering & Services",
 					links: [
-						{ label: "Engineering and Services", href: "/global-en/industries/aerospace/aerospace-engineering-and-services/" },
-						{ label: "Built-to-Print Parts", href: "/global-en/industries/aerospace/aerospace-fastening-solutions/built-to-print-parts/" },
+						{ label: "Engineering and Services", href: "/industries/aerospace/aerospace-engineering-and-services/" },
+						{ label: "Built-to-Print Parts", href: "/industries/aerospace/aerospace-fastening-solutions/built-to-print-parts/" },
 					],
 				},
 				{
@@ -343,8 +343,8 @@ export const AEROSPACE = {
 					iconAlt: "Suppliers icon",
 					heading: "Supplier Base",
 					links: [
-						{ label: "Supplier Network", href: "/global-en/industries/aerospace/supplier-network-aerospace/" },
-						{ label: "Terms and Conditions", href: "/global-en/industries/aerospace/about-bossard-aerospace/legal-and-certificates/" },
+						{ label: "Supplier Network", href: "/industries/aerospace/supplier-network-aerospace/" },
+						{ label: "Terms and Conditions", href: "/industries/aerospace/about-bossard-aerospace/legal-and-certificates/" },
 					],
 				},
 			],
@@ -356,9 +356,9 @@ export const AEROSPACE = {
 					iconAlt: "Aerospace icon",
 					heading: "About Bossard Aerospace",
 					links: [
-						{ label: "Who We Are", href: "/global-en/industries/aerospace/about-bossard-aerospace/" },
-						{ label: "History", href: "/global-en/industries/aerospace/about-bossard-aerospace/bossard-aerospace-history/" },
-						{ label: "Career", href: "/global-en/industries/aerospace/working-at-bossard-aerospace/" },
+						{ label: "Who We Are", href: "/industries/aerospace/about-bossard-aerospace/" },
+						{ label: "History", href: "/industries/aerospace/about-bossard-aerospace/bossard-aerospace-history/" },
+						{ label: "Career", href: "/industries/aerospace/working-at-bossard-aerospace/" },
 					],
 				},
 				{
@@ -366,8 +366,8 @@ export const AEROSPACE = {
 					iconAlt: "Contact icon",
 					heading: "News and Contacts",
 					links: [
-						{ label: "Aerospace News", href: "/global-en/industries/aerospace/about-bossard-aerospace/aerospace-news/" },
-						{ label: "Contacts and Locations", href: "/global-en/industries/aerospace/about-bossard-aerospace/contacts-and-locations/" },
+						{ label: "Aerospace News", href: "/industries/aerospace/about-bossard-aerospace/aerospace-news/" },
+						{ label: "Contacts and Locations", href: "/industries/aerospace/about-bossard-aerospace/contacts-and-locations/" },
 						{ label: "Follow Us on LinkedIn", href: "https://www.linkedin.com/company/bossard-aerospace" },
 					],
 				},
@@ -376,8 +376,8 @@ export const AEROSPACE = {
 					iconAlt: "Download icon",
 					heading: "Legal and Downloads",
 					links: [
-						{ label: "Terms and Conditions and Certificates", href: "/global-en/industries/aerospace/about-bossard-aerospace/legal-and-certificates/" },
-						{ label: "Imprint", href: "/global-en/industries/aerospace/about-bossard-aerospace/imprint-bossard-aerospace/" },
+						{ label: "Terms and Conditions and Certificates", href: "/industries/aerospace/about-bossard-aerospace/legal-and-certificates/" },
+						{ label: "Imprint", href: "/industries/aerospace/about-bossard-aerospace/imprint-bossard-aerospace/" },
 					],
 				},
 			],

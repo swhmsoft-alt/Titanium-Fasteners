@@ -49,10 +49,10 @@ const warn = (code, msg) => warnings.push(`${code}  ${msg}`);
 const required = {
 	'materials.csv': ['id', 'name', 'density_g_cm3', 'corrosion_1_5', 'proof_strength_mpa', 'tensile_mpa', 'max_temp_c'],
 	'finishes.csv': ['id', 'name', 'spec'],
-	'standards.csv': ['id', 'label', 'din', 'iso', 'title', 'type'],
+	'standards.csv': ['id', 'label', 'din', 'iso', 'title', 'type', 'auto'],
 	'param-schema.csv': ['type', 'param', 'label', 'unit', 'required', 'key', 'order'],
 	'categories.csv': ['id', 'name', 'description', 'image', 'order'],
-	'families.csv': ['family_id', 'name', 'category', 'standards', 'materials', 'finishes', 'description', 'image'],
+	'families.csv': ['family_id', 'name', 'category', 'type', 'standards', 'materials', 'finishes', 'description', 'image'],
 	'management.csv': ['family_id', 'status', 'moq', 'packaging', 'lead_time', 'price_from', 'price_to', 'price_currency', 'price_unit'],
 };
 
@@ -87,6 +87,21 @@ const materialIds = new Set((dicts['materials.csv']?.rows ?? []).map((r) => r.id
 const finishIds = new Set((dicts['finishes.csv']?.rows ?? []).map((r) => r.id));
 const standardIds = new Set((dicts['standards.csv']?.rows ?? []).map((r) => r.id));
 const categoryIds = new Set((dicts['categories.csv']?.rows ?? []).map((r) => r.id));
+
+/* 尺寸库 —— 判定某规格行有没有工程尺寸来源。
+   有来源 → 必填参数缺失是数据错误（E019）；无来源 → 降级为警告（W002）：
+   客户批量件可以先按"螺纹 × 长度"上架，工程尺寸等抽取器补齐。 */
+const libRows = readCsv(join(IN_DIR, 'dimension-library.csv'))?.rows ?? [];
+const numEq = (a, b) => {
+	const x = Number(a);
+	const y = Number(b);
+	if (Number.isFinite(x) && Number.isFinite(y)) return x === y;
+	return String(a).trim() === String(b).trim();
+};
+const libHas = (std, keyParams, values) =>
+	libRows.some(
+		(l) => l.standard === std && keyParams.every((k) => numEq(l[k] ?? '', values[k] ?? '')),
+	);
 
 /* param schema → type → params[] */
 const paramTypes = new Map();
@@ -136,8 +151,11 @@ for (const m of mgtRows) {
 const stdRows = dicts['standards.csv']?.rows ?? [];
 const stdTypeOf = new Map(stdRows.map((r) => [r.id, r.type]));
 const stdLabelOf = new Map(stdRows.map((r) => [r.id, r.label]));
+const stdAutoOf = new Map(stdRows.map((r) => [r.id, (r.auto ?? '0').trim()]));
 for (const f of dicts['families.csv']?.rows ?? []) {
-	f.type = stdTypeOf.get(split(f.standards)[0]) ?? '';
+	/* type 显式落 CSV —— 不再由 standards[0] 派生：
+	   产品可以没有标准，也可以挂多个标准而类型不变（标准只是矩阵的一个维度）。 */
+	f.type = (f.type ?? '').trim() || stdTypeOf.get(split(f.standards)[0]) || '';
 	const labels = split(f.standards).map((s) => stdLabelOf.get(s)).filter(Boolean);
 	f.seo_title = labels.length ? `${f.name} — ${labels.join(' / ')}` : f.name;
 	f.seo_description = (f.description ?? '').trim();
@@ -199,6 +217,7 @@ for (const f of dicts['families.csv']?.rows ?? []) {
 		families.push({ ...f, paramType: type, status });
 		continue;
 	}
+
 	const known = new Set(['standard', ...params.map((p) => p.param)]);
 	for (const col of dimCsv.header) {
 		if (!known.has(col)) err('E016', `dimensions/${id}.csv 含未知列 "${col}"（type=${type}）`);
@@ -207,21 +226,34 @@ for (const f of dicts['families.csv']?.rows ?? []) {
 
 	const rows = [];
 	const seenKeys = new Set();
+	const famStandards = split(f.standards);
+	const keyParams = params.filter((p) => p.key).map((p) => p.param);
 	for (const r of dimCsv.rows) {
 		const std = r.standard ?? '';
-		if (!split(f.standards).includes(std)) {
+		if (famStandards.length ? !famStandards.includes(std) : std !== '') {
 			err('E018', `dimensions/${id}.csv 行的 standard="${std}" 不在 family 的 standards 列表中`);
 		}
 		const values = {};
 		for (const p of params) {
 			const v = r[p.param] ?? '';
-			if (p.required && v === '') {
-				err('E019', `dimensions/${id}.csv 行 thread=${r.thread ?? ''} 缺少必填参数 "${p.param}"`);
-			}
 			if (v !== '' && p.unit === 'mm' && p.param !== 'thread' && !Number.isFinite(Number(v))) {
 				err('E020', `dimensions/${id}.csv 参数 "${p.param}" 的值 "${v}" 不是数值`);
 			}
 			values[p.param] = v;
+		}
+		/* 必填参数缺失分两种 ——
+		   ① 该标准已登记、尺寸库有这一档 → 数据漏填，E019 阻塞；
+		   ② 无工程尺寸来源（auto 标准 / 尺寸库没这一档）→ 先按基础规格上架，W002 放行。 */
+		for (const p of params) {
+			if (!p.required || values[p.param] !== '') continue;
+			if (stdAutoOf.get(std) === '1' || !libHas(std, keyParams, values)) {
+				warn(
+					'W002',
+					`dimensions/${id}.csv 行 ${std} ${keyParams.map((k) => values[k]).join('x')} 缺必填参数 "${p.param}" —— 无工程尺寸来源，先按基础规格上架`,
+				);
+			} else {
+				err('E019', `dimensions/${id}.csv 行 thread=${r.thread ?? ''} 缺少必填参数 "${p.param}"`);
+			}
 		}
 		const key = [std, ...params.filter((p) => p.key).map((p) => values[p.param])].join('-');
 		if (seenKeys.has(key)) err('E021', `dimensions/${id}.csv 存在重复的规格组合 "${key}"`);
@@ -231,6 +263,21 @@ for (const f of dicts['families.csv']?.rows ?? []) {
 	if (rows.length === 0) err('E022', `dimensions/${id}.csv 没有任何数据行`);
 	dimensions.set(id, rows);
 	families.push({ ...f, paramType: type, status });
+}
+
+/* ── slug 冲突（路由层）─────────────────────────────────────────────────
+ * 产品区是两层：/products/<category>/<family>/。
+ * 若某个 family_id 与某个 category_id 同名，则 /products/<id>/ 同时是
+ * 分类页与产品族页 —— Astro 会静默产生重复路由，构建期报错难排查。
+ * 这里在数据闸门阶段直接拦下。 */
+const familyIds = new Set(families.map((f) => f.family_id));
+for (const cid of categoryIds) {
+	if (familyIds.has(cid)) {
+		err(
+			'E036',
+			`family_id "${cid}" 与 category_id "${cid}" 冲突 —— /products/${cid}/ 会同时是分类页与产品族页（Astro 路由冲突）`,
+		);
+	}
 }
 
 /* ── SKU 规范 ────────────────────────────────────────────────────────────
@@ -341,7 +388,7 @@ if (dicts['standards.csv']) {
 		'standards.ts',
 		`/**\n * ${BANNER}\n * Source: data/products/standards.csv\n */\nimport type { Standard } from './types';\n\nexport const STANDARDS: Standard[] = ${tsv(
 			dicts['standards.csv'].rows,
-			['id', 'label', 'din', 'iso', 'title', 'type', 'notes'],
+			['id', 'label', 'din', 'iso', 'title', 'type', 'notes', 'auto'],
 		)};`,
 	);
 }
@@ -482,15 +529,15 @@ const finLabel = new Map((dicts['finishes.csv']?.rows ?? []).map((r) => [r.id, r
 const facet = (ids, labelMap) => ids.map((id) => ({ id, label: labelMap.get(id) ?? id }));
 
 /* ── 路由常量（唯一形态）────────────────────────────────────────────────
- * 全站产品区统一到 /global-en/eshop/ 前缀：
- *   总览      /global-en/eshop/
- *   分类页    /global-en/eshop/c/<category_id>/
- *   产品族页  /global-en/eshop/p/<family_id>/
+ * 全站产品区统一到 /products/ 前缀：
+ *   总览      /products/
+ *   分类页    /products/<category_id>/
+ *   产品族页  /products/<category_id>/<family_id>/
  * 仓库禁止跳转/重定向 —— 这个形态一旦生成就是契约。
  */
-const ESHOP_ROUTE_BASE = '/global-en/eshop/';
-const familyRoute = (id) => `${ESHOP_ROUTE_BASE}p/${id}/`;
-const categoryRoute = (id) => `${ESHOP_ROUTE_BASE}c/${id}/`;
+const PRODUCT_ROUTE_BASE = '/products/';
+const familyRoute = (category, id) => `${PRODUCT_ROUTE_BASE}${category}/${id}/`;
+const categoryRoute = (id) => `${PRODUCT_ROUTE_BASE}${id}/`;
 
 const searchIndex = {
 	categories: catRows.map((c) => ({ id: c.id, name: c.name })),
@@ -507,7 +554,7 @@ const searchIndex = {
 			description: f.description ?? '',
 			sku: familySkus.get(f.family_id) ?? '',
 			image: familyAssets.get(f.family_id)?.image ?? '',
-			url: familyRoute(f.family_id),
+			url: familyRoute(f.category, f.family_id),
 			standards: facet(split(f.standards), stdLabel),
 			materials: facet(split(f.materials), matLabel),
 			finishes: facet(split(f.finishes), finLabel),
@@ -590,7 +637,7 @@ const productCard = (f) => ({
 	sku: familySkus.get(f.family_id) ?? f.family_id,
 	standards: split(f.standards).map((id) => stdLabel.get(id) ?? id),
 	title: f.name,
-	href: familyRoute(f.family_id),
+	href: familyRoute(f.category, f.family_id),
 	image: familyAssets.get(f.family_id)?.image ?? '',
 	alt: f.name,
 	description: f.description ?? '',
@@ -636,7 +683,7 @@ const categoryViews = catRows
 			image: c.image ?? '',
 			breadcrumb: [
 				{ label: 'Home', href: '/' },
-				{ label: 'Products', href: ESHOP_ROUTE_BASE },
+				{ label: 'Products', href: PRODUCT_ROUTE_BASE },
 				{ label: c.name, href: categoryRoute(c.id) },
 			],
 			productCount: shown.length,
@@ -652,7 +699,7 @@ const hasAnyPublished = allPublished.length > 0;
 
 write(
 	'category-view.ts',
-	`/**\n * ${BANNER}\n * Source: data/products/families.csv + data/products/dimensions/*.csv\n */\nimport type { CategoryCardView, CategoryView, FilterGroupView, ProductCardView } from './types';\n\nexport const ESHOP_ROUTE_BASE = ${JSON.stringify(ESHOP_ROUTE_BASE)};\n\nexport function familyPath(id: string): string {\n\treturn ESHOP_ROUTE_BASE + 'p/' + id + '/';\n}\n\nexport function categoryPath(id: string): string {\n\treturn ESHOP_ROUTE_BASE + 'c/' + id + '/';\n}\n\nexport const CATEGORY_CARDS: CategoryCardView[] = ${JSON.stringify(categoryCards, null, '\t')};\n\nexport const FILTER_GROUPS: FilterGroupView[] = ${JSON.stringify(filterGroups, null, '\t')};\n\nexport const ALL_PRODUCTS: ProductCardView[] = ${JSON.stringify(allShown.map(productCard), null, '\t')};\n\nexport const HAS_PUBLISHED: boolean = ${hasAnyPublished};\n\nexport const CATEGORY_VIEWS: Record<string, CategoryView> = ${JSON.stringify(
+	`/**\n * ${BANNER}\n * Source: data/products/families.csv + data/products/dimensions/*.csv\n */\nimport type { CategoryCardView, CategoryView, FilterGroupView, ProductCardView } from './types';\n\nexport const PRODUCT_ROUTE_BASE = ${JSON.stringify(PRODUCT_ROUTE_BASE)};\n\nexport function familyPath(category: string, id: string): string {\n\treturn PRODUCT_ROUTE_BASE + category + '/' + id + '/';\n}\n\nexport function categoryPath(id: string): string {\n\treturn PRODUCT_ROUTE_BASE + id + '/';\n}\n\nexport const CATEGORY_CARDS: CategoryCardView[] = ${JSON.stringify(categoryCards, null, '\t')};\n\nexport const FILTER_GROUPS: FilterGroupView[] = ${JSON.stringify(filterGroups, null, '\t')};\n\nexport const ALL_PRODUCTS: ProductCardView[] = ${JSON.stringify(allShown.map(productCard), null, '\t')};\n\nexport const HAS_PUBLISHED: boolean = ${hasAnyPublished};\n\nexport const CATEGORY_VIEWS: Record<string, CategoryView> = ${JSON.stringify(
 		Object.fromEntries(categoryViews.map((v) => [v.id, v])),
 		null,
 		'\t',
@@ -665,8 +712,8 @@ write(
 	'routes.json',
 	JSON.stringify(
 		{
-			draft: families.filter((f) => f.status !== 'published').map((f) => familyRoute(f.family_id)),
-			published: families.filter((f) => f.status === 'published').map((f) => familyRoute(f.family_id)),
+			draft: families.filter((f) => f.status !== 'published').map((f) => familyRoute(f.category, f.family_id)),
+			published: families.filter((f) => f.status === 'published').map((f) => familyRoute(f.category, f.family_id)),
 			draftCategories: catRows
 				.filter(
 					(c) =>
@@ -680,12 +727,18 @@ write(
 			 * 总览页：族全部 draft 时它自己输出 noindex —— sitemap 必须与 robots 一致，
 			 * 否则「不被索引的页面」却出现在 sitemap 里，信号自相矛盾。
 			 */
-			draftOverview: hasAnyPublished ? [] : [ESHOP_ROUTE_BASE],
+			draftOverview: hasAnyPublished ? [] : [PRODUCT_ROUTE_BASE],
 		},
 		null,
 		'\t',
 	),
 );
+
+/* 常量名 = family_id 大写。
+   family_id 可能以数字开头（如 "12-point-flange-bolts"）——
+   标识符不能以数字开头，所以前面补一个下划线。 */
+const constNameOf = (id) =>
+	`${id.replace(/[^a-z0-9]+/gi, '_').toUpperCase().replace(/^[0-9]/, '_$&')}_DIMENSIONS`;
 
 for (const [id, rows] of dimensions) {
 	const params = paramTypes.get(families.find((f) => f.family_id === id)?.type ?? '') ?? [];
@@ -694,7 +747,7 @@ for (const [id, rows] of dimensions) {
 		const vals = cols.map((c) => q(r[c] ?? ''));
 		return `\t{ ${cols.map((c, i) => `${c}: ${vals[i]}`).join(', ')} }`;
 	});
-	const constName = `${id.replace(/[^a-z0-9]+/gi, '_').toUpperCase()}_DIMENSIONS`;
+	const constName = constNameOf(id);
 	write(
 		join('dimensions', `${id}.ts`),
 		`/**\n * ${BANNER}\n * Source: data/products/dimensions/${id}.csv\n */\nimport type { DimensionRow } from '../types';\n\nexport const ${constName}: DimensionRow[] = [\n${body.join(',\n')}\n];`,
@@ -705,7 +758,7 @@ for (const [id, rows] of dimensions) {
 const dimImports = [];
 const dimEntries = [];
 for (const [id] of dimensions) {
-	const constName = `${id.replace(/[^a-z0-9]+/gi, '_').toUpperCase()}_DIMENSIONS`;
+	const constName = constNameOf(id);
 	dimImports.push(`import { ${constName} } from './dimensions/${id}';`);
 	dimEntries.push(`\t'${id}': ${constName}`);
 }
@@ -713,7 +766,7 @@ const familyNames = families.map((f) => f.family_id);
 
 write(
 	'index.ts',
-	`/**\n * ${BANNER}\n *\n * 汇总入口。页面从这里 import，never from data/products/*.csv。\n */\nimport type { Category, DimensionRow, Family, SkuRow } from './types';\nimport { FAMILIES } from './families';\nimport { MATERIALS } from './materials';\nimport { FINISHES } from './finishes';\nimport { STANDARDS } from './standards';\nimport { PARAM_SCHEMA } from './param-schema';\nimport { CATEGORIES } from './categories';\nimport { SEARCH_INDEX } from './search-index';\n${dimImports.join('\n')}\n\nexport * from './types';\nexport { FAMILIES, MATERIALS, FINISHES, STANDARDS, PARAM_SCHEMA, CATEGORIES, SEARCH_INDEX };\n\nexport const DIMENSIONS: Record<string, DimensionRow[]> = {\n${dimEntries.join(',\n')}\n};\n\nexport const FAMILY_IDS: string[] = ${tsList(familyNames)};\n\n/** 可订购组合：族 × 材质 × 表面处理 × 规格行。\n *\n * 注意 SKU 与这里的区别：**SKU 是族级的**（一个族一个号，如\n * TI-HEX-SOCKET-HEAD-CAP-SCREW），报号用的是它；这里是这个 SKU 下的\n * 具体 (规格 × 材质 × 表面) 组合 —— 询盘时说的是组合，报价单上写的是 SKU。\n */\nexport function skuRows(family: Family): SkuRow[] {\n\tconst rows = DIMENSIONS[family.family_id] ?? [];\n\tconst materials = family.materials.split('|').filter(Boolean);\n\tconst finishes = family.finishes.split('|').filter(Boolean);\n\tconst out: SkuRow[] = [];\n\tfor (const r of rows) {\n\t\tfor (const material of materials) {\n\t\t\tfor (const finish of finishes) {\n\t\t\t\tout.push({\n\t\t\t\t\tfamily_id: family.family_id,\n\t\t\t\t\tsku: family.sku,\n\t\t\t\t\tmaterial,\n\t\t\t\t\tfinish,\n\t\t\t\t\tstandard: r.standard,\n\t\t\t\t\tthread: r.thread ?? '',\n\t\t\t\t\tlength: r.length ?? '',\n\t\t\t\t\tvalues: r,\n\t\t\t\t\tkey: r.key,\n\t\t\t\t});\n\t\t\t}\n\t\t}\n\t}\n\treturn out;\n}\n\nexport function familyById(id: string): Family | undefined {\n\treturn FAMILIES.find((f) => f.family_id === id);\n\n}\n\n\n/** 对外可见的族（draft 不进 sitemap、不进导航）。 */\nexport const PUBLISHED_FAMILIES: Family[] = FAMILIES.filter((f) => f.status === 'published');\n\n\n/** 路由基址。Phase B 已定死 URL 形态 —— 仓库禁止任何跳转/重定向，\n * 路由常量集中在此，改动必须同步改页面文件路径。\n */\nexport { ESHOP_ROUTE_BASE, familyPath, categoryPath, CATEGORY_CARDS, FILTER_GROUPS, ALL_PRODUCTS, HAS_PUBLISHED, CATEGORY_VIEWS } from './category-view';\n\nexport { ASSETS, FAMILY_IMAGES, FAMILY_CAD, FAMILY_PDF } from './assets';\n\n\nexport function categoryById(id: string): Category | undefined {\n\treturn CATEGORIES.find((c) => c.id === id);\n\n}\n\n\n/** 某分类下的族（按分类 order → 族在 CSV 中的顺序）。 */\nexport function familiesInCategory(id: string): Family[] {\n\treturn FAMILIES.filter((f) => f.category === id);\n\n}\n\n\n/** 分类下的**已发布**族 —— 对外可见。 */\nexport function publishedFamiliesInCategory(id: string): Family[] {\n\treturn FAMILIES.filter((f) => f.category === id && f.status === 'published');\n\n}\n\n\n/** 每个分类下的已发布族数量（分类页的卡片计数）。 */\nexport function categoryCounts(): Record<string, number> {\n\tconst out: Record<string, number> = {};\n\tfor (const c of CATEGORIES) {\n\t\tout[c.id] = FAMILIES.filter((f) => f.category === c.id && f.status === 'published').length;\n\t}\n\treturn out;\n\n}\n\n\n`,
+	`/**\n * ${BANNER}\n *\n * 汇总入口。页面从这里 import，never from data/products/*.csv。\n */\nimport type { Category, DimensionRow, Family, SkuRow } from './types';\nimport { FAMILIES } from './families';\nimport { MATERIALS } from './materials';\nimport { FINISHES } from './finishes';\nimport { STANDARDS } from './standards';\nimport { PARAM_SCHEMA } from './param-schema';\nimport { CATEGORIES } from './categories';\nimport { SEARCH_INDEX } from './search-index';\n${dimImports.join('\n')}\n\nexport * from './types';\nexport { FAMILIES, MATERIALS, FINISHES, STANDARDS, PARAM_SCHEMA, CATEGORIES, SEARCH_INDEX };\n\nexport const DIMENSIONS: Record<string, DimensionRow[]> = {\n${dimEntries.join(',\n')}\n};\n\nexport const FAMILY_IDS: string[] = ${tsList(familyNames)};\n\n/** 可订购组合：族 × 材质 × 表面处理 × 规格行。\n *\n * 注意 SKU 与这里的区别：**SKU 是族级的**（一个族一个号，如\n * TI-HEX-SOCKET-HEAD-CAP-SCREW），报号用的是它；这里是这个 SKU 下的\n * 具体 (规格 × 材质 × 表面) 组合 —— 询盘时说的是组合，报价单上写的是 SKU。\n */\nexport function skuRows(family: Family): SkuRow[] {\n\tconst rows = DIMENSIONS[family.family_id] ?? [];\n\tconst materials = family.materials.split('|').filter(Boolean);\n\tconst finishes = family.finishes.split('|').filter(Boolean);\n\tconst out: SkuRow[] = [];\n\tfor (const r of rows) {\n\t\tfor (const material of materials) {\n\t\t\tfor (const finish of finishes) {\n\t\t\t\tout.push({\n\t\t\t\t\tfamily_id: family.family_id,\n\t\t\t\t\tsku: family.sku,\n\t\t\t\t\tmaterial,\n\t\t\t\t\tfinish,\n\t\t\t\t\tstandard: r.standard,\n\t\t\t\t\tthread: r.thread ?? '',\n\t\t\t\t\tlength: r.length ?? '',\n\t\t\t\t\tvalues: r,\n\t\t\t\t\tkey: r.key,\n\t\t\t\t});\n\t\t\t}\n\t\t}\n\t}\n\treturn out;\n}\n\nexport function familyById(id: string): Family | undefined {\n\treturn FAMILIES.find((f) => f.family_id === id);\n\n}\n\n\n/** 对外可见的族（draft 不进 sitemap、不进导航）。 */\nexport const PUBLISHED_FAMILIES: Family[] = FAMILIES.filter((f) => f.status === 'published');\n\n\n/** 路由基址。Phase B 已定死 URL 形态 —— 仓库禁止任何跳转/重定向，\n * 路由常量集中在此，改动必须同步改页面文件路径。\n */\nexport { PRODUCT_ROUTE_BASE, familyPath, categoryPath, CATEGORY_CARDS, FILTER_GROUPS, ALL_PRODUCTS, HAS_PUBLISHED, CATEGORY_VIEWS } from './category-view';\n\nexport { ASSETS, FAMILY_IMAGES, FAMILY_CAD, FAMILY_PDF } from './assets';\n\n\nexport function categoryById(id: string): Category | undefined {\n\treturn CATEGORIES.find((c) => c.id === id);\n\n}\n\n\n/** 某分类下的族（按分类 order → 族在 CSV 中的顺序）。 */\nexport function familiesInCategory(id: string): Family[] {\n\treturn FAMILIES.filter((f) => f.category === id);\n\n}\n\n\n/** 分类下的**已发布**族 —— 对外可见。 */\nexport function publishedFamiliesInCategory(id: string): Family[] {\n\treturn FAMILIES.filter((f) => f.category === id && f.status === 'published');\n\n}\n\n\n/** 每个分类下的已发布族数量（分类页的卡片计数）。 */\nexport function categoryCounts(): Record<string, number> {\n\tconst out: Record<string, number> = {};\n\tfor (const c of CATEGORIES) {\n\t\tout[c.id] = FAMILIES.filter((f) => f.category === c.id && f.status === 'published').length;\n\t}\n\treturn out;\n\n}\n\n\n`,
 );
 
 /* ── report ─────────────────────────────────────────────────────────── */

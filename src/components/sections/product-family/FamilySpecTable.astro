@@ -31,14 +31,25 @@ const { family } = Astro.props;
 const rows: DimensionRow[] = DIMENSIONS[family.family_id] ?? [];
 const params = PARAM_SCHEMA.filter((p) => p.type === family.type).sort((a, b) => Number(a.order) - Number(b.order));
 
-/** 表格列 = 参数定义（不含 key-only 的 thread 之外的隐性列）。 */
-const columns = params.map((p) => ({
-	key: p.param,
-	label: p.label,
-	unit: p.unit,
-}));
+/**
+ * 表格列 = 参数定义（不含 key-only 的 thread 之外的隐性列）。
+ *
+ * **整列为空则不渲染** —— 批量导入的产品可能只有"螺纹 × 长度"（工程尺寸
+ * 还没补齐），空列对读者没有信息量，反而像数据缺失。缺尺寸的行显示 "—"。
+ */
+const hasValue = (p: string) => rows.some((r) => (r[p] ?? '') !== '');
+const columns = params
+	.filter((p) => hasValue(p.param))
+	.map((p) => ({
+		key: p.param,
+		label: p.label,
+		unit: p.unit,
+	}));
 
 const standardLabel = (id: string) => STANDARDS.find((s) => s.id === id)?.label ?? id;
+
+/** 标准列为空（无标准产品）时的占位。 */
+const standardCell = (id: string) => (id ? standardLabel(id) : '—');
 
 /** 每行的询盘上下文 query —— 询盘岛读取后带入表单。 */
 const inquiryHref = (row: DimensionRow) => {
@@ -72,7 +83,7 @@ const inquiryHref = (row: DimensionRow) => {
 		<div class="mt-24 overflow-x-auto">
 			<table class="w-full min-w-[720px] border-collapse text-left">
 				<caption class="sr-only">
-					Dimensions of {family.name} — {standardLabel(rows[0]?.standard ?? '')}
+					Dimensions of {family.name} — {standardCell(rows[0]?.standard ?? '')}
 				</caption>
 				<thead>
 					<tr class="border-b border-gray-vlight">
@@ -99,10 +110,10 @@ const inquiryHref = (row: DimensionRow) => {
 						rows.map((row) => (
 							<tr class="border-b border-gray-vlight">
 								<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">
-									{standardLabel(row.standard)}
+									{standardCell(row.standard)}
 								</td>
 								{columns.map((col) => (
-									<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">{row[col.key] ?? ''}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">{(row[col.key] ?? '') || '—'}</td>
 								))}
 								<td class="py-12 text-right">
 									<a
@@ -124,6 +135,7 @@ const inquiryHref = (row: DimensionRow) => {
 
 		<p class="mt-24 text-center text-p text-blue-dark">
 			{rows.length} sizes · sizes not listed are made to order
+			{columns.length < params.length && ' · engineering dimensions pending'}
 		</p>
 	</details>
 </section>

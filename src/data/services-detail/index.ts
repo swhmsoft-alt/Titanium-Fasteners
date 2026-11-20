@@ -3,7 +3,7 @@
  *
  * AUTO-GENERATED companion of scripts/gen-services-detail.mjs.
  * The five benefit pages share one template
- * (src/pages/global-en/services/benefits/[slug].astro).
+ * (src/pages/services/benefits/[slug].astro).
  */
 import { PAGE as costSavingRationalization } from './benefits-cost-saving-rationalization';
 import { PAGE as designOptimizationAndValidation } from './benefits-design-optimization-and-validation';

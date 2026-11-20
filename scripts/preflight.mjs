@@ -35,28 +35,26 @@ const check = (id, label, ok, detail) => results.push({ id, label, ok, detail })
 /* slug 里的连字符可代表路径层级：industries-aerospace → industries/aerospace */
 const nested = slug.replace(/-/g, '/');
 const pageCandidates = [
-	`src/pages/global-en/${slug}.astro`,
-	`src/pages/global-en/${slug}/index.astro`,
-	`src/pages/global-en/${nested}.astro`,
-	`src/pages/global-en/${nested}/index.astro`,
 	`src/pages/${slug}.astro`,
 	`src/pages/${slug}/index.astro`,
 	`src/pages/${nested}.astro`,
+	`src/pages/${nested}/index.astro`,
 ];
 const dataCandidates = [
 	`src/data/${slug}.ts`,
 	`src/data/${slug}/index.ts`,
 	`src/data/industries-sub/${slug.replace(/^industries-/, '')}.ts`,
 ];
-/* 动态路由：族页 /global-en/eshop/p/[family]、分类页 /global-en/eshop/c/[category]
+/* 动态路由：族页 /products/[category]/[family]、分类页 /products/[category]
  * —— 文件名里的方括号是 Astro 的动态参数，slug 走 getStaticPaths，不体现在文件名中。
  * 因此这里判定「该 slug 是否被某个动态路由承载」：看动态路由文件存在即可。 */
 const dynamicRoutes = [
-	'src/pages/global-en/eshop/p/[family].astro',
-	'src/pages/global-en/eshop/c/[category].astro',
-	'src/pages/global-en/industries/[slug].astro',
-	'src/pages/global-en/product-solutions/product-categories-and-brands/[slug].astro',
-	'src/pages/global-en/services/benefits/[slug].astro',
+	'src/pages/products/[category]/[family].astro',
+	'src/pages/products/[category]/index.astro',
+	'src/pages/industries/[slug].astro',
+	'src/pages/product-solutions/product-categories-and-brands/[slug].astro',
+	'src/pages/services/benefits/[slug].astro',
+	'src/pages/services/[family]/[slug].astro',
 ];
 const foundDynamic = dynamicRoutes.find((p) => existsSync(p));
 const foundPage = pageCandidates.find((p) => existsSync(p));

@@ -1,0 +1,46 @@
+---
+/**
+ * StandardsFaq — 「首句直答」采购决策 FAQ。
+ *
+ * GEO 铁律：每条答案的第一句话必须直接给出结论（Yes/No 或具体数字），
+ * 第二句再补充条件。FAQPage JSON-LD 的 answer 文本由此处的同一份数据生成，
+ * 保证与 DOM 100% 一致。
+ */
+import type { FaqItem } from '@data/standards-hub';
+
+interface Props {
+	items: FaqItem[];
+	/** 可选：FAQ 引入语。缺省则用 DIN 版默认文案。 */
+	intro?: string;
+}
+
+const { items, intro } = Astro.props;
+---
+
+<section class="bg-white pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="faq-heading">
+	<div class="container-fluid">
+		<h2 id="faq-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			Questions buyers ask before ordering
+		</h2>
+		<p class="mb-24 max-w-[860px] text-p text-gray">
+			{
+				intro ??
+				'The five questions our engineering desk is asked most often when a DIN order is placed for the first time.'
+			}
+		</p>
+
+		<div class="max-w-[980px]">
+			{
+				items.map((item, index) => (
+					<div class="border-t border-gray-vlight py-20 first:border-t-0 first:pt-0">
+						<h3 class="text-h5 mb-8 font-bold text-blue-dark3">{item.question}</h3>
+						<p class="text-p-sm leading-relaxed text-gray">{item.answer}</p>
+						<p class="mt-8 text-p-sm text-gray-medium">
+							Reference: {String(index + 1).padStart(2, '0')} of {String(items.length).padStart(2, '0')}
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

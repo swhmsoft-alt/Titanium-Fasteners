@@ -2,7 +2,7 @@
 /**
  * ProductCard — one hit in the category page's product list.
  *
- * MEASURED on the reference (`/global-en/eshop/products/.../c/01.100/`,
+ * MEASURED on the reference (`/global-en/products/.../c/01.100/`,
  * 1440×1000, 2026-11):
  *   article      w=308  h=360 (or 388 with a 3-line description)
  *   figure       308×205  (aspect-3/2)
@@ -12,8 +12,18 @@
  *
  * The reference marks this element `<article class="mb-4">` — it MUST stay an
  * `<article>`, because the acceptance probe selects `main article, main > section`.
+ *
+ * ── Phase B 自有版式（2026-11-14，client 决策）────────────────────────────
+ * 1) 图：改用 ProductFigure（白底 + object-contain + 圆角边框）。
+ *    客户原图比例杂乱（960×1100 / 1200×896 / 1536×1536 / 960×960），
+ *    裸 <img class="aspect-3/2"> 会把螺栓压扁 —— 统一走受约束媒体框。
+ * 2) 信息：只留 **产品名 + Standard**。描述与材质行全部删除 ——
+ *    客户明确要求卡片只呈现这两项，描述/材质属于详情页信息。
+ * 3) 电商级观感：卡片整体给细边框 + hover 抬升 + 图区固定比例，
+ *    标题与标准分行、标题 2 行截断，保证多卡并排时基线齐平。
  */
 import type { ProductCardView } from '@data/products';
+import ProductFigure from '@components/ui/ProductFigure.astro';
 
 interface Props {
 	product: ProductCardView;
@@ -24,34 +34,41 @@ interface Props {
 const { product, priority = false } = Astro.props;
 ---
 
-<article class="mb-4">
-	<a href={product.href}>
-		<div class="relative">
-			<figure class="mx-auto mb-12 aspect-3/2">
-				<img
-					src={product.image}
-					alt={product.alt}
-					class="aspect-3/2 bg-gray-vlight"
-					loading={priority ? 'eager' : 'lazy'}
-					fetchpriority={priority ? 'high' : undefined}
-				/>
-			</figure>
+<article class="mb-4 h-full">
+	<a
+		href={product.href}
+		class="group flex h-full flex-col overflow-hidden rounded-card border border-black/10 bg-white transition duration-200 hover:-translate-y-4 hover:border-blue hover:shadow-lg"
+	>
+		<ProductFigure
+			src={product.image}
+			alt={product.alt}
+			priority={priority}
+			class="aspect-square w-full"
+		/>
+
+		<div class="flex flex-1 flex-col p-16 lg:p-20">
+			{/*
+				标题预留三行高度（leading-tight = 1.25em，三行 = 3.75em）：
+				① 预留是为了对齐 —— 标题有 1/2/3 行三种情况，不预留的话
+				   下面的 Standard 行在同一排卡片里会高低错位。
+				② 保留三行而不是两行：「Full Thread」/「Partial Thread」是
+				   区分产品的关键信息，截成「…Screws Fu…」会丢信息。
+				   真超三行才截断（line-clamp-3）。
+			*/}
+			<h2 class="text-p-sm min-h-[3.75em] font-bold leading-tight text-blue-dark3 line-clamp-3 transition-colors group-hover:text-blue lg:text-p-s">
+				{product.title}
+			</h2>
+
+			{
+				product.standards.length > 0 && (
+					/* mt-auto：Standard 永远贴在卡片文字区底部，
+					   卡片等高时各卡的标准行落在同一基线上。
+					   文字完整保留（标准是客户要看的关键信息），只限两行。 */
+					<p class="mt-auto pt-8 text-p-sm leading-snug text-gray-medium line-clamp-2 lg:text-p-s">
+						{product.standards.join(' / ')}
+					</p>
+				)
+			}
 		</div>
-
-		<h2 class="text-p mt-12 flex font-medium text-blue-dark3">
-			<span class="text-nowrap font-bold">{product.sku}</span>
-			<span class="px-4">|</span>
-			<div class="flex flex-wrap">
-				{product.standards.map((standard) => <div>{standard}</div>)}
-			</div>
-		</h2>
-
-		<p class="text-p-sm mt-8 line-clamp-3 overflow-hidden text-ellipsis text-blue-dark lg:text-p-s">
-			<span class="font-bold">{product.description}</span>
-		</p>
-
-		<p class="text-p-sm mt-16 line-clamp-2 overflow-hidden text-ellipsis text-gray lg:text-p-s">
-			{product.material}
-		</p>
 	</a>
 </article>

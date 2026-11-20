@@ -1,0 +1,55 @@
+---
+/**
+ * ComplianceSection — homepage screen 7.
+ *
+ * ROLE: the quality loop, stated as three layers plus a physical check and
+ * packaging. This is the OEM's evidence panel.
+ */
+import { COMPLIANCE } from '@data/home';
+---
+
+<section class="bg-white py-24 lg:py-32" aria-labelledby="compliance-heading">
+	<div class="container-fluid">
+		<h2 id="compliance-heading" class="text-h3 mb-12 text-blue-dark3">{COMPLIANCE.heading}</h2>
+		<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{COMPLIANCE.lead}</p>
+
+		<div class="grid grid-cols-1 gap-16 md:grid-cols-3 lg:gap-24">
+			{
+				COMPLIANCE.steps.map((step) => (
+					<article class="flex flex-col rounded-card border border-blue-70 p-16 lg:p-24">
+						<p class="text-label mb-8 text-gray-medium">{step.label}</p>
+						<h3 class="text-h5 mb-8 text-blue-dark3">{step.heading}</h3>
+						<p class="mb-16 text-p-sm text-gray">{step.body}</p>
+						<a
+							href={step.href}
+							class="mt-auto inline-flex items-center gap-8 text-button text-blue hover:underline"
+						>
+							{step.linkLabel}
+							<svg class="h-16 w-16 stroke-blue" aria-hidden="true">
+								<use href="/images/sprite.svg#arrow-right"></use>
+							</svg>
+						</a>
+					</article>
+				))
+			}
+		</div>
+
+		<ul class="mt-24 flex flex-wrap gap-12 lg:mt-32">
+			{
+				COMPLIANCE.secondaryLinks.map((link) => (
+					<li>
+						<a
+							href={link.href}
+							class="inline-flex items-center rounded-pill border-2 border-blue-dark3 px-20 py-8 text-button text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+						>
+							{link.label}
+							<svg class="ml-8 h-16 w-16 stroke-blue-dark3" aria-hidden="true">
+								<use href="/images/sprite.svg#arrow-right"></use>
+							</svg>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

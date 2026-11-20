@@ -1,0 +1,139 @@
+---
+/**
+ * /products/astm-asme-titanium-fasteners/ — ASTM / ASME 标准钛合金紧固件聚合页。
+ *
+ * 组件结构与 DIN / ISO 两页完全一致（同一套 src/components/sections/standards/），
+ * 差异只在 @data/standards-hub 的表格数据、FAQ 与标题文案。
+ *
+ * JSON-LD（@graph）
+ *   Organization —— 制造商实体
+ *   ItemList     —— 与页面表格逐行对应（position / name / url 同源）
+ *   FAQPage      —— 与页面 DOM 文本 100% 一致（同源数据渲染）
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import StandardsHero from '@components/sections/standards/StandardsHero.astro';
+import StandardsMatrixTable from '@components/sections/standards/StandardsMatrixTable.astro';
+import StandardsGradesAndQa from '@components/sections/standards/StandardsGradesAndQa.astro';
+import StandardsFaq from '@components/sections/standards/StandardsFaq.astro';
+import StandardsRfqForm from '@components/sections/standards/StandardsRfqForm.astro';
+import { ASTM_FAQ, ASTM_STANDARD_ROWS } from '@data/standards-hub';
+import { SITE } from '@config/site';
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = '/products/astm-asme-titanium-fasteners/';
+
+const PAGE_TITLE = 'ASTM and ASME Standard Titanium Fasteners';
+const PAGE_DESCRIPTION =
+	'BOZE manufactures ASTM and ASME dimension titanium fasteners in Grade 2, Grade 5, Grade 7 and Grade 23, with ASTM B348 bar and EN 10204 3.1 certificates on every batch.';
+
+const HERO = {
+	system: 'ASTM / ASME',
+	heading: 'ASTM & ASME Titanium Fasteners — Certified Bar, Dimensional Control',
+	lead:
+		'BOZE manufactures titanium fasteners to the ASTM and ASME specifications your drawings call out. Parts are certified against ASTM F468 and ASTM F593, dimensions follow the ASME B18 series, and the material comes from ASTM B348, ASTM F136 or AMS 4928 bar. Every batch ships with an EN 10204 3.1 certificate.',
+	metrics: [
+		{ value: '10 ASTM & ASME Specs', label: 'Finished-fastener and material specifications in one matrix' },
+		{ value: 'B348 / F136 / AMS 4928', label: 'Bar, billet and forging certified per lot, not per order' },
+		{ value: '100% PMI on Every Lot', label: 'XRF and OES spectrometry before machining' },
+		{ value: '24h RFQ Response', label: 'Direct factory quotation, no broker margin' },
+	],
+	primaryCta: 'Upload BOM for Quote',
+	secondaryCta: 'Download Standard Cross-Reference PDF',
+};
+
+/**
+ * ItemList —— 与表格行同源生成，position 与 DOM 顺序一致。
+ * URL 取绝对形式（schema 要求），产品链接为站内已发布路由。
+ */
+const itemList = {
+	'@type': 'ItemList',
+	name: 'ASTM and ASME titanium fastener specifications',
+	numberOfItems: ASTM_STANDARD_ROWS.length,
+	itemListElement: ASTM_STANDARD_ROWS.map((row, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: `${row.standard} — ${row.product}`,
+		url: new URL(row.href, SITE.url).href,
+	})),
+};
+
+/** FAQPage —— answer 文本与页面 DOM 由同一份 ASTM_FAQ 渲染，逐字一致。 */
+const faqPage = {
+	'@type': 'FAQPage',
+	mainEntity: ASTM_FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: item.answer,
+		},
+	})),
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': `${SITE.url}/#organization`,
+			name: 'Boze Metal',
+			url: SITE.url,
+			description:
+				'Titanium fastener manufacturer producing standard and custom titanium bolts, screws, studs, nuts and washers.',
+			email: 'info@bozemetal.com',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Baoji',
+				addressRegion: 'Shaanxi',
+				addressCountry: 'CN',
+			},
+		},
+		itemList,
+		faqPage,
+	],
+};
+---
+
+<BaseLayout
+	title={PAGE_TITLE}
+	description={PAGE_DESCRIPTION}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<StandardsHero {...HERO} />
+
+		<StandardsMatrixTable
+			tableId="astm-asme-standards"
+			caption="ASTM and ASME titanium fastener specification matrix — standard number, product name, dimensional or material scope, size range, available grades and availability"
+			placeholder="Search by Standard No. (e.g. F468, F593, B348) or Product Name..."
+			rows={ASTM_STANDARD_ROWS}
+			summary="Search by ASTM or ASME number, or narrow the list to a fastener category. The table covers both finished-part specifications and the material standards the parts are made from."
+			intro="Rows under Material & Bar Stock are material specifications such as ASTM B348, ASTM F136 and AMS 4928: they define the titanium bar, billet and forging that every part on this page is machined from, and each lot is certified separately."
+		/>
+
+		<StandardsGradesAndQa />
+
+		<StandardsFaq
+			items={ASTM_FAQ}
+			intro="The five questions our engineering desk is asked most often when an ASTM or ASME drawing is released for quotation."
+		/>
+
+		<StandardsRfqForm
+			source="standards-astm-asme"
+			specPlaceholder="e.g. ASTM F593, M6 x 20, Gr5, 2000 pcs"
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

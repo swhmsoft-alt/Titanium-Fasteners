@@ -216,7 +216,7 @@ export default function InquiryForm(props: InquiryFormProps) {
 			<div className="border border-blue-light bg-blue-light p-24">
 				<h3 className="text-h5 mb-8 text-blue-dark3">Inquiry received</h3>
 				<p className="text-p-sm text-gray">
-					Thank you. Our engineering team will reply to your email within one business day
+					Thank you. Our engineering team will reply to your email within 12 business hours
 					with a quotation for <strong>{productLine}</strong>.
 				</p>
 			</div>

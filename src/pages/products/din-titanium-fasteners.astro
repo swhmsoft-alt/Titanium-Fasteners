@@ -1,0 +1,131 @@
+---
+/**
+ * /products/din-titanium-fasteners/ — DIN 标准钛合金紧固件聚合页。
+ *
+ * 组件结构与 ISO / ASTM-ASME 两页完全一致（同一套 src/components/sections/standards/），
+ * 差异只在 @data/standards-hub 的表格数据、FAQ 与标题文案。
+ *
+ * JSON-LD（@graph）
+ *   Organization —— 制造商实体
+ *   ItemList     —— 与页面表格逐行对应（position / name / url 同源）
+ *   FAQPage      —— 与页面 DOM 文本 100% 一致（同源数据渲染）
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import StandardsHero from '@components/sections/standards/StandardsHero.astro';
+import StandardsMatrixTable from '@components/sections/standards/StandardsMatrixTable.astro';
+import StandardsGradesAndQa from '@components/sections/standards/StandardsGradesAndQa.astro';
+import StandardsFaq from '@components/sections/standards/StandardsFaq.astro';
+import StandardsRfqForm from '@components/sections/standards/StandardsRfqForm.astro';
+import { DIN_FAQ, DIN_STANDARD_ROWS } from '@data/standards-hub';
+import { SITE } from '@config/site';
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = '/products/din-titanium-fasteners/';
+
+const PAGE_TITLE = 'DIN Standard Titanium Fasteners';
+const PAGE_DESCRIPTION =
+	'BOZE manufactures DIN standard titanium fasteners in Grade 2, Grade 5, Grade 7 and Grade 23, from M3 to M20, with EN 10204 3.1 certificates on every batch.';
+
+const HERO = {
+	system: 'DIN',
+	heading: 'DIN Standard Titanium Fasteners — Gr2, Gr5, Gr7, Gr23',
+	lead:
+		'BOZE manufactures DIN standard titanium fasteners in Grade 2, Grade 5, Grade 7 and Grade 23, covering screws, bolts, nuts, washers and studs from M3 to M20. Every batch ships with an EN 10204 3.1 certificate, and standard items leave the factory in three to five working days.',
+	metrics: [
+		{ value: '11 DIN Standards', label: 'From the production programme, each with its size index' },
+		{ value: 'Gr2 / Gr5 / Gr7 / Gr23', label: 'CP titanium through Ti-6Al-4V and the palladium grade' },
+		{ value: 'EN 10204 3.1 MTR', label: 'Heat-number traceability included with every shipment' },
+		{ value: '24h RFQ Response', label: 'Direct factory quotation, no broker margin' },
+	],
+	primaryCta: 'Upload BOM for Quote',
+	secondaryCta: 'Download Standard Cross-Reference PDF',
+};
+
+/**
+ * ItemList —— 与表格行同源生成，position 与 DOM 顺序一致。
+ * URL 取绝对形式（schema 要求），产品链接为站内已发布路由。
+ */
+const itemList = {
+	'@type': 'ItemList',
+	name: 'DIN standard titanium fastener specifications',
+	numberOfItems: DIN_STANDARD_ROWS.length,
+	itemListElement: DIN_STANDARD_ROWS.map((row, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: `${row.standard} — ${row.product}`,
+		url: new URL(row.href, SITE.url).href,
+	})),
+};
+
+/** FAQPage —— answer 文本与页面 DOM 由同一份 DIN_FAQ 渲染，逐字一致。 */
+const faqPage = {
+	'@type': 'FAQPage',
+	mainEntity: DIN_FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: item.answer,
+		},
+	})),
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': `${SITE.url}/#organization`,
+			name: 'Boze Metal',
+			url: SITE.url,
+			description:
+				'Titanium fastener manufacturer producing standard and custom titanium bolts, screws, studs, nuts and washers.',
+			email: 'info@bozemetal.com',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Baoji',
+				addressRegion: 'Shaanxi',
+				addressCountry: 'CN',
+			},
+		},
+		itemList,
+		faqPage,
+	],
+};
+---
+
+<BaseLayout
+	title={PAGE_TITLE}
+	description={PAGE_DESCRIPTION}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<StandardsHero {...HERO} />
+
+		<StandardsMatrixTable
+			tableId="din-standards"
+			caption="DIN standard titanium fastener specification matrix — standard number, product name, equivalent standard, size range, available grades and availability"
+			placeholder="Search by Standard No. (e.g. 912, 933, 125) or Product Name..."
+			rows={DIN_STANDARD_ROWS}
+		/>
+
+		<StandardsGradesAndQa />
+
+		<StandardsFaq items={DIN_FAQ} />
+
+		<StandardsRfqForm source="standards-din" />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

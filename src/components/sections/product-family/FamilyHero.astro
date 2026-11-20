@@ -13,7 +13,7 @@
  *   螺纹    ← 矩阵行的 thread 去重（螺母/垫圈无此维度则不显示）
  *   长度    ← 矩阵行的 length 区间（螺母/垫圈无此维度则不显示）
  */
-import Figure from '@components/ui/Figure.astro';
+import ProductFigure from '@components/ui/ProductFigure.astro';
 import Button from '@components/ui/Button.astro';
 import {
 	DIMENSIONS,
@@ -80,7 +80,7 @@ specs.push({ label: 'Total sizes', value: String(rows.length) });
 /* 面包屑 */
 const trail = [
 	{ label: 'Home', href: '/' },
-	{ label: 'Products', href: '/global-en/eshop/' },
+	{ label: 'Products', href: '/products/' },
 	{ label: family.name, href: canonicalPath },
 ];
 
@@ -127,12 +127,11 @@ const columns = params.map((p) => ({ key: p.param, label: p.label, unit: p.unit 
 
 	<div class="mt-96 flex flex-col gap-32 lg:flex-row">
 		<div class="lg:w-522 lg:flex-none">
-			<Figure
-				src={family.image || '/placeholder/product-ratio-0-75.svg'}
+			<ProductFigure
+				src={family.image}
 				alt={family.name}
-				ratio={1.334}
-				priority
-				class="bg-gray-vlight"
+				priority={true}
+				class="aspect-square w-full"
 			/>
 		</div>
 
@@ -140,7 +139,7 @@ const columns = params.map((p) => ({ key: p.param, label: p.label, unit: p.unit 
 			<h1 class="text-h4 mb-12 font-normal text-blue-dark3 lg:mb-16">{family.name}</h1>
 
 			<p class="mb-8 text-p-s font-bold text-gray lg:mb-16">
-				{standards.map((s) => s.label).join(' / ')}
+				{standards.length ? standards.map((s) => s.label).join(' / ') : 'Custom-made to drawing'}
 			</p>
 
 			<p class="mb-24 text-p text-gray">{family.description}</p>

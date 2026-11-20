@@ -1,0 +1,142 @@
+---
+/**
+ * /product-solutions/ — 钛紧固件供应方案主干页（BOZE 源头工厂口径）。
+ *
+ * WHAT THIS PAGE IS
+ * -----------------
+ * 不是目录页，也不是品牌页。`/products/` 按标准号罗列 SKU；本页讲**供应方案与
+ * 工程解决路径**：标准覆盖（A）、按图定制（B）、钛专属表面工程（C）、合规溯源，
+ * 落在双通道 CTA。
+ *
+ * 页面动线
+ * --------
+ *   Hero 方案总览（Who / Why / How 导语 + 定位声明 + standing facts + 厂方核准声明）
+ *   → 解决方案一 标准钛紧固件全系供应方案
+ *   → 解决方案二 NDA 按图定制与特种钛件制造
+ *   → 解决方案三 钛专属防咬死与功能表面处理方案
+ *   → 解决方案四 工厂合规溯源（三大工厂资产之三）
+ *   → 牌号 / DIN-ISO 交叉对照表（规格捕获）
+ *   → 双通道 CTA（分销商 / OEM 工程与采购）
+ *   → 次级出口
+ *
+ * 硬约束
+ * ------
+ *   1. 全部内链来自 src/pages/** 或 @data/products 的真实可勾选项 —— 零死链。
+ *   2. 不改 BaseLayout / Header / Footer / 全局 CSS；本页组件均为页面局部。
+ *   3. 不出现扭矩系数、摩擦系数、防咬死实测数字。
+ *   4. Who / Why / How 只在首屏导语与一行厂方声明中表达，不单独成块。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import SolutionHero from '@components/sections/product-solutions/SolutionHero.astro';
+import SolutionBand from '@components/sections/product-solutions/SolutionBand.astro';
+import SpecTables from '@components/sections/product-solutions/SpecTables.astro';
+import AudienceCta from '@components/sections/product-solutions/AudienceCta.astro';
+import { PRODUCT_SOLUTIONS as PAGE } from '@data/product-solutions';
+import { SITE } from '@config/site';
+
+const currentPathname = Astro.url.pathname;
+
+/** JSON-LD —— CollectionPage + Organization + BreadcrumbList。 */
+const orgId = `${SITE.url}/#organization`;
+const pageUrl = new URL('/product-solutions/', SITE.url).href;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': orgId,
+			name: SITE.name,
+			legalName: SITE.legalName,
+			url: SITE.url,
+			description:
+				'Manufacturer of titanium fasteners — screws, bolts, studs, nuts and washers to DIN and ISO, M1.6–M36, produced in-house with EN 10204 3.1 certification.',
+		},
+		{
+			'@type': 'CollectionPage',
+			name: PAGE.seo.title,
+			description: PAGE.seo.description,
+			url: pageUrl,
+			inLanguage: 'en',
+			mainEntity: { '@id': orgId },
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+				{ '@type': 'ListItem', position: 2, name: 'Product Solutions', item: pageUrl },
+			],
+		},
+	],
+};
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/product-solutions/"
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<SolutionHero
+			breadcrumb={PAGE.hero.breadcrumb}
+			eyebrow={PAGE.hero.eyebrow}
+			heading={PAGE.hero.heading}
+			lead={PAGE.hero.lead}
+			statement={PAGE.hero.statement}
+			factoryNote={PAGE.hero.factoryNote}
+			facts={PAGE.hero.facts}
+			primaryCta={PAGE.hero.primaryCta}
+			secondaryCta={PAGE.hero.secondaryCta}
+			image={PAGE.hero.image}
+		/>
+
+		<SolutionBand band={PAGE.standardSupply} />
+
+		<SolutionBand band={PAGE.customManufacturing} />
+
+		<SolutionBand band={PAGE.surfaceEngineering} />
+
+		<SolutionBand band={PAGE.compliance} />
+
+		<SpecTables grades={PAGE.grades} crossReference={PAGE.crossReference} />
+
+		<AudienceCta
+			heading={PAGE.audience.heading}
+			lead={PAGE.audience.lead}
+			columns={PAGE.audience.columns}
+		/>
+
+		<section class="container-fluid pb-48 lg:pb-56">
+			<h2 class="text-h4 mb-16 text-blue-dark3 lg:mb-24">Related information</h2>
+			<ul class="flex flex-wrap gap-16 lg:gap-24">
+				{
+					PAGE.secondaryLinks.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="inline-flex items-center rounded-pill border-2 border-blue-dark3 px-24 py-13 pb-14 text-button text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+							>
+								{link.label}
+								<svg class="ml-8 h-16 w-16 stroke-blue-dark3" aria-hidden="true">
+									<use href="/images/sprite.svg#arrow-right"></use>
+								</svg>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

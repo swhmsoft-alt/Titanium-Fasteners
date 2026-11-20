@@ -1,0 +1,56 @@
+---
+/**
+ * MaterialsSection — homepage screen 6.
+ *
+ * ROLE: the grade table. Every number comes from MATERIALS (the generated
+ * material dictionary) and is labelled as a nominal published value — no
+ * measured torque, friction or galling figures appear anywhere.
+ */
+import { GRADES } from '@data/home';
+---
+
+<section class="bg-blue-light py-24 lg:py-32" aria-labelledby="grades-heading">
+	<div class="container-fluid">
+		<h2 id="grades-heading" class="text-h3 mb-12 text-blue-dark3">{GRADES.heading}</h2>
+		<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{GRADES.lead}</p>
+
+		<div class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4 lg:gap-24">
+			{
+				GRADES.items.map((grade) => (
+					<a
+						href={grade.href}
+						class="flex flex-col rounded-card border border-blue-70 bg-white p-16 transition duration-200 hover:-translate-y-4 hover:border-blue lg:p-24"
+					>
+						<h3 class="text-p-sm font-bold text-blue-dark3">{grade.label}</h3>
+						<p class="mb-12 text-p-sm text-gray-medium">{grade.availability}</p>
+						<dl class="border-t border-blue-70 pt-8 text-p-sm">
+							<div class="flex justify-between gap-12 py-4">
+								<dt class="text-gray-medium">Density</dt>
+								<dd class="text-blue-dark3">{grade.density} g/cm³</dd>
+							</div>
+							<div class="flex justify-between gap-12 py-4">
+								<dt class="text-gray-medium">Proof strength</dt>
+								<dd class="text-blue-dark3">{grade.proof} MPa</dd>
+							</div>
+							<div class="flex justify-between gap-12 py-4">
+								<dt class="text-gray-medium">Tensile strength</dt>
+								<dd class="text-blue-dark3">{grade.tensile} MPa</dd>
+							</div>
+							<div class="flex justify-between gap-12 py-4">
+								<dt class="text-gray-medium">Max temperature</dt>
+								<dd class="text-blue-dark3">{grade.maxTemp} °C</dd>
+							</div>
+						</dl>
+						<p class="mt-8 text-p-sm text-gray">{grade.notes}</p>
+					</a>
+				))
+			}
+		</div>
+
+		<div class="mt-24 lg:mt-32">
+			<a href={GRADES.cta.href} class="text-button text-blue hover:underline">
+				{GRADES.cta.label}
+			</a>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,69 @@
+---
+/**
+ * SpecialInquiryCta — the closing conversion band with a working inquiry form.
+ *
+ * WHY IT REUSES THE CONTACT FORM
+ * -------------------------------
+ * The previous version of this page carried a static form with `action="#"`,
+ * which submitted nowhere. This band reuses the same native inquiry form that
+ * `/contact/` runs — plain DOM scripting, no hydration — so the enquiry really
+ * reaches the engineering desk, with the mailto fallback intact.
+ *
+ * The only difference is the `source` tag, which lets the engineering desk
+ * tell a special-parts enquiry from a general one.
+ */
+import ContactInquiryForm from '@components/sections/contact/ContactInquiryForm.astro';
+import { INQUIRY } from '@config/site';
+
+interface Props {
+	heading: string;
+	text: string;
+	image: { src: string; alt: string };
+	pageUrl: string;
+}
+
+const { heading, text, image, pageUrl } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-blue-70" aria-labelledby="inquiry-heading">
+	<svg class="absolute bottom-0 left-0 h-full w-full" aria-hidden="true">
+		<use href="/images/sprite.svg#pattern"></use>
+	</svg>
+
+	<div class="container-fluid-wide relative z-1 py-48 lg:py-64">
+		<div class="grid grid-cols-1 items-start gap-40 lg:grid-cols-2 lg:gap-64">
+			{
+				/* ── Text column ── */
+			}
+			<div>
+				<h2 id="inquiry-heading" class="text-h3 mb-16 text-white lg:mb-24">{heading}</h2>
+				<p class="mb-24 max-w-[560px] text-p text-white lg:mb-32">{text}</p>
+
+				<figure class="aspect-[4/3] w-full overflow-hidden rounded-xl bg-blue-dark">
+					<img
+						src={image.src}
+						alt={image.alt}
+						width="800"
+						height="600"
+						loading="lazy"
+						decoding="async"
+						class="h-full w-full object-cover"
+					/>
+				</figure>
+			</div>
+
+			{
+				/* ── Inquiry form — the same native form as /contact/ ── */
+			}
+			<div class="rounded-lg bg-white px-24 py-40 shadow-[0_0_20px_0_rgba(0,0,0,0.05)] lg:px-32 lg:py-48">
+				<ContactInquiryForm
+					endpoint={INQUIRY.endpoint}
+					fallbackEmail={INQUIRY.fallbackEmail}
+					trapField={INQUIRY.trapField}
+					source="special-parts-page"
+					pageUrl={pageUrl}
+				/>
+			</div>
+		</div>
+	</div>
+</section>

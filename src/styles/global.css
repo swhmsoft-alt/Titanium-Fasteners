@@ -98,6 +98,11 @@
 	     #333333  gray        — body copy colour
 	     #21272a  gray-cool
 	     #ffffff  white
+	     #4da2d5  blue-70   — measured 2026-11-20 (was estimated #a9cfe8)
+	     #99cae7  blue-soft — search field border
+	     #47a8e0  blue-hero — hero banner base colour (image sampling)
+	     #32769d  blue-hero-deep — hero left edge after the scrim
+	     #f59c00  orange-dark
 	   ---------------------------------------------------------------- */
 	--color-blue: #007ac3;
 	--color-blue-primary: #0070ba;
@@ -105,10 +110,8 @@
 	--color-blue-dark2: #00314e;
 	--color-blue-dark3: #004975;
 	--color-blue-light: #cce4f3;
-	/* ESTIMATED — the reference uses `border-blue-70` only below the 840px
-	   breakpoint (at ≥840px it switches to border-blue-dark3), so this token is
-	   not observable at the 1440px acceptance viewport. */
-	--color-blue-70: #a9cfe8;
+	/* MEASURED — the reference compiles border-blue-70 to rgb(77 162 213); the previous #a9cfe8 was an ESTIMATE (class only observable below the 840px breakpoint) */
+	--color-blue-70: #4da2d5;
 	--color-gray-vlight: #f3f3f3;
 	--color-gray-whiteish: #f0f0f0;
 	--color-gray-light: #bfbfbf;
@@ -116,6 +119,14 @@
 	--color-gray-medium: #666666;
 	--color-gray: #333333;
 	--color-gray-cool: #21272a;
+	/* MEASURED — search field border */
+	--color-blue-soft: #99cae7;
+	/* MEASURED — hero banner base colour (image sampling) */
+	--color-blue-hero: #47a8e0;
+	/* MEASURED — hero left edge after the 30% black scrim */
+	--color-blue-hero-deep: #32769d;
+	/* MEASURED — reference .fill-orange-dark / .text-orange-dark */
+	--color-orange-dark: #f59c00;
 	--color-accent-rose: #aa465c;
 
 	/* ── Spacing ─────────────────────────────────────────────────────────

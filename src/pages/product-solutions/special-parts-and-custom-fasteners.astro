@@ -1,0 +1,171 @@
+---
+/**
+ * /product-solutions/special-parts-and-custom-fasteners/
+ *
+ * WHAT THIS PAGE IS
+ * -----------------
+ * 不是目录页，也不是「特殊零件」图集。它是**源头钛工厂的按图定制路径**：买家手里
+ * 有一张图纸，本页讲清这张图纸如何被评审、如何被加工/成形/表面处理、如何被
+ * 放行与取证。
+ *
+ * 页面动线
+ * --------
+ *   Hero（定位 + 资质标签 + 4 条 standing facts）
+ *   → 能力一 按图定制（图纸评审 → 样件 → 量产）
+ *   → 能力二 钛专属表面工程（防咬死 / 耐磨 / 装配识别）
+ *   → 成型路线矩阵表（路线 × 批量 × 适用场景 × 钛要点）
+ *   → 能力三 装配件与套件（计数、标识、包装、供料）
+ *   → 实物画廊（4 张 4:3 实物图）
+ *   → 双通道 CTA（OEM 工程与采购 / 分销商）
+ *   → 询盘区（复用 /contact/ 的原生询盘表单）
+ *   → 次级出口
+ *
+ * 硬约束
+ * ------
+ *   1. 全部内链来自 src/pages/** 真实路由 —— 零死链。
+ *   2. 不改 BaseLayout / Header / Footer / 全局 CSS；本页组件均为页面局部。
+ *   3. 只讲钛（Grade 2 / Grade 5 / Grade 23），不出现钢、黄铜、铝。
+ *   4. 不出现扭矩系数、摩擦系数、咬死实测数字、未经确认的公差数值。
+ *   5. 每个图文带只放 1 张图，锁定 4:3，桌面端与文字列垂直居中。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import SpecialHero from '@components/sections/special-parts/SpecialHero.astro';
+import CapabilityBand from '@components/sections/special-parts/CapabilityBand.astro';
+import ProcessTable from '@components/sections/special-parts/ProcessTable.astro';
+import PartsGallery from '@components/sections/special-parts/PartsGallery.astro';
+import SpecialAudienceCta from '@components/sections/special-parts/SpecialAudienceCta.astro';
+import SpecialInquiryCta from '@components/sections/special-parts/SpecialInquiryCta.astro';
+import { SPECIAL_PARTS as PAGE } from '@data/special-parts';
+import { SITE } from '@config/site';
+
+const currentPathname = Astro.url.pathname;
+const pageUrl = new URL('/product-solutions/special-parts-and-custom-fasteners/', SITE.url).href;
+
+/** JSON-LD —— CollectionPage + Organization + BreadcrumbList。 */
+const orgId = `${SITE.url}/#organization`;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': orgId,
+			name: SITE.name,
+			legalName: SITE.legalName,
+			url: SITE.url,
+			description:
+				'Manufacturer of titanium fasteners — standard parts to DIN, ISO and ASTM, and custom print-to-part titanium components machined in-house under NDA.',
+		},
+		{
+			'@type': 'CollectionPage',
+			name: PAGE.seo.title,
+			description: PAGE.seo.description,
+			url: pageUrl,
+			inLanguage: 'en',
+			mainEntity: { '@id': orgId },
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Product Solutions',
+					item: `${SITE.url}/product-solutions/`,
+				},
+				{
+					'@type': 'ListItem',
+					position: 3,
+					name: 'Special Parts and Custom Fasteners',
+					item: pageUrl,
+				},
+			],
+		},
+	],
+};
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/product-solutions/special-parts-and-custom-fasteners/"
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<SpecialHero
+			breadcrumb={PAGE.hero.breadcrumb}
+			eyebrow={PAGE.hero.eyebrow}
+			heading={PAGE.hero.heading}
+			lead={PAGE.hero.lead}
+			credentials={PAGE.hero.credentials}
+			facts={PAGE.hero.facts}
+			primaryCta={PAGE.hero.primaryCta}
+			secondaryCta={PAGE.hero.secondaryCta}
+			image={PAGE.hero.image}
+		/>
+
+		<CapabilityBand band={PAGE.manufacturing} />
+
+		<CapabilityBand band={PAGE.surfaceEngineering} />
+
+		<ProcessTable
+			eyebrow={PAGE.matrix.eyebrow}
+			heading={PAGE.matrix.heading}
+			lead={PAGE.matrix.lead}
+			rows={PAGE.processMatrix}
+		/>
+
+		<CapabilityBand band={PAGE.assemblies} />
+
+		<PartsGallery heading={PAGE.gallery.heading} lead={PAGE.gallery.lead} items={PAGE.gallery.items} />
+
+		<SpecialAudienceCta
+			heading={PAGE.audience.heading}
+			lead={PAGE.audience.lead}
+			columns={PAGE.audience.columns}
+		/>
+
+		<SpecialInquiryCta
+			heading="Send us the drawing or the specification"
+			text="Tell us the material grade, the geometry and the quantity — the drawing itself only after the mutual NDA is countersigned. A titanium process engineer replies with a quotation and the material certificates."
+			image={{
+				src: '/images/public-images/special-parts-gallery-cnc-turned-threaded-cylinder.webp',
+				alt: 'CNC-turned cylinder with a machined step and thread.',
+			}}
+			pageUrl={pageUrl}
+		/>
+
+		<section class="container-fluid-wide pb-48 lg:pb-56">
+			<h2 class="text-h4 mb-16 text-blue-dark3 lg:mb-24">Related information</h2>
+			<ul class="flex flex-wrap gap-16 lg:gap-24">
+				{
+					PAGE.secondaryLinks.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="inline-flex items-center rounded-pill border-2 border-blue-dark3 px-24 py-13 pb-14 text-button text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+							>
+								{link.label}
+								<svg class="ml-8 h-16 w-16 stroke-blue-dark3" aria-hidden="true">
+									<use href="/images/sprite.svg#arrow-right"></use>
+								</svg>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

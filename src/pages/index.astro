@@ -1,22 +1,24 @@
 ---
 /**
- * Homepage.
+ * Homepage — BOZE Titanium Fasteners.
  *
- * Recreation of the reference homepage's seven blocks, in the reference's
- * measured order. Every dimension here traces to a measurement recorded in
- * docs/reference/03-homepage-layout.md.
+ * READ ORDER (nine screens, one job each)
+ * ---------------------------------------
+ *   1  HeroSection          identity + the two conversion doors
+ *   2  SpecFinderSection    digital standard selection (distributor first)
+ *   3  CapabilitiesSection  the three factory assets
+ *   4  AudienceSplitSection distributor vs OEM
+ *   5  ProductMatrixSection the real published product families
+ *   6  MaterialsSection     grade table (nominal published values)
+ *   7  ComplianceSection    the quality loop, three layers
+ *   8  TrustSection         Who / How / Why transparency
+ *   9  ClosingCtaSection    bottom conversion
  *
- * Block order (reference, 1440px viewport):
- *   1 Hero            y=195   h=792   H2 64px   image 2.006
- *   2 Services        y=987   h=946   H2 44px   image 1.25
- *   3 Product sol.    y=1933  h=873   H2 32px   image 0.75
- *   4 News            y=2854  h=524   H2 44px   image 1.0
- *   5 Pillars         y=3426  h=344   H2 24px   image 1.0
- *   6 Benefits        y=3770  h=1169  H2 44px   #cce4f3  full-bleed
- *   7 Sustainability   y=4938  h=1013  H2 44px   white    full-bleed
- *
- * The reference also renders a visually hidden H1 as the first child of
- * <main> for SEO; that is reproduced here.
+ * SCOPE
+ * -----
+ * Only this page and src/components/sections/home/* plus src/data/home.ts
+ * were changed. The global stylesheet, BaseLayout, SiteHeader, MegaMenu,
+ * SiteFooter and the inquiry island are untouched.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SiteHeader from '@components/layout/SiteHeader.astro';
@@ -24,44 +26,101 @@ import MegaMenu from '@components/layout/MegaMenu.astro';
 import SiteFooter from '@components/layout/SiteFooter.astro';
 import CookieConsent from '@components/layout/CookieConsent.astro';
 import BackToTop from '@components/layout/BackToTop.astro';
-import { HERO } from '@data/home';
+import { SITE } from '@config/site';
 
 import HeroSection from '@components/sections/home/HeroSection.astro';
-import ServicesSection from '@components/sections/home/ServicesSection.astro';
-import ProductSolutionsSection from '@components/sections/home/ProductSolutionsSection.astro';
-import NewsSection from '@components/sections/home/NewsSection.astro';
-import PillarsSection from '@components/sections/home/PillarsSection.astro';
-import BenefitsSection from '@components/sections/home/BenefitsSection.astro';
-import SustainabilitySection from '@components/sections/home/SustainabilitySection.astro';
+import SpecFinderSection from '@components/sections/home/SpecFinderSection.astro';
+import CapabilitiesSection from '@components/sections/home/CapabilitiesSection.astro';
+import AudienceSplitSection from '@components/sections/home/AudienceSplitSection.astro';
+import ProductMatrixSection from '@components/sections/home/ProductMatrixSection.astro';
+import MaterialsSection from '@components/sections/home/MaterialsSection.astro';
+import ComplianceSection from '@components/sections/home/ComplianceSection.astro';
+import TrustSection from '@components/sections/home/TrustSection.astro';
+import ClosingCtaSection from '@components/sections/home/ClosingCtaSection.astro';
 
 const currentPathname = Astro.url.pathname;
+
+const description =
+	'Titanium fastener factory: M1.6–M36 in CP Grade 2 and Grade 5 Ti-6Al-4V, ' +
+	'to DIN, ISO, ASTM F467 / F468 and ASME. EN 10204 3.1 MTC per lot, PMI / XRF ' +
+	'before packing, NDA-protected print-to-part CNC.';
+
+/**
+ * Structured data — Organization + WebSite + ItemList of the catalogue.
+ * No FAQPage: this page carries no question-and-answer pairs.
+ */
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		'@id': `${SITE.url}/#organization`,
+		name: SITE.name,
+		legalName: SITE.legalName,
+		url: SITE.url,
+		description,
+		email: 'info@bozemetal.com',
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress:
+				'C4 Workshop, North Area of High Tech Auto Parts, Business Incubation Base, FengHuang 10th Road, High Tech Development Zone',
+			addressLocality: 'Baoji',
+			addressRegion: 'Shaanxi',
+			postalCode: '721013',
+			addressCountry: 'CN',
+		},
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		'@id': `${SITE.url}/#website`,
+		url: SITE.url,
+		name: SITE.name,
+		publisher: { '@id': `${SITE.url}/#organization` },
+		inLanguage: SITE.locale,
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'ItemList',
+		name: 'Titanium Fastener Product Range',
+		itemListElement: [
+			{ label: 'Screws', href: '/products/screws/' },
+			{ label: 'Bolts', href: '/products/bolts/' },
+			{ label: 'Nuts', href: '/products/nuts/' },
+			{ label: 'Washers', href: '/products/washers/' },
+		].map((item, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			name: item.label,
+			url: new URL(item.href, SITE.url).href,
+		})),
+	},
+];
 ---
 
-<BaseLayout>
+<BaseLayout
+	title="Titanium Fasteners to DIN, ISO, ASTM F467 / F468 and ASME — M1.6–M36, CP Grade 2 and Grade 5 Ti-6Al-4V"
+	description={description}
+	canonicalPath="/"
+	jsonLd={jsonLd}
+>
 	<SiteHeader currentPathname={currentPathname} />
 	<MegaMenu />
 
-	<!-- The main landmark owns the page content; the header and footer are siblings. -->
 	<!--
-		pt-48 md:pt-91 clears the fixed header and nothing more (91px header
-		on desktop, 48px on mobile). The reference reserves a 195px lead-in
-		on top of its own header; that extra band was dropped here on
-		purpose so the nav is not followed by a large empty strip — see
-		qa/DEVIATIONS.md.
+		pt-48 md:pt-91 clears the fixed header and nothing more. The reference's
+		extra 195px lead-in band is not reproduced — the hero starts directly
+		below the navigation.
 	-->
 	<main id="main" class="pt-48 md:pt-91">
-		<!-- Visually hidden H1 — the reference's first child of <main> (16px). -->
-		<h1 class="sr-only">
-			{HERO.heading}
-		</h1>
-
 		<HeroSection />
-		<ServicesSection />
-		<ProductSolutionsSection />
-		<NewsSection />
-		<PillarsSection />
-		<BenefitsSection />
-		<SustainabilitySection />
+		<SpecFinderSection />
+		<CapabilitiesSection />
+		<AudienceSplitSection />
+		<ProductMatrixSection />
+		<MaterialsSection />
+		<ComplianceSection />
+		<TrustSection />
+		<ClosingCtaSection />
 	</main>
 
 	<SiteFooter />

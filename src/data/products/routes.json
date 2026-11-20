@@ -1,21 +1,31 @@
 {
 	"draft": [],
 	"published": [
-		"/global-en/eshop/p/hex-socket-head-cap-screw/",
-		"/global-en/eshop/p/hex-nut/",
-		"/global-en/eshop/p/countersunk-head-cap-screws/",
-		"/global-en/eshop/p/hex-head-bolts-fully-threaded/",
-		"/global-en/eshop/p/plain-washers/"
+		"/products/screws/hex-socket-head-cap-screw/",
+		"/products/nuts/hex-nut/",
+		"/products/screws/countersunk-head-cap-screws/",
+		"/products/bolts/hex-head-bolts-fully-threaded/",
+		"/products/washers/plain-washers/",
+		"/products/bolts/hex-socket-head-cap-bolts-full-thread/",
+		"/products/bolts/hexagon-head-bolts-full-thread/",
+		"/products/bolts/hexagon-head-bolts-partial-thread/",
+		"/products/bolts/hexagon-flange-bolts/",
+		"/products/bolts/hex-socket-head-cap-bolts/",
+		"/products/bolts/hex-socket-button-head-bolts/",
+		"/products/bolts/hex-socket-countersunk-flat-head-bolts/",
+		"/products/bolts/torx-flange-head-bolts/",
+		"/products/bolts/double-end-stud-bolts/",
+		"/products/bolts/12-point-flange-bolts/"
 	],
 	"draftCategories": [
-		"/global-en/eshop/c/pins/",
-		"/global-en/eshop/c/securing/"
+		"/products/pins/",
+		"/products/securing/"
 	],
 	"publishedCategories": [
-		"/global-en/eshop/c/screws/",
-		"/global-en/eshop/c/bolts/",
-		"/global-en/eshop/c/nuts/",
-		"/global-en/eshop/c/washers/"
+		"/products/screws/",
+		"/products/bolts/",
+		"/products/nuts/",
+		"/products/washers/"
 	],
 	"draftOverview": []
 }

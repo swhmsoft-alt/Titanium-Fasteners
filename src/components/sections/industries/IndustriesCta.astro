@@ -1,0 +1,33 @@
+---
+/**
+ * IndustriesCta — 页面末尾的询价条。
+ *
+ * 一句话说明「我们怎么回你」，然后两个按钮：主按钮进询价页，
+ * 次按钮进产品总览。不用大图，避免在长页面末尾再压一个 4:3 画框。
+ */
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+	heading: string;
+	text: string;
+	primary: { label: string; href: string };
+	secondary: { label: string; href: string };
+}
+
+const { heading, text, primary, secondary } = Astro.props;
+---
+
+<section class="bg-gray-vlight py-24 lg:py-32">
+	<div class="container-fluid-wide">
+		<div class="flex flex-col items-start gap-16 lg:flex-row lg:items-center lg:justify-between lg:gap-32">
+			<div class="max-w-[760px]">
+				<h2 class="text-h3 mb-8 text-blue-dark3">{heading}</h2>
+				<p class="text-p text-gray">{text}</p>
+			</div>
+			<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+				<Button href={primary.href}>{primary.label}</Button>
+				<Button variant="outline" href={secondary.href}>{secondary.label}</Button>
+			</div>
+		</div>
+	</div>
+</section>

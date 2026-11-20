@@ -1,0 +1,22 @@
+---
+/**
+ * KnowledgeHubHero — Knowledge Hub 各页的页头（面包屑 + eyebrow + h1 + lead）。
+ *
+ * 几何完全复用 sections/about-us/AboutUsHero.astro（1440×1000 实测刻度：
+ * breadcrumb y=255 16px #666 | eyebrow y=313 20px #666 | h1 y=353 64px/70.4
+ * #004975 | lead 24px/38.4 #333），这里只做一层包装，避免跨 section 直接引用
+ * about-us 的组件目录，同时保证两处几何永不漂移。
+ */
+import AboutUsHero from '@components/sections/about-us/AboutUsHero.astro';
+
+interface Props {
+	breadcrumb: { label: string; href?: string }[];
+	eyebrow: string;
+	heading: string;
+	lead: string;
+}
+
+const props = Astro.props;
+---
+
+<AboutUsHero {...props} />

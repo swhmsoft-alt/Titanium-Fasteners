@@ -55,12 +55,26 @@ const DRAFT_OVERVIEW_ROUTES = PRODUCT_ROUTES.draftOverview ?? [];
 // script back to a bare `astro build`.
 //
 // https://astro.build
+/**
+ * Optional deploy-time base path.
+ *
+ * Empty (the default) → the site is served from the domain root, e.g.
+ * https://fastener.bozemetal.com/ — `base` is omitted entirely so Astro keeps
+ * emitting root-absolute asset URLs.
+ *
+ * Set BASE_PATH=/Titanium-Fasteners when the site is published under a GitHub
+ * Pages project URL (https://<owner>.github.io/<repo>/). The value must start
+ * with "/" and must NOT end with "/" — Astro rejects a trailing slash.
+ */
+const BASE_PATH = (process.env.BASE_PATH ?? '').trim();
+
 export default defineConfig({
   // Deployment target. NOTE: the domain identifies the site for SEO/deploy
   // purposes ONLY. The site's visual language comes exclusively from the
   // reference site (see docs/reference-spec.md §A.0) — it does NOT inherit
   // the design system of the sibling project at cnc.bozemetal.com.
   site: 'https://fastener.bozemetal.com',
+  ...(BASE_PATH ? { base: BASE_PATH.replace(/\/$/, '') } : {}),
   output: 'static',
   trailingSlash: 'always',
   build: {

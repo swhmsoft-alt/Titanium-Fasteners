@@ -1,0 +1,124 @@
+---
+/**
+ * MapEmbed — 极简地址 + 「Get Directions ↗」地图弹层。
+ *
+ * WHY A COMPONENT
+ * ---------------
+ * 页脚联系栏只展示城市级地址（Baoji, Shaanxi, China），完整街道地址交给地图：
+ * 用户点「Get Directions」→ 弹层内出现地图 + 完整详细地址 + 打开地图 App 的兜底链接。
+ *
+ * WHY NO API KEY / NO COORDINATES
+ * ------------------------------
+ * 1) 该工厂地址尚未在 OSM / 地图服务商完成地理编码 —— 写死经纬度会在站内展示
+ *    **错误的位置标记**，对企业站是硬伤（比不展示地图更糟）。因此这里让地图服务商
+ *    在浏览器端按**完整地址文本**实时解析定位。
+ * 2) `output=embed` 的 Google Maps 端点不需要 API key，且不写用户数据到本站。
+ * 3) iframe 用 `data-src` 懒挂载 —— 只有真正打开弹层才发起地图请求，
+ *    不拖慢 85 个静态页的加载。
+ *
+ * A11Y
+ * ----
+ * 原生 <dialog> 自带焦点陷阱、Esc 关闭、::backdrop 遮罩；
+ * 完整地址以文本形式并列显示，iframe 只是它的图形化补充。
+ */
+interface Props {
+	/** 城市级短地址（极简行里显示）。 */
+	shortAddress: string;
+	/** 完整详细地址（弹层内文字 + 地图搜索词）。 */
+	fullAddress: string;
+	/** 触发按钮文案。 */
+	label: string;
+	/** iframe 的地图嵌入地址（懒加载）。 */
+	embedUrl: string;
+	/** 在地图 App / 地图站点打开的兜底链接。 */
+	externalUrl: string;
+}
+
+const { shortAddress, fullAddress, label, embedUrl, externalUrl } = Astro.props;
+---
+
+<div class="contents" data-map-root>
+	<p class="flex flex-wrap items-center gap-x-8 gap-y-4 text-[1rem] leading-[160%] whitespace-nowrap">
+		<span>{shortAddress}</span>
+		<span aria-hidden="true">·</span>
+		<button
+			type="button"
+			data-map-open
+			class="transition-colors duration-300 hover:text-white hover:underline"
+		>
+			{label}
+			<span aria-hidden="true">↗</span>
+		</button>
+	</p>
+
+	<dialog
+		data-map-dialog
+		aria-label="Factory location map"
+		class="m-auto w-[calc(100%_-_40px)] max-w-[560px] rounded-card border-0 bg-white p-0 text-blue-dark backdrop:bg-blue-dark/70"
+	>
+		<div class="flex flex-col gap-16 p-24">
+			<div class="flex items-start justify-between gap-16">
+				<div class="flex flex-col gap-4">
+					<p class="text-label text-blue-dark font-bold">{shortAddress}</p>
+					<p class="text-p-sm text-gray-medium">{fullAddress}</p>
+				</div>
+				<button
+					type="button"
+					data-map-close
+					aria-label="Close map"
+					class="flex h-40 w-40 shrink-0 items-center justify-center rounded-full border-1 border-blue-light text-blue-dark transition-colors duration-300 hover:border-blue hover:text-blue"
+				>
+					<svg class="h-16 w-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+						<path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+					</svg>
+				</button>
+			</div>
+
+			<iframe
+				data-map-frame
+				data-src={embedUrl}
+				title={`Map showing ${fullAddress}`}
+				loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"
+				class="aspect-16/9 w-full rounded-panel border-0"
+			></iframe>
+
+			<a
+				href={externalUrl}
+				target="_blank"
+				rel="noreferrer noopener"
+				class="text-p-sm text-blue underline transition-colors duration-300 hover:text-blue-dark"
+			>
+				Open full address in Maps
+				<span aria-hidden="true">↗</span>
+			</a>
+		</div>
+	</dialog>
+</div>
+
+<script>
+	// 原生 <dialog> 弹层：打开时懒挂载 iframe，关闭时释放。
+	const roots = document.querySelectorAll<HTMLElement>('[data-map-root]');
+	roots.forEach((root) => {
+		const dialog = root.querySelector<HTMLDialogElement>('[data-map-dialog]');
+		const frame = root.querySelector<HTMLIFrameElement>('[data-map-frame]');
+		if (!dialog) return;
+
+		const openBtn = root.querySelector<HTMLButtonElement>('[data-map-open]');
+		const closeBtn = root.querySelector<HTMLButtonElement>('[data-map-close]');
+
+		openBtn?.addEventListener('click', () => {
+			if (frame && !frame.src && frame.dataset.src) {
+				frame.src = frame.dataset.src;
+			}
+			dialog.showModal();
+		});
+
+		closeBtn?.addEventListener('click', () => dialog.close());
+
+		// 点击遮罩关闭（点击 dialog 元素本体而非内部内容时）。
+		dialog.addEventListener('click', (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+	});
+</script>

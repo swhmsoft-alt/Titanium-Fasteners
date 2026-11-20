@@ -1,0 +1,60 @@
+---
+/**
+ * ClosingCtaSection — homepage screen 9.
+ *
+ * ROLE: the bottom conversion band. Three ways to brief us, three standing
+ * facts, one primary CTA to the real RFQ desk.
+ */
+import Button from '@components/ui/Button.astro';
+import { CLOSING } from '@data/home';
+---
+
+<section class="bg-blue-light py-24 lg:py-32" aria-labelledby="closing-heading">
+	<div class="container-fluid">
+		<h2 id="closing-heading" class="text-h3 mb-12 text-blue-dark3">{CLOSING.heading}</h2>
+		<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{CLOSING.body}</p>
+
+		<div class="grid grid-cols-1 gap-16 md:grid-cols-3 lg:gap-24">
+			{
+				CLOSING.channels.map((channel) => (
+					<a
+						href={channel.href}
+						class="rounded-card border border-blue-70 bg-white p-16 transition duration-200 hover:-translate-y-4 hover:border-blue lg:p-24"
+					>
+						<p class="text-label mb-4 text-gray-medium">{channel.label}</p>
+						<p class="text-p-sm text-blue-dark3">{channel.value}</p>
+					</a>
+				))
+			}
+		</div>
+
+		<div class="mt-24 flex flex-wrap items-center gap-24 lg:mt-32">
+			<Button variant="primary" href={CLOSING.cta.href}>{CLOSING.cta.label}</Button>
+			<ul class="flex flex-wrap gap-24">
+				{
+					CLOSING.facts.map((fact) => (
+						<li class="text-p-sm text-gray">
+							<span class="text-gray-medium">{fact.label}:</span>{' '}
+							<span class="text-blue-dark3">{fact.value}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<ul class="mt-24 flex flex-wrap gap-12 lg:mt-32">
+			{
+				CLOSING.secondaryLinks.map((link) => (
+					<li>
+						<a
+							href={link.href}
+							class="inline-flex items-center rounded-pill border-2 border-blue-dark3 px-20 py-8 text-button text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+						>
+							{link.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

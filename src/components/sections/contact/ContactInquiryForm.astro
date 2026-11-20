@@ -1,0 +1,360 @@
+---
+/**
+ * ContactInquiryForm — /contact/ 左栏的「零涉密破冰」表单。
+ *
+ * WHY VANILLA JS, NOT AN ISLAND
+ * -----------------------------
+ * 本页唯一的交互是：单选胶囊、提交态切换（表单 → 回执卡）。这些交互不需要框架
+ * 状态图 —— 一段原生 DOM 操作即可，**并且不引入任何 hydration 成本**。
+ * （第一版曾用 React 岛实现；本版按新规格改为原生实现，页面不再依赖 React 运行时。）
+ *
+ * DESIGN INTENT（为什么只有 2 个可见字段）
+ * --------------------------------------
+ * 目标读者是欧美 B2B 采购经理与研发工程师，第一次接触时的防备心来自
+ * 「表单 = 我要暴露图纸 / 暴露个人信息」。因此本页刻意做成 30 秒破冰：
+ *   · 意图用单选胶囊代替下拉（免打字，也避免要求对方描述技术细节）；
+ *   · 需求描述是唯一的长文本框，且明说「此时不需要任何机密文件」；
+ *   · 只强制一个字段：企业邮箱（没有它就无法回 NDA）。
+ * 姓名/公司/国家/电话一律**不问**——这些信息在回信里再问不迟。
+ *
+ * SUBMISSION
+ * ----------
+ * 承接渠道复用 @config/site 的 INQUIRY（与产品页询盘同一 webhook），不在本页
+ * 新造端点。endpoint 为空时**不发起网络请求**，直接进入回执卡并把内容预填进
+ * mailto 链接 —— 不会产生任何 broken network error。
+ * 蜜罐沿用同一字段名与静默成功策略（机器人填了就静默丢弃，不暴露风控）。
+ */
+import { CONTACT, CONTACT_INTENTS, type ContactIntent } from '@data/contact';
+
+interface Props {
+	/** webhook 端点；空串则不发起网络请求，纯客户端回执。 */
+	endpoint: string;
+	/** 降级/直发收件邮箱。 */
+	fallbackEmail: string;
+	/** 蜜罐字段名；空串则不发该字段。 */
+	trapField: string;
+	/** 业务来源标识。 */
+	source: string;
+	/** 页面 URL（canonical），后端用于回溯来源。 */
+	pageUrl: string;
+}
+
+const { endpoint, fallbackEmail, trapField, source, pageUrl } = Astro.props;
+
+const f = CONTACT.form;
+---
+
+<div class="flex flex-col">
+	<form
+		class="flex flex-col gap-24"
+		data-contact-form
+		novalidate
+		data-endpoint={endpoint}
+		data-fallback-email={fallbackEmail}
+		data-trap-field={trapField}
+		data-source={source}
+		data-page-url={pageUrl}
+	>
+		<!-- ── 1. 快捷意图标签（免打字，单选） ───────────────────────── -->
+		<fieldset>
+			<legend class="text-label mb-12 text-blue-dark3">{f.intentsLabel}</legend>
+			<div class="flex flex-wrap gap-16">
+				{
+					CONTACT_INTENTS.map((intent: ContactIntent, index: number) => (
+						<label class="flex cursor-pointer flex-col gap-6">
+							<input
+								type="radio"
+								name="intent"
+								value={intent.id}
+								class="peer sr-only"
+								checked={index === 0}
+							/>
+							<span class="inline-flex items-center rounded-pill border-2 border-gray-light px-20 py-10 text-button leading-none transition-colors duration-300 peer-checked:border-blue-dark3 peer-checked:bg-blue-dark3 peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue">
+								{intent.label}
+							</span>
+							<span class="max-w-[320px] text-p-sm leading-normal text-gray-medium peer-checked:text-blue-dark3">
+								{intent.hint}
+							</span>
+						</label>
+					))
+				}
+			</div>
+		</fieldset>
+
+		<!-- ── 2. 需求简述（唯一长文本框） ─────────────────────────────── -->
+		<div>
+			<label for="contact-brief" class="text-label mb-8 block text-blue-dark3">
+				{f.textareaLabel}
+			</label>
+			<p class="mb-8 text-p-sm text-gray-medium">{f.textareaHint}</p>
+			<textarea
+				id="contact-brief"
+				name="requirement"
+				rows="4"
+				placeholder={f.textareaPlaceholder}
+				class="w-full resize-y border border-gray-light bg-white px-16 py-13 text-p-sm text-gray placeholder:text-gray-medium focus:border-blue focus:outline-none"
+			></textarea>
+		</div>
+
+		<!-- ── 3. 企业邮箱（唯一必填项） ───────────────────────────────── -->
+		<div>
+			<label for="contact-email" class="text-label mb-8 block text-blue-dark3">{f.emailLabel}</label>
+			<input
+				id="contact-email"
+				type="email"
+				name="email"
+				autocomplete="email"
+				required
+				class="w-full border border-gray-light bg-white px-16 py-13 text-p-sm text-gray focus:border-blue focus:outline-none"
+			/>
+			<p class="mt-8 text-p-sm text-gray-medium">{f.emailHint}</p>
+		</div>
+
+		<!-- 蜜罐：真人看不见，机器人会填。填了即静默丢弃。 -->
+		{
+			trapField && (
+				<div class="sr-only" aria-hidden="true">
+					<label for="contact-trap">Leave this field empty</label>
+					<input id="contact-trap" type="text" name={trapField} tabindex="-1" autocomplete="off" />
+				</div>
+			)
+		}
+
+		<p class="hidden text-p-sm text-accent-rose" data-form-error role="alert"></p>
+
+		<!-- ── 4. 提交 CTA + 信任说明 ───────────────────────────────────── -->
+		<div class="flex flex-col gap-12">
+			<button
+				type="submit"
+				class="inline-flex w-full items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+			>
+				{f.cta}
+			</button>
+			<p class="text-p-sm leading-normal text-gray-medium">{f.ctaNote}</p>
+		</div>
+	</form>
+
+	<!-- ── 回执卡（提交后由脚本原地替换表单） ─────────────────────────── -->
+	<div
+		class="hidden flex-col gap-16 border border-blue-light bg-blue-light p-24 lg:p-32"
+		data-contact-receipt
+		aria-live="polite"
+	>
+		<h3 class="text-h5 text-blue-dark3">{f.receiptTitle}</h3>
+
+		<p class="text-p-sm text-gray">
+			<span class="mb-8 block font-bold text-blue-dark3" data-receipt-reference></span>
+			{f.receiptBody}
+		</p>
+
+		<dl class="flex flex-col gap-8 border-t border-blue-70 pt-16 text-p-sm">
+			<div class="flex gap-8">
+				<dt class="shrink-0 text-gray-medium">Inquiry Intent</dt>
+				<dd class="font-bold text-blue-dark3" data-receipt-intent></dd>
+			</div>
+			<div class="flex gap-8">
+				<dt class="shrink-0 text-gray-medium">Work Email</dt>
+				<dd class="break-all font-bold text-blue-dark3" data-receipt-email></dd>
+			</div>
+		</dl>
+
+		<p class="text-p-sm leading-normal text-gray-medium" data-receipt-hint>{f.receiptHint}</p>
+
+		<div class="flex flex-wrap gap-12">
+			<a
+				href={`mailto:${fallbackEmail}`}
+				data-receipt-mailto
+				class="inline-flex items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+			>
+				{f.receiptMailtoLabel}
+			</a>
+			<button
+				type="button"
+				data-receipt-reset
+				class="inline-flex items-center justify-center rounded-pill border-2 border-blue-dark3 bg-transparent px-20 py-8 text-button leading-none text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+			>
+				{f.resetLabel}
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	/**
+	 * 原生交互层：单选胶囊（原生 radio，无需 JS）+ 提交 → 回执卡。
+	 *
+	 * 关键约束：**不发起任何必然失败的请求**。endpoint 为空时直接跳到回执，
+	 * 把已填内容预填进 mailto 链接；endpoint 非空时 POST，失败也不抛未捕获错误，
+	 * 而是把回执提示换成「以邮件为准」的降级说明。
+	 */
+	const forms = document.querySelectorAll<HTMLFormElement>('[data-contact-form]');
+
+	forms.forEach((form) => {
+		const receipt = form.parentElement?.querySelector<HTMLElement>('[data-contact-receipt]');
+		if (!receipt) return;
+
+		const errorBox = form.querySelector<HTMLElement>('[data-form-error]');
+		const refEl = receipt.querySelector<HTMLElement>('[data-receipt-reference]');
+		const intentEl = receipt.querySelector<HTMLElement>('[data-receipt-intent]');
+		const emailEl = receipt.querySelector<HTMLElement>('[data-receipt-email]');
+		const hintEl = receipt.querySelector<HTMLElement>('[data-receipt-hint]');
+		const mailtoEl = receipt.querySelector<HTMLAnchorElement>('[data-receipt-mailto]');
+		const resetEl = receipt.querySelector<HTMLButtonElement>('[data-receipt-reset]');
+
+		/** 生成参考号（RFQ-2026-XXXX 形态）—— 给访客一个可引用的对话锚点。 */
+		const makeReference = (): string => {
+			const year = new Date().getFullYear();
+			const n = 1000 + Math.floor(Math.random() * 9000);
+			return `RFQ-${year}-${n}`;
+		};
+
+		const showError = (message: string) => {
+			if (!errorBox) return;
+			errorBox.textContent = message;
+			errorBox.classList.remove('hidden');
+		};
+
+		const clearError = () => {
+			if (!errorBox) return;
+			errorBox.textContent = '';
+			errorBox.classList.add('hidden');
+		};
+
+		/** 取当前选中意图的可见文案（用于回执摘要与邮件预填）。 */
+		const selectedIntentLabel = (): string => {
+			const checked = form.querySelector<HTMLInputElement>('input[name="intent"]:checked');
+			const label = checked?.closest('label')?.querySelector('span');
+			return label?.textContent?.trim() ?? '';
+		};
+
+		/**
+		 * 回执卡渲染。
+		 *
+		 * 参考号与 mailto 预填内容**始终**生成 —— 即使网络投递失败，买家也仍然
+		 * 拥有一条可直接发信的通道（这正是 B2B 买家 80% 偏好的路径）。
+		 */
+		const showReceipt = (
+			intentLabel: string,
+			email: string,
+			brief: string,
+			delivery: 'posted' | 'offline' | 'failed'
+		): void => {
+			const reference = makeReference();
+			const mailSubject = `${reference} — Titanium Fastener RFQ`;
+			const mailBody = [
+				`Reference: ${reference}`,
+				`Inquiry Intent: ${intentLabel}`,
+				`Work Email: ${email}`,
+				'',
+				brief,
+			].join('\n');
+
+			if (refEl) refEl.textContent = reference;
+			if (intentEl) intentEl.textContent = intentLabel;
+			if (emailEl) emailEl.textContent = email;
+			if (mailtoEl) {
+				mailtoEl.href = `mailto:${form.dataset.fallbackEmail ?? ''}?subject=${encodeURIComponent(
+					mailSubject
+				)}&body=${encodeURIComponent(mailBody)}`;
+			}
+
+			if (hintEl) {
+				if (delivery === 'failed') {
+					hintEl.textContent =
+						'We could not confirm server delivery for this request. Use the button below to send the same brief straight to our engineering inbox.';
+				} else if (delivery === 'offline') {
+					hintEl.textContent =
+						'Your brief is ready. Use the button below to send it directly to our engineering inbox — it is already prefilled with your reference, intent and brief.';
+				}
+			}
+
+			form.classList.add('hidden');
+			receipt.classList.remove('hidden');
+			receipt.classList.add('flex');
+			receipt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		};
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			clearError();
+
+			const data = new FormData(form);
+			const email = String(data.get('email') ?? '').trim();
+			const brief = String(data.get('requirement') ?? '').trim();
+			const intent = String(data.get('intent') ?? '').trim();
+			const trapField = form.dataset.trapField ?? '';
+			const trap = trapField ? String(data.get(trapField) ?? '').trim() : '';
+
+			// 蜜罐：机器人填了就静默丢弃 —— 不发请求、不显示回执、不暴露风控规则。
+			if (trapField && trap !== '') {
+				form.reset();
+				return;
+			}
+
+			if (!email) {
+				showError('Please enter your work email so we can reply and send the NDA.');
+				form.querySelector<HTMLInputElement>('#contact-email')?.focus();
+				return;
+			}
+			if (!brief) {
+				showError('Please add a short project brief so the engineering desk knows what to quote.');
+				form.querySelector<HTMLTextAreaElement>('#contact-brief')?.focus();
+				return;
+			}
+
+			const intentLabel = selectedIntentLabel();
+			const endpoint = form.dataset.endpoint ?? '';
+			const source = form.dataset.source ?? 'contact-page';
+			const pageUrl = form.dataset.pageUrl ?? '';
+
+			/** 与产品页询盘保持同一 payload 形状，后端无需分支。 */
+			const payload = {
+				source,
+				intent,
+				intentLabel,
+				product: {
+					familyId: '',
+					sku: '',
+					name: intentLabel || 'Contact inquiry',
+					standard: '',
+					material: '',
+					sizeRange: '',
+					thread: '',
+					length: '',
+					pageUrl,
+				},
+				contact: { name: '', email, company: '', country: '', phone: '' },
+				requirement: brief,
+				quantity: '',
+				pageUrl,
+			};
+
+			// endpoint 未配置 → 不发网络请求，直接给可用的邮件通道。
+			if (!endpoint) {
+				showReceipt(intentLabel, email, brief, 'offline');
+				return;
+			}
+
+			try {
+				const res = await fetch(endpoint, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+				});
+				showReceipt(intentLabel, email, brief, res.ok ? 'posted' : 'failed');
+			} catch {
+				// 网络不可达 / 端点异常：静默降级到 mailto 通道，不抛未捕获错误。
+				showReceipt(intentLabel, email, brief, 'failed');
+			}
+		});
+
+		resetEl?.addEventListener('click', () => {
+			receipt.classList.add('hidden');
+			receipt.classList.remove('flex');
+			form.classList.remove('hidden');
+			form.reset();
+			clearError();
+			form.querySelector<HTMLInputElement>('input[name="intent"]')?.focus();
+		});
+	});
+</script>

@@ -1,0 +1,13 @@
+---
+/**
+ * /industries/aerospace-uav/ — Aerospace & UAV 钛紧固件应用页。
+ *
+ * 与 /industries/industrial-robotics/ 同构：同一套应用页外壳
+ * (@components/sections/industries-application/ApplicationPage)，只换数据。
+ * 静态路由优先于 `[slug].astro`，两条路由互不覆盖。
+ */
+import ApplicationPage from '@components/sections/industries-application/ApplicationPage.astro';
+import { AEROSPACE_UAV } from '@data/industries-aerospace-uav';
+---
+
+<ApplicationPage page={AEROSPACE_UAV} />

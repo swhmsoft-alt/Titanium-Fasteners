@@ -1,0 +1,46 @@
+---
+/**
+ * CapabilitiesSection — homepage screen 3.
+ *
+ * ROLE: the three factory assets as the homepage's core narrative pillars.
+ * Each pillar carries its own picture, three hard facts and one deep link.
+ */
+import Button from '@components/ui/Button.astro';
+import ProductFigure from '@components/ui/ProductFigure.astro';
+import { CAPABILITIES } from '@data/home';
+---
+
+<section class="bg-blue-light py-24 lg:py-32" aria-labelledby="capabilities-heading">
+	<div class="container-fluid">
+		<h2 id="capabilities-heading" class="text-h3 mb-12 text-blue-dark3">{CAPABILITIES.heading}</h2>
+		<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{CAPABILITIES.lead}</p>
+
+		<div class="grid grid-cols-1 gap-24 md:grid-cols-3 lg:gap-32">
+			{
+				CAPABILITIES.pillars.map((pillar) => (
+					<article class="flex flex-col rounded-card border border-blue-70 bg-white p-16 lg:p-24">
+						<ProductFigure
+							src={pillar.image.src}
+							alt={pillar.image.alt}
+							class="aspect-4/3 w-full"
+						/>
+						<p class="text-label mt-16 mb-4 text-gray-medium">{pillar.label}</p>
+						<h3 class="text-h5 mb-8 text-blue-dark3">{pillar.heading}</h3>
+						<p class="mb-16 text-p-sm text-gray">{pillar.body}</p>
+						<dl class="mb-20 border-t border-blue-70 pt-12">
+							{pillar.facts.map((fact) => (
+								<div class="flex justify-between gap-12 border-b border-blue-70 py-8 last:border-b-0">
+									<dt class="text-p-sm text-gray-medium">{fact.label}</dt>
+									<dd class="text-p-sm text-blue-dark3 text-right">{fact.value}</dd>
+								</div>
+							))}
+						</dl>
+						<div class="mt-auto">
+							<Button variant="outline" href={pillar.cta.href}>{pillar.cta.label}</Button>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>

@@ -1,310 +1,503 @@
 /**
- * src/data/home.ts — homepage content.
+ * src/data/home.ts — homepage content (BOZE titanium fastener front door).
  *
- * PHASE A (1:1 COPY). Every string, image and link below is copied verbatim
- * from the reference site `https://www.bossard.com/global-en/`.
- * Nothing here is written by us, nothing is paraphrased.
+ * CONTENT RULES (hard constraints)
+ * ---------------------------------
+ * 1. No generic titanium explainers ("what is titanium", "why titanium resists
+ *    corrosion"). Every line states a capability, a document or a route.
+ * 2. No measured performance data. No torque coefficient K, no galling test,
+ *    no friction coefficient. Only published nominal material values taken
+ *    from @data/products (MATERIALS) are shown, and they are labelled nominal.
+ * 3. Every internal href is either a literal route that exists in src/pages/**
+ *    or is derived from @data/products (familyPath / FILTER_GROUPS /
+ *    CATEGORY_CARDS). Nothing is invented.
+ * 4. Standard deep links only use standard ids that really exist as
+ *    checkable options in FILTER_GROUPS, so ?standard= never degrades to an
+ *    empty filter.
  *
- * Each entry is registered in `docs/copy-ledger.md` (IDs H-0xx …).
- * In Phase B (before launch) the content is replaced with our own — that
- * replacement is driven by the ledger and touches THIS FILE ONLY:
- * components and styles stay untouched.
- *
- * Images are the reference site's originals, downloaded and localised to
- * `public/images/` (never hot-linked from the CDN).
- * Geometry: `docs/reference/homepage-outline.txt` (measured, 1440×1000).
+ * DATA FLOW
+ * ---------
+ * Product links, category links and material names come from the generated
+ * product layer. Change data/products/*.csv, run `npm run gen:products`, and
+ * the homepage follows without touching this file.
  */
+
+import {
+	CATEGORY_CARDS,
+	FILTER_GROUPS,
+	MATERIALS,
+	PUBLISHED_FAMILIES,
+	familyPath,
+} from '@data/products';
+import { gradeLandingPath } from '@data/grade-paths';
+
+/* ── shared shapes ─────────────────────────────────────────────────── */
 
 export interface HomeLink {
 	label: string;
 	href: string;
 }
 
-/* ── Block 1 · Hero ──────────────────────────────────────────────────────
-   Reference: 792px tall, H2 at 64px, image ratio 2.006.               */
-export const HERO = {
-	/** 参考站隐藏 H1（sr-only），逐字照抄。 */
-	heading: 'Bossard Group - Fasteners, Engineering, Logistics',
-	/** 图片上的主标题（参考站为 H2，64px）。 */
-	title: 'Discover Our Fastening Solutions in Our eShop',
-	/** 副文案。参考站在 1440 视口下由 .hidden wd:block 控制 → 不渲染。 */
-	sub: "We offer you a selection of more than 200'000 different standard and branded parts directly from stock – online available here.",
-	href: '/eshop/',
-	image: {
-		src: '/images/01-eshop-herobanner-products.webp',
-		alt: 'Various fastening elements on a blue background, illustrating their variety.',
-		ratio: 2.006 as const,
-	},
-} satisfies {
-	heading: string;
-	title: string;
-	sub: string;
-	href: string;
-	image: { src: string; alt: string; ratio: number };
-};
-
-/* ── Block 2 · Services (2×2 card grid) ─────────────────────────────────
-   Reference: 946px, H2 44px, card H3 32px, image ratio 1.25,
-   card heights 221/221/202/202 (unequal rows — reproduced by the grid). */
-export const SERVICES = {
-	heading: 'Our Fastening and Logistics Services',
-	cards: [
-		{
-			heading: 'Engineering Services',
-			body: 'Rooted in Swiss precision, we push the boundaries of productivity and quality in your products.',
-			href: '/services/engineering/engineering-services/',
-			image: {
-				src: '/images/02-ate-keyvisual-with-gradient.webp',
-				alt: 'Two colleagues in an industrial trial looking office.',
-				ratio: 1.079 as const,
-			},
-			/** 参考站 lg:col-span-5 → 渲染 821×761 */
-			span: 'lg:col-span-5',
-			/** 参考站该卡无垂直偏移 */
-			offset: '',
-		},
-		{
-			heading: 'Smart Assembly',
-			body: 'Accelerate your manufacturing digitalization with our Smart Factory Assembly solution.',
-			href: '/services/smart-factory/smart-assembly/',
-			image: {
-				src: '/images/03-u6a1703-red-with-gradient.webp',
-				alt: 'Smart Factory Assembly Guy with Tablet in his hands looking at the Dashboard with realt-time data',
-				ratio: 0.75 as const,
-			},
-			/** 参考站 lg:col-span-3 → 渲染 511×681 */
-			span: 'lg:col-span-3',
-			/** 参考站 md:my-40 → 垂直下沉 40px */
-			offset: 'md:my-40',
-		},
-	],
-} satisfies {
-	heading: string;
-	cards: {
-		heading: string;
-		body: string;
-		href: string;
-		image: { src: string; alt: string; ratio: number };
-		span: string;
-		offset: string;
-	}[];
-};
-
-/* ── Block 3 · Product solutions (two side-by-side callouts) ──────────
-   Reference: 873px, TWO H2 headings at 32px (text-h4), NO background
-   image — each callout carries its OWN image:
-     left  callout — 505×673px image (ratio 0.752)
-     right callout — 812×753px image (ratio 1.078)
-   The callouts sit side by side with a 32px gap and a 117px vertical
-   stagger (the right one is lower).                                */
-export const PRODUCT_SOLUTIONS = {
-	overlays: [
-		{
-			heading: 'Product Solutions',
-			body: 'Find the right fastening solution – from standard parts to premium brands, special coatings or custom fasteners.',
-			href: '/product-solutions/',
-			image: {
-				src: '/images/04-bn-219-ecosyn-grip-pan-head-screw-with-serrated-flange-with-gradient.webp',
-				alt: 'Woman in business attire holding a screw in her hand',
-				ratio: 0.75 as const,
-			},
-			/** 参考站 lg:col-span-3 → 渲染 511×681 */
-			span: 'lg:col-span-3',
-			/** 参考站 md:my-40 → 垂直下沉 40px */
-			offset: 'md:my-40',
-		},
-		{
-			heading: 'Inventory and C-Parts Management',
-			body: 'Build a resilient supply chain with our smart inventory management services.',
-			href: '/services/smart-factory/inventory-management/',
-			image: {
-				src: '/images/05-sfl-key-visual.webp',
-				alt: 'Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.',
-				ratio: 1.079 as const,
-			},
-			/** 参考站 lg:col-span-5 → 渲染 821×761 */
-			span: 'lg:col-span-5',
-			offset: '',
-		},
-	],
-} satisfies {
-	overlays: {
-		heading: string;
-		body: string;
-		href: string;
-		image: { src: string; alt: string; ratio: number };
-		span: string;
-		offset: string;
-	}[];
-};
-
-/* ── Block 4 · News (2×2, cards 634×202, H3 21px) ────────────────────────
-   Reference: 524px.                                                        */
-export const NEWS = {
-	heading: 'News',
-	items: [
-		{
-			date: '14 October 2026',
-			title: 'Publication of Sales Results, 3rd Quarter 2026',
-			body: 'Find more information on our investor relations site.',
-			href: 'https://ir.bossard.com/news/sales-for-the-third-quarter-2026/67d8c104-b6f5-448a-ad9a-abe0791d9eb1',
-			image: {
-				src: '/images/06-bossard-nederland-6.webp',
-				alt: 'Bossard Netherlands Office',
-				ratio: 1 as const,
-			},
-		},
-		{
-			date: '24 August 2026',
-			title: 'Our Team Is Competing in Their First Major Race Aboard the New Yacht',
-			body: 'Swiss skipper Oliver Heer and his team races across the Atlantic Ocean. Bossard is prominently visible on sail and hull of the yacht "Embrace The Challenge". Follow the race on the live ticker!',
-			href: '/about-us/news-and-media/press-releases/oliver-heer-the-ocean-race-atlantic/',
-			image: {
-				src: '/images/07-oliver-heer-ocean-race-atlantic.webp',
-				alt: "Oliver Heer's racing yacht sailing on the sea.",
-				ratio: 1 as const,
-			},
-		},
-		{
-			date: '21 July 2026',
-			title: 'Semi Annual Report 2026',
-			body: 'Find more information on our investor relations site.',
-			href: 'https://ir.bossard.com/news/semi-annual-report-2026/1a1922f0-a978-4343-b6d0-f8768d60fb2b',
-			image: {
-				src: '/images/08-bossard-malaysia-1.webp',
-				alt: 'Bossard Malaysia',
-				ratio: 1 as const,
-			},
-		},
-		{
-			date: '',
-			title: 'All Press Releases',
-			body: 'Stay up-to-date with official announcements, updates, and statements from Bossard.',
-			href: '/about-us/news-and-media/press-releases/',
-			image: {
-				src: '/images/09-news-and-media-image.webp',
-				alt: 'A man reads a newspaper while another man next to him reads on his cell phone',
-				ratio: 1 as const,
-			},
-		},
-	],
-	cta: { label: 'Read More', href: '/about-us/news-and-media/press-releases/' },
-} satisfies {
-	heading: string;
-	items: {
-		date: string;
-		title: string;
-		body: string;
-		href: string;
-		image: { src: string; alt: string; ratio: number };
-	}[];
-	cta: HomeLink;
-};
-
-/* ── Block 5 · Three pillars (H2 at 24px — smaller than other blocks) ────
-   Reference: 344px, three headings all at 24px. Each pillar carries a
-   48×48px ICON (not a photo) to the left of its heading. */
-export const PILLARS = {
-	items: [
-		{
-			heading: 'Our Secrets',
-			icon: { src: '/images/10-your-benefit.svg', alt: 'Your benefit icon' },
-			links: [
-				{ label: 'Bossard Blog', href: '/knowledge-hub/inspiration/blog/' },
-				{ label: 'White Papers', href: '/knowledge-hub/inspiration/white-papers/' },
-			],
-		},
-		{
-			heading: 'Our Expertise',
-			icon: {
-				src: '/images/11-assembly-technology-expert-standard-icon.svg',
-				alt: 'ASSEMBLY TECHNOLOGY EXPERT - Standard Icon',
-			},
-			links: [
-				{ label: 'Success Stories', href: '/knowledge-hub/inspiration/success-stories/' },
-				{ label: 'Supplier Portal', href: '/supplier-portal/' },
-			],
-		},
-		{
-			heading: 'Who We Are',
-			icon: { src: '/images/12-bossard-values.svg', alt: 'Bossard values icon' },
-			links: [
-				{ label: 'Who we are', href: '/about-us/who-we-are/' },
-				{ label: 'Sustainability / ESG', href: '/about-us/sustainability/' },
-				{ label: 'Careers', href: '/about-us/careers/' },
-			],
-		},
-	],
-} satisfies {
-	items: {
-		heading: string;
-		icon: { src: string; alt: string };
-		links: HomeLink[];
-	}[];
-};
-
-/* ── Block 6 · Benefits (full-bleed, #cce4f3, headings BLACK) ──────────
-   Reference: 1169px, 1905px wide (bleeds past the 1440px viewport),
-   H2 44px in pure black rgb(0,0,0), 6 items in 2 columns × 3 rows,
-   item headings 24px.                                                     */
-export const BENEFITS = {
-	heading: "What's in It for You?",
-	items: [
-		{
-			title: 'Reduced Time to Market',
-			body: 'Our customers’ products are brought to market faster – a crucial competitive advantage in a global environment.',
-			icon: { src: '/images/13-time-to-market.svg', alt: 'Time to market icon' },
-		},
-		{
-			title: 'Leaner Processes and Automation',
-			body: 'We boost effectiveness and improve efficiency by optimizing your processes.',
-			icon: { src: '/images/14-lean-process.svg', alt: 'Lean process icon' },
-		},
-		{
-			title: 'Cost-Saving Rationalization',
-			body: 'Saving time, money, and resources, being able to better calculate total costs – above all, achieving higher margins.',
-			icon: { src: '/images/15-better-throughput.svg', alt: 'Throughput icon' },
-		},
-		{
-			title: 'Higher Quality and Safety',
-			body: 'Absolute reliability in terms of product, process and production safety. Less waste and fewer complaints.',
-			icon: { src: '/images/16-high-quality.svg', alt: 'Quality icon' },
-		},
-		{
-			title: 'Design Optimization',
-			body: 'With us you can successfully forge new paths and go where no competitor has gone before.',
-			icon: { src: '/images/17-innovation.svg', alt: 'Innovation icon' },
-		},
-		{
-			title: 'PLUS: Reduce your TCO',
-			body: 'Everything we do is designed to reduce your total cost of ownership (TCO). Explore the secret of 15-85.',
-			icon: { src: '/images/18-maximum-reliability.svg', alt: 'Maximum reliability icon' },
-		},
-	],
-	cta: { label: 'Discover Your Benefits', href: '/services/benefits/' },
-} satisfies {
-	heading: string;
-	items: { title: string; body: string; icon: { src: string; alt: string } }[];
-	cta: HomeLink;
-};
-
-/* ── Block 7 · Sustainability CTA (full-bleed, white) ───────────────────
-   Reference: 1013px, 1905px wide, H2 44px.                              */
-export const SUSTAINABILITY = {
-	/** 参考站在图上浮层里的小标签（16px） */
-	label: 'Sustainability at Bossard',
-	heading: 'Enabling Sustainable Assembly Operations Worldwide',
-	body: 'Discover how Bossard contributes to efficient, eco-friendly assembly operations that support global sustainability goals.',
-	image: {
-		src: '/images/19-sustain-esg-keyvisual-rz.webp',
-		alt: 'A group of people standing in a green space that has the shape of a footprint',
-		ratio: 1.333 as const,
-	},
-	cta: { label: 'Read More', href: '/about-us/sustainability/' },
-} satisfies {
+export interface HomeFact {
 	label: string;
+	value: string;
+}
+
+/* ── real routes referenced by the homepage ────────────────────────── */
+
+const PATHS = {
+	products: '/products/',
+	contact: '/contact/',
+	gradeMatrix: '/knowledge-hub/materials/titanium-grade-supply-matrix/',
+	nda: '/knowledge-hub/ip-protection/nda-ip-protection-policy/',
+	estimator: '/knowledge-hub/tools/steel-to-titanium-weight-estimator/',
+	aboutFactory: '/about-us/factory/',
+	aboutQuality: '/about-us/quality/',
+	aboutService: '/about-us/service/',
+	inspection: '/about-us/quality/inspection-and-test-reports/',
+	standards: '/services/manufacturing-capabilities/production-per-international-standards/',
+	cnc: '/services/manufacturing-capabilities/cnc-machining-to-customer-drawings/',
+	forging: '/services/manufacturing-capabilities/cold-heading-hot-forging/',
+	finishing: '/services/manufacturing-capabilities/surface-finishing-color-coding/',
+	mtc: '/services/compliance-packaging/en-10204-31-mtc-traceability/',
+	pmi: '/services/compliance-packaging/pmi-xrf-grade-verification/',
+	packaging: '/services/compliance-packaging/distributor-labeling-packaging/',
+	blanket: '/services/order-fulfillment/blanket-orders-scheduled-delivery/',
+	prototyping: '/services/order-fulfillment/fast-prototyping-low-moq/',
+} as const;
+
+
+
+export const HERO = {
+	eyebrow: 'ISO 9001 & AS9100D Certified Titanium Fastener Manufacturer',
+	/**
+	 * H1 显式两行：桌面端（1280px+）必须严格 2 行，不靠自动折行碰运气。
+	 * 每一行是完整语义单元，SEO 读作 "Custom & Standard CNC Titanium Fasteners"。
+	 */
+	heading: ['Custom & Standard CNC', 'Titanium Fasteners'],
+	lead:
+		'Precision bolts, screws & nuts machined to your drawing or DIN, ISO, ' +
+		'ASTM F467/F468 standards. In-house CNC with full lot traceability.',
+	primaryCta: { label: 'Browse Catalogue', href: PATHS.products },
+	secondaryCta: { label: 'Send Drawing for Quote', href: PATHS.contact },
+	facts: [
+		{ label: 'Thread Range', value: 'M1–M36 (M1–M1.5 Custom)' },
+		{ label: 'Titanium Grades', value: 'CP Grade 2, Grade 5 (Ti-6Al-4V), Grade 23' },
+		{ label: 'Quality & Certs', value: 'AS9100D, ISO 9001 & EN 10204 3.1' },
+		{ label: 'Engineering Reply', value: 'Within 12 business hours' },
+	],
+	/**
+	 * Hero image — one wide factory shot for the right-hand column.
+	 * Real file under /public/images/public-images/.
+	 */
+	image: {
+		src: '/images/public-images/titanium-fasteners-hero.webp',
+		alt: 'Custom CNC machined titanium fasteners, bolts, studs, nuts, and washers in Grade 2 and Grade 5 Ti-6Al-4V',
+	},
+} satisfies {
+	eyebrow: string;
+	heading: string[];
+	lead: string;
+	primaryCta: HomeLink;
+	secondaryCta: HomeLink;
+	facts: HomeFact[];
+	image: { src: string; alt: string };
+};
+
+
+
+/** Only standard ids that really exist as a checkable filter option. */
+const STANDARD_OPTION_IDS = new Set(
+	(FILTER_GROUPS.find((g) => g.id === 'standard')?.options ?? []).map((o) => o.id),
+);
+
+/** Only material ids that really exist as a checkable filter option. */
+const MATERIAL_OPTION_IDS = new Set(
+	(FILTER_GROUPS.find((g) => g.id === 'material')?.options ?? []).map((o) => o.id),
+);
+
+const standardHref = (id: string): string =>
+	STANDARD_OPTION_IDS.has(id) ? `/products/?standard=${id}` : PATHS.products;
+
+/**
+ * 牌号链接 —— 与主导航、产品解决方案口径完全一致（@data/grade-paths 单一真相源）：
+ * 有专属落地页的牌号（Grade 2 / Grade 5）进落地页，其余走筛选深链或牌号矩阵页。
+ */
+const materialHref = (id: string): string =>
+	gradeLandingPath(id) ??
+	(MATERIAL_OPTION_IDS.has(id) ? `/products/?material=${id}` : PATHS.gradeMatrix);
+
+export const SPEC_FINDER = {
+	heading: 'Select by Standard, Grade or Type',
+	lead:
+		'Filter the catalogue by DIN or ISO reference, CP Grade 2 or Grade 5, thread ' +
+		'and length. Every filtered line is a quotable part with its size table and grade list.',
+	standards: [
+		{ label: 'DIN 912', note: 'Hex socket head cap screws', href: standardHref('din-912') },
+		{ label: 'DIN 933', note: 'Hex head bolts, fully threaded', href: standardHref('din-933') },
+		{ label: 'DIN 934', note: 'Hexagon nuts', href: standardHref('din-934') },
+		{ label: 'DIN 125', note: 'Plain washers', href: standardHref('din-125') },
+		{ label: 'DIN 7991', note: 'Countersunk head cap screws', href: standardHref('din-7991') },
+		{ label: 'DIN 7380', note: 'Pan head socket screws', href: standardHref('din-7380') },
+		{ label: 'DIN 6921', note: 'Hexagon head bolts with flange', href: standardHref('din-6921') },
+		{ label: 'DIN 931', note: 'Hex head bolts, partially threaded', href: standardHref('din-931') },
+		{ label: 'DIN 938', note: 'Hexagon head studs', href: standardHref('din-938') },
+		{ label: 'DIN 34800', note: '12-point flange bolts', href: standardHref('din-34800') },
+		{ label: 'ISO 7380-2', note: 'Hex socket head bolts with flange', href: standardHref('iso-7380-2') },
+	],
+	materials: [
+		{ label: 'Grade 2 (CP-Ti)', note: 'Stocked as standard', href: materialHref('ti-gr2') },
+		{ label: 'Grade 5 (Ti-6Al-4V)', note: 'Stocked as standard', href: materialHref('ti-gr5') },
+		{ label: 'Grade 23 (ELI)', note: 'Made to order', href: PATHS.gradeMatrix },
+	],
+	categories: CATEGORY_CARDS.map((card) => ({
+		label: card.title,
+		note: `${card.products} product${card.products === 1 ? '' : 's'}`,
+		href: card.href,
+	})),
+	crossReference: {
+		label: 'DIN / ISO / ASTM cross-reference',
+		href: PATHS.gradeMatrix,
+	},
+} satisfies {
+	heading: string;
+	lead: string;
+	standards: { label: string; note: string; href: string }[];
+	materials: { label: string; note: string; href: string }[];
+	categories: { label: string; note: string; href: string }[];
+	crossReference: HomeLink;
+};
+
+
+
+export const AUDIENCE = {
+	heading: 'Supply Channels: Distributor & OEM',
+	lead:
+		'Distributors order catalogue lines against DIN, ISO and ASTM references. ' +
+		'OEM buyers release drawings for print-to-part CNC. One desk takes both.',
+	columns: [
+		{
+			heading: 'Distributors & Stockists',
+			body:
+				'Catalogue parts to DIN, ISO, ASTM F467 / F468 and ASME, in CP Grade 2 ' +
+				'and Grade 5, packed per lot with your label and barcode.',
+			points: [
+				{ label: 'Selection', value: 'Filter by standard, grade, type, thread and length' },
+				{ label: 'Availability', value: 'Grade 2 and Grade 5 stocked as standard' },
+				{ label: 'Supply', value: 'Blanket orders and scheduled call-off deliveries' },
+				{ label: 'Packaging', value: 'Your label, your barcode, your carton format' },
+			],
+			cta: { label: 'Open the catalogue', href: PATHS.products },
+			secondary: { label: 'Grade supply matrix', href: PATHS.gradeMatrix },
+			image: {
+				src: '/images/public-images/for-distributors.webp',
+				alt: 'Distributor buyers checking a tray of titanium fasteners in the warehouse.',
+			},
+		},
+		{
+			heading: 'OEM Engineers & Buyers',
+			body:
+				'Machined from your drawing under NDA, with tolerance, heat number ' +
+				'and MTC carried through the part.',
+			points: [
+				{ label: 'Drawing review', value: 'Feasibility feedback before the order is placed' },
+				{ label: 'Quality', value: 'PMI / XRF on every batch before packing' },
+				{ label: 'Documents', value: 'Inspection report and EN 10204 3.1 MTC with every lot' },
+				{ label: 'IP', value: 'NDA signed before the drawing is opened' },
+			],
+			cta: { label: 'Factory and production', href: PATHS.aboutFactory },
+			secondary: { label: 'NDA and IP protection policy', href: PATHS.nda },
+			image: {
+				src: '/images/public-images/for-oem-engineers-and-buyers.webp',
+				alt: 'OEM engineers reviewing a machined titanium part against its CAD drawing.',
+			},
+		},
+	],
+} satisfies {
+	heading: string;
+	lead: string;
+	columns: {
+		heading: string;
+		body: string;
+		points: HomeFact[];
+		cta: HomeLink;
+		secondary: HomeLink;
+		image: { src: string; alt: string };
+	}[];
+};
+
+/* ── Screen 3 · Three factory assets ───────────────────────────────── */
+
+export const CAPABILITIES = {
+	heading: 'In-House Cold Heading, Forging & CNC',
+	lead:
+		'Every route runs in our own workshop, and every lot leaves with its MTC.',
+	pillars: [
+		{
+			label: 'Cold Heading & Forging',
+			heading: 'Production to DIN, ISO & ASTM',
+			body:
+				'M1.6–M36 in CP Grade 2 and Grade 5 Ti-6Al-4V to DIN, ISO, ' +
+				'ASTM F467 / F468 and ASME. Drawing parts run on the same lines.',
+			facts: [
+				{ label: 'Range', value: 'M1.6–M36, M1–M1.5 to order' },
+				{ label: 'Routes', value: 'Cold heading, hot forging, CNC machining' },
+				{ label: 'Finishing', value: 'AMS 2700 passivation, AMS 2488 anodizing, grade colour coding' },
+			],
+			cta: { label: 'Production per international standards', href: PATHS.standards },
+			image: {
+				src: '/images/public-images/produced-to-international-standards.webp',
+				alt: 'Titanium fastener range from M1.6 to M36 in CP Grade 2 and Grade 5, size and grade colour coded.',
+			},
+		},
+		{
+			label: 'CNC Machining',
+			heading: 'Print-to-Part CNC Machining',
+			body:
+				'Print-to-part CNC from bar or billet, NDA-protected, tolerances held ' +
+				'as drawn. STEP, IGES, DXF or PDF accepted.',
+			facts: [
+				{ label: 'Input', value: 'STEP, IGES, DXF or PDF with tolerances marked' },
+				{ label: 'Release', value: 'First article approved before series production' },
+				{ label: 'Confidentiality', value: 'NDA signed before the drawing is opened' },
+			],
+			cta: { label: 'CNC machining to customer drawings', href: PATHS.cnc },
+			image: {
+				src: '/images/public-images/made-to-your-drawing.webp',
+				alt: 'CNC machined titanium special parts checked with a micrometer.',
+			},
+		},
+		{
+			label: 'Traceability & Packing',
+			heading: 'Lot Traceability & Anti-Mixing Packaging',
+			body:
+				'Every lot carries an EN 10204 3.1 certificate, is verified by ' +
+				'PMI / XRF before packing, and is segregated by grade to prevent mixed material.',
+			facts: [
+				{ label: 'Material', value: 'ASTM B348 bar stock' },
+				{ label: 'Finished product', value: 'ASTM F467 / F468' },
+				{ label: 'Documents', value: 'EN 10204 3.1, one certificate per lot' },
+			],
+			cta: { label: 'EN 10204 3.1 MTC and traceability', href: PATHS.mtc },
+			image: {
+				src: '/images/public-images/material-compliance-and-packaging.webp',
+				alt: 'Titanium hex bolts in a heat-number labelled bag, beside ASTM B348 Grade 5 bar stock.',
+			},
+		},
+	],
+} satisfies {
+	heading: string;
+	lead: string;
+	pillars: {
+		label: string;
+		heading: string;
+		body: string;
+		facts: HomeFact[];
+		cta: HomeLink;
+		image: { src: string; alt: string };
+	}[];
+};
+
+
+
+export const GRADES = {
+	heading: 'Titanium Grades 2, 5, 9 and 23',
+	lead:
+		'Nominal values from published standards, stated so you can select a grade ' +
+		'before ordering.',
+	items: MATERIALS.map((m) => ({
+		id: m.id,
+		label: m.name,
+		density: m.density_g_cm3,
+		proof: m.proof_strength_mpa,
+		tensile: m.tensile_mpa,
+		maxTemp: m.max_temp_c,
+		notes: m.notes,
+		availability:
+			m.id === 'ti-gr2' || m.id === 'ti-gr5'
+				? 'Stocked as standard'
+				: 'Made to order against a confirmed specification',
+		href: materialHref(m.id),
+	})),
+	cta: { label: 'Titanium grade supply matrix', href: PATHS.gradeMatrix },
+} satisfies {
+	heading: string;
+	lead: string;
+	items: {
+		id: string;
+		label: string;
+		density: string;
+		proof: string;
+		tensile: string;
+		maxTemp: string;
+		notes: string;
+		availability: string;
+		href: string;
+	}[];
+	cta: HomeLink;
+};
+
+/* ── Screen 5 · Product matrix (real families) ─────────────────────── */
+
+export const PRODUCT_MATRIX = {
+	heading: 'Titanium fastener families',
+	lead:
+		'Sizes cut to order. Each family carries its size table, standards reference ' +
+		'and grade list; certificates are issued per lot.',
+	families: PUBLISHED_FAMILIES.map((family) => ({
+		title: family.name,
+		href: familyPath(family.category, family.family_id),
+		image: family.image,
+		alt: family.name,
+		description: family.description,
+		standards: family.standards,
+	})),
+	all: { label: 'All products', href: PATHS.products },
+} satisfies {
+	heading: string;
+	lead: string;
+	families: {
+		title: string;
+		href: string;
+		image: string;
+		alt: string;
+		description: string;
+		standards: string;
+	}[];
+	all: HomeLink;
+};
+
+
+
+export const TRUST = {
+	heading: 'Shop-Floor Verified Documentation',
+	items: [
+		{
+			label: 'Production and quality',
+			heading: 'Signed by Production & Quality Leads',
+			body:
+				'Process and material statements come from our engineering and ' +
+				'production leads. Certificate and inspection statements come from ' +
+				'our quality lead, against our own shop-floor records.',
+			href: PATHS.aboutFactory,
+			linkLabel: 'Factory and production',
+		},
+		{
+			label: 'Traceability and verification',
+			heading: 'Heat-Number Traceability, 100% XRF',
+			body:
+				'Heat number carried through every production and finishing step. ' +
+				'Material to ASTM B348, finished product to ASTM F467 / F468, ' +
+				'documents to EN 10204 3.1. Every batch verified by PMI / XRF before packing.',
+			href: PATHS.aboutQuality,
+			linkLabel: 'Quality and compliance',
+		},
+		{
+			label: 'Supply verification',
+			heading: 'Feasibility Confirmed Pre-Release',
+			body:
+				'Check process, certification and delivery route before the drawing ' +
+				'changes hands. Figures that depend on your drawing are confirmed ' +
+				'against your file.',
+			href: PATHS.aboutService,
+			linkLabel: 'Supply and service',
+		},
+	],
+} satisfies {
+	heading: string;
+	items: { label: string; heading: string; body: string; href: string; linkLabel: string }[];
+};
+
+/* ── Screen 7 · Compliance closure ─────────────────────────────────── */
+
+export const COMPLIANCE = {
+	heading: 'Lot Traceability & MTC Assurance',
+	lead:
+		'Three evidence steps, then a PMI / XRF check, then packaging that ' +
+		'keeps grades apart in your warehouse.',
+	steps: [
+		{
+			label: 'Material Origin',
+			heading: 'Mill Heat-Number Traceability',
+			body:
+				'Bar stock is bought against ASTM B348. Each lot is identified by the ' +
+				'mill heat number, and that number follows the material through every step.',
+			href: PATHS.mtc,
+			linkLabel: 'EN 10204 3.1 MTC and traceability',
+		},
+		{
+			label: 'Finished Part',
+			heading: 'Finished Product to ASTM F467',
+			body:
+				'Finished fasteners are specified to ASTM F467 / F468, with the ' +
+				'process route selected per part geometry and per material.',
+			href: PATHS.standards,
+			linkLabel: 'Production per international standards',
+		},
+		{
+			label: 'Pre-Shipment Check',
+			heading: 'PMI / XRF Verification & Packaging',
+			body:
+				'Every batch passes positive material identification before it is packed. ' +
+				'Grades are segregated in storage and in process, and tools and baskets ' +
+				'are colour coded by grade.',
+			href: PATHS.pmi,
+			linkLabel: 'PMI / XRF grade verification',
+		},
+	],
+	secondaryLinks: [
+		{ label: 'Distributor labelling and packaging', href: PATHS.packaging },
+		{ label: 'Blanket orders and scheduled delivery', href: PATHS.blanket },
+		{ label: 'Inspection and test reports', href: PATHS.inspection },
+	],
+} satisfies {
+	heading: string;
+	lead: string;
+	steps: { label: string; heading: string; body: string; href: string; linkLabel: string }[];
+	secondaryLinks: HomeLink[];
+};
+
+
+
+export const CLOSING = {
+	heading: 'RFQ & Production Workflow',
+	body:
+		'Send a DIN or ISO number, or a drawing. You get a price, the certificate set ' +
+		'and a delivery date. Drawings run under NDA, signed before the file is opened.',
+	channels: [
+		{
+			label: 'Standard parts',
+			value: 'DIN or ISO number, grade, size and annual quantity',
+			href: PATHS.contact,
+		},
+		{
+			label: 'Parts to drawing',
+			value: 'STEP, IGES, DXF or PDF with tolerances marked',
+			href: PATHS.contact,
+		},
+		{
+			label: 'Low volume and samples',
+			value: 'Minimum quantities agreed per programme',
+			href: PATHS.prototyping,
+		},
+	],
+	facts: [
+		{ label: 'Engineering reply', value: 'Within 12 business hours' },
+		{ label: 'Certificate', value: 'EN 10204 3.1 per lot, heat number referenced' },
+		{ label: 'Range', value: 'M1.6–M36, M1–M1.5 to order' },
+	],
+	cta: { label: 'Request a quotation', href: PATHS.contact },
+	secondaryLinks: [
+		{ label: 'Steel to titanium weight estimator', href: PATHS.estimator },
+		{ label: 'Cold heading and hot forging', href: PATHS.forging },
+		{ label: 'Surface finishing and colour coding', href: PATHS.finishing },
+	],
+} satisfies {
 	heading: string;
 	body: string;
-	image: { src: string; alt: string; ratio: number };
+	channels: { label: string; value: string; href: string }[];
+	facts: HomeFact[];
 	cta: HomeLink;
+	secondaryLinks: HomeLink[];
 };
+

@@ -1,0 +1,84 @@
+---
+/**
+ * ReferenceApplication — 一个参考应用场景（关节壳体）+ 事实表。
+ *
+ * 一张 4:3 图（锁 aspect-4/3，object-cover）+ 事实清单（<dl> 全宽标签-值表）。
+ * 事实是抽象规格 → 走表格，不占大图。
+ */
+import Button from '@components/ui/Button.astro';
+
+interface Fact {
+	label: string;
+	value: string;
+}
+
+interface Point {
+	label: string;
+	text: string;
+}
+
+interface Props {
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	points: Point[];
+	image: { src: string; alt: string; width: number; height: number };
+	facts: Fact[];
+	cta: { label: string; href: string };
+	secondaryCta: { label: string; href: string };
+}
+
+const { eyebrow, heading, lead, points, image, facts, cta, secondaryCta } = Astro.props;
+---
+
+<section class="container-fluid pb-48 lg:pb-56" aria-labelledby="reference-heading">
+	<div class="border-t border-blue-70 pt-32 lg:pt-40">
+		<p class="text-label mb-8 text-gray-medium">{eyebrow}</p>
+		<h2 id="reference-heading" class="text-h4 mb-16 text-blue-dark3 lg:mb-24 lg:text-h4-l">
+			{heading}
+		</h2>
+
+		<div class="grid grid-cols-1 items-center gap-32 lg:grid-cols-2 lg:gap-48">
+			<div class="min-w-0">
+				<p class="text-p mb-16 max-w-[620px] text-gray lg:mb-24">{lead}</p>
+				<ul class="mb-24 flex flex-col gap-12 lg:mb-32">
+					{
+						points.map((point) => (
+							<li class="text-p-sm text-gray">
+								<strong class="text-blue-dark3">{point.label}:</strong> {point.text}
+							</li>
+						))
+					}
+				</ul>
+				<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+					<Button href={cta.href}>{cta.label}</Button>
+					<Button variant="outline" href={secondaryCta.href}>{secondaryCta.label}</Button>
+				</div>
+			</div>
+
+			<figure class="aspect-4/3 w-full overflow-hidden rounded-2xl">
+				<img
+					src={image.src}
+					alt={image.alt}
+					width={image.width}
+					height={image.height}
+					loading="lazy"
+					decoding="async"
+					class="aspect-4/3 h-full w-full object-cover"
+					style="aspect-ratio:4 / 3"
+				/>
+			</figure>
+		</div>
+
+		<dl class="mt-32 border-t border-blue-70 lg:mt-40">
+			{
+				facts.map((fact) => (
+					<div class="flex flex-col gap-4 border-b border-blue-70 py-16 md:flex-row md:items-baseline md:gap-32 md:py-20">
+						<dt class="text-p-sm shrink-0 font-bold text-blue-dark3 md:w-[34%]">{fact.label}</dt>
+						<dd class="text-p-sm text-gray md:w-[66%]">{fact.value}</dd>
+					</div>
+				))
+			}
+		</dl>
+	</div>
+</section>

@@ -1,0 +1,49 @@
+---
+/**
+ * PartsGallery — the physical-proof strip.
+ *
+ * Four tiles at a fixed 4:3 ratio. The gallery is the only place on this page
+ * where several product photographs sit side by side; every other image is a
+ * single figure inside a capability band.
+ */
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import type { GalleryItem } from '@data/special-parts';
+
+interface Props {
+	heading: string;
+	lead: string;
+	items: readonly GalleryItem[];
+}
+
+const { heading, lead, items } = Astro.props;
+---
+
+<section class="container-fluid-wide py-24 lg:py-40" aria-labelledby="gallery-heading">
+	<SectionHeading size="h3" as="h2" id="gallery-heading" class="mb-16 lg:mb-24">
+		{heading}
+	</SectionHeading>
+	<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{lead}</p>
+
+	<ul class="grid grid-cols-1 gap-24 sm:grid-cols-2 lg:grid-cols-4 lg:gap-32">
+		{
+			items.map((item) => (
+				<li>
+					<figure class="flex h-full flex-col">
+						<div class="aspect-[4/3] w-full overflow-hidden rounded-xl bg-blue-70">
+							<img
+								src={item.src}
+								alt={item.alt}
+								width="600"
+								height="450"
+								loading="lazy"
+								decoding="async"
+								class="h-full w-full object-cover"
+							/>
+						</div>
+						<figcaption class="mt-12 text-p-sm text-gray">{item.caption}</figcaption>
+					</figure>
+				</li>
+			))
+		}
+	</ul>
+</section>

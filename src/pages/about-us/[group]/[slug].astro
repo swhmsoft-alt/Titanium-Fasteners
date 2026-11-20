@@ -1,0 +1,103 @@
+---
+/**
+ * /about-us/<group>/<slug>/ — 九个工厂背书详情页。
+ *
+ * 路由与内容完全由 src/data/about-us.ts 驱动：
+ *   group + slug → getStaticPaths → props.item
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import AboutUsHero from '@components/sections/about-us/AboutUsHero.astro';
+import AboutUsFacts from '@components/sections/about-us/AboutUsFacts.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import {
+	ABOUT_US_GROUPS,
+	ABOUT_US_ITEMS,
+	aboutUsPath,
+	type AboutUsItem,
+} from '@data/about-us';
+
+export function getStaticPaths() {
+	return ABOUT_US_ITEMS.map((item) => ({
+		params: { group: item.group, slug: item.slug },
+		props: { item },
+	}));
+}
+
+interface Props {
+	item: AboutUsItem;
+}
+
+const { item } = Astro.props as Props;
+const currentPathname = Astro.url.pathname;
+
+const group = ABOUT_US_GROUPS.find((g) => g.slug === item.group);
+
+const hero = {
+	breadcrumb: [
+		{ label: 'Home', href: '/' },
+		{ label: 'About us', href: '/about-us/' },
+		{ label: group?.heading ?? item.group, href: `/about-us/${item.group}/` },
+		{ label: item.heading },
+	],
+	eyebrow: group?.heading ?? 'About us',
+	heading: item.heading,
+	lead: item.lead,
+};
+
+const siblings = (group?.items ?? []).filter((i) => i.slug !== item.slug);
+---
+
+<BaseLayout
+	title={item.heading}
+	description={item.description}
+	canonicalPath={aboutUsPath(item)}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<AboutUsHero {...hero} />
+
+		{
+			item.body.map((paragraph) => (
+				<div class="container-fluid">
+					<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{paragraph}</p>
+				</div>
+			))
+		}
+
+		<AboutUsFacts facts={item.facts} heading="At a glance" />
+
+		{
+			siblings.length > 0 && (
+				<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+					<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">More in {group?.heading}</h2>
+					<ul class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+						{siblings.map((sibling) => (
+							<li>
+								<a
+									class="flex h-full flex-col border border-blue-70 p-12 pb-24 hover:bg-blue-light lg:p-16 lg:pb-28"
+									href={aboutUsPath(sibling)}
+								>
+									<h3 class="text-h5 mb-8 text-blue-dark3">{sibling.name}</h3>
+									<p class="text-p-sm text-gray">{sibling.description}</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		<AboutUsCta />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

@@ -1,0 +1,157 @@
+---
+/**
+ * SolutionHero — the page opener for `/product-solutions/`.
+ *
+ * WHY THE COMPACT SHAPE
+ * ----------------------
+ * The old hero stacked two long paragraphs, so the text column grew far
+ * taller than the figure column and squeezed the image into a thin vertical
+ * strip. The figure is now locked to a standard landscape 4:3 frame
+ * (`aspect-[4/3]` + `object-cover`), and the text column renders four
+ * compact layers only:
+ *
+ *   1. eyebrow + H1
+ *   2. one refined lead paragraph
+ *   3. three compact credential tags
+ *   4. a two-channel CTA row
+ *
+ * The text column spans 7 of 12 grid columns, the figure column 5, and both
+ * are vertically centred on desktop so the hero always closes level.
+ *
+ * Page-local component — global CSS, BaseLayout, Header and Footer are not
+ * touched.
+ */
+import Button from '@components/ui/Button.astro';
+import { PRODUCT_SOLUTIONS } from '@data/product-solutions';
+
+interface Props {
+breadcrumb: readonly { label: string; href?: string }[];
+eyebrow: string;
+heading: string;
+lead: string;
+/** Three compact credential tags (factory credentials, not body copy). */
+credentials?: readonly string[];
+/**
+ * Legacy slot — the long second paragraph is gone from the hero.
+ * The page still forwards the key, so it stays in the contract only.
+ */
+statement?: { text: string; link: { label: string; href: string } } | undefined;
+/** One plain line of factory sign-off — no card, no band. */
+factoryNote: string;
+facts: readonly { label: string; value: string }[];
+primaryCta: { label: string; href: string };
+secondaryCta: { label: string; href: string };
+image: { src: string; alt: string };
+}
+
+const {
+breadcrumb,
+eyebrow,
+heading,
+lead,
+credentials,
+factoryNote,
+facts,
+primaryCta,
+secondaryCta,
+image,
+} = Astro.props;
+
+/* The data layer stays the single source of truth for the credential tags. */
+const credentialTags: readonly string[] = credentials?.length
+? credentials
+: [...PRODUCT_SOLUTIONS.hero.credentials];
+---
+
+<header class="container-fluid-wide mb-40 mt-40 wd:mb-48 wd:mt-48">
+<nav
+class="opacity-100 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+aria-label="Breadcrumb"
+>
+<ol class="flex text-h6-s">
+<li class="flex items-center">
+<a href={breadcrumb[0].href} class="breadcrumb L0">
+<svg
+class="h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[2]"
+aria-hidden="true"
+>
+<use href="/images/sprite.svg#home"></use>
+</svg>
+<span class="sr-only">{breadcrumb[0].label}</span>
+</a>
+</li>
+<li class="flex-shrink-1 flex-grow-0 truncate whitespace-nowrap">
+<svg
+class="h-[16px] w-[16px] inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+aria-hidden="true"
+>
+<use href="/images/sprite.svg#chevron-right"></use>
+</svg>
+<span aria-current="page">{breadcrumb[1].label}</span>
+</li>
+</ol>
+</nav>
+
+<div class="grid grid-cols-1 items-center gap-32 lg:grid-cols-12 lg:gap-48">
+{
+/* ── Text column — four compact layers ── */
+}
+<div class="lg:col-span-7">
+<p class="text-label mb-8 text-gray-medium lg:mb-12">{eyebrow}</p>
+<h1 class="text-h1 mb-16 hyphens-auto text-blue-dark3 lg:mb-24">{heading}</h1>
+<p class="text-lead mb-16 max-w-[620px] text-gray lg:mb-20">{lead}</p>
+
+<ul class="mb-16 flex flex-wrap items-center gap-8 lg:mb-24 lg:gap-12">
+{credentialTags.map((tag) => (
+<li class="rounded-full border border-blue-70 bg-white px-12 py-4 text-p-sm text-blue-dark3">
+{tag}
+</li>
+))}
+</ul>
+
+<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+<Button href={primaryCta.href}>{primaryCta.label}</Button>
+<a href={secondaryCta.href} class="text-button text-blue hover:underline">
+{secondaryCta.label}
+</a>
+</div>
+</div>
+
+{
+/* ── Figure column — locked 4:3 landscape, never a thin strip ── */
+}
+<div class="lg:col-span-5">
+<figure class="aspect-[4/3] overflow-hidden rounded-xl bg-blue-70">
+<img
+src={image.src}
+alt={image.alt}
+width="800"
+height="600"
+loading="eager"
+decoding="async"
+fetchpriority="high"
+class="h-full w-full object-cover"
+/>
+</figure>
+</div>
+</div>
+
+{
+/* ── Standing facts — full width, so the block closes level ── */
+facts.length > 0 && (
+<dl class="mt-32 grid grid-cols-1 gap-16 border-t border-blue-70 pt-16 sm:grid-cols-2 lg:mt-48 lg:grid-cols-4 lg:gap-24">
+{facts.map((fact) => (
+<div>
+<dt class="text-label mb-4 text-gray-medium">{fact.label}</dt>
+<dd class="text-p-sm text-blue-dark3">{fact.value}</dd>
+</div>
+))}
+</dl>
+)
+}
+
+{
+/* ── Factory sign-off — a single plain line, deliberately un-boxed. */
+<p class="mt-16 text-p-sm text-gray-medium lg:mt-24">{factoryNote}</p>
+}
+</header>

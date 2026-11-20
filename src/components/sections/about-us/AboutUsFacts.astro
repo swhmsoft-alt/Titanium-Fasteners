@@ -1,0 +1,33 @@
+---
+/**
+ * AboutUsFacts — 详情页的「关键事实」表。
+ *
+ * 只列能落到物证的说法（工序、证书类型、范围、交期口径），每行 label + value。
+ */
+import type { AboutUsFact } from '@data/about-us';
+
+interface Props {
+	facts: AboutUsFact[];
+	heading?: string;
+}
+
+const { facts, heading } = Astro.props;
+---
+
+<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+	{
+		heading && (
+			<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">{heading}</h2>
+		)
+	}
+	<dl class="border-t border-blue-70">
+		{
+			facts.map((fact) => (
+				<div class="grid grid-cols-1 gap-8 border-b border-blue-70 py-16 md:grid-cols-3 md:gap-24 lg:py-24">
+					<dt class="text-p-sm font-bold text-blue-dark3">{fact.label}</dt>
+					<dd class="text-p-sm text-gray md:col-span-2">{fact.value}</dd>
+				</div>
+			))
+		}
+	</dl>
+</section>

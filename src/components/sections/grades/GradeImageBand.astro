@@ -1,0 +1,66 @@
+---
+/**
+ * GradeImageBand — 牌号页的图文带（**恰好 1 张图**，绝不纵向堆图）。
+ *
+ * 图片框锁死 aspect-4/3 + object-cover，容器高度不随文字伸缩。
+ * 文字侧：≤40 词导语 + 3 条单行加粗要点 + 1 个 CTA。
+ */
+interface Props {
+	/** 图注 / 标题。 */
+	heading: string;
+	/** 导语（≤40 词）。 */
+	lead: string;
+	/** 3 条加粗要点。 */
+	points: { label: string; text: string }[];
+	/** 图片。 */
+	image: { src: string; alt: string; width: number; height: number };
+	/** CTA。 */
+	cta: { label: string; href: string };
+}
+
+const { heading, lead, points, image, cta } = Astro.props;
+---
+
+<section class="bg-white pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="grade-band-heading">
+	<div class="container-fluid">
+		<div class="grid grid-cols-1 items-center gap-24 lg:grid-cols-2 lg:gap-48">
+			<div class="flex flex-col justify-center">
+				<h2 id="grade-band-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-16">
+					{heading}
+				</h2>
+				<p class="mb-24 max-w-560 text-p text-gray">{lead}</p>
+
+				<ul class="mb-28 flex flex-col gap-12">
+					{
+						points.map((point) => (
+							<li class="text-p-sm leading-relaxed text-gray">
+								<strong class="font-bold text-blue-dark3">{point.label}</strong> — {point.text}
+							</li>
+						))
+					}
+				</ul>
+
+				<a
+					href={cta.href}
+					class="inline-flex items-center justify-center self-start rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+				>
+					{cta.label}
+				</a>
+			</div>
+
+			<div class="flex items-center justify-center">
+				<div class="aspect-4/3 w-full overflow-hidden rounded-card border border-black/10">
+					<img
+						src={image.src}
+						alt={image.alt}
+						width={image.width}
+						height={image.height}
+						loading="lazy"
+						decoding="async"
+						class="h-full w-full object-cover"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

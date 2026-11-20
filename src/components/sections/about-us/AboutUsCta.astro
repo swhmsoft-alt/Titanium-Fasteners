@@ -1,0 +1,32 @@
+---
+/**
+ * AboutUsCta — 详情页/分组页末尾的转化块。
+ *
+ * 走 mailto:info@bozemetal.com（INQUIRY.fallbackEmail = 真实收件邮箱），
+ * 不依赖任何未建页的内部路由，也不引入新的表单岛。
+ */
+import { INQUIRY } from '@config/site';
+import Button from '@components/ui/Button.astro';
+
+interface Props {
+	heading?: string;
+	body?: string;
+}
+
+const {
+	heading = 'Ask us about your drawing',
+	body = 'Send us the grade, the size and the quantity you need. Our engineering team replies with a quotation and the material certificates within 12 business hours.',
+} = Astro.props;
+
+const mailto = `mailto:${INQUIRY.fallbackEmail}?subject=${encodeURIComponent(
+	'Inquiry: Titanium fasteners',
+)}`;
+---
+
+<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+	<div class="rounded-lg border border-blue-light p-24 lg:p-48">
+		<h2 class="text-h4 mb-12 font-normal text-blue-dark3 lg:mb-16">{heading}</h2>
+		<p class="mb-32 max-w-[720px] text-p text-gray">{body}</p>
+		<Button href={mailto}>Request a quotation</Button>
+	</div>
+</section>

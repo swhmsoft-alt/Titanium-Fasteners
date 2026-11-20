@@ -43,11 +43,14 @@ const ROOT = resolve(import.meta.dirname, '..');
 const DATA = join(ROOT, 'data/products');
 const DIM_DIR = join(DATA, 'dimensions');
 
-/* 产品表 —— 编辑人员填的核心信息，第 8 列 = 图片原名（导入时自动加 SKU 前缀）。 */
+/* 产品表 —— 编辑人员填的核心信息，第 8 列 = 图片原名（导入时自动加 SKU 前缀）。
+   type 列 = 产品类型（screw / bolt / nut / washer / stud …）—— 显式存储，
+   不再由 standards[0] 派生：产品可以没有标准，也可以挂多个标准而类型不变。 */
 const FAM_HEADER = [
 	'family_id',
 	'name',
 	'category',
+	'type',
 	'standards',
 	'materials',
 	'finishes',
@@ -67,6 +70,8 @@ const MGT_HEADER = [
 	'price_unit',
 ];
 const CAT_HEADER = ['id', 'name', 'description', 'image', 'order'];
+/* 标准字典 —— auto=1 表示"自动登记、待人工核对"（来自批量导入，未登记过的标准）。 */
+const STD_HEADER = ['id', 'label', 'din', 'iso', 'title', 'type', 'notes', 'auto'];
 /** 产品表可改字段（flags 里可改的字段）。 */
 const FAM_FIELDS = FAM_HEADER.filter((h) => h !== 'family_id');
 /** 管理表可改字段 —— status 在这里，不在产品表。 */
@@ -114,10 +119,48 @@ const dimPath = (familyId) => join(DIM_DIR, `${familyId}.csv`);
 /** SKU 规范：TI- + family_id 大写。与 scripts/gen-products.mjs 是同一套规则。 */
 const skuOf = (familyId) => `TI-${familyId.toUpperCase()}`;
 
-/** 族类型 ← standards 的第一个 id —— families.csv 不存 type，与生成器同一条规则。 */
+/** 族类型 ← families.csv 的 type 列；老数据没有该列时回退到 standards[0] 派生。 */
 const typeOf = (f) => {
+	const explicit = (f.type ?? '').trim();
+	if (explicit) return explicit;
 	const first = (f.standards ?? '').split('|')[0].trim();
 	return readTable('standards.csv').rows.find((r) => r.id === first)?.type ?? '';
+};
+
+/** 分类 → 产品类型 —— 标准缺失时的兜底（无标准产品也要能定类型）。 */
+const CATEGORY_TYPE = new Map([
+	['screws', 'screw'],
+	['bolts', 'bolt'],
+	['nuts', 'nut'],
+	['washers', 'washer'],
+	['pins', 'pin'],
+	['securing', 'nut'],
+]);
+
+/** 标准号归一化：'iso-4017' / 'DIN 933' → standards.csv 的规范 id。 */
+const normStd = (s) => s.replace(/[^a-z0-9]/gi, '').toUpperCase();
+const resolveStandard = (token, stdRows) => {
+	const t = normStd(token);
+	for (const r of stdRows) {
+		if (normStd(r.id) === t) return r.id;
+		for (const cell of [r.din, r.iso]) {
+			for (const one of (cell ?? '').split('|')) {
+				if (one.trim() && normStd(one) === t) return r.id;
+			}
+		}
+	}
+	return '';
+};
+
+/** 未登记的标准 → 自动登记为待核对的标准行（auto=1），不阻断导入。 */
+const autoStandardId = (token) => token.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+const autoStandardLabel = (token) => {
+	const t = token.trim();
+	const m = /^([a-z]+)-?(.*)$/i.exec(t);
+	if (!m) return t.toUpperCase();
+	const prefix = m[1].toUpperCase();
+	const rest = m[2].replace(/[-.]/g, ' ').trim().toUpperCase();
+	return rest ? `${prefix} ${rest}` : prefix;
 };
 const readDims = (familyId) => readCsv(dimPath(familyId)) ?? { header: [], rows: [] };
 
@@ -214,14 +257,21 @@ const commands = {
 		if (!/^[a-z0-9-]+$/.test(id)) die(`family_id 只能用小写字母/数字/连字符：${id}`);
 		const t = famTable();
 		if (t.rows.some((r) => r.family_id === id)) die(`族 "${id}" 已存在`);
-		/* 族类型由 standards 的第一个 id 派生 —— families.csv 不存 type。 */
-		const type = typeOf({ standards: flags.standards ?? '' });
+		/* 族类型：--type 优先；否则按第一个标准派生；再否则按分类默认。
+		   于是无标准产品也能建族（--type=bolt --category=bolts）。 */
+		const category = flags.category ?? '';
+		const type =
+			(flags.type ?? '').trim() ||
+			typeOf({ standards: flags.standards ?? '' }) ||
+			CATEGORY_TYPE.get(category) ||
+			'';
 		if (!type) {
 			die(
-				`缺少 --standards=<标准 id>（族类型由第一个标准派生）。已知标准：${readTable('standards.csv').rows.map((r) => r.id).join(', ')}`,
+				`缺少 --type=<产品类型>（或 --standards=<标准 id> / --category=<分类> 之一可推导）。\n` +
+					`  已知类型：${[...new Set(paramTable().rows.map((r) => r.type))].join(', ')}`,
 			);
 		}
-		const rec = { family_id: id, image: '' };
+		const rec = { family_id: id, image: '', type };
 		for (const f of FAM_FIELDS) {
 			if (flags[f] !== undefined) rec[f] = flags[f];
 		}
@@ -390,10 +440,14 @@ const commands = {
 	 *   name | category | standards | sizes | materials | finishes | description | image
 	 *
 	 * 一切没写的东西都是**派生**的：
-	 *   type       ← standards 第一个 id 在 standards.csv 里的 type
+	 *   type       ← 模板 type 列；留空则按 standards[0] 的 type，再退到分类默认
 	 *   family_id  ← name 的 kebab 化（撞号自动加 -2/-3）
 	 *   SKU        ← TI-<family_id 大写>（与生成器同一套规则）
 	 *   工程尺寸   ← 尺寸库 data/products/dimension-library.csv 按 (标准+关键参数) 查
+	 *
+	 * type 是**可选第 9 列**：给了就用（产品类型不再由标准号决定）；
+	 * 不给则按 standards[0] 的 type 推导，再退到 category 的默认类型 ——
+	 * 于是"无标准产品"也能上架。
 	 *
 	 * 图片：第 8 列写**客户原文件名**（如 BN-272-01.jpg，多张用 | 分隔）。
 	 * 原图放 public/images/products/_inbox/（或 products/ 根目录），导入时按
@@ -421,16 +475,21 @@ const commands = {
 			'description',
 			'image',
 		];
+		/* 可选列：type（产品类型）、family_id（upsert 目标族）。
+		   family_id 有值 → 更新那个既有族（保留 family_id / URL / 发布状态）；
+		   留空 → 新建族。 */
+		const OPTIONAL_COLS = ['type', 'family_id'];
 		const path = resolve(process.cwd(), file);
 		if (!existsSync(path)) die(`文件不存在：${path}`);
 		const table = readCsv(path);
 		if (!table) die(`无法解析 CSV：${path}`);
-		const extra = table.header.filter((h) => !TEMPLATE_COLS.includes(h));
-		if (extra.length) die(`模板只接受 ${TEMPLATE_COLS.length} 列：${TEMPLATE_COLS.join(', ')}`);
+		const extra = table.header.filter((h) => !TEMPLATE_COLS.includes(h) && !OPTIONAL_COLS.includes(h));
+		if (extra.length) die(`模板只接受 ${TEMPLATE_COLS.length}+${OPTIONAL_COLS.length} 列：${[...TEMPLATE_COLS, ...OPTIONAL_COLS].join(', ')}`);
 		const lack = TEMPLATE_COLS.filter((h) => !table.header.includes(h));
 		if (lack.length) die(`模板缺列：${lack.join(', ')}`);
 
-		const stdType = new Map(readTable('standards.csv').rows.map((r) => [r.id, r.type]));
+		const stdRows = readTable('standards.csv').rows;
+		const stdType = new Map(stdRows.map((r) => [r.id, r.type]));
 		const catIds = new Set(catTable().rows.map((r) => r.id));
 		const matIds = new Set(readTable('materials.csv').rows.map((r) => r.id));
 		const finIds = new Set(readTable('finishes.csv').rows.map((r) => r.id));
@@ -452,32 +511,99 @@ const commands = {
 		const famData = famTable(); const mgtData = mgtTable();
 		const takenIds = new Set(famData.rows.map((r) => r.family_id));
 		const takenNames = new Map(famData.rows.map((r) => [r.name.trim().toLowerCase(), r.family_id]));
+		/* 名字 → family_id。开头的 "Titanium " 去掉 —— 全站就是钛件紧固件，
+		   族 id 里再带一遍既是废话，也让 URL 长度白涨一截。 */
 		const slug = (s) =>
 			s
 				.toLowerCase()
 				.replace(/[^a-z0-9]+/g, '-')
-				.replace(/^-+|-+$/g, '');
+				.replace(/^-+|-+$/g, '')
+				.replace(/^titanium-/, '');
 
 		const errors = [];
+		/* 逐行容错：某一行有问题 → 跳过该行并报出来，其余行照常导入。
+		   批量清单里一行脏数据不该拖垮整批（"只新建、不 upsert"仍然成立）。 */
+		const skips = [];
 		const planned = [];
+		/* 导入期间自动登记的标准（未登记过的）—— 落盘时并入 standards.csv。 */
+		const autoStandards = new Map();
+		/* 警告：缺工程尺寸这类"可上架但不完整"的问题 —— 放行但要报。 */
+		const warnings = [];
+		const rowWarn = (msg) => warnings.push(msg);
 
 		table.rows.forEach((r, i) => {
 			const line = i + 2;
 			const rowErrs = [];
 			const name = (r.name ?? '').trim();
+			/* upsert 目标：模板第 10 列 family_id。给了就更新那个既有族
+			   （保留 family_id / URL / 发布状态），没给才按名字建新族。 */
+			const targetId = (r.family_id ?? '').trim();
+			let upsertInto = null;
+			if (targetId) {
+				upsertInto = famData.rows.find((f) => f.family_id === targetId) ?? null;
+				if (!upsertInto) {
+					rowErrs.push(`family_id "${targetId}" 不存在（upsert 只能更新既有族，不能借此新建）`);
+				}
+			}
 			if (!name) rowErrs.push('name 为空');
-			else if (takenNames.has(name.toLowerCase())) {
-				rowErrs.push(`产品名 "${name}" 与已有产品 "${takenNames.get(name.toLowerCase())}" 重复`);
+			else if (!upsertInto && takenNames.has(name.toLowerCase())) {
+				/* 重名 = 已存在的族 → 这一行不导入。必须 return：
+				   否则它会继续往下走，被 slug 加 -2 后缀建成"第二个同名族"，
+				   报"已跳过"却照样写盘，留下重复产品页。
+				   （指定了 family_id 的行走 upsert，不受此限制。） */
+				skips.push(
+					`产品名 "${name}" 与已有产品 "${takenNames.get(name.toLowerCase())}" 重复 —— 该行不导入`,
+				);
+				return;
 			}
 			const category = (r.category ?? '').trim();
 			if (!catIds.has(category)) rowErrs.push(`未知分类 "${category}"`);
-			const standards = (r.standards ?? '')
+			/* 标准号归一化：'iso-4017' / 'DIN 933' 一律落到 standards.csv 的规范 id；
+			   未登记过的 → 自动登记为 auto=1 的标准行（待人工核对），不阻断导入。 */
+			const rawStandards = (r.standards ?? '')
 				.split('|')
 				.map((s) => s.trim())
 				.filter(Boolean);
-			if (!standards.length) rowErrs.push('standards 为空');
-			const unknownStd = standards.filter((s) => !stdType.has(s));
-			if (unknownStd.length) rowErrs.push(`未知标准 "${unknownStd.join(', ')}"`);
+			const standards = [];
+			for (const token of rawStandards) {
+				const canon = resolveStandard(token, stdRows);
+				if (canon) {
+					if (!standards.includes(canon)) standards.push(canon);
+					continue;
+				}
+				const autoId = autoStandardId(token);
+				if (!autoStandards.has(autoId)) {
+					autoStandards.set(autoId, {
+						id: autoId,
+						label: autoStandardLabel(token),
+						din: /^din-/i.test(token) ? autoStandardLabel(token) : '',
+						iso: /^iso-/i.test(token) ? autoStandardLabel(token) : '',
+						title: '',
+						type: '',
+						notes: '自动登记（来自批量导入）—— 待人工核对标准号与标题',
+						auto: '1',
+					});
+					stdRows.push(autoStandards.get(autoId));
+					stdType.set(autoId, '');
+				}
+				if (!standards.includes(autoId)) standards.push(autoId);
+			}
+			/* type：模板显式列 → standards[0] 的 type → 分类默认。
+			   标准为空（无标准产品）时走分类默认，type 永远有值。 */
+			const explicitType = (r.type ?? '').trim();
+			const derivedType = standards.length ? stdType.get(standards[0]) ?? '' : '';
+			const type = explicitType || derivedType || CATEGORY_TYPE.get(category) || '';
+			if (!type) rowErrs.push('无法确定产品类型：type 列留空、标准未登记、分类也没有默认类型');
+			else if (!paramsOf(type).length) rowErrs.push(`未知产品类型 "${type}"（不在 param-schema.csv）`);
+			/* upsert 不能改类型 —— 规格矩阵的列由 type 决定，改类型等于换一张表。 */
+			if (upsertInto) {
+				const existType = typeOf(upsertInto);
+				if (type && existType && type !== existType) {
+					rowErrs.push(
+						`family_id "${targetId}" 已是 "${existType}" 类型，与本行 "${type}" 不一致（改类型会改规格矩阵的列结构，须另行 fam-set）`,
+					);
+				}
+			}
 			const materials = (r.materials ?? '')
 				.split('|')
 				.map((s) => s.trim())
@@ -508,7 +634,6 @@ const commands = {
 				return;
 			}
 
-			const type = stdType.get(standards[0]);
 			const allParams = paramsOf(type).map((p) => p.param);
 			const keys = keyParams(type);
 			const sizeTokens = (r.sizes ?? '')
@@ -516,7 +641,7 @@ const commands = {
 				.map((s) => s.trim())
 				.filter(Boolean);
 			if (!sizeTokens.length) {
-				errors.push(`第 ${line} 行：sizes 为空 —— 产品至少要一个规格`);
+				skips.push(`第 ${line} 行：sizes 为空 —— 产品至少要一个规格`);
 				return;
 			}
 
@@ -524,7 +649,7 @@ const commands = {
 			for (const token of sizeTokens) {
 				const parts = token.split('x').map((s) => s.trim());
 				const given = {};
-				if (type === 'screw' || type === 'bolt') {
+				if (type === 'screw' || type === 'bolt' || type === 'stud') {
 					if (parts.length !== 2) {
 						rowErrs.push(`规格 "${token}" 不是 螺纹x长度（如 M4x6）`);
 						continue;
@@ -554,29 +679,32 @@ const commands = {
 
 				const hits = lib.filter(
 					(l) =>
-						l.standard === standards[0] &&
+						l.standard === (standards[0] ?? '') &&
 						keys.every((k) => sameVal(l[k] ?? '', given[k] ?? '')),
 				);
-				if (hits.length === 0) {
-					rowErrs.push(
-						`尺寸库缺 "${standards[0]} ${keys.map((k) => given[k]).join('x')}" —— 在 data/products/dimension-library.csv 补一行`,
-					);
-					continue;
-				}
 				if (hits.length > 1) {
 					rowErrs.push(`尺寸库中 "${standards[0]} ${keys.map((k) => given[k]).join('x')}" 有多条匹配`);
 					continue;
 				}
-				const row = { standard: standards[0] };
+				/* 尺寸库命中 → 补全工程尺寸；未命中 → 只写"基础规格行"
+				   （螺纹 × 长度），工程尺寸留空等抽取器/客户补 —— 不阻断上架。 */
+				const row = { standard: standards[0] ?? '' };
 				let broken = false;
 				for (const p of allParams) {
-					const v = given[p] ?? hits[0][p] ?? '';
+					const v = given[p] ?? hits[0]?.[p] ?? '';
 					if (v === '') {
-						rowErrs.push(`规格 "${token}" 缺参数 "${p}"（尺寸库也没有）`);
-						broken = true;
-						break;
+						if (p.key === '1') {
+							rowErrs.push(`规格 "${token}" 缺关键参数 "${p}"`);
+							broken = true;
+							break;
+						}
+						row[p] = '';
+						continue;
 					}
 					row[p] = v;
+				}
+				if (!broken && !hits.length) {
+					rowWarn(`第 ${line} 行：规格 "${token}" 在尺寸库里没有工程尺寸 —— 先按基础规格上架`);
 				}
 				if (!broken) dims.push(row);
 			}
@@ -586,16 +714,23 @@ const commands = {
 				return;
 			}
 
-			let id = slug(name);
-			if (!id) {
-				errors.push(`第 ${line} 行：产品名 "${name}" 推不出 family_id（需字母或数字）`);
-				return;
+			/* upsert：族 id 由模板指定（保住 URL 与发布状态）；
+			   新建：名字 kebab 化，撞号加 -2（保留"同标准近似重复"的铺货空间）。 */
+			let id;
+			if (upsertInto) {
+				id = targetId;
+			} else {
+				id = slug(name);
+				if (!id) {
+					skips.push(`第 ${line} 行：产品名 "${name}" 推不出 family_id（需字母或数字）`);
+					return;
+				}
+				const base = id;
+				let n = 2;
+				while (takenIds.has(id)) id = `${base}-${n++}`;
+				takenIds.add(id);
+				takenNames.set(name.toLowerCase(), id);
 			}
-			const base = id;
-			let n = 2;
-			while (takenIds.has(id)) id = `${base}-${n++}`;
-			takenIds.add(id);
-			takenNames.set(name.toLowerCase(), id);
 
 			planned.push({
 				famRow: {
@@ -613,6 +748,17 @@ const commands = {
 				dims,
 				images,
 				line,
+				upsert: upsertInto,
+				/* upsert 时的既有值 —— 并集用（不丢已有材质/表面/标准）。 */
+				prev: upsertInto
+					? {
+							standards: (upsertInto.standards ?? '').split('|').filter(Boolean),
+							materials: (upsertInto.materials ?? '').split('|').filter(Boolean),
+							finishes: (upsertInto.finishes ?? '').split('|').filter(Boolean),
+							image: (upsertInto.image ?? '').trim(),
+							rows: readDims(targetId).rows,
+						}
+					: null,
 			});
 		});
 
@@ -652,7 +798,15 @@ const commands = {
 			process.exit(1);
 		}
 		if (!planned.length) die('没有可导入的行');
+		if (skips.length) {
+			console.warn(`! 跳过 ${skips.length} 行（其余行照常导入）：`);
+			for (const s of skips) console.warn(`  ${s}`);
+		}
 		for (const w of claimWarns) console.warn(`! ${w}`);
+		for (const w of warnings) console.warn(`! ${w}`);
+		if (autoStandards.size) {
+			console.log(`! ${autoStandards.size} 个未登记标准将自动登记进 standards.csv（auto=1，待人工核对）：${[...autoStandards.keys()].join(', ')}`);
+		}
 
 		if (flags.dry) {
 			console.log(`--dry：以下 ${planned.length} 个产品会被写入 ——`);
@@ -695,15 +849,89 @@ const commands = {
 			renamed.push(c);
 		}
 
+		/* ── 落盘：新建 = 追加；upsert = 原地更新（保 family_id / URL / 发布状态） ── */
 		const famRows = [...famData.rows];
-		for (const p of planned) famRows.push(p.famRow);
-		writeCsv(join(DATA, 'families.csv'), FAM_HEADER, famRows);
-		/* 新族的管理记录：默认 draft —— 上架与否由管理表说了算。 */
 		const mgtRows = [...mgtData.rows];
-		for (const p of planned) mgtRows.push({ family_id: p.famRow.family_id, status: 'draft' });
+		const staleImages = [];
+		for (const p of planned) {
+			if (!p.upsert) {
+				famRows.push(p.famRow);
+				mgtRows.push({ family_id: p.famRow.family_id, status: 'draft' });
+				writeCsv(dimPath(p.famRow.family_id), p.cols, p.dims);
+				continue;
+			}
+			/* upsert：多值字段取并集（不丢既有材质/表面/标准），
+			   单值字段（名称/描述/图片）以客户清单为准。 */
+			const union = (a, b) => [...new Set([...a, ...b])];
+			const idx = famRows.findIndex((f) => f.family_id === p.famRow.family_id);
+			const old = famRows[idx];
+			/* 既有的规格行用到的标准也要留在 standards 里（闸门 E018 要求行标准 ∈ 族标准）。 */
+			const oldRowStds = p.prev.rows.map((r) => r.standard ?? '').filter(Boolean);
+			const allStds = union(
+				union(old.standards.split('|').filter(Boolean), p.prev.standards),
+				union(p.famRow.standards.split('|').filter(Boolean), oldRowStds),
+			);
+			famRows[idx] = {
+				...old,
+				name: p.famRow.name,
+				category: p.famRow.category,
+				type: p.famRow.type,
+				standards: allStds.join('|'),
+				materials: union(p.prev.materials, p.famRow.materials.split('|').filter(Boolean)).join('|'),
+				finishes: union(p.prev.finishes, p.famRow.finishes.split('|').filter(Boolean)).join('|'),
+				description: p.famRow.description,
+				image: p.famRow.image,
+			};
+			/* 规格矩阵：同键（标准 + 关键参数）覆盖，新键追加；既有行保留。
+			   客户/尺寸库没给值的字段留空 → 保留既有值，不被抹掉。 */
+			const keyOf = (r) => [r.standard ?? '', ...p.cols.filter((c) => c !== 'standard' && (paramsOf(p.famRow.type).find((q) => q.param === c)?.key === '1'))].map((c) => String(r[c] ?? '').trim()).join('|');
+			const merged = p.prev.rows.map((r) => ({ ...r }));
+			for (const nr of p.dims) {
+				const k = keyOf(nr);
+				const hit = merged.find((r) => keyOf(r) === k);
+				if (!hit) {
+					merged.push({ ...nr });
+					continue;
+				}
+				for (const c of p.cols) {
+					if (c === 'standard') continue;
+					const v = nr[c];
+					if (v !== '' && v !== undefined) hit[c] = v;
+				}
+			}
+			writeCsv(dimPath(p.famRow.family_id), p.cols, merged);
+			/* 旧主图（占位图）被客户图取代 → 删掉旧文件，
+			   否则它会按序号排在客户图前面，继续当主图。 */
+			if (p.prev.image && p.prev.image !== p.famRow.image) {
+				const stale = join(IMG_DIR, `${skuOf(p.famRow.family_id)}-${p.prev.image}`);
+				if (existsSync(stale)) staleImages.push(stale);
+			}
+		}
+		writeCsv(join(DATA, 'families.csv'), FAM_HEADER, famRows);
+		/* 自动登记的标准并入标准字典 —— 落盘后即可被页面与闸门识别（待人工核对）。 */
+		if (autoStandards.size) {
+			const stdData = readTable('standards.csv');
+			const rows = [...stdData.rows];
+			for (const rec of autoStandards.values()) {
+				rec.type = planned.find((p) => p.famRow.standards.split('|').includes(rec.id))?.famRow.type ?? '';
+				rows.push(rec);
+			}
+			writeCsv(join(DATA, 'standards.csv'), STD_HEADER, rows);
+		}
+		/* 新族的管理记录：默认 draft —— 上架与否由管理表说了算。
+		   upsert 的族不动管理表（保留既有发布状态）。 */
 		writeCsv(join(DATA, 'management.csv'), MGT_HEADER, mgtRows);
-		for (const p of planned) writeCsv(dimPath(p.famRow.family_id), p.cols, p.dims);
-		saveAndGate(`已导入 ${planned.length} 个产品：${planned.map((p) => p.famRow.family_id).join(', ')}`);
+		/* 被客户图取代的旧占位图 → 删除（否则它会按序号排在客户图前面当主图）。 */
+		for (const f of staleImages) {
+			rmSync(f);
+			console.log(`  清理旧占位图 ${f.replace(ROOT + '\\', '')}`);
+		}
+		const newOnes = planned.filter((p) => !p.upsert).map((p) => p.famRow.family_id);
+		const updOnes = planned.filter((p) => p.upsert).map((p) => p.famRow.family_id);
+		saveAndGate(
+			`已导入 ${planned.length} 个产品（新建 ${newOnes.length}${newOnes.length ? '：' + newOnes.join(', ') : ''}` +
+				`；更新 ${updOnes.length}${updOnes.length ? '：' + updOnes.join(', ') : ''}）`,
+		);
 		if (renamed.length) {
 			console.log(`✓ 认领 ${renamed.length} 张图 ——`);
 			for (const c of renamed) {

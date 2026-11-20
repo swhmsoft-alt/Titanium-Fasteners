@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least-privilege permissions: the job only reads the repo, then asks GitHub
+# Pages to publish the artifact built here.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race for the Pages slot.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Product data gate: CSV truth source → generated src/data/products.
+      # Exits non-zero on any error, so a broken dataset can never reach Pages.
+      - name: Generate product data
+        run: npm run gen:products
+
+      # npm run build routes through scripts/astro-build.mjs, which canonicalises
+      # the project root before spawning Astro. On Linux the path is already
+      # canonical, so this is a no-op there — but it keeps the Windows build
+      # (which needs the fix) and the CI build on the same launcher.
+      - name: Build
+        run: npm run build
+        env:
+          # Leave empty for the custom domain (domain-root deployment).
+          # Set a repo variable BASE_PATH=/Titanium-Fasteners to publish under
+          # the GitHub Pages project URL instead.
+          BASE_PATH: ${{ vars.BASE_PATH || '' }}
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

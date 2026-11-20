@@ -6,34 +6,174 @@ import type { AssetEntry } from './types';
 
 export const ASSETS: AssetEntry[] = [
 	{
-		"code": "TI-HEX-NUT",
-		"seq": 1,
-		"original": "01.webp",
+		"code": "TI-12-POINT-FLANGE-BOLTS",
+		"seq": 99,
+		"original": "BZ-112-bolts-titanium.webp",
 		"role": "image",
-		"url": "/images/products/TI-HEX-NUT-01.webp",
+		"url": "/images/products/TI-12-POINT-FLANGE-BOLTS-BZ-112-bolts-titanium.webp",
+		"family_id": "12-point-flange-bolts"
+	},
+	{
+		"code": "TI-COUNTERSUNK-HEAD-CAP-SCREWS",
+		"seq": 99,
+		"original": "BZ-202-screws-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-COUNTERSUNK-HEAD-CAP-SCREWS-BZ-202-screws-titanium.webp",
+		"family_id": "countersunk-head-cap-screws"
+	},
+	{
+		"code": "TI-DOUBLE-END-STUD-BOLTS",
+		"seq": 99,
+		"original": "BZ-110-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp",
+		"family_id": "double-end-stud-bolts"
+	},
+	{
+		"code": "TI-HEX-HEAD-BOLTS-FULLY-THREADED",
+		"seq": 99,
+		"original": "BZ-102-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-HEAD-BOLTS-FULLY-THREADED-BZ-102-bolts-titanium.webp",
+		"family_id": "hex-head-bolts-fully-threaded"
+	},
+	{
+		"code": "TI-HEX-NUT",
+		"seq": 99,
+		"original": "BZ-301-nuts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-NUT-BZ-301-nuts-titanium.webp",
 		"family_id": "hex-nut"
 	},
 	{
-		"code": "TI-HEX-SOCKET-HEAD-CAP-SCREW",
-		"seq": 1,
-		"original": "01.webp",
+		"code": "TI-HEX-SOCKET-BUTTON-HEAD-BOLTS",
+		"seq": 99,
+		"original": "BZ-107-bolts-titanium.webp",
 		"role": "image",
-		"url": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-01.webp",
+		"url": "/images/products/TI-HEX-SOCKET-BUTTON-HEAD-BOLTS-BZ-107-bolts-titanium.webp",
+		"family_id": "hex-socket-button-head-bolts"
+	},
+	{
+		"code": "TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS",
+		"seq": 99,
+		"original": "BZ-108-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS-BZ-108-bolts-titanium.webp",
+		"family_id": "hex-socket-countersunk-flat-head-bolts"
+	},
+	{
+		"code": "TI-HEX-SOCKET-HEAD-CAP-BOLTS",
+		"seq": 99,
+		"original": "BZ-106-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-BZ-106-bolts-titanium.webp",
+		"family_id": "hex-socket-head-cap-bolts"
+	},
+	{
+		"code": "TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD",
+		"seq": 99,
+		"original": "BZ-101-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD-BZ-101-bolts-titanium.webp",
+		"family_id": "hex-socket-head-cap-bolts-full-thread"
+	},
+	{
+		"code": "TI-HEX-SOCKET-HEAD-CAP-SCREW",
+		"seq": 99,
+		"original": "BZ-201-screws-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-BZ-201-screws-titanium.webp",
 		"family_id": "hex-socket-head-cap-screw"
+	},
+	{
+		"code": "TI-HEXAGON-FLANGE-BOLTS",
+		"seq": 99,
+		"original": "BZ-105-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEXAGON-FLANGE-BOLTS-BZ-105-bolts-titanium.webp",
+		"family_id": "hexagon-flange-bolts"
+	},
+	{
+		"code": "TI-HEXAGON-HEAD-BOLTS-FULL-THREAD",
+		"seq": 99,
+		"original": "BZ-103-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEXAGON-HEAD-BOLTS-FULL-THREAD-BZ-103-bolts-titanium.webp",
+		"family_id": "hexagon-head-bolts-full-thread"
+	},
+	{
+		"code": "TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD",
+		"seq": 99,
+		"original": "BZ-104-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD-BZ-104-bolts-titanium.webp",
+		"family_id": "hexagon-head-bolts-partial-thread"
+	},
+	{
+		"code": "TI-PLAIN-WASHERS",
+		"seq": 99,
+		"original": "BZ-401-washers-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-PLAIN-WASHERS-BZ-401-washers-titanium.webp",
+		"family_id": "plain-washers"
+	},
+	{
+		"code": "TI-TORX-FLANGE-HEAD-BOLTS",
+		"seq": 99,
+		"original": "BZ-109-bolts-titanium.webp",
+		"role": "image",
+		"url": "/images/products/TI-TORX-FLANGE-HEAD-BOLTS-BZ-109-bolts-titanium.webp",
+		"family_id": "torx-flange-head-bolts"
 	}
 ];
 
 /** 族 → 全部图片（按序号）。 */
 export const FAMILY_IMAGES: Record<string, string[]> = {
 	"hex-socket-head-cap-screw": [
-		"/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-01.webp"
+		"/images/products/TI-HEX-SOCKET-HEAD-CAP-SCREW-BZ-201-screws-titanium.webp"
 	],
 	"hex-nut": [
-		"/images/products/TI-HEX-NUT-01.webp"
+		"/images/products/TI-HEX-NUT-BZ-301-nuts-titanium.webp"
 	],
-	"countersunk-head-cap-screws": [],
-	"hex-head-bolts-fully-threaded": [],
-	"plain-washers": []
+	"countersunk-head-cap-screws": [
+		"/images/products/TI-COUNTERSUNK-HEAD-CAP-SCREWS-BZ-202-screws-titanium.webp"
+	],
+	"hex-head-bolts-fully-threaded": [
+		"/images/products/TI-HEX-HEAD-BOLTS-FULLY-THREADED-BZ-102-bolts-titanium.webp"
+	],
+	"plain-washers": [
+		"/images/products/TI-PLAIN-WASHERS-BZ-401-washers-titanium.webp"
+	],
+	"hex-socket-head-cap-bolts-full-thread": [
+		"/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-FULL-THREAD-BZ-101-bolts-titanium.webp"
+	],
+	"hexagon-head-bolts-full-thread": [
+		"/images/products/TI-HEXAGON-HEAD-BOLTS-FULL-THREAD-BZ-103-bolts-titanium.webp"
+	],
+	"hexagon-head-bolts-partial-thread": [
+		"/images/products/TI-HEXAGON-HEAD-BOLTS-PARTIAL-THREAD-BZ-104-bolts-titanium.webp"
+	],
+	"hexagon-flange-bolts": [
+		"/images/products/TI-HEXAGON-FLANGE-BOLTS-BZ-105-bolts-titanium.webp"
+	],
+	"hex-socket-head-cap-bolts": [
+		"/images/products/TI-HEX-SOCKET-HEAD-CAP-BOLTS-BZ-106-bolts-titanium.webp"
+	],
+	"hex-socket-button-head-bolts": [
+		"/images/products/TI-HEX-SOCKET-BUTTON-HEAD-BOLTS-BZ-107-bolts-titanium.webp"
+	],
+	"hex-socket-countersunk-flat-head-bolts": [
+		"/images/products/TI-HEX-SOCKET-COUNTERSUNK-FLAT-HEAD-BOLTS-BZ-108-bolts-titanium.webp"
+	],
+	"torx-flange-head-bolts": [
+		"/images/products/TI-TORX-FLANGE-HEAD-BOLTS-BZ-109-bolts-titanium.webp"
+	],
+	"double-end-stud-bolts": [
+		"/images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp"
+	],
+	"12-point-flange-bolts": [
+		"/images/products/TI-12-POINT-FLANGE-BOLTS-BZ-112-bolts-titanium.webp"
+	]
 };
 
 /** 族 → CAD 文件。 */

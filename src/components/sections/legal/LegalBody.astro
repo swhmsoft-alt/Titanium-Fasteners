@@ -1,0 +1,53 @@
+---
+/**
+ * LegalBody — 隐私政策正文渲染器。
+ *
+ * 几何复用 sections/about-us/AboutUsFacts.astro 的「关键事实」表，
+ * 正文用 utility 类，不新增任何全局样式。
+ *
+ * 结构（自上而下）：
+ *   1. 数据控制者事实表 —— label + value，让买家一眼看到主体与联系方式；
+ *   2. 处理目的列表 —— 三条，与询盘流程一一对应；
+ *   3. 政策分节 —— heading + 段落，段落宽度受 max-w-rich-text 约束。
+ *
+ * 不放图片：这是一份文字性法务文档，图片不会增加可核实信息。
+ */
+import AboutUsFacts from '@components/sections/about-us/AboutUsFacts.astro';
+import { PRIVACY_POLICY } from '@data/legal';
+import type { LegalFact, LegalListItem, LegalSection } from '@data/legal';
+
+const facts: LegalFact[] = PRIVACY_POLICY.facts;
+const purposes: LegalListItem[] = PRIVACY_POLICY.purposes;
+const sections: LegalSection[] = PRIVACY_POLICY.sections;
+---
+
+<section class="container-fluid pb-48 pt-8 lg:pb-56 lg:pt-16">
+	<AboutUsFacts facts={facts} heading="Data controller at a glance" />
+</section>
+
+<section class="container-fluid pb-48 lg:pb-56">
+	<h2 class="text-h3 mb-24 text-blue-dark3 lg:mb-32">Purposes of processing</h2>
+	<ul class="grid grid-cols-1 gap-16 lg:grid-cols-3 lg:gap-24">
+		{
+			purposes.map((item) => (
+				<li class="rounded-lg border border-blue-light p-16 lg:p-24">
+					<p class="text-label mb-8 text-blue-dark3">{item.label}</p>
+					<p class="text-p-sm text-gray">{item.text}</p>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+{
+	sections.map((section) => (
+		<section class="container-fluid pb-48 lg:pb-56">
+			<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">{section.heading}</h2>
+			<div class="max-w-rich-text">
+				{section.paragraphs.map((paragraph) => (
+					<p class="text-p mb-12 text-gray lg:mb-20">{paragraph}</p>
+				))}
+			</div>
+		</section>
+	))
+}

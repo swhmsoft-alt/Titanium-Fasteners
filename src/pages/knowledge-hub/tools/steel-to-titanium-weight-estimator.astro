@@ -1,0 +1,71 @@
+---
+/**
+ * /knowledge-hub/tools/steel-to-titanium-weight-estimator/
+ *
+ * 减重估算器 —— 只用公开标称密度做等体积对比，不含任何实测扭矩/摩擦数据。
+ * 牌号与密度在**构建期**由 @data/products 的 MATERIALS 注入（props），
+ * 岛内不 import 数据层、也不读 CSV。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import KnowledgeHubHero from '@components/sections/knowledge-hub/KnowledgeHubHero.astro';
+import KnowledgeHubFacts from '@components/sections/knowledge-hub/KnowledgeHubFacts.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import WeightEstimator from '@components/islands/WeightEstimator';
+import { MATERIALS } from '@data/products';
+import { WEIGHT_ESTIMATOR_PAGE } from '@data/knowledge-hub';
+
+const currentPathname = Astro.url.pathname;
+
+/** 构建期注入的牌号 + 标称密度（g/cm³）。 */
+const grades = MATERIALS.map((m) => ({
+	id: m.id,
+	name: m.name,
+	density: Number.parseFloat(m.density_g_cm3),
+})).filter((g) => Number.isFinite(g.density));
+---
+
+<BaseLayout
+	title={WEIGHT_ESTIMATOR_PAGE.seo.title}
+	description={WEIGHT_ESTIMATOR_PAGE.seo.description}
+	canonicalPath={WEIGHT_ESTIMATOR_PAGE.path}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<KnowledgeHubHero {...WEIGHT_ESTIMATOR_PAGE.hero} />
+
+		<section class="container-fluid pb-32 pt-24 lg:pb-40 lg:pt-32">
+			<WeightEstimator
+				client:load
+				grades={grades}
+				steelDensity={7.85}
+				steelName="Carbon steel"
+			/>
+		</section>
+
+		{
+			WEIGHT_ESTIMATOR_PAGE.body.map((paragraph) => (
+				<div class="container-fluid">
+					<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{paragraph}</p>
+				</div>
+			))
+		}
+
+		<KnowledgeHubFacts facts={WEIGHT_ESTIMATOR_PAGE.facts} heading="At a glance" />
+
+		<AboutUsCta
+			heading="Need a certified part weight?"
+			body="Send us the grade, the size and the quantity. We weigh and record the actual part during incoming inspection and state the lot weight on the certificate."
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

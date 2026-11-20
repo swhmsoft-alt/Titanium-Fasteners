@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/securing-and-anti-loosening-elements.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,7 +12,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Securing and Anti-Loosening - Products and Brands | Bossard Group', description: 'Bossard brand overview of self-locking fasteners, including wedge lock washers, locknuts, retaining rings, and self-locking screws. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
 			{ label: '...' },
 			{ label: 'Securing and Anti-Loosening Elements' },
 		],
@@ -24,7 +24,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		imageWidth: 634,
 		imageHeight: 507,
 		buttons: [
-			{ label: 'Go to eShop', kind: 'link', variant: 'primary', href: '/global-en/eshop/c/01.300/' },
+			{ label: 'View Products', kind: 'link', variant: 'primary', href: '/products/01.300/' },
 			{ label: 'Contact Us', kind: 'dialog', variant: 'secondary' },
 		],
 	},
@@ -46,7 +46,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Securing and Anti-Loosening Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/ecosyn-fix/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/ecosyn-fix/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/03-an-ecosyn-fix-screw-lying-on-white-background.webp',
 				alt: 'An ecosyn fix screw lying on white background',
 				label: 'Locking Screws',
@@ -54,7 +54,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Screws with integrated spring washers. Reduce parts and speed up assembly times with this multi-purpose fastener.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/ecosyn-sef/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/ecosyn-sef/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/04-an-ecosyn-sef-silver-locking-nut-on-white-backgr.webp',
 				alt: 'An ecosyn SEF silver locking nut on white background',
 				label: 'Combi Hexagon Nuts',
@@ -62,7 +62,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Self-locking nut with an integrated conical spring washer and large contact surface. Ideal for electrically conductive contacts.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/fasteks-precisko/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/fasteks-precisko/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/05-three-different-sized-fasteks-precisko-high-prec.webp',
 				alt: 'Three different-sized FASTEKS Precisko high precision locknuts on white background',
 				label: 'High-Precision Locknuts',
@@ -70,7 +70,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Locknuts with maximum axial runout accuracy. Highest security against loosening for spindle, shaft, and axle applications.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/nord-lock/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/nord-lock/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/06-a-wedge-locking-fastener-on-a-white-background.webp',
 				alt: 'A wedge locking fastener on a white background.',
 				label: 'Wedge Lock Washers',
@@ -78,7 +78,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Maximum security for bolted joints by utilizing tension instead of friction. Resistant to vibrations and dynamic loads.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/schnorr/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/schnorr/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/07-a-schnorr-ribbed-lock-washer-on-a-white-backgrou.webp',
 				alt: 'A Schnorr ribbed lock washer on a white background.',
 				label: 'Ribbed Lock Washers',
@@ -86,7 +86,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Disc spring and bolt locking systems for applications under strong forces and loads. Safety washers.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/spiralock/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/spiralock/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/08-two-spiralock-fastening-technology-elements-a-he.webp',
 				alt: 'Two Spiralock fastening technology elements, a hexagon flange nut and a thread cutting tool on white background',
 				label: 'Self-Locking Thread Technology',
@@ -94,7 +94,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Unique self-locking technology. Hexagon flange nuts and tools such as taps, inserts, thread gauges, and thread milling cutters.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/vargal/',
+				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/vargal/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/09-a-silver-vargal-prevailing-torque-type-hex-lock-.webp',
 				alt: 'A silver Vargal prevailing torque type hex lock nut in all-metal on white background.',
 				label: 'All-Metal Lock Nuts',
@@ -103,19 +103,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/01.300/',
+				href: '/products/01.300/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/10-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Securing Elements',
 				description: 'Browse our large assortment of securing and anti-loosening fasteners and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/11-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -123,7 +123,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-securing-and-anti-loosening-elements/12-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

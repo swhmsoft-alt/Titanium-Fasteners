@@ -1,0 +1,67 @@
+---
+/**
+ * GradeHero — 牌号落地页首屏。
+ *
+ * 结构与 StandardsHero 一致（实体定义 → 硬指标条 → 主次 CTA），
+ * 差别只在 eyebrow 是牌号而不是标准体系，CTA 是报价 / 索取对照表。
+ */
+interface Props {
+	/** 牌号名，如 "Grade 2"。 */
+	grade: string;
+	/** 合金名，如 "Commercially pure titanium"。 */
+	alloy: string;
+	/** h1 主标题。 */
+	heading: string;
+	/** BLUF 摘要（35–50 词）。 */
+	lead: string;
+	/** 硬指标条。 */
+	metrics: { value: string; label: string }[];
+	/** 主 CTA 文案。 */
+	primaryCta: string;
+	/** 次 CTA 文案。 */
+	secondaryCta: string;
+	/** 次 CTA 带入询盘框的文本。 */
+	requestText: string;
+}
+
+const { grade, alloy, heading, lead, metrics, primaryCta, secondaryCta, requestText } = Astro.props;
+---
+
+<section class="bg-white pb-32 pt-32 lg:pb-48 lg:pt-48" aria-labelledby="grade-h1">
+	<div class="container-fluid">
+		<p class="mb-12 text-p-sm font-medium uppercase tracking-wide text-blue">
+			{grade} · {alloy}
+		</p>
+		<h1 id="grade-h1" class="text-h2 mb-16 max-w-[980px] text-blue-dark3 lg:text-h1">
+			{heading}
+		</h1>
+		<p class="mb-32 max-w-[900px] text-p text-gray lg:mb-40">{lead}</p>
+
+		<ul class="mb-32 grid grid-cols-2 gap-16 border-y border-gray-vlight py-24 lg:mb-40 lg:grid-cols-4 lg:gap-24">
+			{
+				metrics.map((metric) => (
+					<li class="flex flex-col gap-4">
+						<span class="text-h4 font-bold leading-none text-blue-dark3 lg:text-h3">{metric.value}</span>
+						<span class="text-p-sm leading-snug text-gray-medium">{metric.label}</span>
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="flex flex-wrap items-center gap-16">
+			<a
+				href="#rfq"
+				class="inline-flex items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+			>
+				{primaryCta}
+			</a>
+			<a
+				href="#rfq"
+				data-request={requestText}
+				class="inline-flex items-center justify-center rounded-pill border-2 border-blue-dark3 px-20 py-8 text-button leading-none text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+			>
+				{secondaryCta}
+			</a>
+		</div>
+	</div>
+</section>

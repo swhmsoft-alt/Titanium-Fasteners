@@ -1,54 +1,64 @@
 ---
 /**
- * HeroSection — homepage block 1.
+ * HeroSection — homepage screen 1.
  *
- * PHASE A (1:1 COPY). Class names and geometry are copied from the reference
- * site (`https://www.bossard.com/global-en/`), measured at 1440×1000:
+ * ROLE: the factory identity + the two conversion doors, in one band.
+ * No catalogue filler, no reference-site text.
  *
- *   article  y=195  h=792   pt-72 pb-40   .container-fluid-wide
- *   figure   1364×680       r=2.006      .rounded-2xl.relative.-z-1.h-full.w-full
- *   overlay  y=422  x=38    w=680        .container-fluid.absolute.bottom-56
- *   h2       64px / white   .text-h1-s … lg:text-h1-l
- *   sub      .hidden … wd:block → NOT rendered at 1440 (kept verbatim)
- *
- * The article's own top padding was reduced from pt-72 to pt-24/lg:pt-40
- * so the hero image sits ~40px under the fixed nav instead of ~176px
- * (reference value pt-72 + the 195px page lead-in). Deviation recorded
- * in qa/DEVIATIONS.md.
- *
- * See docs/reference/homepage-outline.txt (lines 5–19).
+ * GEOMETRY
+ * --------
+ * Two columns on desktop (text 7 / figures 5), stacked below 1024px.
+ * Vertical rhythm: py-24 / lg:py-32 — deliberately tight, no empty strips.
  */
-import Figure from '@components/ui/Figure.astro';
+import Button from '@components/ui/Button.astro';
 import { HERO } from '@data/home';
 ---
 
-<article class="container-fluid-wide relative pb-32 pt-24 lg:pb-40 lg:pt-40">
-	<a href={HERO.href} class="block">
-		<div
-			class="h-386 overflow-hidden rounded-2xl bg-[linear-gradient(90deg,rgba(0,0,0,0.3),rgba(0,0,0,0))] md:h-544 wd:h-680"
-		>
-			<Figure
-				src={HERO.image.src}
-				alt={HERO.image.alt}
-				ratio={2.006}
-				priority
-				fill
-				class="rounded-2xl relative -z-1 h-full w-full"
-			/>
+<section class="bg-[#0079C2] text-white">
+	<div class="container-fluid-wide grid grid-cols-1 gap-32 py-32 lg:grid-cols-12 lg:items-center lg:gap-48 lg:py-40">
+		<div class="lg:col-span-7">
+			<p class="mb-16 text-xs tracking-wider text-white/80 sm:text-sm">{HERO.eyebrow}</p>
+			<h1 class="mb-24 text-4xl leading-[1.15] text-white xl:text-5xl">
+				{HERO.heading.map((line) => <span class="block">{line}</span>)}
+			</h1>
+			<p class="text-p max-w-2xl leading-relaxed text-blue-50/90">{HERO.lead}</p>
+
+			<div class="mt-32 flex flex-wrap gap-16">
+				<Button
+					variant="primary"
+					href={HERO.primaryCta.href}
+					class="bg-white! text-[#0A192F]! hover:bg-white/90! hover:text-[#0A192F]! shadow-[0_2px_12px_rgba(10,25,47,0.18)] hover:shadow-[0_6px_20px_rgba(10,25,47,0.28)]"
+				>
+					{HERO.primaryCta.label}
+				</Button>
+				<Button variant="outline" href={HERO.secondaryCta.href} class="border-white! text-white! hover:border-blue-dark! hover:bg-white! hover:text-blue-dark!">
+					{HERO.secondaryCta.label}
+				</Button>
+			</div>
+
+			<ul class="mt-48 grid grid-cols-2 gap-16 border-t border-white/15 pt-24 lg:grid-cols-4 lg:gap-24">
+				{
+					HERO.facts.map((fact) => (
+						<li>
+							<p class="mb-4 text-xs font-medium tracking-wider text-white/70 uppercase">{fact.label}</p>
+							<p class="text-p-sm font-medium text-white">{fact.value}</p>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 
-		<div
-			class="container-fluid absolute bottom-56 px-16 md:max-w-472 lg:bottom-72 lg:max-w-580 wd:max-w-680 ul:px-72"
-		>
-			<h2 class="text-h1-s font-bold text-white max-sm:hyphens-auto lg:text-h1-l">
-				{HERO.title}
-			</h2>
-			<p class="hidden pt-32 text-lead-l text-white wd:block">{HERO.sub}</p>
-			<div class="pt-24 lg:pt-32">
-				<svg class="lg:w-32 mb-0 h-24 w-24 pb-0 lg:h-32 stroke-white">
-					<use href="/images/sprite.svg#arrow-right-bold"></use>
-				</svg>
-			</div>
+		<div class="lg:col-span-5">
+			<figure class="overflow-hidden rounded-card border border-white/20">
+				<img
+					src={HERO.image.src}
+					alt={HERO.image.alt}
+					class="aspect-4/3 h-full w-full object-cover"
+					loading="eager"
+					decoding="async"
+					fetchpriority="high"
+				/>
+			</figure>
 		</div>
-	</a>
-</article>
+	</div>
+</section>

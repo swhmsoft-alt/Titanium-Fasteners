@@ -1,5 +1,5 @@
 /**
- * Innovations — 1:1 data for `/global-en/product-solutions/innovations/`.
+ * Innovations — 1:1 data for `/product-solutions/innovations/`.
  *
  * MEASURED on the reference (1440×1000, 2026-11-10):
  *   hero      figure x=745 y=267 643×514 (5:4) | contact card x=920 w=362
@@ -52,9 +52,9 @@ export const INNOVATIONS = {
 		breadcrumb: [
 			{
 				label: 'Bossard Group - Fasteners, Engineering, Logistics',
-				href: '/global-en/',
+				href: '/',
 			},
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Innovations' },
 		] as BreadcrumbItem[],
 		eyebrow: 'Product Solutions',
@@ -129,7 +129,7 @@ export const INNOVATIONS = {
 		fields: ['First Name', 'Last Name', 'E-Mail', 'Company'],
 		messageLabel: 'Your Message',
 		consent: 'By submitting this form I consent to the',
-		consentHref: '/global-en/privacy-policy/',
+		consentHref: '/legal/privacy-policy/',
 		submit: 'Submit',
 	} as ContactForm,
 

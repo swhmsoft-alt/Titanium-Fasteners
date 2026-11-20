@@ -1,0 +1,15 @@
+---
+/**
+ * /industries/rail-rolling-stock/ — Rail & Rolling Stock 钛紧固件应用页。
+ *
+ * 与 /industries/industrial-robotics/ 同构：同一套应用页外壳
+ * (@components/sections/industries-application/ApplicationPage)，只换数据。
+ *
+ * 两条路由**并存**、互不覆盖：`/industries/railway/` 是继承下来的 CMS 行业页
+ * （参考站抓取产物），本页是独立撰写的 BOZE 应用页，走静态路由。
+ */
+import ApplicationPage from '@components/sections/industries-application/ApplicationPage.astro';
+import { RAIL_ROLLING_STOCK } from '@data/industries-rail-rolling-stock';
+---
+
+<ApplicationPage page={RAIL_ROLLING_STOCK} />

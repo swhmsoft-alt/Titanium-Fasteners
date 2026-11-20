@@ -1,0 +1,96 @@
+---
+/**
+ * SpecFinderSection — homepage screen 2.
+ *
+ * ROLE: the digital standard-selection entrance. Every tile is a pre-filtered
+ * deep link into the real catalogue, built at compile time from
+ * @data/products — no client-side JS, no invented routes.
+ *
+ * GEOMETRY
+ * --------
+ * Three label groups side by side on desktop; each group is a compact chip
+ * rail so a distributor can reach a DIN number in one click.
+ */
+import { SPEC_FINDER } from '@data/home';
+---
+
+<section class="bg-white py-24 lg:py-32" aria-labelledby="spec-finder-heading">
+	<div class="container-fluid">
+		<h2 id="spec-finder-heading" class="text-h3 mb-12 text-blue-dark3">{SPEC_FINDER.heading}</h2>
+		<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">{SPEC_FINDER.lead}</p>
+
+		<div class="grid grid-cols-1 gap-24 md:grid-cols-3 lg:gap-32">
+			<!-- Standards -->
+			<div>
+				<h3 class="text-label mb-12 text-gray-medium">DIN &amp; ISO Standards</h3>
+				<ul class="flex flex-wrap gap-8">
+					{
+						SPEC_FINDER.standards.map((item) => (
+							<li>
+								<a
+									href={item.href}
+									title={item.note}
+									class="inline-flex flex-col rounded-pill border border-blue-70 px-16 py-8 transition-colors duration-300 hover:border-blue hover:bg-blue-light"
+								>
+									<span class="text-button text-blue-dark3">{item.label}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<!-- Grades -->
+			<div>
+				<h3 class="text-label mb-12 text-gray-medium">Titanium Grades</h3>
+				<ul class="flex flex-col gap-8">
+					{
+						SPEC_FINDER.materials.map((item) => (
+							<li>
+								<a
+									href={item.href}
+									class="flex items-baseline justify-between gap-12 rounded-pill border border-blue-70 px-16 py-8 transition-colors duration-300 hover:border-blue hover:bg-blue-light"
+								>
+									<span class="text-button text-blue-dark3">{item.label}</span>
+									<span class="text-p-sm text-gray-medium">{item.note}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<!-- Product types -->
+			<div>
+				<h3 class="text-label mb-12 text-gray-medium">Product Types</h3>
+				<ul class="flex flex-col gap-8">
+					{
+						SPEC_FINDER.categories.map((item) => (
+							<li>
+								<a
+									href={item.href}
+									class="flex items-baseline justify-between gap-12 rounded-pill border border-blue-70 px-16 py-8 transition-colors duration-300 hover:border-blue hover:bg-blue-light"
+								>
+									<span class="text-button text-blue-dark3">{item.label}</span>
+									<span class="text-p-sm text-gray-medium">{item.note}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+
+		<div class="mt-24 flex flex-wrap items-center gap-16 lg:mt-32">
+			<a
+				href={SPEC_FINDER.crossReference.href}
+				class="inline-flex items-center gap-8 text-button text-blue hover:underline"
+			>
+				{SPEC_FINDER.crossReference.label}
+				<svg class="h-16 w-16 stroke-blue" aria-hidden="true">
+					<use href="/images/sprite.svg#arrow-right"></use>
+				</svg>
+			</a>
+		</div>
+	</div>
+</section>

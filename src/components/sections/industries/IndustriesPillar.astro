@@ -1,0 +1,97 @@
+---
+/**
+ * IndustriesPillar — /industries/ 的交替图文支柱。
+ *
+ * 版式契约（防止出现白洞与拉伸图）
+ *   · 每个支柱只放 ONE 张图，固定 4:3 画框（Figure ratio=1.334，
+ *     内部 object-cover），媒体列高度由画框决定，不随文字高度伸缩。
+ *   · 桌面端两列 items-center 垂直居中，图片与文字视觉齐平。
+ *   · 文字列是「一段导语 + 三条粗体引导要点 + 一组按钮」，不堆第二张图。
+ *   · 相邻支柱左右互换（reverse），形成交替节奏。
+ */
+import Figure from '@components/ui/Figure.astro';
+import Button from '@components/ui/Button.astro';
+import type { HubPillar } from '@data/industries';
+
+interface Props {
+	pillar: HubPillar;
+	/** Swap the media and text columns (alternating rhythm). */
+	reverse?: boolean;
+}
+
+const { pillar, reverse = false } = Astro.props;
+---
+
+<article class="container-fluid-wide py-24 lg:py-32" id={pillar.id}>
+	<div class="grid grid-cols-1 items-center gap-32 lg:grid-cols-2 lg:gap-48">
+		<div class:list={['ih-media', reverse ? 'lg:order-2' : '']}>
+			<Figure
+				src={pillar.image.src}
+				alt={pillar.image.alt}
+				ratio={1.334}
+				width={pillar.image.width}
+				height={pillar.image.height}
+				class="rounded-2xl"
+			/>
+		</div>
+
+		<div class:list={['ih-text', reverse ? 'lg:order-1' : '']}>
+			<p class="text-label mb-8 text-gray-medium">{pillar.eyebrow}</p>
+			<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">{pillar.heading}</h2>
+			<p class="text-lead mb-24 text-gray lg:mb-32">{pillar.lead}</p>
+
+			<ul class="mb-24 flex flex-col gap-10 lg:mb-32">
+				{
+					pillar.points.map((point) => (
+						<li class="ih-point">
+							<span class="ih-point-mark" aria-hidden="true" />
+							<span class="text-p-sm text-gray">
+								<strong class="font-bold text-blue-dark3">{point.label}</strong>
+								<span class="ml-8">{point.text}</span>
+							</span>
+						</li>
+					))
+				}
+			</ul>
+
+			<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+				<Button href={pillar.cta.href}>{pillar.cta.label}</Button>
+				{
+					pillar.secondaryCta && (
+						<a href={pillar.secondaryCta.href} class="text-button text-blue hover:underline">
+							{pillar.secondaryCta.label}
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</article>
+
+<style>
+	/* 媒体列：画框高度固定（4:3），图片 object-cover，永不拉伸。 */
+	.ih-media {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.ih-media :global(figure) {
+		width: 100%;
+	}
+
+	/* 要点：小方块引导标记 + 粗体技术词。 */
+	.ih-point {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+	}
+
+	.ih-point-mark {
+		flex: none;
+		width: 10px;
+		height: 10px;
+		margin-top: 8px;
+		background-color: var(--color-blue);
+	}
+</style>

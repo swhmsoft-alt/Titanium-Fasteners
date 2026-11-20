@@ -37,7 +37,7 @@ import { NAVIGATION } from '@config/site';
 	<Container>
 	{
 		NAVIGATION.map((item, index) => (
-			<div data-mega-panel={item.name} hidden={index !== 0}>
+			<div id={`mega-panel-${index}`} data-mega-panel={item.name} hidden={index !== 0}>
 				<div class="flex flex-col-reverse py-56">
 					{item.lead && (
 						<a

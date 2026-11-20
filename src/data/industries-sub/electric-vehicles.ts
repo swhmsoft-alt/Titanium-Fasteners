@@ -15,8 +15,8 @@ export const BLOCKS: IndustrySubBlock[] = [
 	{
 		kind: "hero",
 		breadcrumb: [
-			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/global-en/" },
-			{ label: "Industries", href: "/global-en/industries/" },
+			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/" },
+			{ label: "Industries", href: "/industries/" },
 			{ label: "Electric Vehicles" },
 		],
 		eyebrow: "Industries",
@@ -47,11 +47,11 @@ export const BLOCKS: IndustrySubBlock[] = [
 		kind: "iconCards",
 		heading: "Fasteners for Different EV Car Parts",
 		items: [
-			{ href: "/global-en/industries/electric-vehicles/body-in-white/", image: "/images/industries-electric-vehicles/05-electric-vehicles-body-in-white-visual.webp", alt: "Electric Vehicles Body in White  Visual", title: "Body in White", body: "Fastening solutions for electric vehicle body-in-white (BiW) architectures require high-strength, corrosion-resistant materials that meet strict safety standards." },
-			{ href: "/global-en/industries/electric-vehicles/interior/", image: "/images/industries-electric-vehicles/06-electric-vehicles-interior-visual.webp", alt: "Electric Vehicles Interior  Visual", title: "Interior", body: "In electric vehicles, comfort and safety are paramount, with seats, dashboards, and infotainment systems needing to endure daily stresses." },
-			{ href: "/global-en/industries/electric-vehicles/exterior/", image: "/images/industries-electric-vehicles/07-electric-vehicles-exterior-visual.webp", alt: "Electric Vehicles Exterior Visual", title: "Exterior", body: "Our fastening solutions for electric vehicle exteriors prioritize quick installation and ease of maintenance, offering key benefits to customers." },
-			{ href: "/global-en/industries/electric-vehicles/chassis/", image: "/images/industries-electric-vehicles/08-electric-vehicles-chassis-visual.webp", alt: "Electric Vehicles Chassis Visual", title: "Chassis", body: "Chassis design is vital for electric vehicles, impacting reliability, maintainability, and driving comfort." },
-			{ href: "/global-en/industries/electric-vehicles/battery/", image: "/images/industries-electric-vehicles/09-a-typical-electric-vehicle-with-battery.webp", alt: "A typical electric vehicle with battery", title: "Battery", body: "EV batteries are crucial to an EV’s power distribution, making reliable operation essential to reduce range anxiety." },
+			{ href: "/industries/electric-vehicles/body-in-white/", image: "/images/industries-electric-vehicles/05-electric-vehicles-body-in-white-visual.webp", alt: "Electric Vehicles Body in White  Visual", title: "Body in White", body: "Fastening solutions for electric vehicle body-in-white (BiW) architectures require high-strength, corrosion-resistant materials that meet strict safety standards." },
+			{ href: "/industries/electric-vehicles/interior/", image: "/images/industries-electric-vehicles/06-electric-vehicles-interior-visual.webp", alt: "Electric Vehicles Interior  Visual", title: "Interior", body: "In electric vehicles, comfort and safety are paramount, with seats, dashboards, and infotainment systems needing to endure daily stresses." },
+			{ href: "/industries/electric-vehicles/exterior/", image: "/images/industries-electric-vehicles/07-electric-vehicles-exterior-visual.webp", alt: "Electric Vehicles Exterior Visual", title: "Exterior", body: "Our fastening solutions for electric vehicle exteriors prioritize quick installation and ease of maintenance, offering key benefits to customers." },
+			{ href: "/industries/electric-vehicles/chassis/", image: "/images/industries-electric-vehicles/08-electric-vehicles-chassis-visual.webp", alt: "Electric Vehicles Chassis Visual", title: "Chassis", body: "Chassis design is vital for electric vehicles, impacting reliability, maintainability, and driving comfort." },
+			{ href: "/industries/electric-vehicles/battery/", image: "/images/industries-electric-vehicles/09-a-typical-electric-vehicle-with-battery.webp", alt: "A typical electric vehicle with battery", title: "Battery", body: "EV batteries are crucial to an EV’s power distribution, making reliable operation essential to reduce range anxiety." },
 		],
 	},
 	{
@@ -79,7 +79,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 		eyebrow: "Customer Success",
 		image: { src: "/images/industries-electric-vehicles/17-hybrid-electric-truck-charging-at-station-3d-ren.webp", alt: "Hybrid electric truck charging at station. 3D rendering.", width: 960, height: 720 },
 		description: "Bossard worked with an OEM and its tier supplier team to meet tight electrical insulation and packaging tolerances while reducing tooling, molding, and assembly costs.",
-		cta: { label: "Read More", href: "/global-en/knowledge-hub/inspiration/success-stories/ev-trucks/" },
+		cta: { label: "Read More", href: "/knowledge-hub/inspiration/success-stories/ev-trucks/" },
 	},
 	{
 		kind: "raw",

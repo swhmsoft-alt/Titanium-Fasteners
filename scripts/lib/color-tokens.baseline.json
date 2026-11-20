@@ -1,0 +1,24 @@
+{
+	"_comment": "Canonical @theme colour palette for src/styles/global.css. Managed by scripts/color-tokens.mjs. Values are MEASURED on the reference site (2026-11-20).",
+	"tokens": [
+		{ "name": "--color-blue", "value": "#007ac3", "note": "accent / link / secondary button text" },
+		{ "name": "--color-blue-primary", "value": "#0070ba", "note": "primary button fill" },
+		{ "name": "--color-blue-dark", "value": "#001827", "note": "near-black navy, card h3" },
+		{ "name": "--color-blue-dark2", "value": "#00314e", "note": "article h2" },
+		{ "name": "--color-blue-dark3", "value": "#004975", "note": "h1 / section h2 / button border / icons" },
+		{ "name": "--color-blue-light", "value": "#cce4f3", "note": "soft blue panel / card fill" },
+		{ "name": "--color-blue-70", "value": "#4da2d5", "note": "the reference compiles border-blue-70 to rgb(77 162 213); the previous #a9cfe8 was an ESTIMATE (class only observable below the 840px breakpoint)", "tag": "MEASURED" },
+		{ "name": "--color-blue-soft", "value": "#99cae7", "note": "search field border" },
+		{ "name": "--color-blue-hero", "value": "#47a8e0", "note": "hero banner base colour (image sampling)" },
+		{ "name": "--color-blue-hero-deep", "value": "#32769d", "note": "hero left edge after the 30% black scrim" },
+		{ "name": "--color-gray-vlight", "value": "#f3f3f3", "note": "light section background" },
+		{ "name": "--color-gray-whiteish", "value": "#f0f0f0", "note": "" },
+		{ "name": "--color-gray-light", "value": "#bfbfbf", "note": "" },
+		{ "name": "--color-gray-soft", "value": "#999999", "note": "hairline borders" },
+		{ "name": "--color-gray-medium", "value": "#666666", "note": "meta / eyebrow / caption copy" },
+		{ "name": "--color-gray", "value": "#333333", "note": "body copy" },
+		{ "name": "--color-gray-cool", "value": "#21272a", "note": "" },
+		{ "name": "--color-accent-rose", "value": "#aa465c", "note": "" },
+		{ "name": "--color-orange-dark", "value": "#f59c00", "note": "reference .fill-orange-dark / .text-orange-dark" }
+	]
+}

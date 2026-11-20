@@ -1,0 +1,355 @@
+---
+/**
+ * StandardsRfqForm — BOM 上传 + 询盘表单（页面转化终点）。
+ *
+ * WHY VANILLA JS, NOT AN ISLAND
+ * -----------------------------
+ * 本表单只需要三件事：读取文件、提交 JSON、切换回执态。
+ * 原生 DOM 操作即可完成，**不引入 hydration 成本**，且无 JS 时表单仍以
+ * 原生 POST 提交（不会静默丢数据）。
+ *
+ * 标准号带入
+ * ---------
+ * 表格里的 Quick Quote 按钮点击后，把标准号写进「Standard No. / Project Specs」
+ * 并滚动到本表单。跨组件通信走 CustomEvent（'boze:quote-standard'），
+ * 避免两个组件互相 import 造成耦合。
+ */
+import { INQUIRY } from '@config/site';
+
+interface Props {
+	/** 业务来源标识（后端用于回溯来源）。 */
+	source: string;
+	/** 可选：标准号输入框示例。缺省则用 DIN 版示例。 */
+	specPlaceholder?: string;
+	/** 可选：规格输入框标签。缺省为标准版文案。 */
+	specLabel?: string;
+	/** 可选：输入框下方提示语。 */
+	specHint?: string;
+	/** 可选：区块标题。 */
+	heading?: string;
+	/** 可选：区块导语。 */
+	lead?: string;
+	/** 可选：询盘主题名（写入 payload 与邮件标题）。 */
+	subject?: string;
+}
+
+const {
+	source,
+	specPlaceholder,
+	specLabel = 'Standard No. / Project Specs',
+	specHint = 'Use Quick Quote in the table above to carry a standard number straight into this field.',
+	heading = 'Send your BOM or drawing',
+	lead = 'Send the standard number, the quantity and the file. Our engineering desk quotes from your BOM directly, and confirms the grade, the certificate type and the delivery date in writing.',
+	subject = 'Standards BOM inquiry',
+} = Astro.props;
+
+const FIELD =
+	'w-full border border-gray-light bg-white px-16 py-13 text-p-sm text-gray placeholder:text-gray-medium focus:border-blue focus:outline-none';
+---
+
+<section id="rfq" class="bg-blue-light/40 pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="rfq-heading">
+	<div class="container-fluid">
+		<div class="max-w-[880px]">
+			<h2 id="rfq-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+				{heading}
+			</h2>
+			<p class="mb-24 text-p text-gray">{lead}</p>
+
+			<form
+				class="flex flex-col gap-20 rounded-card border border-blue-70 bg-white p-24 lg:p-40"
+				data-rfq-form
+				novalidate
+				data-endpoint={INQUIRY.endpoint}
+				data-fallback-email={INQUIRY.fallbackEmail}
+				data-trap-field={INQUIRY.trapField}
+				data-source={source}
+			data-subject={subject}
+
+			>
+				<div class="grid grid-cols-1 gap-20 md:grid-cols-2">
+					<div>
+						<label for="rfq-email" class="mb-8 block text-p-sm text-blue-dark3">
+							Work Email <span class="text-accent-rose">*</span>
+						</label>
+						<input
+							id="rfq-email"
+							name="email"
+							type="email"
+							required
+							autocomplete="email"
+							placeholder="name@company.com"
+							class={FIELD}
+						/>
+					</div>
+					<div>
+						<label for="rfq-company" class="mb-8 block text-p-sm text-blue-dark3">
+							Company Name <span class="text-accent-rose">*</span>
+						</label>
+						<input
+							id="rfq-company"
+							name="company"
+							type="text"
+							required
+							autocomplete="organization"
+							placeholder="Company legal name"
+							class={FIELD}
+						/>
+					</div>
+				</div>
+
+				<div>
+					<label for="rfq-specs" class="mb-8 block text-p-sm text-blue-dark3">
+						{specLabel}
+					</label>
+					<input
+						id="rfq-specs"
+						name="specs"
+						type="text"
+						placeholder={specPlaceholder ?? 'e.g. DIN 912, M6 x 20, Gr5, 2000 pcs'}
+						class={FIELD}
+					/>
+					<p class="mt-8 text-p-sm text-gray-medium">{specHint}</p>
+				</div>
+
+				<div>
+					<label for="rfq-file" class="mb-8 block text-p-sm text-blue-dark3">
+						Upload BOM / Drawing
+					</label>
+					<div
+						data-drop-zone
+						class="flex flex-col items-center justify-center rounded-card border-2 border-dashed border-gray-light bg-white px-24 py-32 text-center transition-colors duration-200 hover:border-blue"
+					>
+						<p class="mb-8 text-p-sm text-gray">
+							Drag your file here, or
+							<label for="rfq-file" class="cursor-pointer text-blue underline underline-offset-4">
+								browse from your computer
+							</label>
+						</p>
+						<p class="text-p-sm text-gray-medium">.xlsx, .csv, .pdf, .step, .dwg</p>
+						<input
+							id="rfq-file"
+							name="attachment"
+							type="file"
+							accept=".xlsx,.csv,.pdf,.step,.dwg"
+							class="sr-only"
+							data-file-input
+						/>
+						<p class="mt-12 min-h-[24px] text-p-sm font-medium text-blue-dark3" data-file-name></p>
+					</div>
+				</div>
+
+				{/* 蜜罐 —— 视觉隐藏但对机器人可见 */}
+				<div aria-hidden="true" class="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden">
+					<label for="rfq-trap">Website</label>
+					<input id="rfq-trap" name={INQUIRY.trapField} type="text" tabindex="-1" autocomplete="off" />
+				</div>
+
+				<p role="alert" class="hidden text-p-sm text-accent-rose" data-rfq-error></p>
+
+				<div class="flex flex-col gap-12">
+					<button
+						type="submit"
+						class="inline-flex items-center justify-center self-start rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+					>
+						Send inquiry
+					</button>
+					<p class="text-p-sm text-gray-medium">
+						NDA Protected • Direct Factory Quote within 24 Hours • EN 10204 3.1 Certified
+					</p>
+				</div>
+			</form>
+
+			<div class="hidden rounded-card border border-blue-70 bg-white p-40" data-rfq-receipt>
+				<h3 class="text-h4 mb-12 font-normal text-blue-dark3">Inquiry received</h3>
+				<p class="mb-24 text-p text-gray">
+					Thank you. Our engineering team will reply to your work email within one business day
+					with a quotation and the certificate scope for your batch.
+				</p>
+				<p class="mb-24 text-p-sm text-gray-medium" data-rfq-reference></p>
+				<a
+					href={INQUIRY.fallbackEmail.startsWith('mailto:')
+						? INQUIRY.fallbackEmail
+						: `mailto:${INQUIRY.fallbackEmail}`}
+					class="text-button text-blue underline underline-offset-4"
+					data-rfq-mailto
+				>
+					Send the same brief by email
+				</a>
+				<button
+					type="button"
+					class="mt-24 block text-p-sm text-blue-dark3 underline underline-offset-4"
+					data-rfq-reset
+				>
+					Submit another inquiry
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const form = document.querySelector('[data-rfq-form]');
+	const receipt = document.querySelector('[data-rfq-receipt]');
+	const errorEl = document.querySelector('[data-rfq-error]');
+	const fileInput = document.querySelector<HTMLInputElement>('[data-file-input]');
+	const fileNameEl = document.querySelector('[data-file-name]');
+	const dropZone = document.querySelector('[data-drop-zone]');
+	const specsInput = document.querySelector<HTMLInputElement>('#rfq-specs');
+
+	/* ── Quick Quote 带入标准号（跨组件通信） ───────────────────────── */
+	window.addEventListener('boze:quote-standard', (event) => {
+		const standard = (event as CustomEvent<string>).detail;
+		if (!standard || !specsInput) return;
+		const existing = specsInput.value.trim();
+		specsInput.value = existing.includes(standard) ? existing : `${standard}${existing ? `, ${existing}` : ''}`;
+		specsInput.focus();
+	});
+
+	/* ── 询盘表单请求（次级 CTA：索取对照表 PDF） ─────────────────── */
+	document.querySelectorAll('[data-request]').forEach((trigger) => {
+		trigger.addEventListener('click', () => {
+			const request = trigger.getAttribute('data-request');
+			if (!request || !specsInput) return;
+			if (!specsInput.value.trim()) specsInput.value = request;
+			document.getElementById('rfq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		});
+	});
+
+	/* ── 文件选择与拖拽 ────────────────────────────────────────────── */
+	const showFileName = (file?: File) => {
+		if (!fileNameEl) return;
+		fileNameEl.textContent = file ? `${file.name} · ${(file.size / 1024).toFixed(0)} KB` : '';
+	};
+
+	fileInput?.addEventListener('change', () => showFileName(fileInput.files?.[0]));
+
+	dropZone?.addEventListener('dragover', (event) => {
+		event.preventDefault();
+		dropZone.classList.add('border-blue', 'bg-blue-light/40');
+	});
+	dropZone?.addEventListener('dragleave', () => {
+		dropZone.classList.remove('border-blue', 'bg-blue-light/40');
+	});
+	dropZone?.addEventListener('drop', (event) => {
+		event.preventDefault();
+		dropZone.classList.remove('border-blue', 'bg-blue-light/40');
+		const file = (event as DragEvent).dataTransfer?.files?.[0];
+		if (file && fileInput) {
+			const transfer = new DataTransfer();
+			transfer.items.add(file);
+			fileInput.files = transfer.files;
+			showFileName(file);
+		}
+	});
+
+	/* ── 提交 ─────────────────────────────────────────────────────── */
+	const makeReference = () =>
+		`REF-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`;
+
+	form?.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		errorEl?.classList.add('hidden');
+
+		const data = new FormData(form as HTMLFormElement);
+		const email = String(data.get('email') ?? '').trim();
+		const company = String(data.get('company') ?? '').trim();
+		const specs = String(data.get('specs') ?? '').trim();
+		const file = fileInput?.files?.[0];
+		const trapField = (form as HTMLFormElement).dataset.trapField ?? '';
+		const trap = trapField ? String(data.get(trapField) ?? '').trim() : '';
+
+		/* 机器人填了蜜罐 → 静默成功，不暴露风控规则。 */
+		if (trapField && trap !== '') {
+			(form as HTMLFormElement).reset();
+			return;
+		}
+
+		if (!email || !company) {
+			if (errorEl) {
+				errorEl.textContent = 'Please provide your work email and company name.';
+				errorEl.classList.remove('hidden');
+			}
+			return;
+		}
+
+		const endpoint = (form as HTMLFormElement).dataset.endpoint ?? '';
+		const fallbackEmail = (form as HTMLFormElement).dataset.fallbackEmail ?? '';
+		const source = (form as HTMLFormElement).dataset.source ?? 'standards-hub';
+		const subject = (form as HTMLFormElement).dataset.subject ?? 'Standards BOM inquiry';
+		const reference = makeReference();
+		const requirement = specs
+			? `${specs}${file ? ` (attachment: ${file.name})` : ''}`
+			: file
+				? `Attachment: ${file.name}`
+				: '';
+
+		const payload = {
+			source,
+			intent: 'bom-quote',
+			intentLabel: 'BOM / drawing quote request',
+			product: {
+				familyId: '',
+				sku: '',
+				name: subject,
+				standard: specs,
+				material: '',
+				sizeRange: '',
+				thread: '',
+				length: '',
+				pageUrl: window.location.href,
+			},
+			contact: { name: '', email, company, country: '', phone: '' },
+			requirement,
+			quantity: '',
+			reference,
+			pageUrl: window.location.href,
+		};
+
+		const showReceipt = (delivery: 'posted' | 'failed' | 'offline') => {
+			(form as HTMLFormElement).classList.add('hidden');
+			receipt?.classList.remove('hidden');
+			receipt?.classList.add('flex');
+			const referenceEl = document.querySelector('[data-rfq-reference]');
+			if (referenceEl) referenceEl.textContent = `Your reference: ${reference}`;
+			const mailtoEl = document.querySelector('[data-rfq-mailto]') as HTMLAnchorElement | null;
+			if (mailtoEl) {
+				mailtoEl.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(
+					`${subject} ${reference}`,
+				)}&body=${encodeURIComponent(
+					`Company: ${company}\nEmail: ${email}\nRequirement: ${requirement}`,
+				)}`;
+			}
+			const hint = document.querySelector('[data-rfq-delivery-hint]');
+			if (hint) {
+				hint.textContent =
+					delivery === 'posted'
+						? ''
+						: 'We could not confirm server delivery. Use the email link below to send the same brief directly.';
+			}
+		};
+
+		if (!endpoint) {
+			showReceipt('offline');
+			return;
+		}
+
+		try {
+			const res = await fetch(endpoint, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+			showReceipt(res.ok ? 'posted' : 'failed');
+		} catch {
+			showReceipt('failed');
+		}
+	});
+
+	document.querySelector('[data-rfq-reset]')?.addEventListener('click', () => {
+		receipt?.classList.add('hidden');
+		receipt?.classList.remove('flex');
+		form?.classList.remove('hidden');
+		(form as HTMLFormElement)?.reset();
+		if (fileNameEl) fileNameEl.textContent = '';
+	});
+</script>

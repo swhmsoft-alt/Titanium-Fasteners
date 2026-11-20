@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/sealing-technology.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Sealing Technology Solutions | Bossard Group', description: 'Discover our world-leading solutions in sealing technology and flow control, including metal-to-metal sealing plugs, check valves, and countersinks.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Sealing Technology' },
 		],
 		eyebrow: 'Product Categories',
@@ -43,7 +43,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Sealing Technology Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/sealing-technology/koenig-check-valve/',
+				href: '/product-solutions/product-categories-and-brands/sealing-technology/koenig-check-valve/',
 				image: '/images/category-detail-sealing-technology/03-two-koenig-check-valves-expansion-restrictors-on.webp',
 				alt: 'Two Koenig Check Valves expansion restrictors on a white background.',
 				label: 'Check Valves',
@@ -51,7 +51,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'A reliable solution to control flow directions in fluid systems. Leakage-free metal-to-metal sealing, even in high vibration environments.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/sealing-technology/koenig-expander/',
+				href: '/product-solutions/product-categories-and-brands/sealing-technology/koenig-expander/',
 				image: '/images/category-detail-sealing-technology/04-two-sfc-k-nig-sealing-plugs-on-white-background.webp',
 				alt: 'Two SFC König Sealing Plugs on white background',
 				label: 'Sealing Plugs',
@@ -60,19 +60,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/03.400/',
+				href: '/products/03.400/',
 				image: '/images/category-detail-sealing-technology/06-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Sealing Technology',
 				description: 'Browse our large assortment of sealing technology products and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-sealing-technology/07-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -80,7 +80,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-sealing-technology/08-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

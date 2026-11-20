@@ -1,0 +1,136 @@
+---
+/**
+ * /knowledge-hub/materials/titanium-grade-supply-matrix/
+ *
+ * 牌号供应矩阵 —— 数值全部来自 @data/products 的 MATERIALS（materials.csv 的
+ * 生成产物），页面不读 CSV。Grade 7 不在册：**不造数值**，只写「按单确认」。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import KnowledgeHubHero from '@components/sections/knowledge-hub/KnowledgeHubHero.astro';
+import KnowledgeHubFacts from '@components/sections/knowledge-hub/KnowledgeHubFacts.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import { MATERIALS } from '@data/products';
+import { GRADE_SUPPLY_MATRIX_PAGE, crossReferenceHref } from '@data/knowledge-hub';
+
+const currentPathname = Astro.url.pathname;
+
+/** 常规供应牌号 —— 顺序即展示顺序。 */
+const MATRIX_ORDER = ['ti-gr2', 'ti-gr5', 'ti-gr9', 'ti-gr23'];
+
+const rows = MATRIX_ORDER.map((id) => MATERIALS.find((m) => m.id === id)).filter(
+	(m): m is NonNullable<typeof m> => Boolean(m),
+).map((m) => ({
+	id: m.id,
+	name: m.name,
+	density: m.density_g_cm3,
+	proof: m.proof_strength_mpa,
+	tensile: m.tensile_mpa,
+	maxTemp: m.max_temp_c,
+	corrosion: `${m.corrosion_1_5} / 5`,
+	notes: m.notes ?? '',
+	stock: m.id === 'ti-gr2' || m.id === 'ti-gr5' ? 'Stock programme' : 'Made to order',
+}));
+---
+
+<BaseLayout
+	title={GRADE_SUPPLY_MATRIX_PAGE.seo.title}
+	description={GRADE_SUPPLY_MATRIX_PAGE.seo.description}
+	canonicalPath={GRADE_SUPPLY_MATRIX_PAGE.path}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<KnowledgeHubHero {...GRADE_SUPPLY_MATRIX_PAGE.hero} />
+
+		{
+			GRADE_SUPPLY_MATRIX_PAGE.body.map((paragraph) => (
+				<div class="container-fluid">
+					<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{paragraph}</p>
+				</div>
+			))
+		}
+
+		<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+			<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">Supply matrix</h2>
+
+			<div class="overflow-x-auto">
+				<table class="w-full min-w-[820px] border-collapse text-left">
+					<caption class="sr-only">
+						Titanium grade supply matrix — stock status, density, mechanical properties
+					</caption>
+					<thead>
+						<tr class="border-b border-gray-vlight">
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Grade</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Supply</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Density (g/cm³)</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Proof (MPa)</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Tensile (MPa)</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Max temp (°C)</th>
+							<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray">Corrosion (1–5)</th>
+							<th scope="col" class="py-12 text-p-sm font-medium text-gray">Standards</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							rows.map((row) => (
+								<tr class="border-b border-gray-vlight">
+									<th scope="row" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+										{row.name}
+									</th>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.stock}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.density}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.proof}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.tensile}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.maxTemp}</td>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.corrosion}</td>
+									<td class="py-12 text-p-sm text-gray">{row.notes}</td>
+								</tr>
+							))
+						}
+						<tr class="border-b border-gray-vlight">
+							<th scope="row" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+								Titanium Grade 7 (Ti-6Al-4V, reduced interstitials)
+							</th>
+							<td class="py-12 pr-16 text-p-sm text-gray">Confirmed per order</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">—</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">—</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">—</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">—</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">—</td>
+							<td class="py-12 text-p-sm text-gray">
+								Supplied against the mill certificate for the confirmed lot. Values are
+								stated on that certificate, not on this page.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="mt-24 text-p-sm text-gray">
+				Property values are the published nominal values for each grade. The certificate
+				supplied with a shipment states the values of the actual lot and its heat number.
+				DIN and ISO equivalents for the fastener standards are listed in the{' '}
+				<a href={crossReferenceHref()} class="text-blue underline">
+					DIN / ISO / ASTM standard cross-reference
+				</a>.
+			</p>
+		</section>
+
+		<KnowledgeHubFacts facts={GRADE_SUPPLY_MATRIX_PAGE.facts} heading="At a glance" />
+
+		<AboutUsCta
+			heading="Tell us the grade and the standard"
+			body="Send us the grade, the standard and the quantity. We confirm the certificate type, the certification route and the delivery date in writing."
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

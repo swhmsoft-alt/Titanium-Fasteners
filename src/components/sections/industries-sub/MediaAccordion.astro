@@ -19,6 +19,22 @@
  *
  * The gallery is wrapped in a <div> so it does not become a direct child of
  * <main> (which would add a block the reference does not have).
+ *
+ * SPRITE URL NORMALISATION
+ * ------------------------
+ * The captured reference markup points its <use> elements at the reference
+ * site's own hashed build asset, e.g. /_astro/sprite.CNhkymMS.svg#minus.
+ * That file never existed in this project, so every icon on the industry
+ * sub pages resolved to a 404.
+ *
+ * This site ships one sprite sheet at /images/sprite.svg, and it carries the
+ * two symbols the captured markup actually uses (minus, close). The fix is
+ * therefore applied at RENDER time — the generated data files under
+ * src/data/industries-sub/ are build artifacts and must not be hand-edited,
+ * and the upstream generator that produced them is no longer part of this
+ * repository, so they cannot be regenerated either.
+ *
+ * Only the path is rewritten; the fragment (#minus / #close) is preserved.
  */
 interface Props {
 	html: string;
@@ -26,7 +42,13 @@ interface Props {
 	raw?: boolean;
 }
 
-const { html, gallery = false, raw = false } = Astro.props;
+const { html: rawHtml, gallery = false, raw = false } = Astro.props;
+
+/** Reference build asset → this site's sprite sheet. */
+const html = rawHtml.replaceAll(
+	'/_astro/sprite.CNhkymMS.svg',
+	'/images/sprite.svg',
+);
 ---
 
 {

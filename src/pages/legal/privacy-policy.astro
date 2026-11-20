@@ -1,0 +1,59 @@
+---
+/**
+ * /legal/privacy-policy/ — 站点隐私政策（canonical 路由）。
+ *
+ * WHY THIS ROUTE
+ * --------------
+ * CookieConsent 的「Privacy Policy」链接指向 /legal/privacy-policy/，
+ * 该链接出现在全站每一个页面的 CookieConsent 里 —— 这是全站死链的最大单点。
+ * 本页因此定为**唯一 canonical 路由**；另一处历史引用 /privacy-policy/
+ * （innovations 页表单同意行）已改为指向本页，不做双路由。
+ *
+ * 文案真相源：@data/legal。所有可核实事实（无第三方追踪脚本、同意偏好存
+ * localStorage、页脚地图懒加载、询盘自建端点）都在数据层注明依据。
+ *
+ * LAYOUT INTENT
+ * -------------
+ * 与 NDA 政策页同构：面包屑 + eyebrow + h1 + lead，正文交给 LegalBody。
+ * 不放图片 —— 法务文档没有可核实的视觉素材。
+ *
+ * 页面级 CSS 一律来自既有 utility（Tailwind v4 @theme token），本页**不新增**
+ * 任何全局样式，也不改动 Layout / Header / Footer。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import AboutUsHero from '@components/sections/about-us/AboutUsHero.astro';
+import LegalBody from '@components/sections/legal/LegalBody.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import { PRIVACY_POLICY } from '@data/legal';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={PRIVACY_POLICY.seo.title}
+	description={PRIVACY_POLICY.seo.description}
+	canonicalPath="/legal/privacy-policy/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<AboutUsHero {...PRIVACY_POLICY.hero} />
+
+		<LegalBody />
+
+		<AboutUsCta
+			heading="Questions about your data"
+			body="Write to our engineering desk with any question about this policy or about an inquiry you have submitted. If a drawing is involved, ask for the mutual NDA first — we will not open a file before it is in place."
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

@@ -26,5 +26,10 @@ export const PARAM_SCHEMA: ParamDef[] = [
 	{ type: 'nut', param: 'h', label: 'h', unit: 'mm', required: '1', key: '0', order: '4' },
 	{ type: 'washer', param: 'd1', label: 'O d1', unit: 'mm', required: '1', key: '1', order: '1' },
 	{ type: 'washer', param: 'd2', label: 'O d2', unit: 'mm', required: '1', key: '0', order: '2' },
-	{ type: 'washer', param: 'h', label: 'h', unit: 'mm', required: '1', key: '0', order: '3' }
+	{ type: 'washer', param: 'h', label: 'h', unit: 'mm', required: '1', key: '0', order: '3' },
+	{ type: 'stud', param: 'thread', label: 'Thread', unit: '-', required: '1', key: '1', order: '1' },
+	{ type: 'stud', param: 'length', label: 'L', unit: 'mm', required: '1', key: '1', order: '2' },
+	{ type: 'stud', param: 'd1', label: 'O d1', unit: 'mm', required: '1', key: '0', order: '3' },
+	{ type: 'stud', param: 'd2', label: 'O d2', unit: 'mm', required: '1', key: '0', order: '4' },
+	{ type: 'stud', param: 'k', label: 'k', unit: 'mm', required: '0', key: '0', order: '5' }
 ];

@@ -16,6 +16,16 @@ import { HEX_NUT_DIMENSIONS } from './dimensions/hex-nut';
 import { COUNTERSUNK_HEAD_CAP_SCREWS_DIMENSIONS } from './dimensions/countersunk-head-cap-screws';
 import { HEX_HEAD_BOLTS_FULLY_THREADED_DIMENSIONS } from './dimensions/hex-head-bolts-fully-threaded';
 import { PLAIN_WASHERS_DIMENSIONS } from './dimensions/plain-washers';
+import { HEX_SOCKET_HEAD_CAP_BOLTS_FULL_THREAD_DIMENSIONS } from './dimensions/hex-socket-head-cap-bolts-full-thread';
+import { HEXAGON_HEAD_BOLTS_FULL_THREAD_DIMENSIONS } from './dimensions/hexagon-head-bolts-full-thread';
+import { HEXAGON_HEAD_BOLTS_PARTIAL_THREAD_DIMENSIONS } from './dimensions/hexagon-head-bolts-partial-thread';
+import { HEXAGON_FLANGE_BOLTS_DIMENSIONS } from './dimensions/hexagon-flange-bolts';
+import { HEX_SOCKET_HEAD_CAP_BOLTS_DIMENSIONS } from './dimensions/hex-socket-head-cap-bolts';
+import { HEX_SOCKET_BUTTON_HEAD_BOLTS_DIMENSIONS } from './dimensions/hex-socket-button-head-bolts';
+import { HEX_SOCKET_COUNTERSUNK_FLAT_HEAD_BOLTS_DIMENSIONS } from './dimensions/hex-socket-countersunk-flat-head-bolts';
+import { TORX_FLANGE_HEAD_BOLTS_DIMENSIONS } from './dimensions/torx-flange-head-bolts';
+import { DOUBLE_END_STUD_BOLTS_DIMENSIONS } from './dimensions/double-end-stud-bolts';
+import { _12_POINT_FLANGE_BOLTS_DIMENSIONS } from './dimensions/12-point-flange-bolts';
 
 export * from './types';
 export { FAMILIES, MATERIALS, FINISHES, STANDARDS, PARAM_SCHEMA, CATEGORIES, SEARCH_INDEX };
@@ -25,10 +35,20 @@ export const DIMENSIONS: Record<string, DimensionRow[]> = {
 	'hex-nut': HEX_NUT_DIMENSIONS,
 	'countersunk-head-cap-screws': COUNTERSUNK_HEAD_CAP_SCREWS_DIMENSIONS,
 	'hex-head-bolts-fully-threaded': HEX_HEAD_BOLTS_FULLY_THREADED_DIMENSIONS,
-	'plain-washers': PLAIN_WASHERS_DIMENSIONS
+	'plain-washers': PLAIN_WASHERS_DIMENSIONS,
+	'hex-socket-head-cap-bolts-full-thread': HEX_SOCKET_HEAD_CAP_BOLTS_FULL_THREAD_DIMENSIONS,
+	'hexagon-head-bolts-full-thread': HEXAGON_HEAD_BOLTS_FULL_THREAD_DIMENSIONS,
+	'hexagon-head-bolts-partial-thread': HEXAGON_HEAD_BOLTS_PARTIAL_THREAD_DIMENSIONS,
+	'hexagon-flange-bolts': HEXAGON_FLANGE_BOLTS_DIMENSIONS,
+	'hex-socket-head-cap-bolts': HEX_SOCKET_HEAD_CAP_BOLTS_DIMENSIONS,
+	'hex-socket-button-head-bolts': HEX_SOCKET_BUTTON_HEAD_BOLTS_DIMENSIONS,
+	'hex-socket-countersunk-flat-head-bolts': HEX_SOCKET_COUNTERSUNK_FLAT_HEAD_BOLTS_DIMENSIONS,
+	'torx-flange-head-bolts': TORX_FLANGE_HEAD_BOLTS_DIMENSIONS,
+	'double-end-stud-bolts': DOUBLE_END_STUD_BOLTS_DIMENSIONS,
+	'12-point-flange-bolts': _12_POINT_FLANGE_BOLTS_DIMENSIONS
 };
 
-export const FAMILY_IDS: string[] = ['hex-socket-head-cap-screw', 'hex-nut', 'countersunk-head-cap-screws', 'hex-head-bolts-fully-threaded', 'plain-washers'];
+export const FAMILY_IDS: string[] = ['hex-socket-head-cap-screw', 'hex-nut', 'countersunk-head-cap-screws', 'hex-head-bolts-fully-threaded', 'plain-washers', 'hex-socket-head-cap-bolts-full-thread', 'hexagon-head-bolts-full-thread', 'hexagon-head-bolts-partial-thread', 'hexagon-flange-bolts', 'hex-socket-head-cap-bolts', 'hex-socket-button-head-bolts', 'hex-socket-countersunk-flat-head-bolts', 'torx-flange-head-bolts', 'double-end-stud-bolts', '12-point-flange-bolts'];
 
 /** 可订购组合：族 × 材质 × 表面处理 × 规格行。
  *
@@ -74,7 +94,7 @@ export const PUBLISHED_FAMILIES: Family[] = FAMILIES.filter((f) => f.status === 
 /** 路由基址。Phase B 已定死 URL 形态 —— 仓库禁止任何跳转/重定向，
  * 路由常量集中在此，改动必须同步改页面文件路径。
  */
-export { ESHOP_ROUTE_BASE, familyPath, categoryPath, CATEGORY_CARDS, FILTER_GROUPS, ALL_PRODUCTS, HAS_PUBLISHED, CATEGORY_VIEWS } from './category-view';
+export { PRODUCT_ROUTE_BASE, familyPath, categoryPath, CATEGORY_CARDS, FILTER_GROUPS, ALL_PRODUCTS, HAS_PUBLISHED, CATEGORY_VIEWS } from './category-view';
 
 export { ASSETS, FAMILY_IMAGES, FAMILY_CAD, FAMILY_PDF } from './assets';
 

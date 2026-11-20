@@ -1,0 +1,126 @@
+---
+
+/**
+ * SpecTables — the two specification-capture tables.
+ *
+ * WHY
+ * ---
+ * A buyer choosing a titanium fastener has to decide two things before the
+ * order: which grade, and which standard number. Both are answered with a
+ * table rather than prose, and both come from the product dictionary
+ * (`@data/products`), so the numbers on this page are the same numbers the
+ * catalogue shows.
+ *
+ * The values are published nominal material values, labelled as such — they
+ * are not measured lot values and not test results.
+ */
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import type { CrossReferenceRow, GradeRow } from '@data/product-solutions';
+
+interface Props {
+	grades: readonly GradeRow[];
+	crossReference: readonly CrossReferenceRow[];
+}
+
+const { grades, crossReference } = Astro.props;
+---
+
+<section class="container-fluid-wide py-24 lg:py-40" aria-labelledby="spec-tables-heading">
+	<SectionHeading size="h3" as="h2" id="spec-tables-heading" class="mb-12">
+		Which grade, and which standard
+	</SectionHeading>
+	<p class="mb-24 max-w-[820px] text-p text-gray lg:mb-32">
+		Grade 2 is the corrosion-resistant choice and Grade 5 is the loaded-joint
+		choice; Grade 9 and Grade 23 are made to order against a confirmed
+		specification. Every part below is produced in our own workshop and ships with
+		an EN 10204 3.1 certificate for the heat it was cut from.
+	</p>
+
+	{
+		grades.length > 0 && (
+			<div class="mb-32 lg:mb-48">
+				<h3 class="text-h5 mb-16 text-blue-dark3">Grade comparison</h3>
+				<div class="overflow-x-auto">
+					<table class="w-full min-w-[720px] border-collapse text-left">
+						<thead>
+							<tr class="border-b border-blue-70">
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									Grade
+								</th>
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									Proof strength
+								</th>
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									Tensile strength
+								</th>
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									Max. temperature
+								</th>
+								<th scope="col" class="py-12 text-label text-gray-medium">
+									Basis
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{grades.map((grade) => (
+								<tr class="border-b border-blue-70 align-top">
+									<th scope="row" class="py-16 pr-16 text-p-sm font-bold text-blue-dark3">
+										<a href={grade.href} class="hover:underline">
+											{grade.name}
+										</a>
+									</th>
+									<td class="py-16 pr-16 text-p-sm text-gray">{grade.proof}</td>
+									<td class="py-16 pr-16 text-p-sm text-gray">{grade.tensile}</td>
+									<td class="py-16 pr-16 text-p-sm text-gray">{grade.maxTemp}</td>
+									<td class="py-16 text-p-sm text-gray">{grade.note}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+				<p class="mt-12 text-p-sm text-gray-medium">
+					Published nominal values from the material and finished-fastener
+					specifications — not measured lot values.
+				</p>
+			</div>
+		)
+	}
+
+	{
+		crossReference.length > 0 && (
+			<div>
+				<h3 class="text-h5 mb-16 text-blue-dark3">DIN and ISO cross-reference</h3>
+				<div class="overflow-x-auto">
+					<table class="w-full min-w-[640px] border-collapse text-left">
+						<thead>
+							<tr class="border-b border-blue-70">
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									DIN
+								</th>
+								<th scope="col" class="py-12 pr-16 text-label text-gray-medium">
+									ISO
+								</th>
+								<th scope="col" class="py-12 text-label text-gray-medium">
+									Part
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{crossReference.map((row) => (
+								<tr class="border-b border-blue-70">
+									<th scope="row" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+										<a href={row.href} class="hover:underline">
+											{row.standard}
+										</a>
+									</th>
+									<td class="py-12 pr-16 text-p-sm text-gray">{row.iso}</td>
+									<td class="py-12 text-p-sm text-gray">{row.title}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		)
+	}
+</section>

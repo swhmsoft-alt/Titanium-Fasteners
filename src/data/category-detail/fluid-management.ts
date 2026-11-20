@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/fluid-management.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Fluid Management Solutions | Bossard Group', description: 'Improve your industrial fluid management systems with pressure intensifiers and quick connectors for hydraulic and pneumatic solutions.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Fluid Management' },
 		],
 		eyebrow: 'Product Categories',
@@ -48,11 +48,11 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		tiles: [
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/knowledge-hub/resources/download-center/white-papers/',
+				href: '/knowledge-hub/resources/download-center/white-papers/',
 				image: '/images/category-detail-fluid-management/03-factsheet-icon.svg',
 				alt: 'Factsheet icon',
 				label: 'Fastening Know-How',
@@ -60,7 +60,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Learn more about topics such as friction in screw connections or corrosion and overcome challenges in fastening with our expert white papers.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-fluid-management/04-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -68,7 +68,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-fluid-management/05-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

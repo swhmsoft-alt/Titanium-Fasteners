@@ -1,0 +1,64 @@
+---
+/**
+ * /knowledge-hub/ — Knowledge Hub 落地页（面板 lead 链接的落点）。
+ *
+ * 三列结构由 @data/knowledge-hub 的 KNOWLEDGE_HUB_GROUPS 驱动：
+ *   ① Sourcing & Spec Tools            ② Compliance & Quality Docs
+ *   ③ IP Protection & Manufacturing Specs
+ *
+ * 每列的标题链接指向该列代表的资产页，列内条目指向各自真实落点。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import KnowledgeHubHero from '@components/sections/knowledge-hub/KnowledgeHubHero.astro';
+import KnowledgeHubItemGrid from '@components/sections/knowledge-hub/KnowledgeHubItemGrid.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import { KNOWLEDGE_HUB_GROUPS, KNOWLEDGE_HUB_LANDING } from '@data/knowledge-hub';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={KNOWLEDGE_HUB_LANDING.seo.title}
+	description={KNOWLEDGE_HUB_LANDING.seo.description}
+	canonicalPath="/knowledge-hub/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<KnowledgeHubHero {...KNOWLEDGE_HUB_LANDING.hero} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">
+				{KNOWLEDGE_HUB_LANDING.intro}
+			</p>
+		</div>
+
+		{
+			KNOWLEDGE_HUB_GROUPS.map((group) => (
+				<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+					<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">
+						<a href={group.headingHref} class="hover:text-blue">
+							{group.heading}
+						</a>
+					</h2>
+					<KnowledgeHubItemGrid items={group.items} />
+				</section>
+			))
+		}
+
+		<AboutUsCta
+			heading="Send us the grade, the size and the quantity"
+			body="Tell us which specification applies and we will confirm the certificate, the grade and the delivery date in writing. Drawings are handled under a signed NDA before they are opened."
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

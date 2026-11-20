@@ -1,8 +1,6 @@
 id,name,spec,notes
-plain,Plain (as supplied),,Mill finish natural oxide; titanium does not require plating for corrosion protection
-anod-black,Black anodized,Type III per AMS 2488,Colour identification only; not for high-temperature service
-anod-blue,Blue anodized,Type III per AMS 2488,Colour identification only; not for high-temperature service
-passivated,Passivated,ASTM F86,Nitric acid passivation; clean room and medical applications
-nitric-passivated,Nitric passivated (medical),ASTM F86 (medical grade),For implant and biomedical instrument applications
-mos2-dry-film,MoS2 dry film lubricant,MoS2 dry film per supplier spec,Anti-galling for titanium; mandatory for Ti-Ti joints; K factor 0.10-0.12
-pickling-oiled,Pickled and oiled,,Not applicable to titanium - acid pickling causes hydrogen uptake (H <= 150 ppm per NASM 8846)
+plain,Plain,,Mill finish natural oxide; titanium does not require plating for corrosion protection
+passivated,Passivated,ASTM F86 / AMS 2700,Chemical passivation per ASTM F86 / AMS 2700; no coating
+anod,Anodizing,AMS 2488 Type II / Type III,Anodic oxide per AMS 2488 Type II / Type III; functional and colour titanium finish
+pvd,PVD,,Physical vapour deposition coating
+dlc,DLC,,Diamond-like carbon coating

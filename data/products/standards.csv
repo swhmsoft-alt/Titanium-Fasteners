@@ -1,39 +1,45 @@
-id,label,din,iso,title,type,notes
-din-912,DIN 912,DIN 912,ISO 4762,Hexagon socket head cap screws,screw,Full thread
-din-933,DIN 933,DIN 933,ISO 4017,Hexagon head bolts fully threaded,bolt,
-din-934,DIN 934,DIN 934,ISO 4032,Hexagon nuts,nut,Style 1
-din-125,DIN 125,DIN 125,ISO 7089,Plain washers,washer,200 HV
-din-7991,DIN 7991,DIN 7991,ISO 10642,Hexagon socket head countersunk screws,screw,90 deg countersunk; DIN withdrawn
-din-7380,DIN 7380,DIN 7380,ISO 7380-1,Hexagon socket head pan head screws,screw,Pan head
-din-7984,DIN 7984,DIN 7984,,Hexagon socket head screws with low head,screw,Low head
-din-6912,DIN 6912,DIN 6912,,Hexagon socket head screws with centre locating collar,screw,With locating collar
-din-14579,DIN 14579,DIN 14579,ISO 14579,Hexagon socket head cap screws with flanged head,screw,Flanged head
-din-7985,DIN 7985,DIN 7985,ISO 7045,Pan head slotted screws,screw,Slotted pan head
-din-931,DIN 931,DIN 931,ISO 4014,Hexagon head bolts partially threaded,bolt,Partially threaded
-din-961,DIN 961,DIN 961,ISO 8676,Hexagon head bolts with fine thread fully threaded,bolt,Fine thread
-din-960,DIN 960,DIN 960,ISO 8765,Hexagon head bolts with fine thread partially threaded,bolt,Fine thread partial
-din-6921,DIN 6921,DIN 6921,,Hexagon head bolts with flange,bolt,
-din-913,DIN 913,DIN 913,ISO 4026,Hexagon socket set screws with flat point,screw,Set screw flat point
-din-915,DIN 915,DIN 915,ISO 4028,Hexagon socket set screws with dog point,screw,Set screw dog point
-din-551,DIN 551,DIN 551,ISO 4766,Slotted set screws with flat point,screw,Slotted set screw
-din-553,DIN 553,DIN 553,ISO 7434,Slotted set screws with cone point,screw,Slotted set screw cone point
-din-438,DIN 438,DIN 438,ISO 7436,Slotted set screws with cup point,screw,Slotted set screw cup point
-din-439,DIN 439,DIN 439,ISO 4035,Hexagon thin nuts,nut,Style 1 thin
-din-935,DIN 935,DIN 935,,Hexagon slotted nuts with castle nut form,nut,Castle nut
-din-6923,DIN 6923,DIN 6923,,Hexagon nuts with flange,nut,Plain flange without serration
-din-1587,DIN 1587,DIN 1587,,Hexagon dome nuts,nut,
-din-9021,DIN 9021,DIN 9021,ISO 7093-1,Plain washers large outside diameter,washer,Large series
-din-433,DIN 433,DIN 433,,Plain washers for use with cylindrical headed bolts,washer,
-din-7349,DIN 7349,DIN 7349,,Plain washers heavy duty large outside diameter,washer,Heavy duty
-din-975,DIN 975,DIN 975,,Threaded rods,screw,Threaded rod
-din-976,DIN 976,DIN 976,,Threaded rods with short metric thread,screw,Short metric thread
-din-939,DIN 939,DIN 939,,Studs with full length thread,screw,Stud
-din-835,DIN 835,DIN 835,,Studs with short length thread,screw,Stud short
-din-580,DIN 580,DIN 580,ISO 3266,Lifting eyes with eye bolt,screw,Lifting eye
-din-444,DIN 444,DIN 444,,Lifting eyes with flat eye bolt,screw,Lifting eye flat
-din-471,DIN 471,DIN 471,,Retaining rings for shafts,screw,External
-din-472,DIN 472,DIN 472,,Retaining rings for bores,screw,Internal
-din-980,DIN 980,DIN 980,,Hexagon all-metal lock nuts,nut,All-metal prevailing torque; ISO column intentionally empty - not equivalent to ISO 7042
-din-6796,DIN 6796,DIN 6796,,Conical spring washers for bolted connections,washer,
-din-2093,DIN 2093,DIN 2093,,Disc spring washers for bolted connections,washer,
-din-137,DIN 137,DIN 137,,Cylindrical spring washers for bolted connections,washer,
+id,label,din,iso,title,type,notes,auto
+din-912,DIN 912,DIN 912,ISO 4762,Hexagon socket head cap screws,screw,Full thread,0
+din-933,DIN 933,DIN 933,ISO 4017,Hexagon head bolts fully threaded,bolt,,0
+din-934,DIN 934,DIN 934,ISO 4032,Hexagon nuts,nut,Style 1,0
+din-125,DIN 125,DIN 125,ISO 7089,Plain washers,washer,200 HV,0
+din-7991,DIN 7991,DIN 7991,ISO 10642,Hexagon socket head countersunk screws,screw,90 deg countersunk; DIN withdrawn,0
+din-7380,DIN 7380,DIN 7380,ISO 7380-1 | ISO 7380,Hexagon socket head pan head screws,screw,Pan head,1
+din-7984,DIN 7984,DIN 7984,,Hexagon socket head screws with low head,screw,Low head,0
+din-6912,DIN 6912,DIN 6912,,Hexagon socket head screws with centre locating collar,screw,With locating collar,0
+din-14579,DIN 14579,DIN 14579,ISO 14579,Hexagon socket head cap screws with flanged head,screw,Flanged head,0
+din-7985,DIN 7985,DIN 7985,ISO 7045,Pan head slotted screws,screw,Slotted pan head,0
+din-931,DIN 931,DIN 931,ISO 4014,Hexagon head bolts partially threaded,bolt,Partially threaded,1
+din-961,DIN 961,DIN 961,ISO 8676,Hexagon head bolts with fine thread fully threaded,bolt,Fine thread,0
+din-960,DIN 960,DIN 960,ISO 8765,Hexagon head bolts with fine thread partially threaded,bolt,Fine thread partial,0
+din-6921,DIN 6921,DIN 6921,ISO 4162,Hexagon head bolts with flange,bolt,,1
+din-913,DIN 913,DIN 913,ISO 4026,Hexagon socket set screws with flat point,screw,Set screw flat point,0
+din-915,DIN 915,DIN 915,ISO 4028,Hexagon socket set screws with dog point,screw,Set screw dog point,0
+din-551,DIN 551,DIN 551,ISO 4766,Slotted set screws with flat point,screw,Slotted set screw,0
+din-553,DIN 553,DIN 553,ISO 7434,Slotted set screws with cone point,screw,Slotted set screw cone point,0
+din-438,DIN 438,DIN 438,ISO 7436,Slotted set screws with cup point,screw,Slotted set screw cup point,0
+din-439,DIN 439,DIN 439,ISO 4035,Hexagon thin nuts,nut,Style 1 thin,0
+din-935,DIN 935,DIN 935,,Hexagon slotted nuts with castle nut form,nut,Castle nut,0
+din-6923,DIN 6923,DIN 6923,,Hexagon nuts with flange,nut,Plain flange without serration,0
+din-1587,DIN 1587,DIN 1587,,Hexagon dome nuts,nut,,0
+din-9021,DIN 9021,DIN 9021,ISO 7093-1,Plain washers large outside diameter,washer,Large series,0
+din-433,DIN 433,DIN 433,,Plain washers for use with cylindrical headed bolts,washer,,0
+din-7349,DIN 7349,DIN 7349,,Plain washers heavy duty large outside diameter,washer,Heavy duty,0
+din-975,DIN 975,DIN 975,,Threaded rods,screw,Threaded rod,0
+din-976,DIN 976,DIN 976,,Threaded rods with short metric thread,screw,Short metric thread,0
+din-939,DIN 939,DIN 939,,Studs with full length thread,stud,Stud,1
+din-835,DIN 835,DIN 835,,Studs with short length thread,screw,Stud short,0
+din-580,DIN 580,DIN 580,ISO 3266,Lifting eyes with eye bolt,screw,Lifting eye,0
+din-444,DIN 444,DIN 444,,Lifting eyes with flat eye bolt,screw,Lifting eye flat,0
+din-471,DIN 471,DIN 471,,Retaining rings for shafts,screw,External,0
+din-472,DIN 472,DIN 472,,Retaining rings for bores,screw,Internal,0
+din-980,DIN 980,DIN 980,,Hexagon all-metal lock nuts,nut,All-metal prevailing torque; ISO column intentionally empty - not equivalent to ISO 7042,0
+din-6796,DIN 6796,DIN 6796,,Conical spring washers for bolted connections,washer,,0
+din-2093,DIN 2093,DIN 2093,,Disc spring washers for bolted connections,washer,,0
+din-137,DIN 137,DIN 137,,Cylindrical spring washers for bolted connections,washer,,0
+din-938,DIN 938,DIN 938,,Hexagon head studs with full length thread,stud,,1
+asme-b18.2.1,ASME B18.2.1,,,Heavy hex structural bolts,bolt,,1
+astm-f468,ASTM F468,,,Standard specification for steel bolts,bolt,,1
+din-34800,DIN 34800,DIN 34800,,12-point flange bolts,bolt,,1
+iso-7380-2,ISO 7380-2,,,Hexagon socket head bolts with flange,bolt,,1
+custom,Custom / non-standard,,,Made to drawing or customer specification,bolt,,1

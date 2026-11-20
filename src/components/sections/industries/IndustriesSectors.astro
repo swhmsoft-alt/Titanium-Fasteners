@@ -1,0 +1,54 @@
+---
+/**
+ * IndustriesSectors — 应用场景网格（抽象清单用网格，不用大图）。
+ *
+ * 十个场景全部指向真实存在的落地页；顺序、名称、href 与导航面板
+ * （src/config/site.ts → NAVIGATION → Industries）一致。
+ *
+ * 栅格断点（十项在每个断点都排满整行，不留孤行）：
+ *   · 390px   → 1 列 × 10 行
+ *   · 640px+  → 2 列 × 5 行
+ *   · 1280px+ → 5 列 × 2 行
+ * 链接由数据层给出，组件不拼路径。
+ */
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import type { HubSector } from '@data/industries';
+
+interface Props {
+	heading: string;
+	items: HubSector[];
+	/** Optional one-paragraph lead under the heading. */
+	lead?: string;
+}
+
+const { heading, items, lead } = Astro.props;
+---
+
+<section class="container-fluid-wide py-24 lg:py-32">
+	<SectionHeading size="h3" as="h2" class="mb-8 lg:mb-12">{heading}</SectionHeading>
+
+	{
+		lead && (
+			<p class="max-w-[68ch] mb-16 text-p-sm text-gray lg:mb-24">{lead}</p>
+		)
+	}
+
+	<ul class="grid grid-cols-1 gap-16 sm:grid-cols-2 xl:grid-cols-5 xl:gap-24">
+		{
+			items.map((item) => (
+				<li class="border border-blue-70 rounded-lg">
+					<a class="group flex h-full flex-col p-16 lg:p-20" href={item.href}>
+						<h3 class="text-h5 mb-8 text-blue-dark3 group-hover:underline">{item.title}</h3>
+						<p class="text-p-sm text-gray">{item.description}</p>
+						<span class="mt-16 inline-flex items-center text-button text-blue">
+							View details
+							<svg class="h-16 w-16 stroke-blue ml-8" aria-hidden="true">
+								<use href="/images/sprite.svg#arrow-right" />
+							</svg>
+						</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>

@@ -2,57 +2,154 @@
 /**
  * SiteFooter — the site footer.
  *
- * MEASURED on the reference site: a single `.container-fluid` measuring
- * 461px tall, with five link columns spanning the site's sections, then a
- * legal row (Privacy Policy, Imprint), then social icons (LinkedIn,
- * Youtube), then a copyright line with the current year.
+ * STRUCTURE (2026-11-17 重构 · 二次收敛)
+ * -----------------------------------------
+ * 四栏链接 + 一栏联系，整体对齐参考站的五栏骨架，但内容全部换成本项目自己的：
+ *
+ *   ① Products & Solutions —— 主导航的品类延伸
+ *   ② Services            —— 供给侧能力延伸（首条 CNC Machining 高亮）
+ *   ③ Industries          —— 行业落地页
+ *   ④ Knowledge & Company —— 主导航放不下的次级入口
+ *   ⑤ Contact & RFQ       —— 独立联系栏：公司名 / 地址 / 邮箱 / WhatsApp / 主 CTA
+ *
+ * 不堆积原则（本轮）
+ *   · 每栏条目 ≤ 8，整体 26 条（原 33 条）；
+ *   · 锚文本一律缩写化（Custom Fasteners / PMI / XRF Verification / NDA & IP Policy），
+ *     配合 `whitespace-nowrap` 保证单行不折行、栏内左对齐成列；
+ *   · 移动端 1 列 → sm 2 列 → lg 4 列，栏宽随断点变宽，不会因缩写而拥挤。
+ *
+ * CHANGES vs the reference copy
+ * -----------------------------
+ *   · 删掉参考站照抄来的死链（/knowledge-hub/resources/**、/about-us/careers/**、
+ *     /knowledge-hub/inspiration/blog/ …）—— 这些页面在本仓不存在。
+ *   · 删掉法务行（Privacy Policy / Imprint）：法务页尚未建页，留着就是死链；
+ *     等 /legal/** 真正建好后再加回来。
+ *   · 「Boze Metal」占位栏换成真实的联系栏：客户提供的工厂地址、邮箱、WhatsApp。
+ *   · 「eShop」表述全站废止，改用 Product Catalogue / View Products（见 src/config/site.ts）。
+ *
+ * 约束：不改全局样式变量、不改表单逻辑、不新增任何路由。
  */
 import Container from '@components/ui/Container.astro';
-import { FOOTER_COLUMNS, SITE, SOCIAL_LINKS } from '@config/site';
+import MapEmbed from '@components/ui/MapEmbed.astro';
+import {
+	FOOTER_COLUMNS,
+	FOOTER_CONTACT,
+	SITE,
+	SOCIAL_LINKS,
+	COMMUNITY_LABEL,
+} from '@config/site';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-96 bg-blue-dark text-white">
 	<Container class="py-64">
-		<div class="grid grid-cols-2 gap-32 md:grid-cols-3 lg:grid-cols-5">
-			{
-				FOOTER_COLUMNS.map((column) => (
-					<nav aria-label={column.heading}>
-						<h2 class="text-label text-white font-bold">{column.heading}</h2>
-						<ul class="mt-16 flex flex-col gap-8">
-							{column.items.map((item) => (
-								<li>
-									<a
-										href={item.href}
-										class="text-p text-blue-light transition-colors duration-300 hover:text-white hover:underline"
-									>
-										{item.name}
-									</a>
-								</li>
-							))}
-						</ul>
-					</nav>
-				))
-			}
+		<div class="grid gap-48 lg:grid-cols-12 lg:gap-32">
+			<!-- ①–④ 四栏链接 -->
+			<div
+				class="grid grid-cols-1 gap-32 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-2 lg:gap-32 xl:grid-cols-4"
+			>
+				{
+					FOOTER_COLUMNS.map((column) => (
+						<nav aria-label={column.heading}>
+							<h2 class="text-label whitespace-nowrap text-white font-bold">{column.heading}</h2>
+							<ul class="mt-16 flex flex-col gap-8">
+								{column.items.map((item) => (
+									<li>
+										<a
+											href={item.href}
+											class:list={[
+												'text-[1rem] whitespace-nowrap transition-colors duration-300',
+												item.highlight
+													? 'text-white font-bold hover:text-blue-light'
+													: 'text-blue-light hover:text-white hover:underline',
+											]}
+											{...(item.external
+												? { target: '_blank', rel: 'noreferrer noopener' }
+												: {})}
+										>
+											{item.name}
+											{item.arrow && (
+												<span aria-hidden="true" class="ml-4">
+													→
+												</span>
+											)}
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					))
+				}
+			</div>
+
+			<!--
+				⑤ Contact & RFQ —— 独立联系栏。
+				重点业务（Custom CNC Machining）在 Services 栏高亮；本栏承担转化出口。
+			-->
+			<div class="lg:col-span-4">
+				<h2 class="text-label text-white font-bold">Contact &amp; RFQ</h2>
+
+				<div class="mt-16 flex flex-col gap-8 text-[1rem] text-blue-light">
+					<p class="text-white font-bold">{FOOTER_CONTACT.company}</p>
+
+					<!--
+					地址（极简写法）：只显示城市级信息，完整详细地址在「Get Directions」
+					弹出的地图里呈现；完整地址同时以 .sr-only 保留给读屏与搜索引擎。
+					-->
+					<MapEmbed
+						shortAddress={FOOTER_CONTACT.addressShort}
+						fullAddress={FOOTER_CONTACT.addressFull}
+						label={FOOTER_CONTACT.mapsLabel}
+						embedUrl={FOOTER_CONTACT.mapsEmbedUrl}
+						externalUrl={FOOTER_CONTACT.mapsUrl}
+					/>
+					<span class="sr-only">{FOOTER_CONTACT.addressFull}</span>
+
+					<p>
+						<a
+							href={`mailto:${FOOTER_CONTACT.email}`}
+							class="transition-colors duration-300 hover:text-white hover:underline"
+						>
+							{FOOTER_CONTACT.email}
+						</a>
+					</p>
+
+					<p>
+						<a
+							href={FOOTER_CONTACT.whatsappHref}
+							target="_blank"
+							rel="noreferrer noopener"
+							class="transition-colors duration-300 hover:text-white hover:underline"
+						>
+							WhatsApp {FOOTER_CONTACT.whatsapp}
+						</a>
+					</p>
+				</div>
+
+				<div class="mt-24 flex flex-col items-start gap-12">
+					<a
+						href={FOOTER_CONTACT.cta.href}
+						class="inline-flex items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button font-normal leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+					>
+						{FOOTER_CONTACT.cta.name}
+					</a>
+					<a
+						href={FOOTER_CONTACT.mailCta.href}
+						class="text-[1rem] text-blue-light underline transition-colors duration-300 hover:text-white"
+					>
+						{FOOTER_CONTACT.mailCta.name}
+					</a>
+				</div>
+			</div>
 		</div>
 
-		<!-- Legal + social -->
-		<div class="mt-64 flex flex-col gap-24 border-t border-blue-dark2 pt-32 md:flex-row md:items-center md:justify-between">
-			<ul class="flex flex-wrap gap-24">
-				<li>
-					<a href="/legal/privacy-policy/" class="text-label text-blue-light hover:text-white">
-						Privacy Policy
-					</a>
-				</li>
-				<li>
-					<a href="/legal/imprint/" class="text-label text-blue-light hover:text-white">
-						Imprint
-					</a>
-				</li>
-			</ul>
-
-			<div class="flex items-center gap-24">
+		<!-- Social + copyright —— 合并为一行，减少页脚纵向堆积 -->
+		<div
+			class="mt-64 flex flex-col gap-16 border-t border-blue-dark2 pt-32 md:flex-row md:items-center md:justify-between"
+		>
+			<div class="flex items-center gap-16">
+				<span class="text-p text-blue-light">{COMMUNITY_LABEL}</span>
 				<a
 					href={SOCIAL_LINKS.linkedin}
 					class="flex h-48 w-48 items-center justify-center rounded-full bg-blue-dark2 text-white transition-colors duration-300 hover:bg-blue"
@@ -72,10 +169,10 @@ const year = new Date().getFullYear();
 					</svg>
 				</a>
 			</div>
-		</div>
 
-		<p class="text-label text-blue-light mt-32">
-			© {year} {SITE.legalName}
-		</p>
+			<p class="text-label text-blue-light">
+				© {year} {SITE.legalName}
+			</p>
+		</div>
 	</Container>
 </footer>

@@ -1,0 +1,84 @@
+---
+/**
+ * StandardsGradesAndQa — 牌号对照 + 质量与追溯背书。
+ *
+ * 两块都属「抽象清单」，按 LAYOUT_RULES 用紧凑表格/网格，
+ * 不用大图。牌号数值取自 MATERIALS，Gr7 不在册处写「按单确认」。
+ */
+import { GRADE_ROWS, QA_ITEMS } from '@data/standards-hub';
+---
+
+<section class="bg-blue-light/40 pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="grades-heading">
+	<div class="container-fluid">
+		<h2 id="grades-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			Material grades and equivalent specifications
+		</h2>
+		<p class="mb-24 max-w-[860px] text-p text-gray">
+			Grade choice follows the working load, the environment and the certificate the customer
+			has to file. The values below are the published nominal values; the certificate issued
+			with each shipment states the values of the actual lot.
+		</p>
+
+		<div class="overflow-x-auto">
+			<table class="w-full min-w-[880px] border-collapse text-left">
+				<caption class="sr-only">
+					Titanium grade comparison — tensile strength, yield strength and typical applications
+				</caption>
+				<thead>
+					<tr class="border-b-2 border-blue-dark3">
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">Grade</th>
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">Alloy</th>
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+							Tensile Strength
+						</th>
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">Yield Strength</th>
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+							Typical Applications
+						</th>
+						<th scope="col" class="py-12 text-p-sm font-bold text-blue-dark3">Specification</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						GRADE_ROWS.map((row) => (
+							<tr class="border-b border-gray-vlight align-top">
+								<th scope="row" class="py-14 pr-16 text-p-sm font-bold text-blue-dark3">
+									{row.grade}
+								</th>
+								<td class="py-14 pr-16 text-p-sm text-gray">{row.name}</td>
+								<td class="py-14 pr-16 text-p-sm text-gray">{row.tensile}</td>
+								<td class="py-14 pr-16 text-p-sm text-gray">{row.yieldStrength}</td>
+								<td class="py-14 pr-16 text-p-sm text-gray">{row.applications}</td>
+								<td class="py-14 text-p-sm text-gray-medium">{row.note}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+
+<section class="bg-white pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="qa-heading">
+	<div class="container-fluid">
+		<h2 id="qa-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			Inspection, testing and traceability
+		</h2>
+		<p class="mb-24 max-w-[860px] text-p text-gray">
+			Every batch is verified before it leaves the shop, and the paperwork travels with the
+			goods rather than being sent afterwards.
+		</p>
+
+		<ul class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:gap-24">
+			{
+				QA_ITEMS.map((item) => (
+					<li class="rounded-card border border-blue-70 p-24">
+						<h3 class="text-p-sm mb-8 font-bold text-blue-dark3">{item.title}</h3>
+						<p class="mb-12 text-p-sm leading-relaxed text-gray">{item.detail}</p>
+						<p class="text-p-sm font-medium text-blue">{item.standard}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

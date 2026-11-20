@@ -1,0 +1,109 @@
+---
+/**
+ * Hero — /industries/industrial-robotics/ 的页首（面包屑 + 标题 + 徽章 + 双 CTA + 一张 4:3 图）。
+ *
+ * 版式沿用 /industries/ 的紧凑文字页头（面包屑 / eyebrow / h1 / lead / 三枚徽章 /
+ * 一主一次两个按钮），右侧补一张**单张**实景图。
+ *
+ * 图片纪律（LAYOUT_RULES §2.1 / §2.2）
+ *   · 图框锁死 aspect-4/3 + object-cover → 永不拉伸、永不随文字变高；
+ *   · 分栏里**只放这一张图**，绝不为了"填满高度"再叠第二张。
+ */
+import Button from '@components/ui/Button.astro';
+
+interface Crumb {
+	label: string;
+	href?: string;
+}
+
+interface Props {
+	breadcrumb: Crumb[];
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	badges: { value: string; label: string }[];
+	cta: { label: string; href: string };
+	secondaryCta: { label: string; href: string };
+	image: { src: string; alt: string; width: number; height: number };
+}
+
+const { breadcrumb, eyebrow, heading, lead, badges, cta, secondaryCta, image } = Astro.props;
+---
+
+<header class="container-fluid mb-48 mt-40 wd:mb-64 wd:mt-48">
+	<nav
+		class="opacity-100 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+		aria-label="Breadcrumb"
+	>
+		<ol class="flex text-h6-s">
+			<li class="flex items-center">
+				<a href={breadcrumb[0].href} class="breadcrumb L0">
+					<svg
+						class="h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[2]"
+						aria-hidden="true"
+					>
+						<use href="/images/sprite.svg#home"></use>
+					</svg>
+					<span class="sr-only">{breadcrumb[0].label}</span>
+				</a>
+			</li>
+			{
+				breadcrumb.slice(1).map((crumb, i) => (
+					<li class="flex-shrink-1 flex-grow-0 truncate whitespace-nowrap">
+						<svg
+							class="h-[16px] w-[16px] inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#chevron-right"></use>
+						</svg>
+						{crumb.href ? (
+							<a href={crumb.href} class={`breadcrumb L${i + 1} whitespace-nowrap`}>
+								{crumb.label}
+							</a>
+						) : (
+							<span aria-current="page">{crumb.label}</span>
+						)}
+					</li>
+				))
+			}
+		</ol>
+	</nav>
+
+	<div class="grid grid-cols-1 items-center gap-32 lg:grid-cols-2 lg:gap-48">
+		<div class="min-w-0">
+			<p class="text-label mb-8 text-gray-medium lg:mb-12">{eyebrow}</p>
+			<h1 class="text-h1 mb-16 hyphens-auto text-blue-dark3 lg:mb-24">{heading}</h1>
+			<p class="text-lead mb-24 max-w-[720px] text-gray lg:mb-32">{lead}</p>
+
+			<ul class="mb-24 grid grid-cols-1 gap-12 sm:grid-cols-3 lg:mb-32 lg:gap-16">
+				{
+					badges.map((badge) => (
+						<li class="border border-blue-70 rounded-lg px-16 py-12">
+							<span class="text-h5 block text-blue-dark3">{badge.value}</span>
+							<span class="text-p-sm block text-gray-medium">{badge.label}</span>
+						</li>
+					))
+				}
+			</ul>
+
+			<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+				<Button href={cta.href}>{cta.label}</Button>
+				<Button variant="outline" href={secondaryCta.href}>{secondaryCta.label}</Button>
+			</div>
+		</div>
+
+		<figure class="aspect-4/3 w-full overflow-hidden rounded-2xl">
+			<img
+				src={image.src}
+				alt={image.alt}
+				width={image.width}
+				height={image.height}
+				loading="eager"
+				decoding="async"
+				fetchpriority="high"
+				class="aspect-4/3 h-full w-full object-cover"
+				style="aspect-ratio:4 / 3"
+			/>
+		</figure>
+	</div>
+</header>

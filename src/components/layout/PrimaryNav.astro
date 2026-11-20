@@ -30,13 +30,14 @@ const isActive = (href: string) =>
 <nav class:list={['flex items-center', className]} aria-label="Main">
 	<ul class="flex items-center gap-32">
 		{
-			NAVIGATION.map((item) => (
+			NAVIGATION.map((item, index) => (
 				<li class="relative">
 					<a
 						href={item.href}
 						data-nav-trigger={item.name}
 						aria-expanded="false"
 						aria-haspopup="true"
+						aria-controls={`mega-panel-${index}`}
 						class:list={[
 							'block border-b-2 border-transparent font-medium text-label transition-colors duration-300 hover:border-accent-rose',
 							isActive(item.href) ? 'border-accent-rose' : 'border-transparent',

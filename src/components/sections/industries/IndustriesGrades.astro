@@ -1,0 +1,40 @@
+---
+/**
+ * IndustriesGrades — 牌号对照表（规格清单用表格，不用大图）。
+ *
+ * 数据来自生成产物 MATERIALS（公开标称值），链接由数据层 materialHref()
+ * 给出：ti-gr2 / ti-gr5 走真实筛选参数，ti-gr9 / ti-gr23 落到牌号矩阵页，
+ * 绝不产生空筛选参数。
+ */
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import type { HubGradeRow } from '@data/industries';
+
+interface Props {
+	heading: string;
+	lead: string;
+	rows: HubGradeRow[];
+}
+
+const { heading, lead, rows } = Astro.props;
+---
+
+<section class="container-fluid-wide py-24 lg:py-32">
+	<SectionHeading size="h3" as="h2" class="mb-8">
+		{heading}
+	</SectionHeading>
+	<p class="text-p-sm mb-16 text-gray-medium lg:mb-24">{lead}</p>
+
+	<ul class="border-t border-blue-70">
+		{
+			rows.map((row) => (
+				<li class="grid grid-cols-1 gap-8 border-b border-blue-70 py-16 md:grid-cols-12 md:items-baseline md:gap-24 lg:py-20">
+					<a href={row.href} class="text-h5 md:col-span-4 text-blue-dark3 hover:underline">
+						{row.name}
+					</a>
+					<span class="text-p-sm text-blue-dark3 md:col-span-4">{row.spec}</span>
+					<span class="text-p-sm text-gray md:col-span-4">{row.use}</span>
+				</li>
+			))
+		}
+	</ul>
+</section>

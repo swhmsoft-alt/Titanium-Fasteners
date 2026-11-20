@@ -58,9 +58,16 @@ export interface Standard {
 	iso: string;
 	/** 标准标题。 */
 	title: string;
-	/** 该标准对应的产品类型（screw / bolt / nut / washer）—— 导入模板据此推导 type。 */
+	/** 该标准对应的产品类型（screw / bolt / nut / washer / stud）—— 导入模板据此推导 type。 */
 	type: string;
 	notes?: string;
+	/**
+	 * "1" = 由批量导入自动登记的标准，**待人工核对**标准号与标题。
+	 *
+	 * 自动登记让"清单里有、字典里没有"的标准不阻断上架；核对后应把
+	 * 标准号、标题补齐并把 auto 改成 0。
+	 */
+	auto?: string;
 }
 
 /** 材质牌号。 */
@@ -163,18 +170,29 @@ export interface CategoryCardView {
 	alt: string;
 }
 
-/** 产品卡（品类页右侧命中列表的一卡）。 */
+/**
+ * 产品卡（品类页右侧命中列表的一卡）。
+ *
+ * 2026-11-14 客户决策：**卡片只渲染「产品名 + Standard」两项** ——
+ * 描述与材质属于详情页信息，列在卡片上会让一屏 15 张卡变成文字墙。
+ * 因此 ProductCard.astro 只用 title + standards + image/alt/href。
+ *
+ * sku / description / material 仍保留在视图里：族页与询盘表单要取这些值，
+ * 视图是数据超集，卡片只是不再渲染它们。
+ */
 export interface ProductCardView {
-	/** 粗体展示的标题（参考站是 "BN 272"，我们是族名）。 */
+	/** 族级 SKU（TI-<FAMILY_ID>）—— 卡片不再渲染，族页/询盘使用。 */
 	sku: string;
+	/** 标准标签（"DIN 912"）—— 卡片上单独一行展示。 */
 	standards: string[];
+	/** 族名，卡片主标题。 */
 	title: string;
 	href: string;
 	image: string;
 	alt: string;
-	/** 粗体描述，3 行截断。 */
+	/** 族描述 —— 卡片不再渲染，详情页使用。 */
 	description: string;
-	/** 材质 / 表面，2 行截断。 */
+	/** 材质 / 表面 —— 卡片不再渲染，详情页使用。 */
 	material: string;
 	/** draft = 不进 sitemap；published = 对外可见。 */
 	status: 'draft' | 'published';
@@ -234,9 +252,9 @@ export interface Family {
 	/**
 	 * 产品类型，决定矩阵的列结构。
 	 *
-	 * **派生** —— 由 standards 的第一个 id 在 standards.csv 里的 type 得出，
-	 * 与导入模板「第一个标准决定产品类型」同一条规则。不落 CSV：存了就会
-	 * 和派生值打架。
+	 * **显式** —— 来自 families.csv 的 type 列（screw / bolt / nut / washer / stud …）。
+	 * 不再由 standards[0] 派生：产品可以没有标准，也可以挂多个标准而类型不变 ——
+	 * 标准只是规格矩阵的一个维度，不是产品类型的来源。
 	 */
 	type: string;
 	/** 所属分类 id，对应 CATEGORIES[].id。 */

@@ -1,0 +1,83 @@
+---
+/**
+ * GradeSpecAndQa — 牌号规格表 + 出厂检验背书。
+ *
+ * 两块都是「抽象清单」，按 LAYOUT_RULES 用紧凑表格与网格，不用大图。
+ * 规格数值来自 MATERIALS（materials.csv 生成产物）；检验项目与标准页同源。
+ */
+import { QA_ITEMS } from '@data/standards-hub';
+import type { GradeSpecRow } from '@data/grade-hub';
+
+interface Props {
+	/** 牌号名。 */
+	grade: string;
+	/** 规格行。 */
+	specRows: GradeSpecRow[];
+}
+
+const { grade, specRows } = Astro.props;
+---
+
+<section class="bg-blue-light/40 pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="grade-spec-heading">
+	<div class="container-fluid">
+		<h2 id="grade-spec-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			{grade} material specification
+		</h2>
+		<p class="mb-24 max-w-[860px] text-p text-gray">
+			The values below are the published nominal values for {grade}. The certificate issued
+			with each shipment states the values of the actual lot, including the original melt
+			heat number.
+		</p>
+
+		<div class="overflow-x-auto">
+			<table class="w-full min-w-[720px] border-collapse text-left">
+				<caption class="sr-only">
+					{grade} material properties — proof strength, tensile strength, density, corrosion
+					rating and maximum service temperature
+				</caption>
+				<thead>
+					<tr class="border-b-2 border-blue-dark3">
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">Property</th>
+						<th scope="col" class="py-12 text-p-sm font-bold text-blue-dark3">Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						specRows.map((row) => (
+							<tr class="border-b border-gray-vlight align-top">
+								<th scope="row" class="py-14 pr-16 text-p-sm font-bold text-blue-dark3">
+									{row.label}
+								</th>
+								<td class="py-14 text-p-sm text-gray">{row.value}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+
+<section class="bg-white pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="grade-qa-heading">
+	<div class="container-fluid">
+		<h2 id="grade-qa-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			Inspection, testing and traceability
+		</h2>
+		<p class="mb-24 max-w-[860px] text-p text-gray">
+			Every batch is verified before it leaves the shop, and the paperwork travels with the
+			goods rather than being sent afterwards.
+		</p>
+
+		<ul class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:gap-24">
+			{
+				QA_ITEMS.map((item) => (
+					<li class="rounded-card border border-blue-70 p-24">
+						<h3 class="text-p-sm mb-8 font-bold text-blue-dark3">{item.title}</h3>
+						<p class="mb-12 text-p-sm leading-relaxed text-gray">{item.detail}</p>
+						<p class="text-p-sm font-medium text-blue">{item.standard}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

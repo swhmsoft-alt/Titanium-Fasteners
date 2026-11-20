@@ -1,0 +1,244 @@
+---
+
+/**
+ * SolutionBand — the page-local "figure + text + point cards + facts" band.
+ *
+ * WHY A NEW COMPONENT
+ * -------------------
+ * The existing blocks could not be reused as-is:
+ *   · ServiceFeature.astro  — owned by /services/, its contract is fixed there
+ *   · ProductCallout.astro  — direction is hard-coded inside the flex order
+ *   · SolutionCards.astro   — overlay tiles, no room for factual body copy
+ * This component is page-local: it never touches global CSS, BaseLayout,
+ * Header, Footer or the main navigation.
+ *
+ * LAYOUT CONTRACT (no white holes)
+ * --------------------------------
+ *   · ONE image per band, in a fixed 4:3 frame with object-cover, so the
+ *     media column never grows a stack of pictures just to fill the row.
+ *   · The two columns are vertically centred against each other
+ *     (items-center), so the image sits optically level with the text and
+ *     leaves no empty band underneath.
+ *   · The text column is compact: one lead paragraph, a bold bullet list
+ *     of single-line technical takeaways, then the CTA pair.
+ *   · The point cards are one grid with a column count derived from the
+ *     number of cards, so a row never leaves a single orphan card.
+ *   · Facts render as a label/value table spanning the full width.
+ */
+import Figure from '@components/ui/Figure.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import RichText from '@components/ui/RichText.astro';
+import Button from '@components/ui/Button.astro';
+import type { SolutionBand } from '@data/product-solutions';
+
+interface Props {
+	band: Band;
+}
+
+/** The band shape as it arrives from the data layer (readonly tuples). */
+type Band = {
+	[K in keyof SolutionBand]: SolutionBand[K] extends readonly (infer U)[]
+		? readonly U[]
+		: SolutionBand[K];
+};
+
+const { band } = Astro.props;
+
+/** Column count for the point row — 1 card → 1, 2 → 2, 3 → 3, 4+ → 4. */
+const cardCols = Math.max(1, Math.min(band.points.length, 4));
+const cardColsClass =
+	cardCols === 2
+		? 'md:grid-cols-2 lg:grid-cols-2'
+		: cardCols === 3
+			? 'md:grid-cols-3 lg:grid-cols-3'
+			: cardCols === 4
+				? 'sm:grid-cols-2 lg:grid-cols-4'
+				: 'md:grid-cols-1';
+---
+
+<article class="container-fluid-wide py-24 lg:py-40" id={band.id}>
+	<div class="grid grid-cols-1 gap-32 lg:grid-cols-2 lg:items-center lg:gap-48">
+		{
+			/* ── Media column — ONE image, fixed 4:3 frame ── */
+			band.images.length > 0 && (
+				<div class:list={['sb-media', band.reverse ? 'lg:order-2' : '']}>
+					<figure class="sb-media-frame">
+						<Figure
+							src={band.images[0].src}
+							alt={band.images[0].alt}
+							ratio={1.334}
+							class="rounded-2xl"
+						/>
+					</figure>
+				</div>
+			)
+		}
+
+		{
+			/* ── Text column ── */
+			<div class:list={['sb-text', band.reverse ? 'lg:order-1' : '']}>
+				<SectionHeading size="h3" as="h2" eyebrow={band.eyebrow} class="mb-16 lg:mb-24">
+					{band.heading}
+				</SectionHeading>
+
+				<p class="text-lead mb-16 text-gray lg:mb-24">{band.lead}</p>
+
+				{
+					/* ── Bold, single-line technical takeaways ── */
+					band.highlights && band.highlights.length > 0 && (
+						<ul class="sb-highlights mb-24 lg:mb-32">
+							{band.highlights.map((highlight) => (
+								<li class="sb-highlight">
+									<span class="sb-highlight-mark" aria-hidden="true" />
+									<span class="sb-highlight-text">
+										<strong class="font-bold text-blue-dark3">{highlight.label}</strong>
+										{highlight.text ? ` — ${highlight.text}` : null}
+									</span>
+								</li>
+							))}
+						</ul>
+					)
+				}
+
+				{
+					/* ── Optional prose paragraphs (bands that still carry them) ── */
+					band.body.length > 0 && (
+						<RichText class="mb-24 lg:mb-32">
+							{band.body.map((paragraph) => (
+								<p class="pb-12 text-gray lg:pb-20">{paragraph}</p>
+							))}
+						</RichText>
+					)
+				}
+
+				<div class="flex flex-wrap items-center gap-16 lg:gap-24">
+					<Button href={band.cta.href}>{band.cta.label}</Button>
+					{
+						band.secondaryCta && (
+							<a
+								href={band.secondaryCta.href}
+								class="text-button text-blue hover:underline"
+							>
+								{band.secondaryCta.label}
+							</a>
+						)
+					}
+				</div>
+			</div>
+		}
+	</div>
+
+	{
+		/* ── Point cards — one grid, column count derived from the card count ── */
+		band.points.length > 0 && (
+			<ul class:list={['grid grid-cols-1 gap-24 mt-32 lg:gap-32 lg:mt-48', cardColsClass]}>
+				{band.points.map((point) => (
+					<li>
+						<a
+							href={point.href}
+							class="group flex h-full flex-col rounded-lg border border-blue-70 p-16 transition-colors duration-300 hover:border-blue-dark3 lg:p-20"
+						>
+							{point.icon && (
+								<figure class="mb-12 h-40 w-40 shrink-0">
+									<img
+										src={point.icon}
+										alt=""
+										width="40"
+										height="40"
+										loading="lazy"
+										decoding="async"
+										class="h-full w-full object-contain"
+									/>
+								</figure>
+							)}
+							<p class="text-label mb-8 text-blue-dark3">{point.label}</p>
+							<h3 class="text-h5 mb-8 text-blue-dark3 group-hover:underline">
+								{point.heading}
+							</h3>
+							<p class="text-p-sm text-gray">{point.body}</p>
+						</a>
+					</li>
+				))}
+			</ul>
+		)
+	}
+
+	{
+		/* ── Facts — full-width label/value table ── */
+		band.facts.length > 0 && (
+			<dl class="mt-32 border-t border-blue-70 lg:mt-48">
+				{band.facts.map((fact) => (
+					<div class="grid grid-cols-1 gap-8 border-b border-blue-70 py-16 md:grid-cols-3 md:gap-24 lg:py-24">
+						<dt class="text-p-sm font-bold text-blue-dark3">{fact.label}</dt>
+						<dd class="text-p-sm text-gray md:col-span-2">{fact.value}</dd>
+					</div>
+				))}
+			</dl>
+		)
+	}
+</article>
+
+<style>
+	/*
+	 * Media column
+	 * ------------
+	 * ONE image per band. The frame keeps a 4:3 ratio at every breakpoint
+	 * and the picture is object-cover inside it, so the media column has a
+	 * fixed, predictable height and never leaves an empty band below the
+	 * picture. On desktop the grid centres both columns against each other,
+	 * which keeps the image optically level with the text block.
+	 */
+	.sb-media {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.sb-media-frame {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+	}
+
+	/*
+	 * Bullet list — a small square marker plus a bold technical term.
+	 * Compiled from the local scale (1px = 1 unit), so the marker is 10px.
+	 */
+	.sb-highlights {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.sb-highlight {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+	}
+
+	.sb-highlight-mark {
+		flex: none;
+		width: 10px;
+		height: 10px;
+		margin-top: 8px;
+		background-color: var(--color-blue);
+	}
+
+	.sb-highlight-text {
+		font-size: 1rem;
+		line-height: 160%;
+		color: var(--color-gray);
+	}
+
+	@media (min-width: 1024px) {
+		.sb-highlights {
+			gap: 12px;
+		}
+
+		.sb-highlight-text {
+			font-size: 1.125rem;
+		}
+	}
+</style>
+

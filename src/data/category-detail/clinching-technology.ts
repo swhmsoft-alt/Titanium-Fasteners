@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/clinching-technology.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Clinching Technology - Self-Clinching Fasteners | Bossard Group', description: 'Discover the world of self-clinching fasteners, including self-clinching nuts, self-clinching studs, standoffs, pins, insertion presses, and more. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Clinching Technology' },
 		],
 		eyebrow: 'Product Categories',
@@ -25,7 +25,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		imageWidth: 634,
 		imageHeight: 507,
 		buttons: [
-			{ label: 'Go to eShop', kind: 'link', variant: 'primary', href: '/global-en/eshop/c/02.100/' },
+			{ label: 'View Products', kind: 'link', variant: 'primary', href: '/products/02.100/' },
 			{ label: 'Contact Us', kind: 'dialog', variant: 'secondary' },
 		],
 	},
@@ -56,7 +56,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Clinching Technology Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/clinching-technology/haeger/',
+				href: '/product-solutions/product-categories-and-brands/clinching-technology/haeger/',
 				image: '/images/category-detail-clinching-technology/03-a-red-haeger-insertion-press-for-installing-self.webp',
 				alt: 'A red Haeger insertion press for installing self-clinching fasteners, model 824MSPe.',
 				label: 'Insertion Presses',
@@ -64,7 +64,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Hydraulic-based inserter systems for the installation of self-clinching fasteners. Precise and reliable.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/clinching-technology/micropem/',
+				href: '/product-solutions/product-categories-and-brands/clinching-technology/micropem/',
 				image: '/images/category-detail-clinching-technology/04-three-ts4-micropem-tackscrew-fasteners-for-sheet.webp',
 				alt: 'Three TS4™ microPEM® TackScrew™ fasteners for sheet-to-sheet fastening on white background',
 				label: 'Self-Clinching Fasteners',
@@ -72,7 +72,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Micro fasteners by PEM® are ideal for compact electronic applications, such as computers and laptops, tablets, wearables, smartphones and other devices.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/clinching-technology/pem/',
+				href: '/product-solutions/product-categories-and-brands/clinching-technology/pem/',
 				image: '/images/category-detail-clinching-technology/05-a-pem-self-clinching-nut-on-a-white-background.webp',
 				alt: 'A PEM® self-clinching nut  on a white background.',
 				label: 'Self-Clinching Fasteners',
@@ -80,7 +80,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'The clinching technology pioneer offers all types of self-clinching fasteners such as nuts, studs, or standoffs.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/clinching-technology/pemserter/',
+				href: '/product-solutions/product-categories-and-brands/clinching-technology/pemserter/',
 				image: '/images/category-detail-clinching-technology/06-a-blue-pemserter-4-insertion-machine-for-self-cl.webp',
 				alt: 'A blue PEMSERTER 4 insertion machine for self-clinching fasteners',
 				label: 'Insertion Machines',
@@ -89,19 +89,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/02.100/',
+				href: '/products/02.100/',
 				image: '/images/category-detail-clinching-technology/07-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Clinching Technology',
 				description: 'Browse our large assortment of self-clinching fasteners and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-clinching-technology/08-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -109,7 +109,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-clinching-technology/09-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

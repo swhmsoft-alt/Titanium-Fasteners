@@ -1,0 +1,60 @@
+---
+/**
+ * ProductFigure — 产品 / 分类图的受约束媒体框（电商级）。
+ *
+ * 为什么不再直接写 <img class="aspect-3/2">：
+ *   客户交付的原图比例杂乱（960×1100 竖、1200×896 横、1536×1536 方、
+ *   960×960 方）。裸 <img> 不带 object-fit 时会被强行拉伸到容器比例 ——
+ *   螺栓被压扁是必然结果，这就是「视觉太差」的根因，不是配色问题。
+ *
+ * 规则（三条同时成立才合格）：
+ *   1. 容器比例由调用方给定（aspect-*），图永不改变形状。
+ *   2. 图以 object-contain 完整放进容器，绝不裁切、绝不拉伸 ——
+ *      客户图是白底产品照，裁切会切掉零件。
+ *   3. 容器白底 + 细边框 + 圆角：白底照片与容器同色，边界由边框给出，
+ *      不再用灰底（#f3f3f3）去框白底照片 —— 那是最廉价的一档。
+ *
+ * 留白（p-24）让主体与边框之间有呼吸位，读起来像商品图而不是截图。
+ */
+interface Props {
+	/** 图片路径；空串 = 缺图 → 渲染占位底纹而不是破图。 */
+	src: string;
+	alt: string;
+	/** 首屏 LCP 图用 eager + high。 */
+	priority?: boolean;
+	class?: string;
+}
+
+const { src, alt, priority = false, class: className } = Astro.props;
+const PLACEHOLDER = '/placeholder/product-ratio-0-75.svg';
+const hasImage = Boolean(src);
+---
+
+<figure
+	class:list={[
+		'relative overflow-hidden rounded-card border border-black/10 bg-white',
+		className,
+	]}
+>
+	<div class="absolute inset-0 flex items-center justify-center p-24">
+		{
+			hasImage ? (
+				<img
+					src={src}
+					alt={alt}
+					class="h-full w-full object-contain"
+					loading={priority ? 'eager' : 'lazy'}
+					decoding="async"
+					fetchpriority={priority ? 'high' : undefined}
+				/>
+			) : (
+				<img
+					src={PLACEHOLDER}
+					alt=""
+					aria-hidden="true"
+					class="h-full w-full object-contain opacity-30"
+				/>
+			)
+		}
+	</div>
+</figure>

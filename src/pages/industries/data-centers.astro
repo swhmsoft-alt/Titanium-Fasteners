@@ -1,0 +1,18 @@
+---
+/**
+ * /industries/data-centers/ — Data Centers 钛紧固件应用页。
+ *
+ * 与 /industries/industrial-robotics/ 同构：同一套应用页外壳
+ * (@components/sections/industries-application/ApplicationPage)，只换数据。
+ *
+ * 路由归属
+ * --------
+ * 该 slug 原先由 CMS 行业页（[slug].astro 的 loader map）产出，那是参考站
+ * 抓取产物、仍带参考品牌口吻。改由本页（静态路由）接管，`[slug].astro` 的
+ * loader map 已移除 data-centers，两者不会同时产出同一路径。
+ */
+import ApplicationPage from '@components/sections/industries-application/ApplicationPage.astro';
+import { DATA_CENTERS } from '@data/industries-data-centers';
+---
+
+<ApplicationPage page={DATA_CENTERS} />

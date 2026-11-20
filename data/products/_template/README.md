@@ -11,18 +11,19 @@ npm run products -- bulk-import data/products/_template/product-import.csv      
 
 ---
 
-## 8 列
+## 8 列（+ 可选第 9 列 `type`）
 
 | 列 | 必填 | 说明 |
 | --- | --- | --- |
 | `name` | 是 | 产品名称。它决定 family_id 与 SKU，所以**改名 = 换号**。 |
 | `category` | 是 | 分类 id，见下面的对照表。 |
-| `standards` | 是 | 执行标准 id，多个用 `\|` 分隔。**第一个决定产品类型**。 |
+| `standards` | 否 | 执行标准 id，多个用 `\|` 分隔。DIN 号 / ISO 号都能写（如 `iso-4017`），导入时自动归一到 `standards.csv` 的规范 id。**字典里没有的标准会自动登记并标 `auto=1`（待人工核对），不阻断导入。** 留空 = 无标准产品。 |
 | `sizes` | 是 | 规格清单，多个用 `\|` 分隔，见下面的迷你语法。 |
 | `materials` | 是 | 材质 id，多个用 `\|` 分隔。 |
 | `finishes` | 是 | 表面处理 id，多个用 `\|` 分隔。 |
 | `description` | 否 | 一段话，会进产品页与 meta description。 |
 | `image` | 否 | **客户自己的图片文件名**（如 `BN-272-01.jpg`），多张用 `\|` 分隔 —— 见下面的「图片怎么接进来」。 |
+| `type` | 否 | **可选第 9 列**：产品类型（screw / bolt / nut / washer / stud …）。留空则按 `standards` 第一个 id 推导，再退到分类默认。**只有当产品类型与标准对不上时才需要写。** |
 
 多值字段一律用 `|` 分隔 —— 与 CSV 内部写法一致，不引入第二种分隔符。
 
@@ -30,16 +31,17 @@ npm run products -- bulk-import data/products/_template/product-import.csv      
 
 ## sizes 迷你语法
 
-按产品类型解析（类型由 `standards` 决定）：
+按产品类型解析（类型由 `type` 列 / `standards` / 分类依次决定）：
 
 | 类型 | 写法 | 含义 | 例 |
 | --- | --- | --- | --- |
-| 螺钉 / 螺栓 | `螺纹x长度` | M4 螺纹，长 6mm | `M4x6` |
+| 螺钉 / 螺栓 / 双头螺柱 | `螺纹x长度` | M4 螺纹，长 6mm | `M4x6` |
 | 螺母 | `螺纹x对边x厚度` | M4 螺纹，对边 7，厚 4 | `M4x7x4` |
 | 垫片 | `外径x内径x厚度` | 外径 5，内径 10，厚 1 | `5x10x1` |
 
 **工程尺寸不用你填** —— d1/d2/s/k/b/t/m/h 全部从 `data/products/dimension-library.csv`
-按 (标准 + 关键参数) 查出来。库里没有这一条，导入会明确报错并指出缺哪一行。
+按 (标准 + 关键参数) 查出来。**库里没有这一条也不阻断**：该规格按"螺纹 × 长度"先上架，
+并在导入结果里提示哪一行缺工程尺寸（工程尺寸只能由抽取器补齐，不要手填）。
 
 ---
 
@@ -47,7 +49,6 @@ npm run products -- bulk-import data/products/_template/product-import.csv      
 
 | 字段 | 怎么来的 |
 | --- | --- |
-| `type` | `standards` 第一个 id 在 `standards.csv` 里的 `type` |
 | `family_id` | `name` 的 kebab 化（撞号自动加 `-2` / `-3`） |
 | SKU | `TI-` + family_id 大写，如 `TI-HEX-SOCKET-HEAD-CAP-SCREW` |
 | 图 / CAD / PDF | 图由第 8 列认领改名；CAD / PDF 按 `<SKU>-<原名>.<ext>` 放盘 |

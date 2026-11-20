@@ -13,7 +13,10 @@
     "preflight": "node scripts/preflight.mjs",
     "budget": "node scripts/lib/session-budget.mjs status",
     "gen:products": "node scripts/gen-products.mjs",
-    "products": "node scripts/products.mjs"
+    "products": "node scripts/products.mjs",
+    "tokens:verify": "node scripts/color-tokens.mjs verify",
+    "tokens:restore": "node scripts/color-tokens.mjs restore",
+    "tokens:snapshot": "node scripts/color-tokens.mjs snapshot"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'bigHead® Bonding Fasteners | Bossard Group', description: 'bigHead® fasteners are the ideal solution to create a secure fixing point in composite or plastic materials – without any holes, punching, or drilling. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'bigHead' },
 		],
 		eyebrow: 'Product Categories',
@@ -40,15 +40,15 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/02.600/',
+				href: '/products/02.600/',
 				image: '/images/category-detail-embedding-and-surface-bonding-fasteners/08-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy bigHead® Fasteners',
 				description: 'Browse our large assortment of bigHead® embedding and surface bonding fasteners and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-embedding-and-surface-bonding-fasteners/09-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -56,7 +56,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-embedding-and-surface-bonding-fasteners/10-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

@@ -1,0 +1,170 @@
+---
+/**
+ * ServiceFeature — `/services/` 四大主题的「图 + 文」交替模块。
+ *
+ * WHY A NEW COMPONENT
+ * -------------------
+ * 站内现有的图文组件没有一个支持**左右交替**：
+ *   · ServiceGrid.astro   —— 深色渐变大图卡，卡内叠加标题（不是内容型图文块）
+ *   · MediaCalloutPair    —— 双图 + 覆盖文字，绝对定位 + 硬编码像素（不响应式）
+ *   · ProductCallout      —— 左图右卡，方向写死在内部 flex 顺序里
+ *   · Card.astro          —— 202px 缩略图 + 文字（卡片列表，不是主题块）
+ * 所以本页新增这一个**页面局部**组件，只做一件事：把一张图和一段文字
+ * 按「左图右文 / 右图左文」交替排版。
+ *
+ * REUSE CONTRACT
+ * --------------
+ * 内部完全复用既有 UI 组件，不复制样式：
+ *   Figure（固定比例图） · SectionHeading（标题） · RichText（正文列） · Button（CTA）
+ * 颜色、间距、字号全部走既有 token（text-h3 / text-lead / text-p / container-fluid …），
+ * **不新增任何全局 CSS，不触碰 BaseLayout / Header / Footer / MegaMenu**。
+ *
+ * IMAGE NULLABLE
+ * --------------
+ * image 为 null 时**只渲染文字栏**（占满整行），绝不渲染 <img src="">，
+ * 也不产生 404 —— 用于客户实拍图尚未到位的主题。
+ */
+import Figure from '@components/ui/Figure.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import RichText from '@components/ui/RichText.astro';
+import Button from '@components/ui/Button.astro';
+import type { ServiceTheme } from '@data/services';
+
+interface Props {
+	theme: ServiceTheme;
+	/** 主题尾部的 CTA；缺省则不渲染按钮。 */
+	cta?: { label: string; href: string };
+}
+
+const { theme, cta } = Astro.props;
+
+/**
+ * 子卡片在桌面端的等宽列数 —— 由卡片数量决定（2→2 列、3→3 列、4→4 列）。
+ * 保证所有卡片落在同一行水平对齐，不再折行留下单张孤儿卡。
+ * 列类名写死为字面量，Tailwind 才能扫描到并生成对应规则。
+ */
+const cardCols = Math.max(1, Math.min(theme.points.length, 4));
+const cardColsClass =
+	cardCols === 2
+		? 'md:grid-cols-2 lg:grid-cols-2'
+		: cardCols === 3
+			? 'md:grid-cols-3 lg:grid-cols-3'
+			: 'md:grid-cols-2 lg:grid-cols-4';
+---
+
+<article class="container-fluid-wide py-24 lg:py-40" id={theme.id}>
+	{/* ── Top Row：主图文区（左图右文 / 右图左文） ── */}
+	<div class:list={['grid grid-cols-1 gap-32 lg:gap-48', theme.image ? 'lg:grid-cols-2' : '']}>
+		{/* 图栏 —— reverse 时排到第二列 */}
+		{
+			theme.image && (
+				<figure class:list={['sf-media', theme.reverse ? 'lg:order-2' : '']}>
+					<Figure
+						src={theme.image.src}
+						alt={theme.image.alt}
+						ratio={1.334}
+						fill
+						class="rounded-2xl"
+					/>
+				</figure>
+			)
+		}
+
+		{/* 文栏 —— 无图时独占整行 */}
+		<div class:list={[theme.reverse ? 'lg:order-1' : '']}>
+			<SectionHeading size="h3" as="h2" eyebrow={theme.eyebrow} class="mb-16 lg:mb-24">
+				{theme.heading}
+			</SectionHeading>
+
+			<p class="text-lead mb-16 text-gray lg:mb-24">{theme.lead}</p>
+
+			<RichText class="mb-24 lg:mb-32">
+				{theme.body.map((paragraph) => <p class="pb-12 text-gray lg:pb-20">{paragraph}</p>)}
+			</RichText>
+
+			{/* 主 CTA —— 留在上半部分的主图文区内 */}
+			{cta && (
+				<div class="mt-24 lg:mt-32">
+					<Button href={cta.href}>{cta.label}</Button>
+				</div>
+			)}
+		</div>
+	</div>
+
+	{/* ── Bottom Row：全宽子卡片区（横跨整个区块宽度，位于主图文区正下方） ── */}
+	<ul class:list={['grid grid-cols-1 gap-24 mt-32 lg:gap-32 lg:mt-48', cardColsClass]}>
+		{
+			theme.points.map((point) => (
+				<li>
+					<a
+						href={point.href}
+						class="group flex h-full flex-col rounded-lg border border-blue-70 p-16 transition-colors duration-300 hover:border-blue-dark3 lg:p-20"
+					>
+						{point.icon && (
+							<figure class="mb-12 h-40 w-40 shrink-0">
+								<img
+									src={point.icon}
+									alt=""
+									width="40"
+									height="40"
+									loading="lazy"
+									decoding="async"
+									class="h-full w-full object-contain"
+								/>
+							</figure>
+						)}
+						<p class="text-label mb-8 text-blue-dark3">{point.label}</p>
+						<h3 class="text-h5 mb-8 text-blue-dark3 group-hover:underline">{point.heading}</h3>
+						<p class="text-p-sm text-gray">{point.body}</p>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	{/* 事实表 —— label / value 两列，可落到物证的说法 */}
+	{
+		theme.facts && theme.facts.length > 0 && (
+			<dl class="mt-32 border-t border-blue-70 lg:mt-48">
+				{theme.facts.map((fact) => (
+					<div class="grid grid-cols-1 gap-8 border-b border-blue-70 py-16 md:grid-cols-3 md:gap-24 lg:py-24">
+						<dt class="text-p-sm font-bold text-blue-dark3">{fact.label}</dt>
+						<dd class="text-p-sm text-gray md:col-span-2">{fact.value}</dd>
+					</div>
+				))}
+			</dl>
+		)
+	}
+</article>
+
+<style>
+	/*
+	 * Top Row 图栏（.sf-media）
+	 * ------------------------
+	 * 桌面端（≥1024px）：图栏作为 grid item 拉伸到与右侧文字列**等高**，
+	 *   内部 Figure 用 fill 模式铺满并 object-cover 裁切 →
+	 *   图片高度自适应，**左侧图片下方不再出现大空白**。
+	 * 移动端（<1024px）：单列布局，按 4:3 比例占位，避免图片被压扁。
+	 */
+	.sf-media {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+	}
+
+	/* Figure 的根元素绝对定位铺满图栏（fill 模式）。 */
+	.sf-media :global(figure) {
+		position: absolute;
+		inset: 0;
+		height: auto;
+		width: auto;
+	}
+
+	@media (min-width: 1024px) {
+		.sf-media {
+			aspect-ratio: auto;
+			height: 100%;
+			min-height: 320px;
+		}
+	}
+</style>

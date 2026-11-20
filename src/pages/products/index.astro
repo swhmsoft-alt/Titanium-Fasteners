@@ -1,0 +1,146 @@
+---
+/**
+ * /products/ — 产品总览（Phase B 自有内容）。
+ *
+ * 版式复用已验收的品类页模板：分类横滑轨 + 左侧筛选栏 + 右侧族卡网格。
+ * 数据来自 data/products/*.csv（生成产物），不照抄参考站文案。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import CategoryCardRail from '@components/sections/category/CategoryCardRail.astro';
+import ProductGrid from '@components/sections/category/ProductGrid.astro';
+import { SITE } from '@config/site';
+import { ALL_PRODUCTS, FILTER_GROUPS, HAS_PUBLISHED, PRODUCT_ROUTE_BASE } from '@data/products';
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = PRODUCT_ROUTE_BASE;
+
+const description =
+	'Titanium fasteners and titanium components — screws, bolts, nuts and washers in ' +
+	'grade 2 and grade 5, manufactured to DIN and ISO standards, cut to order.';
+
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		name: 'Titanium Fasteners — Product Range',
+		description,
+		url: new URL(canonicalPath, SITE.url).href,
+		mainEntity: {
+			'@type': 'ItemList',
+			itemListElement: ALL_PRODUCTS.map((p, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				name: p.title,
+				url: new URL(p.href, SITE.url).href,
+			})),
+		},
+	},
+];
+---
+
+<BaseLayout
+	title="Titanium Fasteners — Product Range"
+	description={description}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	{!HAS_PUBLISHED && <meta name="robots" content="noindex, nofollow" />}
+
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<div class="container-fluid pt-16 lg:pt-24">
+			<nav
+				class="opacity-100 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+				aria-label="Breadcrumb"
+			>
+				<ol class="flex text-p-l">
+					<li class="flex items-center">
+						<a href="/">
+							<svg
+								class="h-16 w-16 fill-gray-medium stroke-gray-medium stroke-[2]"
+								aria-hidden="true"
+							>
+								<use href="/images/sprite.svg#home"></use>
+							</svg>
+							<span class="sr-only">Home</span>
+						</a>
+					</li>
+					<li class="flex items-center">
+						<svg
+							class="h-16 w-16 inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#chevron-right"></use>
+						</svg>
+						<span aria-current="page">Products</span>
+					</li>
+				</ol>
+			</nav>
+
+			<h1 class="text-h4 mb-12 text-blue-dark3 md:mb-16">Titanium Fasteners</h1>
+			<p class="mb-24 max-w-[760px] text-p text-gray">{description}</p>
+
+			<section class="pb-48 lg:pb-56">
+				<CategoryCardRail />
+			</section>
+
+			{/*
+				牌号入口 —— 指向两个牌号落地页。
+				筛选深链（?material=）仍留在牌号落地页的次要 CTA 里，
+				这里给出的是带物性表与标准对照的落地页，不是裸筛选结果。
+			*/}
+			<section class="pb-48 lg:pb-56" aria-labelledby="products-grades-heading">
+				<h2 id="products-grades-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+					By titanium grade
+				</h2>
+				<p class="mb-24 max-w-[860px] text-p text-gray">
+					Both grades are cut from certified bar stock. Open a grade for its material
+					properties, the standards cut in that grade, the available families and the RFQ
+					form.
+				</p>
+				<ul class="grid gap-16 md:grid-cols-2 lg:gap-24">
+					{
+						[
+							{
+								title: 'Titanium Grade 2 Fasteners',
+								href: '/products/grade-2-fasteners/',
+								note: 'Commercially pure titanium — chemical, marine and desalination service.',
+							},
+							{
+								title: 'Titanium Grade 5 Fasteners',
+								href: '/products/grade-5-fasteners/',
+								note: 'Ti-6Al-4V — aerospace, motorsport and high-vibration assemblies.',
+							},
+						].map((card) => (
+							<li class="rounded-card border border-black/10 bg-white p-24 lg:p-32">
+								<a href={card.href} class="text-p-s font-bold text-blue-dark3 underline underline-offset-4 hover:text-blue">
+									{card.title}
+								</a>
+								<p class="mt-8 text-p-sm leading-relaxed text-gray">{card.note}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<div class="md:pt-20 lg:pt-24">
+				<ProductGrid
+					products={ALL_PRODUCTS}
+					filterGroups={FILTER_GROUPS}
+					productCount={ALL_PRODUCTS.length}
+				/>
+			</div>
+		</div>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

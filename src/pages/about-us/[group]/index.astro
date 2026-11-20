@@ -1,0 +1,71 @@
+---
+/**
+ * /about-us/<group>/ — 分组页（Factory / Quality / Supply 三张）。
+ *
+ * 每张分组页列出本列的 3 个条目，链接到各自的详情页；
+ * 面包屑 3 层：Home / About us / <分组>。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import AboutUsHero from '@components/sections/about-us/AboutUsHero.astro';
+import AboutUsItemGrid from '@components/sections/about-us/AboutUsItemGrid.astro';
+import AboutUsCta from '@components/sections/about-us/AboutUsCta.astro';
+import { ABOUT_US_GROUPS, type AboutUsGroup } from '@data/about-us';
+
+export function getStaticPaths() {
+	return ABOUT_US_GROUPS.map((group) => ({
+		params: { group: group.slug },
+		props: { group },
+	}));
+}
+
+interface Props {
+	group: AboutUsGroup;
+}
+
+const { group } = Astro.props as Props;
+const currentPathname = Astro.url.pathname;
+
+const hero = {
+	breadcrumb: [
+		{ label: 'Home', href: '/' },
+		{ label: 'About us', href: '/about-us/' },
+		{ label: group.heading },
+	],
+	eyebrow: 'About us',
+	heading: group.heading,
+	lead: group.description,
+};
+
+const seo = {
+	title: group.heading,
+	description: group.description,
+};
+---
+
+<BaseLayout
+	title={seo.title}
+	description={seo.description}
+	canonicalPath={`/about-us/${group.slug}/`}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<AboutUsHero {...hero} />
+
+		<section class="container-fluid pb-48 pt-32 lg:pb-56 lg:pt-40">
+			<AboutUsItemGrid items={group.items} />
+		</section>
+
+		<AboutUsCta />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

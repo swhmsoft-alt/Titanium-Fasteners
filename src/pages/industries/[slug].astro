@@ -1,0 +1,83 @@
+---
+/**
+ * /industries/[slug]/ — the eight CMS industry sub pages.
+ *
+ * Reference (one page per slug, same page type):
+ *   https://www.bossard.com/global-en/industries/<slug>/
+ *   electrical-engineering · electric-vehicles · hvac · medical · railway ·
+ *   robotics · semiconductors · data-centers
+ *
+ * Every page ships its own generated data file in src/data/industries-sub/;
+ * the block vocabulary is shared through
+ * src/components/sections/industries-sub/Blocks.astro.
+ *
+ * The aerospace page is NOT part of this family — it is a bespoke brand page
+ * and keeps its own static route (industries/aerospace.astro).
+ *
+ * The application pages (aerospace-uav, medical-devices, electric-vehicles,
+ * chemical-corrosion, semiconductor-vacuum, desalination, marine-offshore,
+ * industrial-robotics, rail-rolling-stock, data-centers) are NOT part of this
+ * family either: they share the @components/sections/industries-application
+ * shell and each owns a static route, so their slugs must not appear in the
+ * loader map below — a slug listed here would collide with the static route.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import Blocks from '@components/sections/industries-sub/Blocks.astro';
+import type { IndustrySubBlock } from '@data/industries-sub/types';
+
+interface PageMeta {
+	title: string;
+	description: string;
+}
+
+export async function getStaticPaths() {
+	/* Astro compiles getStaticPaths into its own scope: the loader map has to
+	   live inside the function, not in the frontmatter. */
+	const LOADERS: Record<
+		string,
+		() => Promise<{ BLOCKS: IndustrySubBlock[]; SEO: PageMeta }>
+	> = {
+		'electrical-engineering': () => import('@data/industries-sub/electrical-engineering'),
+		hvac: () => import('@data/industries-sub/hvac'),
+		medical: () => import('@data/industries-sub/medical'),
+		railway: () => import('@data/industries-sub/railway'),
+		robotics: () => import('@data/industries-sub/robotics'),
+		semiconductors: () => import('@data/industries-sub/semiconductors'),
+	};
+
+	const paths = [];
+	for (const [slug, load] of Object.entries(LOADERS)) {
+		const mod = await load();
+		paths.push({
+			params: { slug },
+			props: { blocks: mod.BLOCKS, seo: mod.SEO, slug },
+		});
+	}
+	return paths;
+}
+
+const { blocks, seo, slug } = Astro.props;
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={seo.title}
+	description={seo.description}
+	canonicalPath={`/industries/${slug}/`}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<Blocks blocks={blocks} />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

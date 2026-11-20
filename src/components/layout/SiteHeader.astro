@@ -32,7 +32,7 @@ interface Props {
 const { currentPathname = '' } = Astro.props;
 ---
 
-<header class="fixed z-[200] w-full bg-white">
+<header class="fixed z-[200] w-full bg-white" data-mega-header>
 	<div id="site-header-inner">
 		<Container class="flex items-center justify-between gap-32 py-0 md:py-18">
 			<!-- Logo -->
@@ -60,13 +60,24 @@ const { currentPathname = '' } = Astro.props;
 	MEASURED: the reference renders the top-level items as <button>s that
 	open a fixed panel at top 91px. Whether the trigger is hover or click
 	was not conclusively determined by inspection, so BOTH are supported:
-	hover opens it, and clicking a trigger locks it open (and clicking the
-	active trigger closes it). Pointer users get the panel either way; the
-	click lock is what makes the panel reachable by keyboard and by touch.
+	hover opens it, and clicking a trigger toggles it.
 
-	Keyboard: Escape closes the panel and returns focus to the trigger.
--->
+	HOVER CONTRACT (the reason this script exists):
+	  open  — the pointer enters a top-level trigger.
+	  close — the pointer has left BOTH the header strip and the panel.
+	The header (91px) and the panel (top 91px) are vertically adjacent, so
+	travelling down from the nav label into the panel never crosses an
+	untracked gap; on top of that the close is delayed by CLOSE_DELAY and
+	re-checked, which makes a diagonal move to a link impossible to miss.
+
+	Keyboard: focus opens the panel, Escape closes it and returns focus to
+	the trigger.
+	-->
 <script>
+	/** Grace period before a hover-driven close fires. */
+	const CLOSE_DELAY = 180;
+
+	const header = document.querySelector<HTMLElement>('[data-mega-header]');
 	const menu = document.querySelector<HTMLElement>('[data-mega-menu]');
 	const triggers = Array.from(
 		document.querySelectorAll<HTMLAnchorElement>('[data-nav-trigger]'),
@@ -76,14 +87,25 @@ const { currentPathname = '' } = Astro.props;
 		document.querySelectorAll<HTMLElement>('[data-mega-panel]'),
 	);
 
-	if (menu && triggers.length > 0) {
+	if (header && menu && triggers.length > 0) {
 		let activeIndex: number | null = null;
-		let locked = false;
 		let closeTimer: number | undefined;
+		/* Pointer position, tracked per region. */
+		let pointerInHeader = false;
+		let pointerInMenu = false;
+		/* Focus position — keeps the panel open for keyboard users. */
+		let focusWithin = false;
+		/* True only while the user navigates with the keyboard, so a focus
+		   left behind by a mouse click never blocks the auto-close. */
+		let keyboardNav = false;
+
+		const cancelClose = () => {
+			window.clearTimeout(closeTimer);
+			closeTimer = undefined;
+		};
 
 		const open = (index: number) => {
 			activeIndex = index;
-			locked = true;
 			menu.hidden = false;
 			const name = triggers[index]?.dataset.navTrigger;
 			panels.forEach((panel) => {
@@ -96,7 +118,6 @@ const { currentPathname = '' } = Astro.props;
 
 		const close = () => {
 			activeIndex = null;
-			locked = false;
 			menu.hidden = true;
 			panels.forEach((panel) => {
 				panel.hidden = true;
@@ -104,43 +125,110 @@ const { currentPathname = '' } = Astro.props;
 			triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
 		};
 
+		/** Close, unless the pointer/focus is still inside the menu area. */
+		const scheduleClose = () => {
+			cancelClose();
+			closeTimer = window.setTimeout(() => {
+				closeTimer = undefined;
+				if (pointerInHeader || pointerInMenu) return;
+				if (focusWithin && keyboardNav) return;
+				if (activeIndex !== null) close();
+			}, CLOSE_DELAY);
+		};
+
 		triggers.forEach((trigger, index) => {
 			// Hover opens the panel (desktop pointer).
-			const enter = () => {
-				window.clearTimeout(closeTimer);
+			trigger.addEventListener('mouseenter', () => {
+				cancelClose();
 				open(index);
-			};
-			const leave = () => {
-				if (locked) return;
-				closeTimer = window.setTimeout(close, 120);
-			};
-
-			trigger.addEventListener('mouseenter', enter);
-			trigger.addEventListener('mouseleave', leave);
-			trigger.addEventListener('focus', enter);
-
-			// Click toggles the lock.
+			});
+			// Keyboard focus opens the panel too.
+			trigger.addEventListener('focus', () => {
+				cancelClose();
+				open(index);
+			});
+			// A pointer click keeps the panel open (the hover already opened
+			// it) and must NOT dismiss it — dismissal happens on pointer
+			// leave, on Escape, or on a click outside. A keyboard
+			// activation (event.detail === 0) follows the real link, so the
+			// top-level entry stays a genuine link for keyboard users.
 			trigger.addEventListener('click', (event) => {
-				event.preventDefault();
-				if (activeIndex === index && locked) {
+				if (event.detail === 0) {
 					close();
-				} else {
-					open(index);
+					return;
 				}
+				event.preventDefault();
+				if (activeIndex !== index) open(index);
 			});
 		});
 
-		menu.addEventListener('mouseenter', () => window.clearTimeout(closeTimer));
-		menu.addEventListener('mouseleave', () => {
-			if (!locked) close();
+		/* Region 1 — the header strip. */
+		header.addEventListener('mouseenter', () => {
+			pointerInHeader = true;
+			cancelClose();
+		});
+		header.addEventListener('mouseleave', () => {
+			pointerInHeader = false;
+			scheduleClose();
 		});
 
+		/* Region 2 — the panel. */
+		menu.addEventListener('mouseenter', () => {
+			pointerInMenu = true;
+			cancelClose();
+		});
+		menu.addEventListener('mouseleave', () => {
+			pointerInMenu = false;
+			scheduleClose();
+		});
+
+		/* Focus tracking — header and panel count as one region. */
+		header.addEventListener('focusin', () => {
+			focusWithin = true;
+		});
+		menu.addEventListener('focusin', () => {
+			focusWithin = true;
+		});
+		document.addEventListener('focusout', (event) => {
+			const next = event.relatedTarget as Node | null;
+			if (next && (header.contains(next) || menu.contains(next))) return;
+			focusWithin = false;
+			scheduleClose();
+		});
 		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Tab') keyboardNav = true;
 			if (event.key === 'Escape' && activeIndex !== null) {
 				const trigger = triggers[activeIndex];
 				close();
 				trigger?.focus();
 			}
+		});
+		/* Any real pointer movement means the user is driving with the mouse,
+		   so a focus left over from a previous Tab must not keep the panel
+		   open once the pointer leaves. */
+		document.addEventListener('mousemove', () => {
+			keyboardNav = false;
+		}, { passive: true });
+
+		/* Leaving the document or the window closes immediately. */
+		document.documentElement.addEventListener('mouseleave', () => {
+			pointerInHeader = false;
+			pointerInMenu = false;
+			if (activeIndex !== null) close();
+		});
+		window.addEventListener('blur', () => {
+			pointerInHeader = false;
+			pointerInMenu = false;
+			if (activeIndex !== null) close();
+		});
+
+		/* A click outside the header and the panel dismisses a click-opened
+		   panel (the only way to close it on touch devices). */
+		document.addEventListener('click', (event) => {
+			if (activeIndex === null) return;
+			const target = event.target as Node | null;
+			if (target && (header.contains(target) || menu.contains(target))) return;
+			close();
 		});
 	}
 </script>

@@ -1,0 +1,55 @@
+---
+/**
+ * Faq — 机器人买家常问的 6 个问题。
+ *
+ * 用**原生 <details>/<summary>**：初始 HTML 就是可展开的折叠内容，
+ * 无 JS 也完全可读可访问（与 /industries/ 系列的既有做法一致）。
+ *
+ * GEO 铁律：每条答案第一句直接给结论，第二句再补条件。
+ * 页面 JSON-LD 的 FAQPage 由**同一份数据**渲染，逐字一致。
+ */
+interface FaqItem {
+	question: string;
+	answer: string;
+}
+
+interface Props {
+	heading: string;
+	items: FaqItem[];
+}
+
+const { heading, items } = Astro.props;
+---
+
+<section class="bg-white pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="app-faq-heading">
+	<div class="container-fluid">
+		<h2 id="app-faq-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			{heading}
+		</h2>
+
+		<div class="max-w-[980px]">
+			{
+				items.map((item) => (
+					<details class="group border-t border-blue-70 py-20 first:border-t-0 first:pt-0">
+						<summary class="flex cursor-pointer items-center justify-between gap-16">
+							<h3 class="text-h5 font-bold text-blue-dark3">{item.question}</h3>
+							<svg
+								class="h-24 w-24 shrink-0 text-blue-dark3 transition-transform duration-300 group-open:rotate-180"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="m6 9 6 6 6-6" />
+							</svg>
+						</summary>
+						<p class="mt-12 text-p-sm leading-relaxed text-gray">{item.answer}</p>
+					</details>
+				))
+			}
+		</div>
+	</div>
+</section>

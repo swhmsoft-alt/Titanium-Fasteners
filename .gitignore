@@ -29,3 +29,6 @@ qa/*
 
 # scratch
 *.tmp
+
+# internal competitor notes (not part of the published site)
+纯钛紧固件_Bossard定位_逻辑梳理稿.md

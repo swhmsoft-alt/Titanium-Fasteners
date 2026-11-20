@@ -1,0 +1,76 @@
+---
+/**
+ * /industries/
+ *
+ * INDUSTRIES HUB — 钛紧固件工厂的「按行业选型」落地页。
+ *
+ * 结构（对齐导航面板的三大主题）：
+ *   1. 紧凑文字页头：面包屑 + 标题 + 导语 + 3 枚规格徽章 + 2 个 CTA（无首屏大图）
+ *   2. 三个交替图文支柱：Aerospace / Corrosion & Marine / Cleanroom & Specialty
+ *   3. 应用场景网格（10 格，与导航面板的十个子行业一一对应）
+ *   4. 牌号对照表（公开标称值 + 证书口径）
+ *   5. 询价条
+ *
+ * 链接纪律：内部链接全部来自 @data/industries 的 hub 数据，
+ * 牌号链接走 materialHref()（ti-gr9 / ti-gr23 降级到牌号矩阵页），
+ * 不出现裸露路由字符串，也不产生空筛选参数。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import IndustriesHero from '@components/sections/industries/IndustriesHero.astro';
+import IndustriesPillar from '@components/sections/industries/IndustriesPillar.astro';
+import IndustriesSectors from '@components/sections/industries/IndustriesSectors.astro';
+import IndustriesGrades from '@components/sections/industries/IndustriesGrades.astro';
+import IndustriesCta from '@components/sections/industries/IndustriesCta.astro';
+import { INDUSTRIES_HUB as PAGE } from '@data/industries';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/industries/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<IndustriesHero
+			breadcrumb={PAGE.hero.breadcrumb}
+			eyebrow={PAGE.hero.eyebrow}
+			heading={PAGE.hero.heading}
+			lead={PAGE.hero.lead}
+			badges={PAGE.hero.badges}
+			cta={PAGE.hero.cta}
+			secondaryCta={PAGE.hero.secondaryCta}
+		/>
+
+		<IndustriesPillar pillar={PAGE.pillars[0]} />
+		<IndustriesPillar pillar={PAGE.pillars[1]} reverse />
+		<IndustriesPillar pillar={PAGE.pillars[2]} />
+
+		<IndustriesSectors heading={PAGE.sectors.heading} lead={PAGE.sectors.lead} items={PAGE.sectors.items} />
+
+		<IndustriesGrades
+			heading={PAGE.grades.heading}
+			lead={PAGE.grades.lead}
+			rows={PAGE.grades.rows}
+		/>
+
+		<IndustriesCta
+			heading={PAGE.cta.heading}
+			text={PAGE.cta.text}
+			primary={PAGE.cta.primary}
+			secondary={PAGE.cta.secondary}
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

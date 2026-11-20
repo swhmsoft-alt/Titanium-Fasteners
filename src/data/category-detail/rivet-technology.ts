@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/rivet-technology.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Rivet Technology - Products and Brands | Bossard Group', description: 'An overview of rivet technology, from blind rivets and blind rivet nuts to lockbolts, including the proper rivet tools for installation.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Rivet Technology' },
 		],
 		eyebrow: 'Product Categories',
@@ -25,7 +25,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		imageWidth: 634,
 		imageHeight: 507,
 		buttons: [
-			{ label: 'Go to eShop', kind: 'link', variant: 'primary', href: '/global-en/eshop/c/02.200/' },
+			{ label: 'View Products', kind: 'link', variant: 'primary', href: '/products/02.200/' },
 			{ label: 'Contact Us', kind: 'dialog', variant: 'secondary' },
 		],
 	},
@@ -48,7 +48,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Rivet Technology Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/avdel/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/avdel/',
 				image: '/images/category-detail-rivet-technology/03-two-avdel-monobolt-structural-blind-rivets-on-a-.webp',
 				alt: 'Two AVDEL Monobolt structural blind rivets on a white background.',
 				label: 'Blind Rivet Systems',
@@ -56,7 +56,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Comprehensive riveting systems, including blind rivet and speed rivet fasteners, lockbolts, and rivet tools.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/clufix/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/clufix/',
 				image: '/images/category-detail-rivet-technology/04-a-clufix-blind-rivet-nut-with-open-end-and-a-hex.webp',
 				alt: 'A Clufix blind rivet nut with open end and a hex shaft',
 				label: 'Blind Rivet Nuts',
@@ -64,7 +64,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Extensive portfolio with a wide range of materials, head, or shank types as well as standard, medium, long, and extra-long grip lengths.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/fasteks-blind-rivets/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/fasteks-blind-rivets/',
 				image: '/images/category-detail-rivet-technology/05-a-fasteks-multigrip-blind-rivet-on-a-white-backg.webp',
 				alt: 'A Fasteks Multigrip blind rivet on a white background.',
 				label: 'Blind Rivets',
@@ -72,7 +72,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Versatile blind rivets for different combinations of materials, head shapes, and diameters. High-strength and vibration-resistant.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/fasteks-speed-rivets/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/fasteks-speed-rivets/',
 				image: '/images/category-detail-rivet-technology/06-a-speed-rivet-on-a-white-background.webp',
 				alt: 'A speed rivet on a white background.',
 				label: 'Speed Rivets',
@@ -80,7 +80,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Rapid installation for a variety of materials. Unique preloading on the riveting mandrel.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/fasteks-filko/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/fasteks-filko/',
 				image: '/images/category-detail-rivet-technology/07-two-fasteks-filko-blind-rivet-nuts-with-knurled-.webp',
 				alt: 'Two FASTEKS FILKO blind rivet nuts with knurled shank on white background',
 				label: 'Blind Rivet Nuts',
@@ -88,7 +88,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Round, knurled, and hexagonal shank blind rivet nuts. Resilient threads in thin-walled components with high tear-out strength.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/huck/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/huck/',
 				image: '/images/category-detail-rivet-technology/08-a-huck-bobtail-high-strength-lockbolt-on-white-b.webp',
 				alt: 'A Huck Bobtail high strength lockbolt on white background',
 				label: 'Blind Rivets and Lockbolts',
@@ -96,7 +96,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'High-strength structural blind rivets, lockbolts, and tooling for heavy-duty applications.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/pop/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/pop/',
 				image: '/images/category-detail-rivet-technology/09-a-pop-vgrip-blind-rivet-for-extended-grip-range-.webp',
 				alt: 'A POP VGrip blind rivet for extended grip range on white background',
 				label: 'Blind Rivet Systems',
@@ -104,7 +104,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'The original blind rivet brand offers a vast portfolio of riveting solutions for diverse materials and applications.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/rivet-technology/tubtara/',
+				href: '/product-solutions/product-categories-and-brands/rivet-technology/tubtara/',
 				image: '/images/category-detail-rivet-technology/10-close-up-of-a-tubtara-closed-end-blind-rivet-nut.webp',
 				alt: 'Close-up of a Tubtara closed-end blind rivet nut with blue underhead seal to ensure water and gas tightness',
 				label: 'Blind Rivet Nuts',
@@ -113,19 +113,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/02.200/',
+				href: '/products/02.200/',
 				image: '/images/category-detail-rivet-technology/11-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Rivets and Tools',
 				description: 'Browse our large assortment of rivet technology and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-rivet-technology/12-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -133,7 +133,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-rivet-technology/13-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

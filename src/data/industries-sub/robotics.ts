@@ -15,8 +15,8 @@ export const BLOCKS: IndustrySubBlock[] = [
 	{
 		kind: "hero",
 		breadcrumb: [
-			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/global-en/" },
-			{ label: "Industries", href: "/global-en/industries/" },
+			{ label: "Bossard Group - Fasteners, Engineering, Logistics", href: "/" },
+			{ label: "Industries", href: "/industries/" },
 			{ label: "Robotics" },
 		],
 		eyebrow: "Industries",
@@ -51,7 +51,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 	},
 	{
 		kind: "raw",
-		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/01.300.500/\">Wedge-locking fasteners</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/product-solutions/components-specific-solutions/fastener-coatings/tribological-dry-coatings/\">Tribological dry coatings</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/p/1392/\">Hexagon socket cylinder head screws with flange</a> </li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/01.300.600/\">Locking nuts </a></li><li>ecosyn® MRX screws</li></ul></div>",
+		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/01.300.500/\">Wedge-locking fasteners</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/product-solutions/components-specific-solutions/fastener-coatings/tribological-dry-coatings/\">Tribological dry coatings</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/1392/\">Hexagon socket cylinder head screws with flange</a> </li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/01.300.600/\">Locking nuts </a></li><li>ecosyn® MRX screws</li></ul></div>",
 	},
 	{
 		kind: "gallery",
@@ -63,7 +63,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 	},
 	{
 		kind: "raw",
-		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.100.200.110/\">Self-clinching nuts</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.100.200.130/\">Self-clinching threaded studs</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.100.200.120/\">Self-clinching threaded standoffs</a></li></ul></div>",
+		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.100.200.110/\">Self-clinching nuts</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.100.200.130/\">Self-clinching threaded studs</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.100.200.120/\">Self-clinching threaded standoffs</a></li></ul></div>",
 	},
 	{
 		kind: "gallery",
@@ -97,7 +97,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 	},
 	{
 		kind: "raw",
-		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.300/\">Threaded inserts for light metal and plastic materials</a></li><li>Stainless steel fasteners </li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/01.200.200.10/\">Thread-forming screws </a></li><li>ecosyn® fix </li><li>ecosyn® grip</li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/01.300.100.40/\">Ribbed lock washers</a></li></ul></div>",
+		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.300/\">Threaded inserts for light metal and plastic materials</a></li><li>Stainless steel fasteners </li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/01.200.200.10/\">Thread-forming screws </a></li><li>ecosyn® fix </li><li>ecosyn® grip</li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/01.300.100.40/\">Ribbed lock washers</a></li></ul></div>",
 	},
 	{
 		kind: "gallery",
@@ -109,7 +109,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 	},
 	{
 		kind: "raw",
-		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.200.200/\">Blind rivet nuts </a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.200.100/\">Blind rivets</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.200.400/\">Structural blind rivets</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/02.200.100.40/\">Speed rivets</a></li></ul></div>",
+		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.200.200/\">Blind rivet nuts </a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.200.100/\">Blind rivets</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.200.400/\">Structural blind rivets</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/02.200.100.40/\">Speed rivets</a></li></ul></div>",
 	},
 	{
 		kind: "gallery",
@@ -121,7 +121,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 	},
 	{
 		kind: "raw",
-		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/03.100.100/\">Cable glands</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/03.100.600/\">Industrial enclosures</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/03.100.700/\">Cable mountings</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/03.100.200.110/\">Wiring ducts</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/global-en/eshop/c/03.100.400/\">Electrical contacts</a></li></ul></div>",
+		html: "<div class=\"container-fluid\"><ul class=\"marker:text-blue pl-[28px] [&amp;&gt;li]:pl-8 list-disc max-w-rich-text text-list-l text-gray pb-12 lg:pb-20\" role=\"list\"><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/03.100.100/\">Cable glands</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/03.100.600/\">Industrial enclosures</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/03.100.700/\">Cable mountings</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/03.100.200.110/\">Wiring ducts</a></li><li><a class=\"cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark\" href=\"/products/03.100.400/\">Electrical contacts</a></li></ul></div>",
 	},
 	{
 		kind: "gallery",
@@ -153,7 +153,7 @@ export const BLOCKS: IndustrySubBlock[] = [
 		eyebrow: "Success Story",
 		image: { src: "/images/industries-robotics/82-mir-robot-butler-for-replenishment-of-components.webp", alt: "MIR robot butler for replenishment of components", width: 960, height: 720 },
 		description: "Our customer MIR develops collaborative mobile robots that help automate internal transportation. Find out more about our partnership, which frees up resources and makes them more efficient.",
-		cta: { label: "Learn More", href: "/global-en/knowledge-hub/inspiration/success-stories/mobile-industrial-robots/" },
+		cta: { label: "Learn More", href: "/knowledge-hub/inspiration/success-stories/mobile-industrial-robots/" },
 	},
 	{
 		kind: "raw",

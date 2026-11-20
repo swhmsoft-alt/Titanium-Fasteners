@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/welding-technology.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Welding Technology Overview | Bossard Group', description: 'Discover the technique that creates strong, permanent fastening connections: from classic stud welding to innovative ultrasonic welding.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Welding Technology' },
 		],
 		eyebrow: 'Product Categories',
@@ -37,7 +37,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Meet Our Welding Technology Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/welding-technology/fasteks-welko/',
+				href: '/product-solutions/product-categories-and-brands/welding-technology/fasteks-welko/',
 				image: '/images/category-detail-welding-technology/05-overview-of-fasteks-welko-stud-welding-fasteners.webp',
 				alt: 'Overview of FASTEKS Welko stud welding fasteners, including welding studs, welding bushes and welding pins.',
 				label: 'Stud Welding Systems',
@@ -45,7 +45,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'This capacitor discharge stud welding solution offers weld studs, bushes, pins, and other fasteners, as well as stud welding machines.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/welding-technology/mm-welding/',
+				href: '/product-solutions/product-categories-and-brands/welding-technology/mm-welding/',
 				image: '/images/category-detail-welding-technology/06-light-weight-welding-solutions-for-ev-interior.webp',
 				alt: 'Light weight welding solutions for EV interior',
 				label: 'Ultrasonic Welding',
@@ -53,7 +53,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Innovative fastening technique using ultrasonic energy to create connection points in composite and lightweight materials.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/welding-technology/tucker/',
+				href: '/product-solutions/product-categories-and-brands/welding-technology/tucker/',
 				image: '/images/category-detail-welding-technology/07-close-up-of-three-different-stanley-tucker-alumi.webp',
 				alt: 'Close up of three different Stanley Tucker aluminium welding studs',
 				label: 'Stud Welding Systems',
@@ -62,19 +62,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/02.500/',
+				href: '/products/02.500/',
 				image: '/images/category-detail-welding-technology/08-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Welding Technology',
 				description: 'Browse our large assortment of welding studs and machines and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-welding-technology/09-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -82,7 +82,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-welding-technology/10-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

@@ -1,0 +1,20 @@
+{
+	"_comment": "Snapshot of the colour palette BEFORE the 2026-11-20 hero colour sampling landed. Used as a rollback target: npm run tokens:restore -- --from scripts/lib/color-tokens.pre-hero-2026-11-20.json",
+	"tokens": [
+		{ "name": "--color-blue", "value": "#007ac3", "note": "accent / link / secondary button text" },
+		{ "name": "--color-blue-primary", "value": "#0070ba", "note": "primary button fill" },
+		{ "name": "--color-blue-dark", "value": "#001827", "note": "near-black navy, card h3" },
+		{ "name": "--color-blue-dark2", "value": "#00314e", "note": "article h2" },
+		{ "name": "--color-blue-dark3", "value": "#004975", "note": "h1 / section h2 / button border / icons" },
+		{ "name": "--color-blue-light", "value": "#cce4f3", "note": "soft blue panel / card fill" },
+		{ "name": "--color-blue-70", "value": "#a9cfe8", "note": "the reference uses border-blue-70 only below the 840px breakpoint (at 840px it switches to border-blue-dark3), so this token is not observable at the 1440px acceptance viewport", "tag": "ESTIMATED" },
+		{ "name": "--color-gray-vlight", "value": "#f3f3f3", "note": "light section background" },
+		{ "name": "--color-gray-whiteish", "value": "#f0f0f0", "note": "" },
+		{ "name": "--color-gray-light", "value": "#bfbfbf", "note": "" },
+		{ "name": "--color-gray-soft", "value": "#999999", "note": "hairline borders" },
+		{ "name": "--color-gray-medium", "value": "#666666", "note": "meta / eyebrow / caption copy" },
+		{ "name": "--color-gray", "value": "#333333", "note": "body copy" },
+		{ "name": "--color-gray-cool", "value": "#21272a", "note": "" },
+		{ "name": "--color-accent-rose", "value": "#aa465c", "note": "" }
+	]
+}

@@ -1,0 +1,90 @@
+---
+/**
+ * SubApplications — 两个机器人子应用场景（臂架结构 / 末端执行器）。
+ *
+ * 每个子应用 = 一个 4:3 图文分栏 + **一整行**产品卡（横跨全宽）。
+ *
+ * 版式纪律（LAYOUT_RULES）
+ *   §2.1 图框锁 aspect-4/3 + object-cover，桌面端 items-center；
+ *   §2.2 分栏里只放一张图 —— 文字再长也不叠第二张图；
+ *   §2.3 导语 ≤40 词 + 3 条单行加粗要点 + CTA；
+ *   §2.4 产品卡**不放进 50% 文字列**，而是放在分栏下方的全宽横排。
+ *
+ * 产品卡与 CTA 链接全部来自生成目录（@data/products），无手写 URL。
+ */
+import Button from '@components/ui/Button.astro';
+import ProductCard from '@components/sections/category/ProductCard.astro';
+import { familyHref, productsByFamily } from '@data/industries-application';
+import type { AppSubApplication } from '@data/industries-application';
+
+interface Props {
+	heading: string;
+	lead: string;
+	items: AppSubApplication[];
+}
+
+const { heading, lead, items } = Astro.props;
+---
+
+<section class="container-fluid pb-48 lg:pb-56" aria-labelledby="subapps-heading">
+	<h2 id="subapps-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+		{heading}
+	</h2>
+	<p class="text-p mb-24 max-w-[860px] text-gray lg:mb-32">{lead}</p>
+
+	{
+		items.map((item) => {
+			const products = productsByFamily(item.families);
+			return (
+				<article class="border-t border-blue-70 pt-32 lg:pt-40">
+					<p class="text-label mb-8 text-gray-medium">{item.eyebrow}</p>
+					<h3 class="text-h4 mb-16 text-blue-dark3 lg:mb-24 lg:text-h4-l">
+						{item.heading}
+					</h3>
+
+					<div class="grid grid-cols-1 items-center gap-32 lg:grid-cols-2 lg:gap-48">
+						<div class="min-w-0">
+							<p class="text-p mb-24 max-w-[620px] text-gray lg:mb-32">{item.lead}</p>
+							<ul class="mb-24 flex flex-col gap-12 lg:mb-32">
+								{item.points.map((point) => (
+									<li class="text-p-sm text-gray">
+										<strong class="text-blue-dark3">{point.label}:</strong> {point.text}
+									</li>
+								))}
+							</ul>
+							<Button href={familyHref(item.cta.familyId)}>{item.cta.label}</Button>
+						</div>
+
+						<figure class="aspect-4/3 w-full overflow-hidden rounded-2xl">
+							<img
+								src={item.image.src}
+								alt={item.image.alt}
+								width={item.image.width}
+								height={item.image.height}
+								loading="lazy"
+								decoding="async"
+								class="aspect-4/3 h-full w-full object-cover"
+								style="aspect-ratio:4 / 3"
+							/>
+						</figure>
+					</div>
+
+					{products.length > 0 && (
+						<div class="mt-32 lg:mt-40">
+							<p class="text-p-sm mb-16 text-gray-medium">
+								Fasteners specified for this application
+							</p>
+							<ul class="grid grid-cols-2 gap-16 md:grid-cols-3 lg:grid-cols-5 lg:gap-24">
+								{products.map((product) => (
+									<li class="w-full">
+										<ProductCard product={product} />
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+				</article>
+			);
+		})
+	}
+</section>

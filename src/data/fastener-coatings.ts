@@ -1,6 +1,6 @@
 /**
  * Fastener Coatings — 1:1 data for
- * `/global-en/product-solutions/components-specific-solutions/fastener-coatings/`.
+ * `/product-solutions/components-specific-solutions/fastener-coatings/`.
  *
  * MEASURED on the reference (1440×1000, 2026-11-09):
  *   hero      img 643×514 (5:4) at x=745 | H1 64px/70.4 #004975 x=70
@@ -58,7 +58,7 @@ export const FASTENER_COATINGS = {
 	},
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard homepage', href: '/global-en/' },
+			{ label: 'Bossard homepage', href: '/' },
 			{ label: '...' },
 			{ label: 'Fastener Coatings' },
 		] as BreadcrumbItem[],
@@ -90,7 +90,7 @@ export const FASTENER_COATINGS = {
 		heading: 'Different Types of Fastener Coatings',
 		cards: [
 			{
-				href: '/global-en/product-solutions/components-specific-solutions/fastener-coatings/functional-coatings/',
+				href: '/product-solutions/components-specific-solutions/fastener-coatings/functional-coatings/',
 				image: '/images/fastener-coatings/02-different-types-of-screws-nuts-and-bolts-with-di.webp',
 				alt: 'Different types of screws, nuts and bolts with different types of coating patches, sealing coatings and more.',
 				imageWidth: 834,
@@ -101,7 +101,7 @@ export const FASTENER_COATINGS = {
 				span: 'wide',
 			},
 			{
-				href: '/global-en/product-solutions/components-specific-solutions/fastener-coatings/tribological-dry-coatings/',
+				href: '/product-solutions/components-specific-solutions/fastener-coatings/tribological-dry-coatings/',
 				image: '/images/fastener-coatings/03-a-grey-and-a-black-bolt-with-tribological-dry-co.webp',
 				alt: 'A grey and a black bolt with tribological dry coating and a washer on light grey background',
 				imageWidth: 530,
@@ -123,14 +123,14 @@ export const FASTENER_COATINGS = {
 		text: 'There are different surface treatments that can protect steel fasteners against corrosion. Discover the options.',
 		ctaLabel: 'Read More',
 		ctaHref:
-			'/global-en/product-solutions/components-specific-solutions/fastener-coatings/corrosion-protection-coatings/',
+			'/product-solutions/components-specific-solutions/fastener-coatings/corrosion-protection-coatings/',
 	} as Callout,
 	papers: {
 		heading: 'Learn More About Fastener Coatings',
 		label: 'White Paper',
 		items: [
 			{
-				href: '/global-en/knowledge-hub/resources/download-center/white-papers/surface-finish-in-stainless-steel/',
+				href: '/knowledge-hub/resources/download-center/white-papers/surface-finish-in-stainless-steel/',
 				image: '/images/fastener-coatings/05-electroplating-zinc-flake-icon.webp',
 				alt: 'electroplating zinc flake Icon',
 				title: 'Why Surface Finish Is Important in Stainless Steel',
@@ -138,7 +138,7 @@ export const FASTENER_COATINGS = {
 					'What you need to know about coatings for stainless steel fasteners and how you can prevent corrosion',
 			},
 			{
-				href: '/global-en/knowledge-hub/resources/download-center/white-papers/selecting-a-fastener-finish/',
+				href: '/knowledge-hub/resources/download-center/white-papers/selecting-a-fastener-finish/',
 				image: '/images/fastener-coatings/06-fastener-finish-icon.webp',
 				alt: 'fastener finish Icon',
 				title: '7 Tips for Selecting Your Fastener Finish',
@@ -146,7 +146,7 @@ export const FASTENER_COATINGS = {
 					'A pragmatic 7-step guide on the most important points to consider when choosing your fastener coatings',
 			},
 			{
-				href: '/global-en/knowledge-hub/resources/download-center/white-papers/electroplating-and-zinc-flake-coatings-for-fasteners/',
+				href: '/knowledge-hub/resources/download-center/white-papers/electroplating-and-zinc-flake-coatings-for-fasteners/',
 				image: '/images/fastener-coatings/07-surface-finishing-icon.webp',
 				alt: 'surface finishing Icon',
 				title: 'Common Platings & Coatings and Their Performance',
@@ -154,7 +154,7 @@ export const FASTENER_COATINGS = {
 					'An overview of the most common platings and coatings for fasteners and how they compare',
 			},
 			{
-				href: '/global-en/knowledge-hub/resources/download-center/white-papers/appearance-of-coatings/',
+				href: '/knowledge-hub/resources/download-center/white-papers/appearance-of-coatings/',
 				image: '/images/fastener-coatings/08-notion-of-appearance-in-coatings-icon.webp',
 				alt: 'Notion of appearance in coatings icon',
 				title: 'The Notion of Appearance in Fastener Coatings',

@@ -1,0 +1,134 @@
+---
+/**
+ * GradeComparison — 牌号对照表（Grade 2 / Grade 5 / Grade 23）。
+ *
+ * 抽象规格一律走**规范 HTML 表格**，不用大图（LAYOUT_RULES §2.4）——
+ * AI 引擎读表格读不到图。表头用 <span> 承载牌号别名，便于行内排版。
+ *
+ * 每个数值都来自生成产物 MATERIALS（公开标称值），页面不手写任何强度数字。
+ */
+interface Grade {
+	id: string;
+	name: string;
+}
+
+interface Row {
+	label: string;
+	values: string[];
+}
+
+interface ConventionalBlock {
+	heading: string;
+	lead: string;
+	columns: { id: string; name: string }[];
+	rows: Row[];
+	note: string;
+}
+
+interface Props {
+	heading: string;
+	lead: string;
+	grades: Grade[];
+	rows: Row[];
+	note: string;
+	conventional: ConventionalBlock;
+}
+
+const { heading, lead, grades, rows, note, conventional } = Astro.props;
+---
+
+<section class="bg-blue-light/40 py-48 lg:py-64" aria-labelledby="grade-comparison-heading">
+	<div class="container-fluid">
+		<h2 id="grade-comparison-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+			{heading}
+		</h2>
+		<p class="text-p mb-24 max-w-[860px] text-gray lg:mb-32">{lead}</p>
+
+		<div class="overflow-x-auto">
+			<table class="w-full min-w-[640px] border-collapse text-left">
+				<caption class="sr-only">
+					Published nominal properties of titanium Grade 2, Grade 5 and Grade 23
+				</caption>
+				<thead>
+					<tr class="border-b-2 border-blue-dark3">
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+							Property
+						</th>
+						{
+							grades.map((grade) => (
+								<th
+									scope="col"
+									class="py-12 pr-16 text-p-sm font-bold text-blue-dark3"
+								>
+									<span class="block">{grade.name}</span>
+									<span class="block font-normal text-gray-medium">{grade.id}</span>
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						rows.map((row) => (
+							<tr class="border-b border-blue-70">
+								<th scope="row" class="py-14 pr-16 text-p-sm font-bold text-blue-dark3">
+									{row.label}
+								</th>
+								{row.values.map((value) => (
+									<td class="py-14 pr-16 text-p-sm text-gray">
+										<span class="block">{value}</span>
+									</td>
+								))}
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<p class="mt-24 max-w-[860px] text-p-sm text-gray-medium">{note}</p>
+
+		<h3 class="text-h4 mt-40 mb-12 text-blue-dark3 lg:mt-56 lg:mb-24">{conventional.heading}</h3>
+		<p class="text-p mb-24 max-w-[860px] text-gray lg:mb-32">{conventional.lead}</p>
+
+		<div class="overflow-x-auto">
+			<table class="w-full min-w-[720px] border-collapse text-left">
+				<caption class="sr-only">
+					Titanium Grade 5 compared with carbon steel, stainless steel and aluminium
+				</caption>
+				<thead>
+					<tr class="border-b-2 border-blue-dark3">
+						<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+							Property
+						</th>
+						{
+							conventional.columns.map((column) => (
+								<th scope="col" class="py-12 pr-16 text-p-sm font-bold text-blue-dark3">
+									<span class="block">{column.name}</span>
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						conventional.rows.map((row) => (
+							<tr class="border-b border-blue-70">
+								<th scope="row" class="py-14 pr-16 text-p-sm font-bold text-blue-dark3">
+									{row.label}
+								</th>
+								{row.values.map((value) => (
+									<td class="py-14 pr-16 text-p-sm text-gray">
+										<span class="block">{value}</span>
+									</td>
+								))}
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<p class="mt-24 max-w-[860px] text-p-sm text-gray-medium">{conventional.note}</p>
+	</div>
+</section>

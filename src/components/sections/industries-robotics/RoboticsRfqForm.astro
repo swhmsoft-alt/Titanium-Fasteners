@@ -1,0 +1,328 @@
+---
+/**
+ * RoboticsRfqForm — 机器人项目的询盘终点（BOM / 图纸上传）。
+ *
+ * WHY MULTIPART, NOT JSON
+ * -----------------------
+ * 标准站的询盘表单只把文件名写进 JSON，图纸本身留在客户电脑里。
+ * 机器人项目不同：客户要交的是**整份 BOM 与零件图**，一张图往往决定
+ * 能不能报价。所以本页的表单用 multipart/form-data 真正把文件送出去：
+ *   · `payload`  —— 与站内其它询盘同构的 JSON 字符串（后端字段口径一致）
+ *   · `attachment` —— 实际文件（.xlsx / .pdf / .step / .dwg）
+ *
+ * WHY VANILLA JS, NOT AN ISLAND
+ * -----------------------------
+ * 只需要三件事：读文件、POST、切换回执态。原生 DOM 足够，
+ * 不引入 hydration 成本；无 JS 时表单退回原生 multipart 提交，不会静默丢数据。
+ */
+import { INQUIRY } from '@config/site';
+
+interface Props {
+	heading: string;
+	lead: string;
+	note: string;
+	/** 业务来源标识（后端用于回溯来源）。 */
+	source: string;
+}
+
+const { heading, lead, note, source } = Astro.props;
+
+const FIELD =
+	'w-full border border-gray-light bg-white px-16 py-13 text-p-sm text-gray placeholder:text-gray-medium focus:border-blue focus:outline-none';
+---
+
+<section id="rfq-form" class="bg-blue-light/40 pb-48 pt-32 lg:pb-56 lg:pt-40" aria-labelledby="rfq-heading">
+	<div class="container-fluid">
+		<div class="max-w-[880px]">
+			<h2 id="rfq-heading" class="text-h3 mb-12 text-blue-dark3 lg:mb-24">
+				{heading}
+			</h2>
+			<p class="mb-24 text-p text-gray">{lead}</p>
+
+			<form
+				class="flex flex-col gap-20 rounded-card border border-blue-70 bg-white p-24 lg:p-40"
+				data-rfq-form
+				method="post"
+				enctype="multipart/form-data"
+				action={INQUIRY.endpoint}
+				novalidate
+				data-endpoint={INQUIRY.endpoint}
+				data-fallback-email={INQUIRY.fallbackEmail}
+				data-trap-field={INQUIRY.trapField}
+				data-source={source}
+			>
+				<div class="grid grid-cols-1 gap-20 md:grid-cols-2">
+					<div>
+						<label for="robot-rfq-email" class="mb-8 block text-p-sm text-blue-dark3">
+							Work Email <span class="text-accent-rose">*</span>
+						</label>
+						<input
+							id="robot-rfq-email"
+							name="email"
+							type="email"
+							required
+							autocomplete="email"
+							placeholder="name@company.com"
+							class={FIELD}
+						/>
+					</div>
+					<div>
+						<label for="robot-rfq-company" class="mb-8 block text-p-sm text-blue-dark3">
+							Company Name <span class="text-accent-rose">*</span>
+						</label>
+						<input
+							id="robot-rfq-company"
+							name="company"
+							type="text"
+							required
+							autocomplete="organization"
+							placeholder="Company legal name"
+							class={FIELD}
+						/>
+					</div>
+				</div>
+
+				<div>
+					<label for="robot-rfq-specs" class="mb-8 block text-p-sm text-blue-dark3">
+						Robot assembly and fastener list
+					</label>
+					<input
+						id="robot-rfq-specs"
+						name="specs"
+						type="text"
+						placeholder="e.g. DIN 912 M6 x 20 Gr5, 4000 pcs, arm joint housing"
+						class={FIELD}
+					/>
+					<p class="mt-8 text-p-sm text-gray-medium">
+						Tell us the assembly, the standard and the quantity. Our engineering desk quotes
+						from your bill of materials directly.
+					</p>
+				</div>
+
+				<div>
+					<label for="robot-rfq-file" class="mb-8 block text-p-sm text-blue-dark3">
+						Upload BOM / Drawing
+					</label>
+					<div
+						data-drop-zone
+						class="flex flex-col items-center justify-center rounded-card border-2 border-dashed border-gray-light bg-white px-24 py-32 text-center transition-colors duration-200 hover:border-blue"
+					>
+						<p class="mb-8 text-p-sm text-gray">
+							Drag your file here, or
+							<label for="robot-rfq-file" class="cursor-pointer text-blue underline underline-offset-4">
+								browse from your computer
+							</label>
+						</p>
+						<p class="text-p-sm text-gray-medium">.xlsx, .pdf, .step, .dwg</p>
+						<input
+							id="robot-rfq-file"
+							name="attachment"
+							type="file"
+							accept=".xlsx,.pdf,.step,.dwg"
+							class="sr-only"
+							data-file-input
+						/>
+						<p class="mt-12 min-h-[24px] text-p-sm font-medium text-blue-dark3" data-file-name></p>
+					</div>
+				</div>
+
+				{/* 蜜罐 —— 视觉隐藏但对机器人可见 */}
+				<div aria-hidden="true" class="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden">
+					<label for="robot-rfq-trap">Website</label>
+					<input
+						id="robot-rfq-trap"
+						name={INQUIRY.trapField}
+						type="text"
+						tabindex="-1"
+						autocomplete="off"
+					/>
+				</div>
+
+				<p role="alert" class="hidden text-p-sm text-accent-rose" data-rfq-error></p>
+
+				<div class="flex flex-col gap-12">
+					<button
+						type="submit"
+						class="inline-flex items-center justify-center self-start rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+					>
+						Send inquiry
+					</button>
+					<p class="text-p-sm text-gray-medium">{note}</p>
+				</div>
+			</form>
+
+			<div class="hidden rounded-card border border-blue-70 bg-white p-40" data-rfq-receipt>
+				<h3 class="text-h4 mb-12 font-normal text-blue-dark3">Inquiry received</h3>
+				<p class="mb-24 text-p text-gray">
+					Thank you. Our engineering team will reply to your work email within 12 business hours
+					with a quotation and the certificate scope for your batch.
+				</p>
+				<p class="mb-24 text-p-sm text-gray-medium" data-rfq-reference></p>
+				<p class="mb-24 text-p-sm text-gray-medium" data-rfq-delivery-hint></p>
+				<a
+					href={INQUIRY.fallbackEmail.startsWith('mailto:')
+						? INQUIRY.fallbackEmail
+						: `mailto:${INQUIRY.fallbackEmail}`}
+					class="text-button text-blue underline underline-offset-4"
+					data-rfq-mailto
+				>
+					Send the same brief by email
+				</a>
+				<button
+					type="button"
+					class="mt-24 block text-p-sm text-blue-dark3 underline underline-offset-4"
+					data-rfq-reset
+				>
+					Submit another inquiry
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-rfq-form]');
+	const receipt = document.querySelector('[data-rfq-receipt]');
+	const errorEl = document.querySelector('[data-rfq-error]');
+	const fileInput = document.querySelector<HTMLInputElement>('[data-file-input]');
+	const fileNameEl = document.querySelector('[data-file-name]');
+	const dropZone = document.querySelector('[data-drop-zone]');
+
+	/* ── 文件选择与拖拽 ────────────────────────────────────────────── */
+	const showFileName = (file?: File) => {
+		if (!fileNameEl) return;
+		fileNameEl.textContent = file ? `${file.name} · ${(file.size / 1024).toFixed(0)} KB` : '';
+	};
+
+	fileInput?.addEventListener('change', () => showFileName(fileInput.files?.[0]));
+
+	dropZone?.addEventListener('dragover', (event) => {
+		event.preventDefault();
+		dropZone.classList.add('border-blue', 'bg-blue-light/40');
+	});
+	dropZone?.addEventListener('dragleave', () => {
+		dropZone.classList.remove('border-blue', 'bg-blue-light/40');
+	});
+	dropZone?.addEventListener('drop', (event) => {
+		event.preventDefault();
+		dropZone.classList.remove('border-blue', 'bg-blue-light/40');
+		const file = (event as DragEvent).dataTransfer?.files?.[0];
+		if (file && fileInput) {
+			const transfer = new DataTransfer();
+			transfer.items.add(file);
+			fileInput.files = transfer.files;
+			showFileName(file);
+		}
+	});
+
+	/* ── 提交（multipart） ────────────────────────────────────────── */
+	const makeReference = () =>
+		`REF-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`;
+
+	form?.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		errorEl?.classList.add('hidden');
+
+		const data = new FormData(form);
+		const email = String(data.get('email') ?? '').trim();
+		const company = String(data.get('company') ?? '').trim();
+		const specs = String(data.get('specs') ?? '').trim();
+		const file = fileInput?.files?.[0];
+		const trapField = form.dataset.trapField ?? '';
+		const trap = trapField ? String(data.get(trapField) ?? '').trim() : '';
+
+		/* 机器人填了蜜罐 → 静默成功，不暴露风控规则。 */
+		if (trapField && trap !== '') {
+			form.reset();
+			return;
+		}
+
+		if (!email || !company) {
+			if (errorEl) {
+				errorEl.textContent = 'Please provide your work email and company name.';
+				errorEl.classList.remove('hidden');
+			}
+			return;
+		}
+
+		const endpoint = form.dataset.endpoint ?? '';
+		const fallbackEmail = form.dataset.fallbackEmail ?? '';
+		const source = form.dataset.source ?? 'industrial-robotics';
+		const reference = makeReference();
+		const requirement = specs
+			? `${specs}${file ? ` (attachment: ${file.name})` : ''}`
+			: file
+				? `Attachment: ${file.name}`
+				: '';
+
+		const payload = {
+			source,
+			intent: 'bom-quote',
+			intentLabel: 'Industrial robotics BOM / drawing quote request',
+			product: {
+				familyId: '',
+				sku: '',
+				name: 'Industrial robotics fasteners',
+				standard: specs,
+				material: '',
+				sizeRange: '',
+				thread: '',
+				length: '',
+				pageUrl: window.location.href,
+			},
+			contact: { name: '', email, company, country: '', phone: '' },
+			requirement,
+			quantity: '',
+			reference,
+			pageUrl: window.location.href,
+		};
+
+		const showReceipt = (delivery: 'posted' | 'failed' | 'offline') => {
+			form.classList.add('hidden');
+			receipt?.classList.remove('hidden');
+			receipt?.classList.add('flex');
+			const referenceEl = document.querySelector('[data-rfq-reference]');
+			if (referenceEl) referenceEl.textContent = `Your reference: ${reference}`;
+			const mailtoEl = document.querySelector('[data-rfq-mailto]') as HTMLAnchorElement | null;
+			if (mailtoEl) {
+				mailtoEl.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(
+					`Industrial robotics inquiry ${reference}`,
+				)}&body=${encodeURIComponent(
+					`Company: ${company}\nEmail: ${email}\nRequirement: ${requirement}`,
+				)}`;
+			}
+			const hint = document.querySelector('[data-rfq-delivery-hint]');
+			if (hint) {
+				hint.textContent =
+					delivery === 'posted'
+						? ''
+						: 'We could not confirm server delivery. Use the email link below to send the same brief directly.';
+			}
+		};
+
+		if (!endpoint) {
+			showReceipt('offline');
+			return;
+		}
+
+		/* multipart：payload 走 JSON 字符串，文件走独立字段。 */
+		const body = new FormData();
+		body.append('payload', JSON.stringify(payload));
+		if (file) body.append('attachment', file, file.name);
+
+		try {
+			const res = await fetch(endpoint, { method: 'POST', body });
+			showReceipt(res.ok ? 'posted' : 'failed');
+		} catch {
+			showReceipt('failed');
+		}
+	});
+
+	document.querySelector('[data-rfq-reset]')?.addEventListener('click', () => {
+		receipt?.classList.add('hidden');
+		receipt?.classList.remove('flex');
+		form?.classList.remove('hidden');
+		form?.reset();
+		if (fileNameEl) fileNameEl.textContent = '';
+	});
+</script>

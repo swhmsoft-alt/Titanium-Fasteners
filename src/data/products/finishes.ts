@@ -5,11 +5,9 @@
 import type { Finish } from './types';
 
 export const FINISHES: Finish[] = [
-	{ id: 'plain', name: 'Plain (as supplied)', spec: '', notes: 'Mill finish natural oxide; titanium does not require plating for corrosion protection' },
-	{ id: 'anod-black', name: 'Black anodized', spec: 'Type III per AMS 2488', notes: 'Colour identification only; not for high-temperature service' },
-	{ id: 'anod-blue', name: 'Blue anodized', spec: 'Type III per AMS 2488', notes: 'Colour identification only; not for high-temperature service' },
-	{ id: 'passivated', name: 'Passivated', spec: 'ASTM F86', notes: 'Nitric acid passivation; clean room and medical applications' },
-	{ id: 'nitric-passivated', name: 'Nitric passivated (medical)', spec: 'ASTM F86 (medical grade)', notes: 'For implant and biomedical instrument applications' },
-	{ id: 'mos2-dry-film', name: 'MoS2 dry film lubricant', spec: 'MoS2 dry film per supplier spec', notes: 'Anti-galling for titanium; mandatory for Ti-Ti joints; K factor 0.10-0.12' },
-	{ id: 'pickling-oiled', name: 'Pickled and oiled', spec: '', notes: 'Not applicable to titanium - acid pickling causes hydrogen uptake (H <= 150 ppm per NASM 8846)' }
+	{ id: 'plain', name: 'Plain', spec: '', notes: 'Mill finish natural oxide; titanium does not require plating for corrosion protection' },
+	{ id: 'passivated', name: 'Passivated', spec: 'ASTM F86 / AMS 2700', notes: 'Chemical passivation per ASTM F86 / AMS 2700; no coating' },
+	{ id: 'anod', name: 'Anodizing', spec: 'AMS 2488 Type II / Type III', notes: 'Anodic oxide per AMS 2488 Type II / Type III; functional and colour titanium finish' },
+	{ id: 'pvd', name: 'PVD', spec: '', notes: 'Physical vapour deposition coating' },
+	{ id: 'dlc', name: 'DLC', spec: '', notes: 'Diamond-like carbon coating' }
 ];

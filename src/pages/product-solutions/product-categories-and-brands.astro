@@ -1,0 +1,61 @@
+---
+/**
+ * /product-solutions/product-categories-and-brands/
+ * Reference: https://www.bossard.com/global-en/product-solutions/product-categories-and-brands/
+ *
+ * MEASURED on the reference (1440×1000, 2026-11-09):
+ *   body 3493px, footer 517px, h-overflow 0px
+ *   block 1  Discover Our Product Categories  y=993  h=1444  h2 44px
+ *   block 2  Buy Fastening Elements             y=2485 h=446   h2 21.008px
+ *
+ * The reference's <main> contains, in order: the hero <header> (astro-island),
+ * the leading rich-text paragraph, the two <article> blocks and a trailing
+ * rich-text paragraph. Both blocks are measured by the QA script through
+ * `main article, main > section`.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import PageHero from '@components/sections/product-categories-and-brands/PageHero.astro';
+import CategoryTiles from '@components/sections/product-categories-and-brands/CategoryTiles.astro';
+import ServiceCards from '@components/sections/product-categories-and-brands/ServiceCards.astro';
+import { PRODUCT_CATEGORIES_AND_BRANDS as PAGE } from '@data/product-categories-and-brands';
+
+const currentPathname = Astro.url.pathname;
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath="/product-solutions/product-categories-and-brands/"
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<PageHero {...PAGE.hero} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{PAGE.intro}</p>
+		</div>
+
+		<CategoryTiles
+			heading={PAGE.categories.heading}
+			label={PAGE.categories.label}
+			tiles={PAGE.categories.tiles}
+		/>
+
+		<ServiceCards cards={PAGE.services} />
+
+		<div class="container-fluid">
+			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
+		</div>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

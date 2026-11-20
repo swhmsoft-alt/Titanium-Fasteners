@@ -2,7 +2,7 @@
 /**
  * CategoryCardRail — the horizontal rail of six sub-category cards.
  *
- * MEASURED on the reference (`/global-en/eshop/products/.../c/01.100/`,
+ * MEASURED on the reference (`/global-en/products/.../c/01.100/`,
  * 1440×1000, 2026-11):
  *   rail        y=340  h=295   (cards x=70,342,614,886,1158,1430)
  *   card        w=240  (ul:w-[240px] — the 1440px breakpoint)
@@ -14,9 +14,15 @@
  * The last two cards sit OUTSIDE the 1440px viewport (x=1158 / x=1430) —
  * the reference rail is a horizontal scroll container, so it is reproduced as
  * one (`snap-x`, `overflow-x-auto`).
+ *
+ * ── Phase B 自有版式（2026-11-14）────────────────────────────────────────
+ * 图改走 ProductFigure：分类图源比例与产品图同样杂乱（4:3 / 1:1 / 竖版），
+ * 裸 <img class="aspect-3/2"> 会拉伸变形；白底容器 + 边框 + 圆角后，
+ * 6 张卡并排读起来才是一组「商品图」，而不是 6 张不同尺寸的截图。
  */
 import { CATEGORY_CARDS } from '@data/products';
 import type { CategoryCardView } from '@data/products';
+import ProductFigure from '@components/ui/ProductFigure.astro';
 
 interface Props {
 	/** 子分类卡；缺省 = 生成产物里的全部分类。 */
@@ -34,21 +40,23 @@ const { cards = CATEGORY_CARDS } = Astro.props;
 >
 	{
 		cards.map((card) => (
-			<article class="w-[167px] shrink-0 cursor-pointer sm:w-[162px] md:w-[237px] lg:w-[160px] wd:w-[208px] ul:w-[240px]">
-				<a href={card.href}>
-					<figure class="aspect-3/2">
-						<img
-							src={card.image}
-							alt={card.alt}
-							class="aspect-3/2 bg-gray-vlight"
-							loading="eager"
-							fetchpriority="high"
-						/>
-					</figure>
-					<h2 class="text-p-sm font-bold mt-8 mb-4 text-gray lg:mt-12 lg:mb-8 lg:text-p-s">
-						{card.title}
-					</h2>
-					<p class="text-p-sm text-gray-medium lg:text-p-s">{card.products} Products</p>
+			<article class="w-[167px] h-full shrink-0 cursor-pointer sm:w-[162px] md:w-[237px] lg:w-[160px] wd:w-[208px] ul:w-[240px]">
+				<a
+					href={card.href}
+					class="group flex h-full flex-col overflow-hidden rounded-card border border-black/10 bg-white transition duration-200 hover:-translate-y-4 hover:border-blue hover:shadow-lg"
+				>
+					<ProductFigure
+						src={card.image}
+						alt={card.alt}
+						priority={true}
+						class="aspect-3/2 w-full"
+					/>
+					<div class="flex flex-1 flex-col p-12 lg:p-16">
+						<h2 class="text-p-sm min-h-[3.75em] font-bold leading-tight text-blue-dark3 line-clamp-3 transition-colors group-hover:text-blue lg:text-p-s">
+							{card.title}
+						</h2>
+						<p class="mt-auto pt-6 text-p-sm text-gray-medium lg:text-p-s">{card.products} Products</p>
+					</div>
 				</a>
 			</article>
 		))

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/electrical-products.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Electrical Products and Brands | Bossard Group', description: 'Bossard brand overview of electrical products. Discover our solutions for wire management, contact parts, cable ties, cable glands, enclosures, and more.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Electrical Products' },
 		],
 		eyebrow: 'Product Categories',
@@ -46,7 +46,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Meet Our Electrical Products Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/abb/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/abb/',
 				image: '/images/category-detail-electrical-products/03-close-up-of-a-black-abb-ty-rap-cable-tie-with-me.webp',
 				alt: 'Close-up of a black ABB Ty-Rap cable tie with metal reinforcement on white background',
 				label: 'Cable Ties and Accessories',
@@ -54,7 +54,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Large assortment of cable ties for diverse applications. All-plastic cable ties, stainless steel cable ties, accessories and cable tie installation tools.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/bm-group/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/bm-group/',
 				image: '/images/category-detail-electrical-products/04-three-different-solderless-terminals-by-bm-group.webp',
 				alt: 'Three different solderless terminals by BM Group in yellow, blue and red on white background',
 				label: 'Electrical Connection Technology',
@@ -62,7 +62,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Compression cable lugs and joints, solderless terminals, terminal blocks and more.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/elematic/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/elematic/',
 				image: '/images/category-detail-electrical-products/05-two-black-elematic-easy-belturing-cable-ties-on-.webp',
 				alt: 'Two black Elematic Easy Belturing cable ties on white background',
 				label: 'Cabling and Fixing Systems',
@@ -70,7 +70,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Diverse range of cable ties and accessories for indoor and outdoor applications. High UV resistance. Cable mountings and braided sleeves.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/elettrocanali/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/elettrocanali/',
 				image: '/images/category-detail-electrical-products/06-wiring-duct-slotted-trunking-gray-with-white-bac.webp',
 				alt: 'Wiring duct slotted trunking gray with white background',
 				label: 'Cable Trunking Systems',
@@ -78,7 +78,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Trunking systems, accessories, junction boxes and more for practical, functional, and safe electrical installations.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/essentra/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/essentra/',
 				image: '/images/category-detail-electrical-products/07-white-essentra-fiber-optic-protection-tube-for-o.webp',
 				alt: 'White Essentra fiber-optic protection tube for optimal kink protection and impact resistance on white background',
 				label: 'Cable Management',
@@ -86,7 +86,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Cable ties, cable mounts, protection and accessories for fiber-optic cables and more.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/hawke/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/hawke/',
 				image: '/images/category-detail-electrical-products/08-a-brass-hawke-cable-gland-for-hazardous-environm.webp',
 				alt: 'A brass Hawke cable gland for hazardous environments on white background',
 				label: 'Electrical Connection Systems',
@@ -94,7 +94,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Cable glands, enclosures, and connectors for hazardous environments. Ideal for offshore applications and the oil and gas industry.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/hellermann-tyton/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/hellermann-tyton/',
 				image: '/images/category-detail-electrical-products/09-a-black-hellermanntyton-2-piece-fixing-tie-cable.webp',
 				alt: 'A black HellermannTyton 2-piece fixing tie cable tie closed on white background',
 				label: 'Cable Accessories',
@@ -102,7 +102,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Cable ties and cable mountings for industrial applications. Inside-serrated, outside-serrated, and metal cable ties.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/heyco/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/heyco/',
 				image: '/images/category-detail-electrical-products/10-black-heyco-heyclip-snap-rivet-on-white-backgrou.webp',
 				alt: 'Black Heyco HeyClip snap rivet on white background',
 				label: 'Cable Accessories',
@@ -110,7 +110,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Comprehensive cable assembly components, including cable glands, cable ties, clip fasteners and more.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/jacob/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/jacob/',
 				image: '/images/category-detail-electrical-products/11-gray-plastic-cable-gland-with-threaded-body-and-.webp',
 				alt: 'Gray plastic cable gland with threaded body and ribbed cap, marked "M20x1.5," on a white background.',
 				label: 'Cable Glands',
@@ -118,7 +118,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'High-quality cable glands and cable entry systems. For high-demand applications such as salt water, dust, oil and gas, or fluctuating temperatures.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/klauke/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/klauke/',
 				image: '/images/category-detail-electrical-products/12-close-up-of-a-klauke-cable-lug-for-connecting-ca.webp',
 				alt: 'Close-up of a Klauke cable lug for connecting cables in electrical connections on white background.',
 				label: 'Electrical Connection Technology',
@@ -126,7 +126,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Cable lugs, compression joints, clamps, screw connectors, and crimping tools .',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/mecatraction/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/mecatraction/',
 				image: '/images/category-detail-electrical-products/13-a-mecatraction-tubular-cable-lug-with-inspection.webp',
 				alt: 'A Mecatraction tubular cable lug with inspection hole on white background',
 				label: 'Tubular Cable Lugs',
@@ -134,7 +134,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Ready-made components for electrical connection technology. Tubular cable lugs with and without inspection hole. 90° angle version.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/mtcon/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/mtcon/',
 				image: '/images/category-detail-electrical-products/14-six-different-mtcon-power-elements-for-connectin.webp',
 				alt: 'Six different MTCON power elements for connecting high currents to PCBs',
 				label: 'Power Elements',
@@ -142,7 +142,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Innovative PCB technology press-fit connectors, such as power towers, power sockets, power edges, and power protectors.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/panduit/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/panduit/',
 				image: '/images/category-detail-electrical-products/15-a-black-panduit-cable-tie-on-white-background.webp',
 				alt: 'A black Panduit cable tie on white background',
 				label: 'Cable Ties and Mountings',
@@ -150,7 +150,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Comprehensive cable and wire management solutions, including cable ties, cable mounting products, cable identification, and heat shrink technology.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/reiku/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/reiku/',
 				image: '/images/category-detail-electrical-products/16-a-black-reiku-tupe-connector-on-a-white-backgrou.webp',
 				alt: 'A black Reiku tupe connector on a white background.',
 				label: 'Cable Protection',
@@ -158,7 +158,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Comprehensive cable protection solutions, including tubing, connectors, heat and radiation protection.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/electrical-products/spelsberg/',
+				href: '/product-solutions/product-categories-and-brands/electrical-products/spelsberg/',
 				image: '/images/category-detail-electrical-products/17-a-white-spelsberg-tk-series-electrical-junction-.webp',
 				alt: 'A white Spelsberg TK series electrical junction box on white background.',
 				label: 'Electrical Enclosures',
@@ -167,19 +167,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/03.100/',
+				href: '/products/03.100/',
 				image: '/images/category-detail-electrical-products/19-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Electrical Products',
 				description: 'Browse our large assortment of electrical products and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-electrical-products/20-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -187,7 +187,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-electrical-products/21-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

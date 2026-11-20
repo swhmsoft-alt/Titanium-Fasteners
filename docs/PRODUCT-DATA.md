@@ -85,21 +85,27 @@ WARNINGS (1):
 
 ### families.csv — 产品表（编辑人员填的核心信息）
 
-**只有 8 列。** 其余全是派生的 —— 少存一列就少一处真相。
+**只有 9 列。** 其余全是派生的 —— 少存一列就少一处真相。
 
 | 列 | 说明 |
 | --- | --- |
 | `family_id` | kebab-case 唯一 id，同时是 URL 片段 |
 | `name` | 展示名 |
 | `category` | 所属分类 id，对应 categories.csv（**必填**，两层树的顶层） |
-| `standards` | 标准 id，多个用 `\|` 分隔 → **多规格交叉的入口**；**第一个决定产品类型** |
+| `type` | 产品类型（screw / bolt / nut / washer / stud …），决定矩阵列结构 |
+| `standards` | 标准 id，多个用 `\|` 分隔 → **多规格交叉的入口**；**可以留空** |
 | `materials` | 材质 id，`\|` 分隔 |
 | `finishes` | 表面处理 id，`\|` 分隔 |
 | `description` | 页面描述 |
-| `image` | **第 8 列**：客户原图名（如 `BN-272-01.jpg`）。落盘名 = `<SKU>-<原图名>` |
+| `image` | **第 9 列**：客户原图名（如 `BN-272-01.jpg`）。落盘名 = `<SKU>-<原图名>` |
 
-**派生（不落 CSV）**：`type`（← `standards[0]`，决定矩阵列结构）· `sku`（← family_id）·
+**派生（不落 CSV）**：`sku`（← family_id）·
 `image`/`cad`/`pdf`（← 素材扫描）· `seo_title`（← name + 标准名）· `seo_description`（← description）。
+
+> **为什么 `type` 落 CSV 而不是由标准派生** —— 标准只是规格矩阵的一个维度，不是产品类型
+> 的来源。派生会锁死三件事：无标准产品（`standards` 留空）无法定类型、挂多个标准时类型
+> 取决于书写顺序、同一族换标准要连带改列结构。显式存 `type` 后，
+> 「无标准 / 多标准 / 自动登记的新标准」都不再是特例。
 
 > **产品表与管理表分开** —— `families.csv` 只放产品本身；状态与商务数据在
 > `management.csv`（见下）。改状态不会碰到产品字段，反之亦然。
@@ -143,18 +149,30 @@ WARNINGS (1):
 | `image` | `public/` 下分类图路径 |
 | `order` | 展示顺序 |
 
-**路由形态**：`/global-en/eshop/c/<id>/`（族页是 `/global-en/eshop/p/<family_id>/`）
+**路由形态**：`/products/<id>/`（族页是 `/products/<category_id>/<family_id>/`）
 
-> **为什么分类与族要两种形态？** 两个路由都用同一个前缀 + 一个动态段的话，
-> Astro 无法区分 —— 两份 `getStaticPaths` 会互相覆盖。`c/` 与 `p/` 让形态不同、
-> 路由互不冲突。仓库禁止跳转/重定向，所以这个形态一旦定下就是契约。
+> **为什么族页带分类层？** 分类页与族页前缀相同，但**段数不同** ——
+> 分类页 2 段（`/products/screws/`），族页 3 段（`/products/screws/hex-nut/`）。
+> 段数不同，Astro 才能区分两份 `getStaticPaths` 而不互相覆盖。
+> 仓库禁止跳转/重定向，所以这个形态一旦定下就是契约。
+>
+> **分类 id 不能与族 id 同名** —— 否则 `/products/<id>/` 会同时是分类页与
+> 族页，Astro 静默产生重复路由。数据闸门 **E036** 在生成阶段直接拦下。
 
 ### materials.csv / finishes.csv / standards.csv — 字典
 
 字典是**单行即完整**的结构（不是矩阵），所以字典本身不需要拆行 —— 材质多时用 `materials.csv` 增行即可。
 
 `standards.csv` 一行同时带 `din` 与 `iso` 两列，这是**多规格交叉**的表达方式：一族挂 `din-912` 一个 id 就能在页面上同时显示 DIN 912 与 ISO 4762。
-另外带一列 `type` —— **标准决定产品类型**：`families.csv` 的 `type` 由 `standards` 的第一个 id 派生，不落 CSV。
+`iso` 列可写多个等价号（`ISO 7380-1 | ISO 7380`），导入时按 DIN/ISO 两种写法都能归一到同一行。
+
+`standards.csv` 的 `type` 列是**参考信息**（这个标准通常对应哪种产品），不再决定产品类型 ——
+产品类型由 `families.csv` 的 `type` 列显式给出。
+
+新增一列 `auto`：`1` = 由批量导入**自动登记、待人工核对**的标准。清单里出现字典里没有的
+标准号时，导入不会报错，而是自动登记一行并标 `auto=1`；核对后补齐标准号/标题并改成 `0`。
+没有工程尺寸来源的族，其规格行只填关键参数（螺纹 × 长度），闸门记 W002 而不是 E019 ——
+先按基础规格上架，尺寸等抽取器补齐。
 
 ### param-schema.csv — 参数字典
 
@@ -217,7 +235,7 @@ WARNINGS (1):
 | E016 | error | 矩阵含未知列 |
 | E017 | error | 矩阵缺 standard 列 |
 | E018 | error | 行的 standard 不在 family 的 standards 列表 |
-| E019 | error | 行缺必填参数 |
+| E019 | error | 行缺必填参数（该标准在尺寸库里有这一档 → 数据漏填） |
 | E020 | error | mm 参数的值不是数值 |
 | E021 | error | 重复的规格组合 |
 | E022 | error | 矩阵无数据行 |
@@ -233,6 +251,7 @@ WARNINGS (1):
 | E034 | error | 产品在 management.csv 里没有管理记录 |
 | E035 | error | management.csv 里有孤儿管理记录（产品表里没有这个族） |
 | W001 | warn | 族还没有主图（image 列留空或文件不存在） |
+| W002 | warn | 规格行缺工程尺寸（该标准在尺寸库里没有这一档）—— 先按基础规格上架 |
 
 ---
 
@@ -279,9 +298,9 @@ public/download/spec/<SKU>-01.pdf
 
 | 页面 | 路由 |
 | --- | --- |
-| 产品总览 | `/global-en/eshop/` |
-| 分类页 | `/global-en/eshop/c/<category_id>/` |
-| 族详情页 | `/global-en/eshop/p/<family_id>/` |
+| 产品总览 | `/products/` |
+| 分类页 | `/products/<category_id>/` |
+| 族详情页 | `/products/<category_id>/<family_id>/` |
 
 ---
 
@@ -297,7 +316,7 @@ public/download/spec/<SKU>-01.pdf
 | 事项 | 决策 | 落点 |
 | --- | --- | --- |
 | 询盘承接渠道 | **自建 webhook**（复用 cnc.bozemetal.com 的询盘接口约定） | `src/config/site.ts` → `INQUIRY.endpoint`；端点为空时自动降级 mailto |
-| 产品区 URL | **`/global-en/eshop/`** 统一前缀（`/` 总览 · `/c/<id>/` 分类 · `/p/<id>/` 族） | 生成器 `ESHOP_ROUTE_BASE` + `familyPath()` / `categoryPath()`，集中一处 |
+| 产品区 URL | **`/products/`** 统一前缀（`/` 总览 · `/<category_id>/` 分类 · `/<category_id>/<family_id>/` 族） | 生成器 `PRODUCT_ROUTE_BASE` + `familyPath(category, id)` / `categoryPath(id)`，集中一处 |
 | 矩阵数据来源 | **测试数据**，客户暂不提供正式数据 | `data/products/*.csv` 当前为占位样本 |
 | SKU 粒度 | **族级**（一个族一个号），规格是它的可订购组合 | `TI-<family_id 大写>` |
 | 素材绑定 | **文件名以 SKU 开头**，扫描绑定；客户原图由导入按 `<SKU>-<原名>` 改名认领 | `scripts/lib/assets.mjs` |

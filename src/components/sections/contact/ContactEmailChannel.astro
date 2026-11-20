@@ -1,0 +1,121 @@
+---
+/**
+ * ContactEmailChannel — 右栏「直接发邮件」通道卡。
+ *
+ * WHY A SCRIPT, NOT AN ISLAND
+ * ---------------------------
+ * 一键复制只需要「一次点击 + 改一次按钮文案」，为此 hydrate 整个 React 岛不划算。
+ * 这里用一段 20 行的原生脚本监听按钮 —— 无 JS 时按钮依然是一个指向 mailto 的
+ * 真实 <a>，功能降级但不失效。
+ *
+ * 为什么把邮箱做成「主 CTA」而不是小字链接
+ * -----------------------------------------
+ * 欧美 B2B 买家（尤其采购）80% 以上习惯用 Outlook / Gmail 直接发邮件问价，
+ * 因为那是他已有的工作流，填网页表单对他反而是额外动作。邮件入口的顺滑度
+ * 直接决定询盘量级，所以邮箱字号拉到 h4 级，并给「复制」「唤起客户端」两个按钮。
+ */
+import { INQUIRY } from '@config/site';
+
+interface Props {
+	heading: string;
+	body: string;
+	copyLabel: string;
+	copiedLabel: string;
+	mailtoLabel: string;
+	mailtoSubject: string;
+}
+
+const { heading, body, copyLabel, copiedLabel, mailtoLabel, mailtoSubject } = Astro.props;
+
+const email = INQUIRY.fallbackEmail;
+const mailto = `mailto:${email}?subject=${encodeURIComponent(mailtoSubject)}`;
+/** 正文里的 {email} 占位符在构建期替换，避免文案与配置两处各写一个邮箱而漂移。 */
+const bodyText = body.replace('{email}', email);
+---
+
+<section
+	class="rounded-lg border border-blue-light bg-blue-light p-24 lg:p-32"
+	aria-labelledby="contact-email-heading"
+>
+	<h2 id="contact-email-heading" class="text-h4 mb-12 text-blue-dark3">{heading}</h2>
+	<p class="mb-20 text-p-sm text-gray">{bodyText}</p>
+
+	<div class="mb-16 flex flex-col gap-8">
+		<a
+			href={mailto}
+			class="text-h5 break-all text-blue-dark3 underline decoration-blue-70 underline-offset-4 transition-colors duration-300 hover:text-blue"
+		>
+			{email}
+		</a>
+	</div>
+
+	<div class="flex flex-wrap gap-12">
+		<button
+			type="button"
+			data-copy-email={email}
+			data-copy-label={copyLabel}
+			data-copied-label={copiedLabel}
+			class="inline-flex items-center justify-center rounded-pill border-2 border-blue-dark3 bg-transparent px-20 py-8 text-button leading-none text-blue-dark3 transition-colors duration-300 hover:bg-blue-dark3 hover:text-white"
+		>
+			<span data-copy-text>{copyLabel}</span>
+		</button>
+
+		<a
+			href={mailto}
+			class="inline-flex items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+		>
+			{mailtoLabel}
+		</a>
+	</div>
+
+	<p class="mt-16 text-p-sm text-gray-medium">
+		Large STEP/CAD attachments are accepted once the NDA is executed. If you are sending
+		drawings before that, reply to this address and ask for the NDA — we will execute it
+		first, then invite the files.
+	</p>
+</section>
+
+<script>
+	/**
+	 * 一键复制邮箱。
+	 *
+	 * 用 `navigator.clipboard`（需 HTTPS / localhost），失败时回退到
+	 * `document.execCommand('copy')` —— 老旧内网浏览器上仍能复制成功。
+	 */
+	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-copy-email]');
+
+	buttons.forEach((button) => {
+		button.addEventListener('click', async () => {
+			const value = button.dataset.copyEmail ?? '';
+			const label = button.querySelector('[data-copy-text]');
+			const original = button.dataset.copyLabel ?? '';
+			const copied = button.dataset.copiedLabel ?? '';
+
+			let ok = false;
+			try {
+				await navigator.clipboard.writeText(value);
+				ok = true;
+			} catch {
+				const helper = document.createElement('textarea');
+				helper.value = value;
+				helper.setAttribute('readonly', '');
+				helper.style.position = 'fixed';
+				helper.style.opacity = '0';
+				document.body.appendChild(helper);
+				helper.select();
+				try {
+					ok = document.execCommand('copy');
+				} catch {
+					ok = false;
+				}
+				document.body.removeChild(helper);
+			}
+
+			if (!label) return;
+			label.textContent = ok ? copied : value;
+			window.setTimeout(() => {
+				label.textContent = original;
+			}, 2000);
+		});
+	});
+</script>

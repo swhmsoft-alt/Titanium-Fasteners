@@ -1,0 +1,86 @@
+# 任务指令：构建/重构符合 Google SEO + 生成式AI (GEO) + B2B高转化标准的网页
+
+## 一、 目标页面参数（每次执行仅需修改此处）
+- **目标页面URL/路由**：【/products/grade-5-fasteners/】
+- **目标受众与意图**：【B2B企业采购总监，处于供应商评估/方案调研阶段】
+- **页面核心主题/名称**：Titanium Grade 5 Fasteners, 核心内容突显Titanium Grade 5特性及应用场景/用途。
+---
+
+## 二、 全站通用底层执行铁律（必须严格遵守）
+
+1. **结论前置（BLUF 原则）**
+   - 页面唯一的 `<h1>` 必须包含核心搜索关键词与明确业务价值。
+   - `<h1>` 下方的第一段 `<p>` 必须控制在 **40-60 字（或 30-50 英文词）**以内，用直白的“主谓宾”陈述句给出该页面的核心定义、最终结论或核心价值，严禁空洞铺垫。
+
+2. **高信噪比与去虚词化（Entity & Fact-First）**
+   - 全文严禁使用“行业领先、一站式赋能、卓越品质、全方位”等无实质意义的营销虚词。
+   - 所有论述必须由**“具体实体名词 + 精确数字 / 行业标准 / 客观参数”**构成。若缺少真实数据，请用 `[具体数据占位符，如：XX%]` 明确标注，方便我后续填入。
+
+3. **机器可读的语义化结构（Machine-Readable DOM）**
+   - **标题即大纲**：严格遵循 `H1 -> H2 -> H3` 单一树状层级，绝不跳级。每个小标题必须是具有完整语义的短语或自然语言问句（如使用“如何降低30%清关延误率？”，严禁使用“我们的优势”、“第一部分”等模糊标题）。
+   - **数据必用原生标签**：凡涉及参数规格、操作步骤、方案对比、核心要点，**必须使用原生 HTML `<table>`、`<ul>`、`<ol>` 标签渲染**，严禁用纯 `<div>` 堆砌或用图片替代文字表格。
+   - **核心内容直出**：所有核心文本、表格与问答必须直接渲染在初始 HTML DOM 中（SSR/SSG 友好），严禁隐藏在必须点击才能触发的异步 JS 交互中。
+
+4. **E-E-A-T 信任锚点与问答模块**
+   - **动态匹配信任背书**：根据当前页面类型自动嵌入对应的可信度组件（例如：博客/指南页必须包含“专业作者署名、发布/更新时间、参考标准”；产品/方案页必须包含“认证编号、量化客户案例指标”；公司页必须包含“实体资质与办公地址”）。
+   - **首句直答式 FAQ**：在页面合适位置设置 3-5 个与当前主题强相关的长尾高频问题（`<h3>`），每个回答的**第一句话必须直接给出明确结论（是/否/具体时间/具体范围）**，第二句再展开补充细节。
+
+5. **B2B 商业转化引导（CRO）**
+   - 根据页面意图设置低摩擦转化入口（如方案/产品页提供精简询盘/预约入口，字段不超过 4 项；文章/资讯页提供相关方案内链或资料下载引导），并附带消除顾虑的微文案（如保密承诺、响应时效）。
+
+---
+
+## 三、 技术与代码实现规范
+
+1. **自动化 JSON-LD 结构化数据**：
+   - 在页面 `<head>` 或对应的元数据组件中，根据当前页面类型**自动生成并注入匹配的 Schema.org JSON-LD 代码**（例如：文章页注入 `Article` + `FAQPage`；产品/服务页注入 `Product`/`Service` + `FAQPage`；公司页注入 `Organization`）。确保 JSON-LD 中的问答与页面 DOM 中的 FAQ 文本完全一致。
+2. **Meta 标签与媒体优化**：
+   - 自动生成精准的 `<title>`（60字符内）与 `<meta name="description">`（155字符内）。
+   - 所有 `<img>` 必须包含描述性 `alt` 属性，非首屏图片添加 `loading="lazy"`。
+3. **语义化 HTML5 标签**：
+   - 合理使用 `<main>`、`<article>`、`<section>`、`<aside>`、`<nav>` 包裹对应区块，保持样式简洁、响应式适配移动端，确保 Core Web Vitals（尤其是 LCP）性能最优。
+
+请先阅读项目现有代码结构与技术栈，然后按照上述规范直接创建或修改目标页面代码。
+
+Titanium Grade 2 Fasteners, /products/grade-2-fasteners/
+Titanium Grade 5 Fasteners, /products/grade-5-fasteners/ 
+Titanium Grade 7 Fasteners, /products/grade-7-fasteners/
+Titanium Grade 23 Fasteners, /products/grade-23-fasteners/
+补充：**Hero 区域右侧图片展示区**双图改单张大图**
+
+网站主导航 industries分类下拉菜单（文本+URL）替换成如下：
+
+Aerospace & UAV
+
+Medical Devices
+
+Electric Vehicles
+
+Chemical & Corrosion
+
+Semiconductor & Vacuum
+
+Desalination
+
+Marine & Offshore
+
+Industrial Robotics
+
+Rail & Rolling Stock
+
+Data Centers
+
+
+序号	导航英文（海外站直接使用）	中文对照	URL slug 建议
+1	Aerospace & UAV	航空航天与无人机	/industries/aerospace-uav/
+2	Medical Devices	医疗器械	/industries/medical-devices/
+3	Electric Vehicles	电动汽车	/industries/electric-vehicles/
+4	Chemical & Corrosion 化工防腐	/industries/chemical-corrosion/
+5	Semiconductor & Vacuum 半导体真空 /industries/semiconductor-vacuum/
+6	Desalination	海水淡化	/industries/desalination/
+7	Marine & Offshore	船舶海工	/industries/marine-offshore/
+8	Industrial Robotics	工业机器人 /industries/industrial-robotics/
+9	Rail & Rolling Stock	轨道交通	/industries/rail-rolling-stock/
+10	Data Centers	数据中心	/industries/data-centers/
+
+注意：暂时不管网站实际的行业页面和链接，下一轮再优化调整。

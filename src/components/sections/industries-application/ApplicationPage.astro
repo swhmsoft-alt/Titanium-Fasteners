@@ -1,0 +1,125 @@
+---
+/**
+ * ApplicationPage — 细分行业应用页的统一外壳。
+ *
+ * 九个行业页共用这一份骨架：
+ *   hero → 子应用 → 牌号对照 → 品质保障 → 参考应用 → FAQ → 询盘
+ *
+ * 页面自身只提供数据（@data/industries-<slug>），所有版式、链接解析与
+ * JSON-LD 都在这里完成，因此新增行业页不需要再复制一遍结构代码。
+ *
+ * JSON-LD（@graph）
+ *   Organization —— 制造商实体
+ *   Service      —— 该行业的紧固件供应服务
+ *   ItemList     —— 页面上出现的产品族（与 DOM 卡片同源）
+ *   FAQPage      —— 与 <details> 里的答案逐字一致（同源数据渲染）
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import Hero from '@components/sections/industries-application/Hero.astro';
+import SubApplications from '@components/sections/industries-application/SubApplications.astro';
+import GradeComparison from '@components/sections/industries-application/GradeComparison.astro';
+import QualitySupport from '@components/sections/industries-application/QualitySupport.astro';
+import ReferenceApplication from '@components/sections/industries-application/ReferenceApplication.astro';
+import Faq from '@components/sections/industries-application/Faq.astro';
+import ApplicationRfqForm from '@components/sections/industries-application/ApplicationRfqForm.astro';
+import {
+	CONVENTIONAL_COLUMNS,
+	CONVENTIONAL_ROWS,
+	GRADE_COLUMNS,
+	GRADE_ROWS,
+	QA_CARDS,
+	buildAppJsonLd,
+} from '@data/industries-application';
+import type { AppPageData } from '@data/industries-application';
+import { SITE } from '@config/site';
+
+interface Props {
+	page: AppPageData;
+}
+
+const { page } = Astro.props;
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = `/industries/${page.slug}/`;
+const jsonLd = buildAppJsonLd(page, SITE);
+---
+
+<BaseLayout
+	title={page.seo.title}
+	description={page.seo.description}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<Hero
+			breadcrumb={page.hero.breadcrumb}
+			eyebrow={page.hero.eyebrow}
+			heading={page.hero.heading}
+			lead={page.hero.lead}
+			badges={page.hero.badges}
+			cta={page.hero.cta}
+			secondaryCta={page.hero.secondaryCta}
+			image={page.hero.image}
+		/>
+
+		<SubApplications
+			heading={page.subApplications.heading}
+			lead={page.subApplications.lead}
+			items={page.subApplications.items}
+		/>
+
+		<GradeComparison
+			heading={page.comparison.heading}
+			lead={page.comparison.lead}
+			grades={GRADE_COLUMNS}
+			rows={GRADE_ROWS}
+			note={page.comparison.note}
+			conventional={{
+				heading: 'Titanium against the materials usually specified instead',
+				lead: 'Most buyers arrive with a steel or stainless drawing and then convert it. These are the published differences that matter to the joint.',
+				columns: CONVENTIONAL_COLUMNS,
+				rows: CONVENTIONAL_ROWS,
+				note: 'Densities are published nominal values for reference. We do not publish torque, preload or friction figures, and the certificate for the lot states the measured values of that lot.',
+			}}
+		/>
+
+		<QualitySupport
+			heading={page.qa.heading}
+			lead={page.qa.lead}
+			cards={QA_CARDS}
+		/>
+
+		<ReferenceApplication
+			eyebrow={page.reference.eyebrow}
+			heading={page.reference.heading}
+			lead={page.reference.lead}
+			points={page.reference.points}
+			image={page.reference.image}
+			facts={page.reference.facts}
+			cta={page.reference.cta}
+			secondaryCta={page.reference.secondaryCta}
+		/>
+
+		<Faq heading={page.faq.heading} items={page.faq.items} />
+
+		<ApplicationRfqForm
+			heading={page.rfq.heading}
+			lead={page.rfq.lead}
+			note={page.rfq.note}
+			source={`industries-${page.slug}`}
+			industry={page.industry}
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

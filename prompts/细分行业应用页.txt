@@ -1,0 +1,65 @@
+# 任务指令：构建 BOZE 钛合金紧固件“细分行业应用页”（Industry Application Page）
+
+## 一、 目标页面参数（每次执行仅需修改此处）
+- **品牌名称**：BOZE (Precision Titanium Fasteners Manufacturer)
+- **目标行业名称**：【目标行业名称，例如：Industrial Robotics】
+- **目标路由/URL**：【目标路由，例如：/industries/industrial-robotics/】
+- **核心目标受众**：行业研发/结构工程师与 B2B 采购经理。
+
+---
+
+## 二、 页面 6 大模块 UI 布局与内容架构（严格按顺序生成）
+
+### 模块 1：首屏（Hero Section）—— 工况定调与实体定义
+- **面包屑导航**：`Home > Industries > [目标行业名称]`
+- **UI 布局**：桌面端左文（60%）+ 右侧高清行业工况图卡片（40%）。
+- **`<h1>` 唯一主标题**：`[目标行业名称] Titanium Fasteners: Lightweight, High-Strength & Corrosion-Resistant Solutions`
+- **`<p>` 结论前置摘要（BLUF）**：35-50 个英文单词以内，说明 BOZE 提供的钛牌号、核心痛点解决方案与认证标准（ISO 9001, EN 10204 3.1 MTR）。
+- **双轨 CTA 按钮**：
+  - 主按钮：`Consult Our Fastening Engineers`（平滑滚动至 `#rfq-form`）
+  - 次按钮：`Download [Industry] Fastener Guide (PDF)`
+
+### 模块 2：细分场景拆解与白底单品网格（Sub-Application Breakdown）
+- **交互与布局**：按设备结构拆分为 **2 个核心子应用场景**。
+- **每个子场景内部结构**：
+  1. **场景头部**：大图占位 + `<h3>` 子场景名称 + 2 句话概括工况与痛点。
+  2. **推荐紧固件单品网格（3列白底卡片布局）**：列出 3-4 款匹配紧固件（包含带关键词的 `alt` 图片、加粗型号、工程优势及详情页链接）。
+
+### 模块 3：行业选型硬核对比表（Material & Engineering Matrix）
+- **SEO/GEO 铁律**：使用原生 HTML `<table>`、`<thead>`、`<tbody>`、`<th>`、`<span>` 静态渲染在初始 DOM 中。
+- **表格内容**：对比“传统不锈钢/合金钢”与“BOZE 钛合金方案（Gr2 / Gr5 / Gr7）”在 4-5 个维度的性能表现（应用部位、传统痛点、推荐牌号工艺、量化工程收益）。
+
+### 模块 4：全流程工程与品控能力（Engineering & QA Pillars）
+- **UI 布局**：`3列 × 2行` 卡片网格，涵盖 CNC/冷镦定制、表面处理、ISO/IEC 17025 实验室检测、EN 10204 3.1 MTR 溯源、VMI 安全库存及 DIN/ISO/ASTM 标准全覆盖。
+
+### 模块 5：同行业实战案例 + 选型手册下载（Social Proof & Lead Magnet）
+- **UI 布局**：双栏并排卡片（左 60% 案例：Client Profile -> Engineering Challenge -> BOZE Solution -> Quantified Result；右 40% 资料下载）。
+
+### 模块 6：“首句直答”行业采购 FAQ + BOM 询盘表单
+- **行业专属 FAQ（3-4 题）**：使用 `<details>` 组件默认渲染在初始 DOM 中，每条回答首句直接给出明确工程结论。
+- **底部双栏询盘区（`#rfq-form`）**：左侧对接承诺与资质徽章；右侧为低摩擦表单（支持拖拽上传 `.xlsx, .pdf, .step, .dwg` 的 CAD/BOM 上传框）。
+
+---
+
+## 三、 技术实现与 Schema 结构化数据铁律
+
+1. **自动化 JSON-LD 注入**：
+   - 在 `<head>` 中生成包含 `@graph` 的 JSON-LD，涵盖 `Organization`、`Service`、`ItemList` 与 `FAQPage`。
+2. **代码与视觉规范**：
+   - 融入现有技术栈与工业 B2B 视觉规范，确保所有图片带有描述性 `alt` 属性及懒加载。
+
+请先读取项目现有目录结构，然后直接生成该行业应用页面的完整代码。
+
+任务列表：
+以Industrial Robotics, /industries/industrial-robotics/为模板，构建其他9个子行业页面
+序号	导航英文（海外站直接使用）	中文对照	URL slug 建议
+1	Aerospace & UAV	航空航天与无人机	/industries/aerospace-uav/
+2	Medical Devices	医疗器械	/industries/medical-devices/
+3	Electric Vehicles	电动汽车	/industries/electric-vehicles/
+4	Chemical & Corrosion 化工防腐	/industries/chemical-corrosion/
+5	Semiconductor & Vacuum 半导体真空 /industries/semiconductor-vacuum/
+6	Desalination	海水淡化	/industries/desalination/
+7	Marine & Offshore	船舶海工	/industries/marine-offshore/
+8	Industrial Robotics	工业机器人 /industries/industrial-robotics/ （子行业模板）
+9	Rail & Rolling Stock	轨道交通	/industries/rail-rolling-stock/
+10	Data Centers	数据中心	/industries/data-centers/

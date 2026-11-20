@@ -1,0 +1,180 @@
+---
+/**
+ * /industries/industrial-robotics/ — 工业机器人钛紧固件应用页。
+ *
+ * 与 /industries/robotics/ 的关系
+ * ------------------------------
+ * `/industries/robotics/` 是继承下来的 CMS 行业页（八个行业共用一套 block 词表，
+ * 数据来自 qa/ref 的抓取产物）。本页是**独立撰写的 BOZE 应用页**：自己的六段
+ * 顺序、自己的两个机器人子应用、自己的牌号对照表 —— 因此用专属数据模块
+ * （@data/industries-industrial-robotics），不塞进通用 block 词表。
+ *
+ * 两条路由**并存**、互不覆盖：`[slug].astro` 的 getStaticPaths 里没有
+ * `industrial-robotics`，静态路由优先级高于动态路由。
+ *
+ * 段落顺序（转化漏斗）
+ *   hero → 子应用 → 牌号对照 → 品质保障 → 参考应用 → FAQ → 询盘
+ *
+ * JSON-LD（@graph）
+ *   Organization —— 制造商实体
+ *   Service      —— 机器人行业的紧固件供应服务
+ *   ItemList     —— 页面上出现的产品族（与 DOM 卡片同源，链接指向已存在路由）
+ *   FAQPage      —— 与 <details> 里的答案逐字一致（同源数据渲染）
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import Hero from '@components/sections/industries-robotics/Hero.astro';
+import SubApplications from '@components/sections/industries-robotics/SubApplications.astro';
+import GradeComparison from '@components/sections/industries-robotics/GradeComparison.astro';
+import QualitySupport from '@components/sections/industries-robotics/QualitySupport.astro';
+import ReferenceApplication from '@components/sections/industries-robotics/ReferenceApplication.astro';
+import Faq from '@components/sections/industries-robotics/Faq.astro';
+import RoboticsRfqForm from '@components/sections/industries-robotics/RoboticsRfqForm.astro';
+import { INDUSTRIAL_ROBOTICS as PAGE, ROBOTICS_PRODUCTS } from '@data/industries-industrial-robotics';
+import { SITE } from '@config/site';
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = '/industries/industrial-robotics/';
+const pageUrl = new URL(canonicalPath, SITE.url).href;
+
+const orgId = `${SITE.url}/#organization`;
+
+/**
+ * ItemList —— 与页面上出现的族卡同源：产品卡来自生成目录 ALL_PRODUCTS，
+ * 因此每一条的 name / url 都指向站内已发布路由，不会产生死链。
+ */
+const itemList = {
+	'@type': 'ItemList',
+	name: 'Titanium fasteners for industrial robotics',
+	numberOfItems: ROBOTICS_PRODUCTS.length,
+	itemListElement: ROBOTICS_PRODUCTS.map((product, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		name: product.title,
+		url: new URL(product.href, SITE.url).href,
+	})),
+};
+
+/** Service —— 面向机器人行业的紧固件供应服务，provider 指向 Organization。 */
+const service = {
+	'@type': 'Service',
+	name: 'Industrial robotics titanium fastening supply',
+	serviceType: 'Titanium fastener manufacturing and supply for industrial robotics',
+	url: pageUrl,
+	description:
+		'Grade 2, Grade 5 and Grade 23 titanium fasteners for robot arm frames, end effectors and sensor housings — DIN and ISO geometries from M1.6 to M36, machined to customer drawings under NDA, with EN 10204 3.1 certificates per heat number.',
+	provider: { '@id': orgId },
+	areaServed: ['Europe', 'North America', 'Asia'],
+	audience: {
+		'@type': 'BusinessAudience',
+		name: 'Industrial robot builders and automation integrators',
+	},
+};
+
+/** FAQPage —— 答案文本与页面 <details> 由同一份数据渲染，逐字一致。 */
+const faqPage = {
+	'@type': 'FAQPage',
+	mainEntity: PAGE.faq.items.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: { '@type': 'Answer', text: item.answer },
+	})),
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': orgId,
+			name: SITE.name,
+			legalName: SITE.legalName,
+			url: SITE.url,
+			email: 'info@bozemetal.com',
+			description:
+				'Titanium fastener manufacturer producing standard and custom titanium bolts, screws, studs, nuts and washers to DIN and ISO, M1.6–M36, with EN 10204 3.1 material certification.',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Baoji',
+				addressRegion: 'Shaanxi',
+				addressCountry: 'CN',
+			},
+		},
+		service,
+		itemList,
+		faqPage,
+	],
+};
+---
+
+<BaseLayout
+	title={PAGE.seo.title}
+	description={PAGE.seo.description}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<Hero
+			breadcrumb={PAGE.hero.breadcrumb}
+			eyebrow={PAGE.hero.eyebrow}
+			heading={PAGE.hero.heading}
+			lead={PAGE.hero.lead}
+			badges={PAGE.hero.badges}
+			cta={PAGE.hero.cta}
+			secondaryCta={PAGE.hero.secondaryCta}
+			image={PAGE.hero.image}
+		/>
+
+		<SubApplications
+			heading={PAGE.subApplications.heading}
+			lead={PAGE.subApplications.lead}
+			items={PAGE.subApplications.items}
+		/>
+
+		<GradeComparison
+			heading={PAGE.comparison.heading}
+			lead={PAGE.comparison.lead}
+			grades={PAGE.comparison.grades}
+			rows={PAGE.comparison.rows}
+			note={PAGE.comparison.note}
+			conventional={PAGE.comparison.conventional}
+		/>
+
+		<QualitySupport
+			heading={PAGE.qa.heading}
+			lead={PAGE.qa.lead}
+			cards={PAGE.qa.cards}
+		/>
+
+		<ReferenceApplication
+			eyebrow={PAGE.reference.eyebrow}
+			heading={PAGE.reference.heading}
+			lead={PAGE.reference.lead}
+			points={PAGE.reference.points}
+			image={PAGE.reference.image}
+			facts={PAGE.reference.facts}
+			cta={PAGE.reference.cta}
+			secondaryCta={PAGE.reference.secondaryCta}
+		/>
+
+		<Faq heading={PAGE.faq.heading} items={PAGE.faq.items} />
+
+		<RoboticsRfqForm
+			heading={PAGE.rfq.heading}
+			lead={PAGE.rfq.lead}
+			note={PAGE.rfq.note}
+			source="industries-industrial-robotics"
+		/>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

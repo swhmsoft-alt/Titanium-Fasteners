@@ -158,6 +158,8 @@ imgTag(r.image, 'aspect-5/4 w-full h-full rounded-2xl object-cover', ' style="as
 
 faq: (b) =>
 `<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">` +
+		(b.heading ? `<h2 class="text-h3 mb-16 lg:mb-24 text-blue-dark3">${b.heading}</h2>` : '') +
+
 (b.items ?? [])
 .map(
 (it: any) =>
@@ -222,6 +224,68 @@ imgTag(b.image, 'aspect-16/9 w-full rounded-2xl', ' style="aspect-ratio:16 / 9"'
 			)
 			.join('') +
 		`</div></article>`,
+	/**
+	 * capabilityBand — the split image/text band used by the nine service
+	 * capability pages. ONE image only, locked to a 4:3 landscape box so the
+	 * photo can never stretch next to the text column.
+	 */
+	capabilityBand: (b) =>
+		`<article class="container-fluid py-64 md:py-80">` +
+		`<div class="grid grid-cols-1 items-center gap-32 md:grid-cols-2 md:gap-48">` +
+		(b.image
+			? `<figure class="aspect-4/3 w-full overflow-hidden rounded-2xl">` +
+					imgTag(b.image, 'aspect-4/3 h-full w-full object-cover', ' style="aspect-ratio:4 / 3"') +
+					`</figure>`
+			: '') +
+		`<div class="min-w-0">` +
+		`<h2 class="text-h4 pb-24 text-blue-dark3 lg:text-h4-l">${b.heading}</h2>` +
+		(b.lead ? `<p class="text-p pb-24 text-gray lg:pb-32">${b.lead}</p>` : '') +
+		`<ul class="flex flex-col gap-12">` +
+		(b.highlights ?? [])
+			.map(
+				(h: any) =>
+					`<li class="text-p-sm text-gray"><strong class="text-blue-dark3">${h.label}:</strong> ${h.text}</li>`,
+			)
+			.join('') +
+		`</ul></div></div></article>`,
+
+	/**
+	 * specTable — a compact full-width label/value table. Used for the
+	 * abstract facts of a capability (grades, standards, lotting, documents),
+	 * which must never be shown as a large photo.
+	 */
+	specTable: (b) =>
+		`<article class="container-fluid mb-48 mt-32 lg:mb-56 lg:mt-40">` +
+		(b.heading ? `<h2 class="text-h3 text-blue-dark3 mb-16 lg:mb-24">${b.heading}</h2>` : '') +
+		`<dl class="border-t border-blue-light">` +
+		(b.rows ?? [])
+			.map(
+				(r: any) =>
+					`<div class="flex flex-col gap-4 border-b border-blue-light py-16 md:flex-row md:items-baseline md:gap-32 md:py-20">` +
+					`<dt class="text-p-sm shrink-0 font-bold text-blue-dark3 md:w-[34%]">${r.label}</dt>` +
+					`<dd class="text-p-sm text-gray md:w-[66%]">${r.value}</dd>` +
+					`</div>`,
+			)
+			.join('') +
+		`</dl></article>`,
+
+	/**
+	 * capabilityCta — the closing conversion band of a capability page.
+	 * No photo on purpose: the page already carries exactly one large image,
+	 * so the CTA stays a text panel and the last click target is a real route.
+	 */
+	capabilityCta: (b) =>
+		`<article class="bg-blue-dark">` +
+		`<div class="container-fluid-wide relative py-48 lg:py-64">` +
+		`<div class="relative z-1 flex flex-col gap-24 md:flex-row md:items-center md:justify-between md:gap-48">` +
+		`<div class="max-w-[720px]">` +
+		`<h2 class="text-h3 mb-16 text-white lg:mb-24">${b.heading}</h2>` +
+		(b.description ? `<p class="text-p text-white">${b.description}</p>` : '') +
+		`</div>` +
+		(b.cta
+			? `<a href="${attr(b.cta.href)}" class="text-button appearance-none inline-block shrink-0 rounded-pill border-2 border-white bg-white px-24 pt-[11px] pb-[12px] font-bold text-blue-dark3 transition-colors duration-100 hover:bg-transparent hover:text-white">${b.cta.label}</a>`
+			: '') +
+		`</div></div></article>`,
 };
 ---
 

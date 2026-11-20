@@ -1,0 +1,175 @@
+---
+/**
+ * /products/grade-5-fasteners/ — Titanium Grade 5 Fasteners 牌号落地页。
+ *
+ * 数据边界：牌号内容全部来自 @data/grade-hub（其数值又来自 @data/products
+ * 生成层：MATERIALS / ALL_PRODUCTS / FINISHES / STANDARDS），
+ * 页面不引用 CSV，也不手写任何强度数值。
+ *
+ * 组件复用既有的 sections/grades/ 四件套 + standards 域的 FAQ 与 RFQ，
+ * 不新建平行实现。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import GradeHero from '@components/sections/grades/GradeHero.astro';
+import GradeImageBand from '@components/sections/grades/GradeImageBand.astro';
+import GradeSpecAndQa from '@components/sections/grades/GradeSpecAndQa.astro';
+import GradeProductTable from '@components/sections/grades/GradeProductTable.astro';
+import StandardsFaq from '@components/sections/standards/StandardsFaq.astro';
+import StandardsRfqForm from '@components/sections/standards/StandardsRfqForm.astro';
+import { gradePageByMaterial } from '@data/grade-hub';
+import { SITE } from '@config/site';
+
+const page = gradePageByMaterial('ti-gr5');
+
+const currentPathname = Astro.url.pathname;
+const canonicalPath = '/products/grade-5-fasteners/';
+
+const description =
+	'Grade 5 Ti-6Al-4V titanium fasteners for aerospace, motorsport and high-vibration assemblies — ' +
+	'screws, bolts, nuts and washers to DIN and ISO standards, with EN 10204 3.1 traceability.';
+
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		name: page.heading,
+		description,
+		url: new URL(canonicalPath, SITE.url).href,
+		mainEntity: {
+			'@type': 'ItemList',
+			itemListElement: page.products.map((p, i) => ({
+				'@type': 'ListItem',
+				position: i + 1,
+				name: p.title,
+				url: new URL(p.href, SITE.url).href,
+			})),
+		},
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', SITE.url).href },
+			{
+				'@type': 'ListItem',
+				position: 2,
+				name: 'Products',
+				item: new URL('/products/', SITE.url).href,
+			},
+			{
+				'@type': 'ListItem',
+				position: 3,
+				name: page.heading,
+				item: new URL(canonicalPath, SITE.url).href,
+			},
+		],
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: page.faq.map((item) => ({
+			'@type': 'Question',
+			name: item.question,
+			acceptedAnswer: { '@type': 'Answer', text: item.answer },
+		})),
+	},
+];
+---
+
+<BaseLayout
+	title={`${page.heading} — Ti-6Al-4V`}
+	description={description}
+	canonicalPath={canonicalPath}
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<div class="container-fluid pt-16 lg:pt-24">
+			<nav
+				class="opacity-100 mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+				aria-label="Breadcrumb"
+			>
+				<ol class="flex text-p-l">
+					<li class="flex items-center">
+						<a href="/">
+							<svg
+								class="h-16 w-16 fill-gray-medium stroke-gray-medium stroke-[2]"
+								aria-hidden="true"
+							>
+								<use href="/images/sprite.svg#home"></use>
+							</svg>
+							<span class="sr-only">Home</span>
+						</a>
+					</li>
+					<li class="flex items-center">
+						<svg
+							class="h-16 w-16 inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#chevron-right"></use>
+						</svg>
+						<a href="/products/" class="whitespace-nowrap">Products</a>
+					</li>
+					<li class="flex items-center flex-shrink-1 flex-grow-0 truncate whitespace-nowrap">
+						<svg
+							class="h-16 w-16 inline-block fill-gray-medium stroke-gray-medium stroke-[1.75] mx-8 lg:mx-12 mb-4"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#chevron-right"></use>
+						</svg>
+						<span aria-current="page">{page.heading}</span>
+					</li>
+				</ol>
+			</nav>
+
+			<GradeHero
+				grade={page.grade}
+				alloy={page.alloy}
+				heading={page.heading}
+				lead={page.lead}
+				metrics={page.metrics}
+				primaryCta="Upload BOM for Quote"
+				secondaryCta="Request the Grade 5 Range Sheet"
+				requestText="Grade 5 range sheet request"
+			/>
+
+			<GradeImageBand {...page.band} />
+
+			<GradeSpecAndQa grade={page.grade} specRows={page.specRows} />
+
+			<GradeProductTable
+				tableId="grade-5-products"
+				caption="Grade 5 titanium fastener product range — product family, standard, thread range, length range and available finishes"
+				placeholder="Search by product name or standard (e.g. 912, 933, 125)..."
+				grade={page.grade}
+				rows={page.products}
+			/>
+
+			<StandardsFaq
+				items={page.faq}
+				intro="The five questions our engineering desk is asked most often when a Grade 5 order is placed for the first time."
+			/>
+
+			<StandardsRfqForm
+				source="grade-5"
+				heading="Send your Grade 5 BOM or drawing"
+				lead="Send the standard number, the quantity and the file. Our engineering desk quotes from your BOM directly and confirms the grade, the certificate type and the delivery date in writing."
+				subject="Grade 5 titanium fastener inquiry"
+				specLabel="Size, quantity and grade"
+				specHint="Use Quick Quote in the table above to carry a product name straight into this field."
+				specPlaceholder="e.g. M6 x 20, DIN 912, Gr5, 2000 pcs"
+			/>
+		</div>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+/**
+ * TrustSection — homepage screen 8.
+ *
+ * ROLE: the Who / How / Why transparency statement. Static and fully
+ * visible — a procurement buyer must not have to click to read it.
+ */
+import { TRUST } from '@data/home';
+---
+
+<section class="bg-blue-dark text-white py-24 lg:py-32" aria-labelledby="trust-heading">
+	<div class="container-fluid">
+		<h2 id="trust-heading" class="text-h3 mb-24 text-white lg:mb-32">{TRUST.heading}</h2>
+
+		<div class="grid grid-cols-1 gap-24 md:grid-cols-3 lg:gap-32">
+			{
+				TRUST.items.map((item) => (
+					<section class="flex flex-col rounded-card border border-blue-70 p-16 lg:p-24">
+						<p class="text-label mb-8 text-blue-70">{item.label}</p>
+						<h3 class="text-h5 mb-12 text-white">{item.heading}</h3>
+						<p class="mb-16 text-p-sm text-blue-70">{item.body}</p>
+						<a
+							href={item.href}
+							class="mt-auto inline-flex items-center gap-8 text-button text-white hover:underline"
+						>
+							{item.linkLabel}
+							<svg class="h-16 w-16 stroke-white" aria-hidden="true">
+								<use href="/images/sprite.svg#arrow-right"></use>
+							</svg>
+						</a>
+					</section>
+				))
+			}
+		</div>
+	</div>
+</section>

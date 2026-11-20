@@ -1,4 +1,4 @@
-/**
+﻿/**
  * src/data/category-detail/access-solutions.ts
  *
  * 由 scripts/gen-category-detail.mjs 从参考站 HTML 生成 —— 禁止手改。
@@ -12,9 +12,9 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	seo: { title: 'Access Solutions, Locking and Control Elements | Bossard Group', description: 'Get an overview of the diverse world of access solutions, from hinges, latches, and handles to positioning elements and quick release fasteners.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/global-en/' },
-			{ label: 'Product Solutions', href: '/global-en/product-solutions/' },
-			{ label: 'Product Categories and Brands', href: '/global-en/product-solutions/product-categories-and-brands/' },
+			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Product Solutions', href: '/product-solutions/' },
+			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Access Solutions' },
 		],
 		eyebrow: 'Product Categories',
@@ -45,7 +45,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Access Solutions Brands',
 		tiles: [
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/camloc/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/camloc/',
 				image: '/images/category-detail-access-solutions/03-a-camloc-tension-latch-on-a-white-background.webp',
 				alt: 'A Camloc tension latch on a white background.',
 				label: 'Quick Release Fasteners',
@@ -53,7 +53,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Quick fasteners and latches for machine parts and accessories that need to be opened and closed regularly.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/camloc-motion-control/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/camloc-motion-control/',
 				image: '/images/category-detail-access-solutions/04-a-black-camloc-motion-control-vari-lift-gas-spri.webp',
 				alt: 'A black Camloc Motion Control VARI-LIFT gas spring on white background',
 				label: 'Gas Springs and Damper Solutions',
@@ -61,7 +61,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Gas springs, struts and dampers for safely lifting, positioning, lowering, and counterbalancing weights.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/dirak/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/dirak/',
 				image: '/images/category-detail-access-solutions/05-close-up-of-a-silver-colored-dirak-quarter-turn-.webp',
 				alt: 'Close-up of a silver colored Dirak quarter turn fastener',
 				label: 'SNAP Technology',
@@ -69,7 +69,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'High-strength connections without the need for tools. Large portfolio of hinges, latches, quarter turns, gaskets and more.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/durbal/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/durbal/',
 				image: '/images/category-detail-access-solutions/06-a-silver-durbal-bem-12-classic-line-rod-end-on-w.webp',
 				alt: 'A silver Durbal BEM 12 classic line rod end on white background',
 				label: 'Rod Ends',
@@ -77,7 +77,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Threaded rod ends with integrated spherical plain bearings. High-performance and maintenance-free.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/elesa/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/elesa/',
 				image: '/images/category-detail-access-solutions/07-a-black-elesa-handle-on-white-background.webp',
 				alt: 'A black Elesa handle on white background',
 				label: 'Standard Machine Elements',
@@ -85,7 +85,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Standard operating elements, handwheels and handles, clamping knobs, clamping levers, and levelling elements.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/halder/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/halder/',
 				image: '/images/category-detail-access-solutions/08-threaded-lifting-pin.webp',
 				alt: 'threaded lifting pin',
 				label: 'Quick Fasteners',
@@ -93,7 +93,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Spring plungers, ball-ended thrust screws, ball lock pins and threaded lifting pins for quick and easy connections.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/pinet/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/pinet/',
 				image: '/images/category-detail-access-solutions/09-a-silver-pinet-concealed-hinge-on-white-backgrou.webp',
 				alt: 'A silver Pinet concealed hinge on white background',
 				label: 'Hinges and Latching Systems',
@@ -101,7 +101,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Standard and custom-made hinges, latches and locks, including continuous hinges, concealed hinges, positioning hinges and heavy-duty hinges.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/southco/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/southco/',
 				image: '/images/category-detail-access-solutions/10-southco-hinge.webp',
 				alt: 'Southco hinge',
 				label: 'Touch Point Solutions',
@@ -109,7 +109,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'A broad portfolio of access and control elements, including hinges, latches, locks, handles, captive screws, and electronic access solutions',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/access-solutions/witol/',
+				href: '/product-solutions/product-categories-and-brands/access-solutions/witol/',
 				image: '/images/category-detail-access-solutions/11-a-typical-tolerance-compensation-fasteners-on-wh.webp',
 				alt: 'A typical tolerance compensation fasteners on white background',
 				label: 'Tolerance Compensation Fasteners',
@@ -118,19 +118,19 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 			},
 		],
 	},
-	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/global-en/about-us/contact/', linkSuffix: '.' },
+	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
 		cards: [
 			{
-				href: '/global-en/eshop/c/03.200/',
+				href: '/products/03.200/',
 				image: '/images/category-detail-access-solutions/13-saved-cart-icon.svg',
 				alt: ' Saved Cart Icon',
-				label: 'eShop',
+				label: 'Product Catalogue',
 				title: 'Buy Access Solutions',
 				description: 'Browse our large assortment of access, locking, and control elements and find the right solution for your fastening challenge.',
 			},
 			{
-				href: '/global-en/product-solutions/product-categories-and-brands/',
+				href: '/product-solutions/product-categories-and-brands/',
 				image: '/images/category-detail-access-solutions/14-fasteners-icon.svg',
 				alt: 'Fasteners icon',
 				label: 'Product Categories',
@@ -138,7 +138,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 				description: 'Find an overview of our product categories with brand partners, from Access Solutions to Welding Technology.',
 			},
 			{
-				href: '/global-en/services/benefits/',
+				href: '/services/benefits/',
 				image: '/images/category-detail-access-solutions/15-proven-productivity-thumbs-up-icon-surrounded-by.svg',
 				alt: 'Proven productivity - thumbs up icon surrounded by arrows',
 				label: 'About Us',

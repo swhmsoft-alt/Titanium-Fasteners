@@ -1,0 +1,149 @@
+---
+/**
+ * /contact/ — 工程与商务双轨对接中心。
+ *
+ * LAYOUT INTENT
+ * -------------
+ * 桌面端 55%（左：极简无涉密表单）/ 45%（右：邮件直达 + 合规承诺）。
+ * 左边服务「习惯填表」的访客，右边服务「习惯发邮件」的访客 —— 两种人第一眼
+ * 都能看到自己那套入口，不必为了迁就另一种交互模式而绕路。
+ *
+ * 页面刻意保持静态、克制、无 Live Chat 浮窗：工作时间的欧美 B2B 决策者几乎
+ * 不使用网页聊天窗，干净的静态页反而更像一家精密制造厂。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import AboutUsHero from '@components/sections/about-us/AboutUsHero.astro';
+import ContactEmailChannel from '@components/sections/contact/ContactEmailChannel.astro';
+import ContactValueProps from '@components/sections/contact/ContactValueProps.astro';
+import ContactProcessTimeline from '@components/sections/contact/ContactProcessTimeline.astro';
+import ContactInquiryForm from '@components/islands/ContactInquiryForm';
+import { INQUIRY, SITE } from '@config/site';
+import { CONTACT, CONTACT_INTENTS } from '@data/contact';
+
+const currentPathname = Astro.url.pathname;
+const pageUrl = new URL('/contact/', SITE.url).href;
+
+/**
+ * JSON-LD —— 单个 @graph 承载 ContactPage + Organization。
+ *
+ * 用 @graph 而不是顶层数组：BaseLayout 把 jsonLd 整个 JSON.stringify 成**一个**
+ * <script>，顶层数组虽然也能被 Google 解析，但 @graph 是官方推荐写法，
+ * 且节点之间可以用 @id 互相引用（ContactPage.mainEntity → Organization）。
+ */
+const orgId = `${SITE.url}/#organization`;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': orgId,
+			name: SITE.name,
+			legalName: SITE.legalName,
+			url: SITE.url,
+			email: INQUIRY.fallbackEmail,
+			description:
+				'Manufacturer of titanium fasteners — bolts, screws, studs, nuts and washers to DIN and ISO, M1.6–M36, with EN 10204 3.1 material certification.',
+			contactPoint: {
+				'@type': 'ContactPoint',
+				contactType: 'sales',
+				email: INQUIRY.fallbackEmail,
+				availableLanguage: ['English'],
+				areaServed: ['Europe', 'North America'],
+			},
+		},
+		{
+			'@type': 'ContactPage',
+			name: CONTACT.seo.title,
+			description: CONTACT.seo.description,
+			url: pageUrl,
+			inLanguage: 'en',
+			mainEntity: { '@id': orgId },
+		},
+	],
+};
+---
+
+<BaseLayout
+	title={CONTACT.seo.title}
+	description={CONTACT.seo.description}
+	canonicalPath="/contact/"
+	jsonLd={jsonLd}
+>
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<AboutUsHero
+			breadcrumb={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
+			eyebrow={CONTACT.hero.eyebrow}
+			heading={CONTACT.hero.heading}
+			lead={CONTACT.hero.lead}
+		/>
+
+		<!-- 双栏主体：左 55% 表单 / 右 45% 邮件通道 + 合规承诺 -->
+		<section class="container-fluid pb-48 pt-16 lg:pb-56 lg:pt-24">
+			<div class="grid grid-cols-1 gap-40 lg:grid-cols-[55fr_45fr] lg:gap-64">
+				<!-- 左栏：极简无涉密破冰表单 -->
+				<div class="min-w-0">
+					<div class="mb-24">
+						<h2 class="text-h4 mb-8 text-blue-dark3">Start with a zero-risk brief</h2>
+						<p class="text-p-sm text-gray max-w-rich-text">
+							No drawings and no attachments are needed at this stage. Tell us what you are
+							looking for and a titanium process engineer replies to your inbox — your
+							files stay with you until the NDA is signed.
+						</p>
+					</div>
+
+					<ContactInquiryForm
+						client:load
+						endpoint={INQUIRY.endpoint}
+						fallbackEmail={INQUIRY.fallbackEmail}
+						trapField={INQUIRY.trapField}
+						source="contact-page"
+						pageUrl={pageUrl}
+						intents={CONTACT_INTENTS}
+						intentsLabel={CONTACT.form.intentsLabel}
+						textareaLabel={CONTACT.form.textareaLabel}
+						textareaHint={CONTACT.form.textareaHint}
+						textareaPlaceholder={CONTACT.form.textareaPlaceholder}
+						emailLabel={CONTACT.form.emailLabel}
+						emailHint={CONTACT.form.emailHint}
+						cta={CONTACT.form.cta}
+						ctaNote={CONTACT.form.ctaNote}
+						receiptTitle={CONTACT.form.receiptTitle}
+						receiptBody={CONTACT.form.receiptBody}
+						receiptHint={CONTACT.form.receiptHint}
+						resetLabel={CONTACT.form.resetLabel}
+					/>
+				</div>
+
+				<!-- 右栏：邮件直达 + 四条定心丸 -->
+				<div class="min-w-0">
+					<div class="flex flex-col gap-40">
+						<ContactEmailChannel
+							heading={CONTACT.email.heading}
+							body={CONTACT.email.body}
+							copyLabel={CONTACT.email.copyLabel}
+							copiedLabel={CONTACT.email.copiedLabel}
+							mailtoLabel={CONTACT.email.mailtoLabel}
+							mailtoSubject={CONTACT.email.mailtoSubject}
+						/>
+
+						<ContactValueProps />
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<ContactProcessTimeline />
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>
