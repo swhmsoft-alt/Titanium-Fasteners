@@ -15,7 +15,24 @@
 
 **复刻 ≠ 继承 ≠ 改版**：视觉 100% 来自参考站实测值；Phase A 内容同样照抄；信息架构照抄参考站的**解决方案导向**结构，不得改写为产品目录；姊妹项目（cnc.bozemetal.com）仅提供技术栈与构建脚本，其 slate/teal 主题禁用；Phase A 期间禁止任何主观优化，待替换项随页面验收逐条记入 `qa/DEVIATIONS.md`。
 
-## URL 层去除（2026-11-16）
+## 图片清理 + 本地→GitHub→cPanel 自动部署打通（2026-11-24）
+
+- **Current Status**：前端未调用的图片已按「渲染产物引用」判据清理完毕（`public/images` 保留 **573** 张、删除 **431** 张）；`npm run build` **100 页 0 ERROR**；`npm run check:links` **187 known / 0 new**；`dist` 内 573 个图片引用 **0 缺失（零 404）**。部署链 `本地 → GitHub(main) → GitHub Actions → FTPS → fastener.bozemetal.com` 已跑通：CI 日志 `737 file(s) transferred` + 3 个关键文件服务器端 SIZE 校验通过，线上抽查 `titanium-screws-category-hero.webp`、`industries-data-centers/01-…webp`、`index.html`、`knowledge-hub/` 均 **200**，已删旧图 `25-bossard.svg`、`data-centers/42-…webp`、`social/facebook-logo.webp` 均 **404**。
+  - **判据（务必沿用）**：删图只看 **dist 渲染后的 HTML 引用**，不看 `src` 里的字符串。源码中存在但页面不引用的图（如 `industries-sub/data-centers.ts`、`electric-vehicles.ts` 两个零 import 的死数据模块）不算“被调用”。这两个死数据文件已删除。
+  - **数据源修正**：`data/products/categories.csv` 的 `pins` 行改指自有素材 `products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp`；`src/data/services-sub/*.ts` 的 hero 与 video poster 改指各服务目录内**实际存在**的图（原来的 `video-poster.jpg` 已被清理）。
+- **Next Step**：
+  1. 服务器侧建议（可选，能让部署更快更稳）：让主机为 `fastener.bozemetal.com` 安装独立 SSL 证书（当前是 `*.rs4-va.serverhostgroup.com` 共享证书，TLS 主机名校验必然失败）；修复 `FTP_USERNAME` 账号的 home 目录（当前返回 `421 Home directory not available`）；放宽 pure-ftpd 的单会话传输限制。
+  2. 若要清理线上旧文件：服务器已允许删除，上传脚本对 550 会先 DELE 再 STOR；线上冗余文件需 `SYNC_DELETE=true` 才清理（默认不动服务器上仓库没有的文件，避免误删 `.well-known` 等）。
+  3. 本机 `git push` 到 `github.com` 的 git-https 端点当前不通（TCP 22 挂起、git-https 反复被中断），本次改用 **GitHub REST API 推送**（blob → tree → commit → ref），commit sha 与本地一致。
+- **Known Pitfalls**：
+  - `timeout-minutes` 写在 **workflow 顶层会被 GitHub 拒绝**（`Invalid workflow file: Unexpected value 'timeout-minutes'`），job 根本不创建，run 直接 failure 且 `jobs=0`。只能在 job 层。
+  - basic-ftp 的 `client.uploadFrom()` **不接受 Buffer**（只收 stream），传 Buffer 会报 `source.once is not a function`。用 `Readable.from([buf])` 或 `createReadStream()`。
+  - basic-ftp 的 `useTLS(options, command)` 参数顺序是 **options 在前**。
+  - cPanel 子账号登录串是 `user@domain` 这种带 `@` 的形式。
+  - 部署日志在 GitHub 上需登录才可见；本项目让 workflow 把日志写到 **`deploy-diagnostics` 分支**（`deploy-log.txt` 与 `deploy-logs/<sha>.txt`）与 **commit status**，用 `git fetch` / 公开 API 即可读取。
+  - FTP 控制连接每传数十个文件就被服务器 FIN 关闭；`scripts/deploy-ftp-ci.mjs` 现在会每 25 个文件或 60 秒重连一次（重连后必须重发 `PBSZ 0` / `PROT P` / `TYPE I`，否则数据通道失去保护），并在重连前等待 4 秒让服务器回收被动端口。
+
+
 
 - **目标**：移除 `/global-en/` 与 `/eshop/` 两层路径，产品区统一为 `/products/<category>/<family>/`。
 - **真相源**：`scripts/gen-products.mjs`（`PRODUCT_ROUTE_BASE = '/products/'`，`familyRoute(category, id)` / `categoryRoute(id)`）。
