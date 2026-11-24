@@ -240,6 +240,9 @@ const failures = [];
 // the upload renews the session on its own.
 const FILES_PER_SESSION = 25;
 const SESSION_MS = 60 * 1000;
+// The server needs a moment to release the passive data ports of the closed
+// session; a new session that starts too early is refused right away.
+const RECONNECT_DELAY_MS = 4000;
 
 // The directory the upload writes into, restored after every reconnect.
 let documentRoot = '';
@@ -366,6 +369,9 @@ async function reopenSession() {
 	await client.send('PBSZ 0');
 	await client.send('PROT P');
 	await client.send('TYPE I');
+
+	// Give the server time to release the passive ports of the old session.
+	await new Promise((resolve) => setTimeout(resolve, RECONNECT_DELAY_MS));
 }
 
 try {
@@ -569,30 +575,38 @@ try {
 				sinceReconnect += 1;
 			} catch (err) {
 				const code = err && typeof err.code === 'number' ? err.code : undefined;
-				const isClosed = /FIN packet|closed/i.test(err && err.message ? err.message : '');
+				const message = err && err.message ? err.message : '';
+				const isClosed = /FIN packet|closed/i.test(message);
 
-				if (isClosed) {
-					// The session died mid-transfer: renew it and send the file again.
+				// The passive data port of the session can be refused for a
+				// moment, so a file is sent again before it counts as failed.
+				for (let attempt = 1; attempt <= 3; attempt++) {
 					try {
-						await reopenSession();
-						if (documentRoot) {
-							await client.cd(documentRoot);
+						if (isClosed || attempt > 1) {
+							await reopenSession();
+							if (documentRoot) {
+								await client.cd(documentRoot);
+							}
+							sinceReconnect = 0;
+							lastReconnect = Date.now();
 						}
-						sinceReconnect = 0;
-						lastReconnect = Date.now();
 						await client.uploadFrom(createReadStream(localPath), remotePath);
 						sent += 1;
 						sinceReconnect += 1;
-						continue;
+						break;
 					} catch (retryErr) {
-						failed.push(
-							`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
-						);
-						continue;
+						if (attempt === 3) {
+							failed.push(
+								`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
+							);
+							break;
+						}
+						await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
 					}
 				}
 
 				if (code === 550 || code === 553) {
+					// The server refuses to overwrite the file; remove it first.
 					try {
 						await client.remove(remotePath);
 					} catch {
@@ -602,15 +616,12 @@ try {
 						await client.uploadFrom(createReadStream(localPath), remotePath);
 						sent += 1;
 						sinceReconnect += 1;
-						continue;
 					} catch (retryErr) {
 						failed.push(
 							`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
 						);
-						continue;
 					}
 				}
-				failed.push(`${remotePath} (${err && err.message ? err.message : err})`);
 			}
 		}
 
