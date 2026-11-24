@@ -43,11 +43,13 @@
 - **Next Step**：
   1. **cPanel 必做**：`FTP_USERNAME` 对应账号的 home 目录设为 `/home/safetipa/fastener.bozemetal.com`（当前 421 = 该路径不存在）。
   2. 仓库 Secret `FTP_REMOTE_PATH` 建议显式设为 `fastener.bozemetal.com`（走 `hasConfigured` 分支，完全跳过自动探测）。
-  3. **可选收尾**：legacy `deploy.yml` 带 `SYNC_DELETE` 删除语义，且 Python `ftplib` 从不发 `AUTH TLS`（密码明文过网）；`deploy-ftp.yml` 是唯一推荐链路。是否删除 legacy 由业务决定，未做改动。
+  3. **已确认当前部署链正常，本项目不需要再做任何改动**（2026-11-24 实测）：run #18/#19/#20 连续 success，线上首页与本地 `dist/` sha256 逐字节一致，三个站（`fastener.bozemetal.com` / `cnc.bozemetal.com` / `safetiparts.com`）各自 200 且内容独立。**在没有人报告故障之前，不要再去「统一」两个 workflow 的 concurrency group、不要新增/改动 Secret、不要动 legacy `deploy.yml` —— 能跑的部署链每改一次就多一次改坏的机会。**
+     - **更正一条此前的错误结论**：曾写「legacy `deploy.yml` 的 Python `ftplib` 从不发 `AUTH TLS`，密码明文过网」——**这是错的**。`ftplib.FTP_TLS.login()` 的 `secure` 默认为 `True`，会先调用 `self.auth()` 发 `AUTH TLS` 再送凭据；`prot_p()` 另外加密数据通道。**legacy 走的是加密信道，凭据不明文过网**，之前"建议删掉 legacy"的技术理由不成立。legacy 的真实差异只有两点：带 `SYNC_DELETE` 删除语义（仓库变量当前为 `false`）、以及不校验证书主机名。它是 `workflow_dispatch` 手动触发，不参与自动链路。
 - **Known Pitfalls**：
   - **chroot 后 FTP 上无法寻址绝对路径** `/home/safetipa/...` —— 账号被 chroot 进自己的 home，登录根 `.` **就是** `/home/safetipa/fastener.bozemetal.com`。因此 `FTP_DIR="."` 是合法且安全的；用绝对路径反而会失败。
   - 越级路径必须在**连接前**就拦掉（早退），否则会先建立连接、跑完登录才发现路径非法。
   - 兄弟站名在代码里只允许出现在「拒绝名单」与注释中，不得作为候选/写入目标。
+  - **不要凭「两个 workflow 的 concurrency group 名字不同」就判定有并发风险** —— `deploy.yml` 是 `workflow_dispatch` 手动触发，自动链路（`deploy-ftp.yml`，push 触发）不会与它同时启动。真正的并发风险需要「自动链路与自动链路」并存才成立。
 
 ## FTP 部署链修复：TLS 证书主机名 + 421 诊断（2026-11-24）
 
