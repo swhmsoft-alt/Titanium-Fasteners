@@ -33,11 +33,17 @@
     - 全程**未出现** `public_html` / `cnc.bozemetal.com` / `bozemetal.com` 任何一次 `cd`；探针文件也未落到兄弟站。
     - TLS 仍为严格校验：`the handshake is verified against "rs4-va.serverhostgroup.com", which it does cover`（未降级）。
     - 校验通过：`index.html` 157539 bytes、2 个图片样本字节数一致。
+  - **线上三端验收通过（实测，非推断）**：
+    - 本地 `dist/index.html` = 157539 bytes，sha256 `dcca9b45…2251f`。
+    - 线上 `https://fastener.bozemetal.com/` = **HTTP 200**，157539 bytes，sha256 **与本地完全一致**（逐字节相同）。
+    - 页面内容核对：`<title>` = `Titanium Fasteners to DIN, ISO, ASTM F467 / F468 and ASME — M1.6–M36, CP Grade 2 and Grade 5 Ti-6Al-4V`；`<h1>` = `Custom & Standard CNC` / `Titanium Fasteners`；23 图 / 23 webp / 5 个 nav / 含 BOZE 品牌标识。
+    - 静态资源抽检全部 `200` 且 MIME 正确：4 个 `_astro` 字体（woff2/woff）、`/images/sprite.svg`、`/images/public-images/titanium-fasteners-hero.webp`（122504 B）等。
+    - **兄弟站与主站未受影响**：`cnc.bozemetal.com` → 200 / 371551 B（自有内容），`safetiparts.com` → 200 / 631189 B（自有内容），均未被本站产物覆盖。
   - **注意**：`FTP_USERNAME` 这一组凭据仍报 `421 Home directory not available`（其 home 目录仍缺失），实际部署用的是 `FTP2_USERNAME`。第一组的 cPanel home 目录需修正，否则每次跑都会先失败一次再回退。
 - **Next Step**：
   1. **cPanel 必做**：`FTP_USERNAME` 对应账号的 home 目录设为 `/home/safetipa/fastener.bozemetal.com`（当前 421 = 该路径不存在）。
   2. 仓库 Secret `FTP_REMOTE_PATH` 建议显式设为 `fastener.bozemetal.com`（走 `hasConfigured` 分支，完全跳过自动探测）。
-  3. 修好后跑一次真实 Actions 部署，核对 `737 file(s) transferred` 与线上目录内容。
+  3. **可选收尾**：legacy `deploy.yml` 带 `SYNC_DELETE` 删除语义，且 Python `ftplib` 从不发 `AUTH TLS`（密码明文过网）；`deploy-ftp.yml` 是唯一推荐链路。是否删除 legacy 由业务决定，未做改动。
 - **Known Pitfalls**：
   - **chroot 后 FTP 上无法寻址绝对路径** `/home/safetipa/...` —— 账号被 chroot 进自己的 home，登录根 `.` **就是** `/home/safetipa/fastener.bozemetal.com`。因此 `FTP_DIR="."` 是合法且安全的；用绝对路径反而会失败。
   - 越级路径必须在**连接前**就拦掉（早退），否则会先建立连接、跑完登录才发现路径非法。
