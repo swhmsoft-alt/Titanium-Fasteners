@@ -27,8 +27,15 @@
   - `scripts/deploy-ftp-ci.mjs`：新增 `ALLOWED_REMOTE_ROOTS` + `isAllowedRoot()` + `assertAllowedRoot()`；候选列表**删掉** `public_html` / `cnc.bozemetal.com` / `bozemetal.com`；四道闸门 = ①连接前校验 `FTP_REMOTE_PATH` ②候选进入前校验 ③写探针前校验 `pwd()` ④上传前校验最终 documentRoot。兜底不再回落登录根，改为「登录根含兄弟站目录即拒绝写入并报错」。
   - `.github/workflows/deploy.yml`（legacy，带 `SYNC_DELETE` 删除语义）：`FTP_DIR` 名字白名单 `.` / `fastener.bozemetal.com`；登录后 LIST 登录根，发现 `public_html` / `cnc.bozemetal.com` / `bozemetal.com` 即 `sys.exit(1)`。
   - `.github/workflows/probe.yml`：枚举收窄为只查 `fastener.bozemetal.com`。
+  - **已上线验证**：commit `5d59eec` → Actions run **#18 成功**（737 files transferred）。日志实证：
+    - `path=configured`（secret `FTP_REMOTE_PATH` = `.`，即 chroot 登录根）→ 走「配置路径 = 登录根 → 继续查找文档根」分支。
+    - 候选探测**只访问了 `fastener.bozemetal.com` 一个目录**，内容含 `index.html` / `_astro` / `about-us` / `images` 等本站文件 → `discovered remote document root: fastener.bozemetal.com`。
+    - 全程**未出现** `public_html` / `cnc.bozemetal.com` / `bozemetal.com` 任何一次 `cd`；探针文件也未落到兄弟站。
+    - TLS 仍为严格校验：`the handshake is verified against "rs4-va.serverhostgroup.com", which it does cover`（未降级）。
+    - 校验通过：`index.html` 157539 bytes、2 个图片样本字节数一致。
+  - **注意**：`FTP_USERNAME` 这一组凭据仍报 `421 Home directory not available`（其 home 目录仍缺失），实际部署用的是 `FTP2_USERNAME`。第一组的 cPanel home 目录需修正，否则每次跑都会先失败一次再回退。
 - **Next Step**：
-  1. **cPanel 必做**：FTP 账号 `fastener@fastener.bozemetal.com` 的 Directory 设为 `/home/safetipa/fastener.bozemetal.com`（当前 421 = 该路径不存在）。
+  1. **cPanel 必做**：`FTP_USERNAME` 对应账号的 home 目录设为 `/home/safetipa/fastener.bozemetal.com`（当前 421 = 该路径不存在）。
   2. 仓库 Secret `FTP_REMOTE_PATH` 建议显式设为 `fastener.bozemetal.com`（走 `hasConfigured` 分支，完全跳过自动探测）。
   3. 修好后跑一次真实 Actions 部署，核对 `737 file(s) transferred` 与线上目录内容。
 - **Known Pitfalls**：
