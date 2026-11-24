@@ -92,11 +92,14 @@ jobs:
           FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
           FTP_PORT: ${{ secrets.FTP_PORT || '21' }}
-          # Optional: the name the server certificate covers. A cPanel account
-          # usually gets a shared certificate (*.serverhostgroup.com), which
-          # does not list the subdomain; without this the deployer falls back
-          # to the presented certificate and warns about it. Set
-          # FTP_TLS_STRICT=true to forbid that fallback.
+          # Optional: the name the server certificate is verified against.
+          # A cPanel account lives on a shared host, so the certificate
+          # presented for the account's own name lists only the host's
+          # service names (*.serverhostgroup.com). When this is empty the
+          # deployer inspects the certificate and picks a name it DOES
+          # cover, so the handshake stays fully verified. Set this to force
+          # a specific name; FTP_TLS_STRICT=true forbids the unverified
+          # fallback entirely.
           FTP_TLS_SERVERNAME: ${{ secrets.FTP_TLS_SERVERNAME }}
           FTP_TLS_STRICT: ${{ vars.FTP_TLS_STRICT || 'false' }}
         run: |

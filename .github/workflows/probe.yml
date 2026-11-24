@@ -44,7 +44,10 @@ jobs:
           except ftplib.error_perm:
               pass
           print("PWD:", f.pwd())
-          for d in ["fastener.bozemetal.com", "cnc.bozemetal.com", "bozemetal.com"]:
+          # Only this project's own directory is inspected. The account host
+          # also carries cnc.bozemetal.com (sibling project) and public_html
+          # (the safetiparts.com main site); neither is listed here.
+          for d in ["fastener.bozemetal.com"]:
               try:
                   f.cwd(d)
                   print("--- %s ---" % d)

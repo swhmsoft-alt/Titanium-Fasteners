@@ -110,6 +110,27 @@ jobs:
           PORT = int(os.environ["FTP_PORT"])
           ROOT = os.environ.get("FTP_DIR", ".").strip() or "."
           DELETE = os.environ.get("SYNC_DELETE", "false").strip().lower() == "true"
+
+          # SHARED-HOST RULE: this cPanel account hosts three sites side by
+          # side (fastener.bozemetal.com = ours, cnc.bozemetal.com = sibling
+          # project, public_html = the safetiparts.com main site). Only this
+          # project's own directory may be written to — and it is the only
+          # place where remote files are ever DELETED.
+          #
+          # The FTP account is chrooted into /home/safetipa/fastener.bozemetal.com,
+          # so after login the login root (".") IS our directory and the
+          # absolute path cannot even be addressed. The guard therefore has two
+          # parts: the requested name must be a known one, and the login root
+          # must not contain the sibling sites' directories.
+          ALLOWED_NAMES = {".", "fastener.bozemetal.com"}
+          SIBLING_NAMES = {"public_html", "cnc.bozemetal.com", "bozemetal.com"}
+          normalized = ROOT.rstrip("/") or "/"
+          if normalized not in ALLOWED_NAMES:
+              print("::error::Refusing to deploy to '%s': it is not this project's directory." % ROOT)
+              print("::error::Allowed targets: %s" % ", ".join(sorted(ALLOWED_NAMES)))
+              print("::error::Set the FTP_DIR secret to 'fastener.bozemetal.com'.")
+              sys.exit(1)
+
           LOCAL = os.path.join(os.environ["GITHUB_WORKSPACE"], "dist")
 
           ftp = FTP_TLS(timeout=60)
@@ -121,6 +142,23 @@ jobs:
               print("::warning::Server refused PROT P; continuing with the control channel only")
           print("Connected to %s:%d as %s (explicit FTPS)" % (HOST, PORT, USER))
           print("Remote PWD:", ftp.pwd())
+
+          # Verify the login root really is our own directory. A chrooted
+          # account only sees its own home, but if the account were pointed at
+          # the shared account home, the sibling sites would be listed here and
+          # the upload (and the deletion pass) would hit another site.
+          listing = []
+          try:
+              ftp.retrlines("LIST", listing.append)
+          except ftplib.error_perm as exc:
+              print("::warning::Could not list the login root: %s" % exc)
+          names = {line.split()[-1] for line in listing if line.strip()}
+          present_siblings = names & SIBLING_NAMES
+          if present_siblings:
+              print("::error::The login root contains sibling site directories: %s" % ", ".join(sorted(present_siblings)))
+              print("::error::Refusing to write there — this project owns only /home/safetipa/fastener.bozemetal.com")
+              sys.exit(1)
+          print("Login root verified: no sibling site directories present")
 
           def remote_join(*parts):
               return posixpath.join(ROOT, *parts) if ROOT not in ("", ".") else posixpath.join(*parts)

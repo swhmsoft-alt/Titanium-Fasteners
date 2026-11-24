@@ -51,6 +51,8 @@ import { join, resolve } from 'node:path';
 import { createReadStream } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { Readable } from 'node:stream';
+import net from 'node:net';
+import tls from 'node:tls';
 import { Client } from 'basic-ftp';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -196,8 +198,18 @@ if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
 //
 // When neither is configured the target is DISCOVERED: cPanel subdomain
 // accounts are chrooted into their home directory, which usually contains
-// the document root in a sub-directory rather than at the login root. The
-// candidates below are the domain names the server actually uses.
+// the document root in a sub-directory rather than at the login root.
+//
+// THE SHARED-HOST RULE (do not relax)
+// ------------------------------------
+// The cPanel account hosts THREE sites side by side:
+//   /home/safetipa/fastener.bozemetal.com  <- THIS project, the only target
+//   /home/safetipa/cnc.bozemetal.com       <- sibling project, never write
+//   /home/safetipa/public_html             <- safetiparts.com main site
+// The sibling directories are therefore NOT candidates. `public_html` in
+// particular is the MAIN site's document root, so probing it would overwrite
+// a site we do not own. Only paths listed in ALLOWED_REMOTE_ROOTS are ever
+// entered, written to, or probed.
 const CONFIGURED_REMOTE_PATH = (
 	process.env.FTP_REMOTE_PATH ??
 	process.env.FTP_DIR ??
@@ -205,13 +217,58 @@ const CONFIGURED_REMOTE_PATH = (
 )
 	.trim();
 
+// Every directory this script is allowed to write into. A path is accepted
+// when its normalised form equals one of these entries.
+const ALLOWED_REMOTE_ROOTS = [
+	'/home/safetipa/fastener.bozemetal.com',
+	'/fastener.bozemetal.com',
+	'fastener.bozemetal.com',
+	'/',
+];
+
+// The candidates probed when nothing is configured. All of them are inside
+// ALLOWED_REMOTE_ROOTS; the login root is handled separately because it only
+// qualifies when it demonstrably holds this project's own files.
 const REMOTE_PATH_CANDIDATES = [
 	'fastener.bozemetal.com',
-	'public_html',
-	'cnc.bozemetal.com',
-	'www.fastener.bozemetal.com',
-	'bozemetal.com',
+	'/fastener.bozemetal.com',
+	'/home/safetipa/fastener.bozemetal.com',
 ];
+
+/**
+ * Is this path a directory this script may write into?
+ * @param {string} path
+ * @returns {boolean}
+ */
+function isAllowedRoot(path) {
+	const normalized = path.replace(/\/+$/, '') || '/';
+	return ALLOWED_REMOTE_ROOTS.includes(normalized);
+}
+
+/**
+ * Stop the deployment when the target is outside our own directory.
+ *
+ * This is the last line of defence against the shared-host rule: even if a
+ * secret points somewhere else, the run aborts instead of overwriting a site
+ * that belongs to somebody else.
+ * @param {string} path
+ * @returns {string} the same path, when it is allowed
+ */
+function assertAllowedRoot(path) {
+	if (isAllowedRoot(path)) {
+		return path;
+	}
+	console.error(
+		`[deploy-ftp] ERROR: refusing to write to "${path}" — it is not this project's directory.`
+	);
+	console.error(
+		'[deploy-ftp] this cPanel account hosts three sites; only /home/safetipa/fastener.bozemetal.com may be written to.'
+	);
+	console.error(
+		'[deploy-ftp] set FTP_REMOTE_PATH (or FTP_DIR) to "fastener.bozemetal.com" and correct the FTP account directory in cPanel.'
+	);
+	process.exit(1);
+}
 
 // Which sets are available? Only the NAMES are printed, never the values,
 // so a misconfigured secret stays visible in the log without leaking.
@@ -220,6 +277,26 @@ console.log(
 		.map((set) => `${set.user}+${set.password}`)
 		.join(', ')} | path=${CONFIGURED_REMOTE_PATH ? 'configured' : 'auto-discover'}`
 );
+
+// A configured path is checked BEFORE the connection is opened: a secret
+// pointing at a sibling site must fail fast, not after a login round-trip.
+if (
+	CONFIGURED_REMOTE_PATH !== '' &&
+	CONFIGURED_REMOTE_PATH !== '/' &&
+	CONFIGURED_REMOTE_PATH !== '.' &&
+	!isAllowedRoot(CONFIGURED_REMOTE_PATH)
+) {
+	console.error(
+		`[deploy-ftp] ERROR: FTP_REMOTE_PATH is set to "${CONFIGURED_REMOTE_PATH}", which is not this project's directory.`
+	);
+	console.error(
+		'[deploy-ftp] this cPanel account hosts three sites; only /home/safetipa/fastener.bozemetal.com may be written to.'
+	);
+	console.error(
+		'[deploy-ftp] set FTP_REMOTE_PATH to "fastener.bozemetal.com".'
+	);
+	process.exit(1);
+}
 
 /* ── step 2: validate build output ──────────────────────────────────────── */
 
@@ -250,11 +327,144 @@ let documentRoot = '';
 // The host may present a cPanel shared certificate that does not cover the
 // subdomain (its altnames list only *.serverhostgroup.com). The name can be
 // pinned with FTP_TLS_SERVERNAME; FTP_TLS_STRICT=true forbids the fallback.
-const TLS_SERVERNAME = (process.env.FTP_TLS_SERVERNAME ?? '').trim() || HOST;
+//
+// When nothing is pinned, the certificate is inspected once and a name it
+// actually covers is used, so the handshake is still fully verified instead of
+// falling back to an unverified channel.
+const TLS_SERVERNAME = (process.env.FTP_TLS_SERVERNAME ?? '').trim();
 const TLS_STRICT = (process.env.FTP_TLS_STRICT ?? 'false').trim().toLowerCase() === 'true';
+
+// The name the handshake is verified against. Resolved on first use.
+let tlsServerName = TLS_SERVERNAME;
 
 // The certificate warning is printed once; the session is re-opened often.
 let tlsWarningShown = false;
+
+/**
+ * Read the DNS names the server certificate covers for a given SNI.
+ *
+ * The control channel is plain FTP first, so the certificate is only visible
+ * after the AUTH TLS upgrade. The probe therefore performs that upgrade on a
+ * throwaway socket.
+ *
+ * @param {string} host the server to ask
+ * @param {number} port the control port
+ * @param {string} sni the name to send as SNI
+ * @returns {Promise<string[]>} the DNS names in the certificate, empty on failure
+ */
+function probeCertificateNames(host, port, sni) {
+	return new Promise((resolve) => {
+		let stage = 'banner';
+		let buffer = '';
+		let settled = false;
+
+		const socket = net.connect({ host, port });
+		const onData = (chunk) => {
+			buffer += chunk.toString('latin1');
+
+			if (stage === 'banner') {
+				if (!buffer.includes('220')) {
+					return;
+				}
+				stage = 'auth';
+				buffer = '';
+				socket.write('AUTH TLS\r\n');
+				return;
+			}
+
+			if (stage === 'auth') {
+				if (!buffer.includes('234')) {
+					finish([]);
+					return;
+				}
+				stage = 'tls';
+				// The TLS layer takes over the socket from here.
+				socket.removeListener('data', onData);
+				const secure = tls.connect(
+					{ socket, servername: sni, rejectUnauthorized: false },
+					() => {
+						const certificate = secure.getPeerCertificate();
+						const alt = certificate && certificate.subjectaltname ? certificate.subjectaltname : '';
+						finish(
+							alt
+								.split(', ')
+								.filter((entry) => entry.startsWith('DNS:'))
+								.map((entry) => entry.slice(4))
+						);
+					}
+				);
+				secure.on('error', () => finish([]));
+			}
+		};
+
+		function finish(names) {
+			if (settled) {
+				return;
+			}
+			settled = true;
+			try {
+				socket.destroy();
+			} catch {
+				// The probe socket is disposable.
+			}
+			resolve(names);
+		}
+
+		socket.on('data', onData);
+		socket.on('error', () => finish([]));
+		setTimeout(() => finish([]), 15000);
+	});
+}
+
+/**
+ * Find a name the server certificate actually covers.
+ *
+ * A cPanel account lives on a shared host, so the certificate presented for
+ * the account's own name lists only the host's service names
+ * (*.serverhostgroup.com). The connection name is therefore not covered and
+ * the handshake fails with ERR_TLS_CERT_ALTNAME_INVALID.
+ *
+ * Instead of dropping the verification, a name the certificate DOES cover is
+ * looked up and used as the server name. The channel stays encrypted AND the
+ * server identity is verified.
+ *
+ * @returns {Promise<string>} the name to verify the certificate against
+ */
+async function resolveTlsServerName() {
+	if (tlsServerName) {
+		return tlsServerName;
+	}
+
+	const names = await probeCertificateNames(HOST, PORT, HOST);
+	if (names.length === 0) {
+		// Nothing to choose from — keep the host and let the handshake speak.
+		tlsServerName = HOST;
+		return tlsServerName;
+	}
+
+	if (names.includes(HOST)) {
+		tlsServerName = HOST;
+		return tlsServerName;
+	}
+
+	// Try the shortest service name first: it is the most likely to be the
+	// certificate that the server hands out for that name as well.
+	const candidates = [...names].sort((a, b) => a.length - b.length);
+	for (const candidate of candidates) {
+		const covered = await probeCertificateNames(HOST, PORT, candidate);
+		if (covered.includes(candidate)) {
+			console.log(
+				`[deploy-ftp] the certificate of ${HOST} does not cover that name; ` +
+					`the handshake is verified against "${candidate}", which it does cover`
+			);
+			tlsServerName = candidate;
+			return tlsServerName;
+		}
+	}
+
+	tlsServerName = HOST;
+	return tlsServerName;
+}
 
 /**
  * Open the control channel and upgrade it to TLS.
@@ -266,10 +476,14 @@ let tlsWarningShown = false;
  * @returns {Promise<void>}
  */
 async function openSecureControlChannel() {
+	// The name the certificate is verified against. It is resolved once and
+	// reused for every reconnect.
+	const servername = await resolveTlsServerName();
+
 	try {
 		await client.connect(HOST, PORT);
 		await client.useTLS(
-			{ servername: TLS_SERVERNAME, minVersion: 'TLSv1.2', rejectUnauthorized: true },
+			{ servername, minVersion: 'TLSv1.2', rejectUnauthorized: true },
 			'AUTH TLS'
 		);
 		return;
@@ -301,7 +515,7 @@ async function openSecureControlChannel() {
 		client = new Client(60 * 1000);
 		await client.connect(HOST, PORT);
 		await client.useTLS(
-			{ servername: TLS_SERVERNAME, minVersion: 'TLSv1.2', rejectUnauthorized: false },
+			{ servername, minVersion: 'TLSv1.2', rejectUnauthorized: false },
 			'AUTH TLS'
 		);
 	}
@@ -330,6 +544,20 @@ async function openSession() {
 			const message = err && err.message ? err.message : String(err);
 			console.warn(`[deploy-ftp] ${set.user} was rejected: ${message}`);
 			failures.push(`${set.user}: ${message}`);
+
+			// "421 Home directory not available" is not a wrong password: the
+			// account exists, but the directory it is chrooted into does not
+			// exist on the server. That has to be fixed in the hosting panel,
+			// so the log says so instead of only showing the FTP code.
+			if (/421/i.test(message) && /home directory/i.test(message)) {
+				console.warn(
+					`[deploy-ftp] ${set.user}: the server accepted the account but its home directory ` +
+						'is missing. Fix it in the hosting panel (cPanel -> FTP Accounts -> the account ' +
+						'-> Home Directory / Directory): point it at the folder that really holds the ' +
+						'site, and make sure that folder exists and is writable by the account.'
+				);
+			}
+
 			try {
 				client.close();
 			} catch {
@@ -343,6 +571,11 @@ async function openSession() {
 	for (const failure of failures) {
 		console.error(`[deploy-ftp]   ${failure}`);
 	}
+	console.error(
+		'[deploy-ftp] A "421 Home directory not available" answer means the account exists but its ' +
+			'home directory is missing on the server — that has to be repaired in the hosting panel ' +
+			'(cPanel -> FTP Accounts -> Directory), not in this repository.'
+	);
 	process.exit(1);
 }
 
@@ -410,6 +643,17 @@ try {
 		 * @returns {Promise<boolean>} true when a probe file could be written
 		 */
 		async function isWritable() {
+			// The probe writes a REAL file into the current directory, so the
+			// current directory is verified first. On the shared host a
+			// mis-resolved root would drop this probe into another site.
+			const current = await client.pwd().catch(() => '');
+			if (current && !isAllowedRoot(current)) {
+				console.log(
+					`[deploy-ftp] the current directory "${current}" is outside this project's directory — not writing a probe there`
+				);
+				return false;
+			}
+
 			const probe = `deploy-probe-${Date.now()}.txt`;
 			try {
 				// uploadFrom expects a stream, not a Buffer.
@@ -448,6 +692,7 @@ try {
 		}
 
 		if (hasConfigured) {
+			assertAllowedRoot(configured);
 			await client.cd(configured);
 			console.log(`[deploy-ftp] using configured remote directory ${configured}`);
 			await describe(`remote directory ${configured}`);
@@ -468,6 +713,15 @@ try {
 		let writableRoot = null;
 
 		for (const candidate of REMOTE_PATH_CANDIDATES) {
+			// Never even enter a directory we may not write to: the probe
+			// below writes a real file into the current directory.
+			if (!isAllowedRoot(candidate)) {
+				console.log(
+					`[deploy-ftp] candidate "${candidate}" is outside this project's directory — skipped`
+				);
+				continue;
+			}
+
 			let items;
 			try {
 				await client.cd(candidate);
@@ -509,16 +763,62 @@ try {
 			return writableRoot;
 		}
 
+		// The login root is the LAST resort, and only when it demonstrably
+		// holds this project's own files. On the shared host the login root
+		// may be the account home, which contains the sibling sites as well
+		// — writing there would touch another site.
 		await client.cd('/');
-		await describe('the login root');
-		console.log(
-			'[deploy-ftp] no candidate matched — using the login root as the document root'
+		const rootItems = await client.list().catch(() => []);
+		const rootNames = rootItems.map((item) => item.name);
+		const holdsOurSite = rootNames.includes('index.html');
+		const holdsSiblingSite = rootNames.some((name) =>
+			['public_html', 'cnc.bozemetal.com', 'bozemetal.com'].includes(name)
 		);
-		return '/';
+
+		if (holdsOurSite && !holdsSiblingSite) {
+			console.log(
+				'[deploy-ftp] the login root holds this project\'s files — using it as the document root'
+			);
+			await describe('the login root');
+			return '/';
+		}
+
+		console.error(
+			'[deploy-ftp] ERROR: no safe document root was found inside this project\'s directory.'
+		);
+		console.error(
+			'[deploy-ftp] set FTP_REMOTE_PATH to "fastener.bozemetal.com" and make sure the cPanel FTP account directory is /home/safetipa/fastener.bozemetal.com'
+		);
+		if (holdsSiblingSite) {
+			console.error(
+				'[deploy-ftp] the login root contains sibling directories (' +
+					rootNames
+						.filter((name) =>
+							['public_html', 'cnc.bozemetal.com', 'bozemetal.com'].includes(name)
+						)
+						.join(', ') +
+					') — refusing to write there.'
+			);
+		}
+		process.exit(1);
 	}
 
 	const remotePath = await resolveRemotePath();
 	documentRoot = remotePath === '/' ? '' : remotePath;
+
+	// Final gate before a single byte is written: the resolved document
+	// root must belong to this project.
+	assertAllowedRoot(remotePath);
+
+	// The session may have been re-established, so the working directory is
+	// confirmed once more against the whitelist.
+	const currentRoot = await client.pwd().catch(() => '');
+	if (currentRoot && !isAllowedRoot(currentRoot)) {
+		console.error(
+			`[deploy-ftp] ERROR: the upload would target "${currentRoot}", which is not this project's directory.`
+		);
+		process.exit(1);
+	}
 
 	/**
 	 * Upload a local tree to the current remote directory.

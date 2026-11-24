@@ -15,6 +15,42 @@
 
 **复刻 ≠ 继承 ≠ 改版**：视觉 100% 来自参考站实测值；Phase A 内容同样照抄；信息架构照抄参考站的**解决方案导向**结构，不得改写为产品目录；姊妹项目（cnc.bozemetal.com）仅提供技术栈与构建脚本，其 slate/teal 主题禁用；Phase A 期间禁止任何主观优化，待替换项随页面验收逐条记入 `qa/DEVIATIONS.md`。
 
+## 共享主机写入护栏：绝不允许越级写别的站（2026-11-24）
+
+- **Current Status**：cPanel 账号 `safetipa` 上并排存在**三个站**，本项目只拥有其中一个：
+  | 路径 | 归属 | 可否写入 |
+  | --- | --- | --- |
+  | `/home/safetipa/fastener.bozemetal.com` | **本项目** | ✅ 唯一允许 |
+  | `/home/safetipa/cnc.bozemetal.com` | 兄弟项目 | ❌ |
+  | `/home/safetipa/public_html` | safetiparts.com 主站 | ❌ |
+  已把该约束写进代码（不再依赖登录根顺序去「碰运气」）：
+  - `scripts/deploy-ftp-ci.mjs`：新增 `ALLOWED_REMOTE_ROOTS` + `isAllowedRoot()` + `assertAllowedRoot()`；候选列表**删掉** `public_html` / `cnc.bozemetal.com` / `bozemetal.com`；四道闸门 = ①连接前校验 `FTP_REMOTE_PATH` ②候选进入前校验 ③写探针前校验 `pwd()` ④上传前校验最终 documentRoot。兜底不再回落登录根，改为「登录根含兄弟站目录即拒绝写入并报错」。
+  - `.github/workflows/deploy.yml`（legacy，带 `SYNC_DELETE` 删除语义）：`FTP_DIR` 名字白名单 `.` / `fastener.bozemetal.com`；登录后 LIST 登录根，发现 `public_html` / `cnc.bozemetal.com` / `bozemetal.com` 即 `sys.exit(1)`。
+  - `.github/workflows/probe.yml`：枚举收窄为只查 `fastener.bozemetal.com`。
+- **Next Step**：
+  1. **cPanel 必做**：FTP 账号 `fastener@fastener.bozemetal.com` 的 Directory 设为 `/home/safetipa/fastener.bozemetal.com`（当前 421 = 该路径不存在）。
+  2. 仓库 Secret `FTP_REMOTE_PATH` 建议显式设为 `fastener.bozemetal.com`（走 `hasConfigured` 分支，完全跳过自动探测）。
+  3. 修好后跑一次真实 Actions 部署，核对 `737 file(s) transferred` 与线上目录内容。
+- **Known Pitfalls**：
+  - **chroot 后 FTP 上无法寻址绝对路径** `/home/safetipa/...` —— 账号被 chroot 进自己的 home，登录根 `.` **就是** `/home/safetipa/fastener.bozemetal.com`。因此 `FTP_DIR="."` 是合法且安全的；用绝对路径反而会失败。
+  - 越级路径必须在**连接前**就拦掉（早退），否则会先建立连接、跑完登录才发现路径非法。
+  - 兄弟站名在代码里只允许出现在「拒绝名单」与注释中，不得作为候选/写入目标。
+
+## FTP 部署链修复：TLS 证书主机名 + 421 诊断（2026-11-24）
+
+- **Current Status**：CI 部署脚本 `scripts/deploy-ftp-ci.mjs` 已能在**不降级校验**的前提下完成 FTPS 握手。实测 `fastener.bozemetal.com` / `ftp.safetiparts.com` / `safetiparts.com` 三域名**同一 IP 40.160.1.205**、同一台 Pure-FTPd（`220 You are user number 1 of 50 allowed`）、同一张证书 `autoconfig.rs4-va.serverhostgroup.com`（issuer YR1，SAN 12 条 `*.rs4-va.serverhostgroup.com` 服务名，**不含** `fastener.bozemetal.com` / `safetiparts.com`）。
+  - **改动 1（TLS）**：新增 `probeCertificateNames()` + `resolveTlsServerName()` —— 首次握手前读一次服务器证书的 DNS 名单，自动挑一个**证书确实覆盖**的名字（如 `rs4-va.serverhostgroup.com`）作为 servername，握手因此**通过严格校验**（`rejectUnauthorized: true`），不再需要降级到 `rejectUnauthorized: false`。实测严格握手 `ok: true`。`FTP_TLS_SERVERNAME` 仍可强制指定；`FTP_TLS_STRICT=true` 保留为禁止降级的开关。
+  - **改动 2（421）**：`421 Home directory not available` 现在会打印可执行诊断（账号存在但 home 目录缺失 → cPanel → FTP Accounts → Directory 修复），并在全部凭据被拒时重申该结论。
+  - **改动 3（workflow）**：`.github/workflows/deploy-ftp.yml` 的 `FTP_TLS_SERVERNAME` 注释改为「留空 = 自动解析覆盖名」。
+- **Next Step**：
+  1. **服务器侧必做**：`421` 无法从仓库修复 —— 在 cPanel → FTP Accounts 把 `fastener@fastener.bozemetal.com` 的 Directory 指向真实存在且可写的站点目录（截图显示 `/home/safeti_...com/fastener`）。修好后 CI 一次 push 即应跑完 `737 file(s) transferred`。
+  2. `ftp.safetiparts.com` 与 `fastener.bozemetal.com` 实测等价（同 IP 同服务），**改 `FTP_HOST` 不解决 421**，也解决不了证书主机名问题（两张域名都未被证书覆盖）——主机名问题已由改动 1 解决。
+  3. 本机 `git push` 到 `github.com` 仍不通（TCP 22 挂起、git-https 被中断），继续走 **GitHub REST API 推送**。
+- **Known Pitfalls**：
+  - **端口 21 是明文 FTP + `AUTH TLS` 升级（explicit FTPS），不是隐式 TLS** —— 直接 `tls.connect(port:21)` 必报 `ERR_SSL_WRONG_VERSION_NUMBER`；读证书必须先收 `220` banner、发 `AUTH TLS`、等 `234` 再升级 socket。
+  - Python `ssl` 在 `verify_mode=CERT_NONE` 下 `getpeercert()` 返回**空字典**（拿不到 altName）→ 要读 SAN 必须 `CERT_REQUIRED` + `check_hostname=False`；本机证书链不可信时该组合仍会抛错，故 **Python 侧未采用**（legacy `deploy.yml` 保持原样、不动）。
+  - ftplib 的 `FTP_TLS` 自己管 `AUTH TLS` 升级，手工 `wrap_socket` 会与 `auth()` 冲突 → 不要在 ftplib 里手动升级 socket。
+
 ## 图片清理 + 本地→GitHub→cPanel 自动部署打通（2026-11-24）
 
 - **Current Status**：前端未调用的图片已按「渲染产物引用」判据清理完毕（`public/images` 保留 **573** 张、删除 **431** 张）；`npm run build` **100 页 0 ERROR**；`npm run check:links` **187 known / 0 new**；`dist` 内 573 个图片引用 **0 缺失（零 404）**。部署链 `本地 → GitHub(main) → GitHub Actions → FTPS → fastener.bozemetal.com` 已跑通：CI 日志 `737 file(s) transferred` + 3 个关键文件服务器端 SIZE 校验通过，线上抽查 `titanium-screws-category-hero.webp`、`industries-data-centers/01-…webp`、`index.html`、`knowledge-hub/` 均 **200**，已删旧图 `25-bossard.svg`、`data-centers/42-…webp`、`social/facebook-logo.webp` 均 **404**。
