@@ -2,25 +2,22 @@
 /**
  * Logo — renders the BOZE brand mark.
  *
- * BRAND ASSETS (2026-11 white-background edition — flat 2D, no gradients):
- *   /brand/logo-claim-mono.svg    — graphite flat wordmark  (white surfaces)
- *   /brand/logo-claim-reverse.svg — white flat wordmark    (dark surfaces)
- *   /brand/logo-compact.svg       — simplified wordmark      (<768px header)
- *   /brand/logo-lockup.svg        — full lockup: mark + rule + "TITANIUM FASTENERS"
+ * BRAND ASSETS (2026-11-24 — client-supplied artwork):
+ *   /brand/logo2.png              — source of truth, 140×45, transparent
+ *   /brand/logo-claim.webp        — same bitmap, lossless WebP (light surfaces)
+ *   /brand/logo-claim-reverse.webp— white knockout, orange accent kept (dark surfaces)
+ *   /brand/logo-compact.webp      — same bitmap, used below 768px
  *
  * GEOMETRY
- *   The wordmark artwork is 796×216 (ratio 3.685) with a transparent
- *   background; it is rendered with `object-fit: contain` inside the
- *   measured logo box so it is never distorted.
+ *   The artwork is 140×45 px (ratio 3.111) on a transparent background; it is
+ *   rendered with `object-fit: contain` inside the measured logo box so it is
+ *   never distorted.
  *
- *   claim   — rendered 190×55px on desktop (≥768px), as measured on the
- *              reference site. The artwork is 3.685, so it is letterboxed by
- *              ~3px top/bottom inside the box.
- *   compact — rendered 76×19px below 768px. The reference's 120×19 box held
- *              a wide wordmark+tagline strip; this brand's compact asset is a
- *              wordmark only, so the box is trimmed to the artwork's own width
- *              (120px of empty space would push the header utility cluster
- *              50px away from the visible mark).
+ *   claim   — rendered 140×45px on desktop (≥768px). The source is only
+ *              140px wide, so the desktop render is pinned 1:1 to it; any
+ *              larger would upscale the bitmap and read soft on retina.
+ *   compact — rendered 105×34px below 768px: a proportional DOWNSCALE,
+ *              which never softens.
  *
  * TONES
  *   The whole brand system was rebuilt for the opaque white (#fff) header:
@@ -50,6 +47,15 @@ interface Props {
 
 const { variant = 'claim', tone = 'mono', chip = false, width, class: className } = Astro.props;
 
+// The caller owns the RESPONSIVE display of the mark (`hidden md:inline-flex`
+// etc). This component must not add its own `inline-flex` in that case: both
+// are single-class display utilities, so the winner is decided by their order
+// in the stylesheet — and `.inline-flex` is emitted AFTER `.hidden`. Adding it
+// here would therefore beat the caller's `hidden` and render BOTH the desktop
+// and the mobile mark at once. Only fall back to `inline-flex` when the
+// caller passes no class at all.
+const displayClass = className ? '' : 'inline-flex';
+
 const spec = LOGO[variant];
 const renderedWidth = width ?? spec.displayWidth;
 // Use the MEASURED rendered box, not a ratio-derived height: the reference
@@ -61,6 +67,12 @@ const renderedHeight = spec.displayHeight;
 // dedicated asset per tone.
 const src = variant === 'compact' ? LOGO.assets.compact : LOGO.assets[tone];
 
+// 2× variant of the SAME bitmap, so a 2× (retina) display never has to
+// stretch the 140px source with the browser's own scaler. The 2× files are
+// Lanczos-upscaled copies — they cost a little weight but keep the mark's
+// edges clean instead of blocky.
+const src2x = variant === 'compact' ? LOGO.assets.compact2x : LOGO.assets[`${tone}2x`];
+
 // Intrinsic size of the referenced asset — taken from the config so the
 // browser reserves the correct box before the image decodes.
 const intrinsicWidth = spec.width;
@@ -68,7 +80,7 @@ const intrinsicHeight = spec.height;
 ---
 
 <span
-	class:list={['inline-flex items-center', chip && 'rounded-[2px] bg-[#1E2225] p-[6px]', className]}
+	class:list={[displayClass, 'items-center', chip && 'rounded-[2px] bg-[#1E2225] p-[6px]', className]}
 	style={`width:${renderedWidth}px;height:${renderedHeight}px`}
 	data-logo-variant={variant}
 	data-logo-tone={variant === 'compact' ? 'mono' : tone}
@@ -76,6 +88,8 @@ const intrinsicHeight = spec.height;
 >
 	<img
 		src={src}
+		srcset={`${src} 1x, ${src2x} 2x`}
+		sizes={`${renderedWidth}px`}
 		alt={LOGO.alt}
 		width={intrinsicWidth}
 		height={intrinsicHeight}

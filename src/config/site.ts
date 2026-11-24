@@ -138,49 +138,61 @@ export const INQUIRY = {
  */
 export const LOGO = {
 	/** Alt text for the logo image. */
-	alt: 'BOZE — Titanium Fasteners',
+	alt: 'BOZE CNC-Ti 博泽精工',
 	/** Static asset paths, served from `public/brand/`. */
 	assets: {
 		/** Wordmark — for light surfaces (white header). */
 		mono: '/brand/logo-claim.webp',
-		/** Wordmark — for dark surfaces. */
-		reverse: '/brand/logo-claim.webp',
-		/** Wordmark at 2× — below the 768px breakpoint. */
+		/** 2× copy of `mono` — served to retina displays via `srcset`. */
+		mono2x: '/brand/logo-claim@2x.webp',
+		/** Wordmark — for dark surfaces (white knockout, orange accent kept). */
+		reverse: '/brand/logo-claim-reverse.webp',
+		/** 2× copy of `reverse`. */
+		reverse2x: '/brand/logo-claim-reverse@2x.webp',
+		/** Wordmark — below the 768px breakpoint. */
 		compact: '/brand/logo-compact.webp',
-		/** Full lockup: mark + rule + "TITANIUM FASTENERS". */
-		lockup: '/brand/logo-lockup.webp',
+		/** 2× copy of `compact`. */
+		compact2x: '/brand/logo-compact@2x.webp',
+		/** Full lockup — same artwork as the claim variant. */
+		lockup: '/brand/logo-claim.webp',
+		/** 2× copy of `lockup`. */
+		lockup2x: '/brand/logo-claim@2x.webp',
 	},
 	claim: {
 		/** Intrinsic size of the source asset, in px. */
-		width: 798,
-		height: 210,
+		width: 140,
+		height: 45,
 		/** width / height of the SOURCE asset. */
-		ratio: 3.8,
-		/** Rendered box on desktop (≥768px), as measured. */
-		displayWidth: 190,
-		displayHeight: 55,
+		ratio: 3.111,
+		/**
+		 * Rendered box on desktop (≥768px) — 1:1 with the source asset.
+		 *
+		 * The source is only 140×45 px, so the desktop render is pinned to
+		 * exactly that size. Anything larger upscales the bitmap and reads
+		 * soft on retina screens.
+		 */
+		displayWidth: 140,
+		displayHeight: 45,
 	},
 	compact: {
-		/** Same wordmark artwork, at 2× the compact render. */
-		width: 152,
-		height: 40,
-		ratio: 3.8,
+		/** Same artwork as the claim variant. */
+		width: 140,
+		height: 45,
+		ratio: 3.111,
 		/**
-		 * The reference's compact logo was a 300×47 strip (wordmark + tagline)
-		 * rendered at 120×19. This brand's compact asset is a wordmark only,
-		 * so the box is trimmed to the artwork's own width — reserving 120px
-		 * would leave 50px of empty space and push the header utility cluster
-		 * away from the visible mark.
+		 * Mobile render — a proportional DOWNSCALE of the 140×45 source.
+		 * The mobile header box is min-h-[48px], so a 105×34 mark fits with
+		 * room to spare while staying sharp (downscaling never softens).
 		 */
-		displayWidth: 76,
-		displayHeight: 19,
+		displayWidth: 105,
+		displayHeight: 34,
 	},
 	lockup: {
-		/** Intrinsic size of the lockup asset, in px. */
-		width: 1024,
-		height: 352,
+		/** Same artwork as the claim variant. */
+		width: 140,
+		height: 45,
 		/** width / height of the SOURCE asset. */
-		ratio: 2.909,
+		ratio: 3.111,
 	},
 	/**
 	 * Clear space (留白安全区) — the brand rule.
@@ -197,9 +209,9 @@ export const LOGO = {
 	 * reference value and is deliberately left untouched.
 	 */
 	clearSpace: {
-		units: 160,
-		pxAtClaim: 38.2,
-		pxAtCompact: 15.3,
+		/** Clear band around the mark, in rendered px. */
+		pxAtClaim: 14,
+		pxAtCompact: 10,
 	},
 } as const;
 
