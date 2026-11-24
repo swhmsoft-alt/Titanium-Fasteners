@@ -206,6 +206,7 @@ const CONFIGURED_REMOTE_PATH = (
 const REMOTE_PATH_CANDIDATES = [
 	'fastener.bozemetal.com',
 	'public_html',
+	'cnc.bozemetal.com',
 	'www.fastener.bozemetal.com',
 	'bozemetal.com',
 ];
@@ -339,31 +340,83 @@ try {
 	/**
 	 * Resolve the directory that IS the site document root.
 	 *
-	 * A configured path wins. Otherwise the known candidates are probed: the
-	 * first one that can be entered AND listed is used. Falling back to the
-	 * login root is the last resort, because uploading into the wrong
-	 * directory silently publishes nothing.
+	 * A configured path wins, unless it is "." — that value means "the login
+	 * root", which for a chrooted cPanel account is the home directory and
+	 * not the document root. Without a path the known candidates are probed
+	 * and the first one that can be entered AND written to is used.
 	 * @returns {Promise<string>} the directory to upload into
 	 */
 	async function resolveRemotePath() {
-		if (CONFIGURED_REMOTE_PATH && CONFIGURED_REMOTE_PATH !== '/') {
-			await client.cd(CONFIGURED_REMOTE_PATH);
-			console.log(`[deploy-ftp] using configured remote directory ${CONFIGURED_REMOTE_PATH}`);
-			return CONFIGURED_REMOTE_PATH;
+		const configured = CONFIGURED_REMOTE_PATH;
+		const hasConfigured =
+			configured !== '' && configured !== '/' && configured !== '.';
+
+		/**
+		 * Can a file be written into the current directory?
+		 * @returns {Promise<boolean>} true when a probe file could be written
+		 */
+		async function isWritable() {
+			const probe = `.deploy-probe-${Date.now()}.txt`;
+			try {
+				await client.uploadFrom(Buffer.from('probe'), probe);
+				await client.remove(probe);
+				return true;
+			} catch {
+				return false;
+			}
+		}
+
+		/**
+		 * Print the first entries of the current directory, so the log shows
+		 * what the server actually holds.
+		 * @param {string} label
+		 */
+		async function describe(label) {
+			try {
+				const items = await client.list();
+				const names = items.slice(0, 12).map((item) => item.name);
+				console.log(`[deploy-ftp] ${label} contains: ${names.join(', ')}`);
+			} catch (err) {
+				console.log(
+					`[deploy-ftp] ${label} could not be listed: ${err && err.message ? err.message : err}`
+				);
+			}
+		}
+
+		if (hasConfigured) {
+			await client.cd(configured);
+			console.log(`[deploy-ftp] using configured remote directory ${configured}`);
+			await describe(`remote directory ${configured}`);
+			return configured;
+		}
+
+		if (configured === '.') {
+			console.log(
+				'[deploy-ftp] the configured remote path is "." — that is the login root, ' +
+					'so the document root is looked up instead'
+			);
 		}
 
 		for (const candidate of REMOTE_PATH_CANDIDATES) {
 			try {
 				await client.cd(candidate);
-				await client.list();
+			} catch {
+				console.log(`[deploy-ftp] candidate "${candidate}" does not exist`);
+				continue;
+			}
+			await describe(`candidate "${candidate}"`);
+			if (await isWritable()) {
 				console.log(`[deploy-ftp] discovered remote document root: ${candidate}`);
 				return candidate;
-			} catch {
-				console.log(`[deploy-ftp] candidate "${candidate}" is not usable, trying the next one`);
 			}
+			console.log(`[deploy-ftp] candidate "${candidate}" is not writable`);
 		}
 
-		console.log('[deploy-ftp] no candidate matched — using the login root as the document root');
+		await client.cd('/');
+		await describe('the login root');
+		console.log(
+			'[deploy-ftp] no candidate matched — using the login root as the document root'
+		);
 		return '/';
 	}
 
@@ -374,14 +427,22 @@ try {
 	console.log(`[deploy-ftp] upload finished -> ${HOST}:${PORT}${remotePath}`);
 	console.log('[deploy-ftp] done');
 } catch (err) {
+	const message = err && err.message ? err.message : err;
 	const code = err && typeof err.code === 'number' ? err.code : undefined;
 	if (code === 552) {
 		console.error('[deploy-ftp] ERROR 552: the server ran out of disk space (quota exceeded).');
 		console.error('[deploy-ftp] Ask the host administrator to raise the account quota before retrying.');
 	} else if (code === 550 || code === 553) {
 		console.error(`[deploy-ftp] ERROR ${code}: the server refused the file or directory.`);
+	} else if (/FIN packet|ECONNRESET|connection/i.test(String(message))) {
+		console.error(`[deploy-ftp] the server closed the connection during the upload: ${message}`);
+		console.error(
+			'[deploy-ftp] Check the remote directory reported above: a chrooted account usually ' +
+				'cannot write into its home root, and the document root sits in a sub-directory. ' +
+				'Set FTP_REMOTE_PATH to that sub-directory.'
+		);
 	} else {
-		console.error('[deploy-ftp] deployment failed:', err && err.message ? err.message : err);
+		console.error('[deploy-ftp] deployment failed:', message);
 	}
 	process.exitCode = 1;
 } finally {
