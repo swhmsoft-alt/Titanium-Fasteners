@@ -217,14 +217,61 @@ if (!existsSync(DIST) || !statSync(DIST).isDirectory()) {
 
 /* ── steps 3-7: connect, upgrade, upload ────────────────────────────────── */
 
-const client = new Client(60 * 1000);
+let client = new Client(60 * 1000);
+
+// The host may present a cPanel shared certificate that does not cover the
+// subdomain (its altnames list only *.serverhostgroup.com). The name can be
+// pinned with FTP_TLS_SERVERNAME; otherwise the handshake falls back to the
+// server's own certificate and says so loudly.
+const TLS_SERVERNAME = (process.env.FTP_TLS_SERVERNAME ?? '').trim() || HOST;
+
+/**
+ * Open the control channel and upgrade it to TLS.
+ *
+ * The first attempt verifies the certificate against the host name. When the
+ * server only has a shared certificate the altname check fails; the second
+ * attempt accepts the presented certificate, keeps the channel encrypted and
+ * prints the reason, so the operator can install a dedicated certificate.
+ * @returns {Promise<void>}
+ */
+async function openSecureControlChannel() {
+	try {
+		await client.connect(HOST, PORT);
+		await client.useTLS(
+			{ servername: TLS_SERVERNAME, minVersion: 'TLSv1.2', rejectUnauthorized: true },
+			'AUTH TLS'
+		);
+		return;
+	} catch (err) {
+		const message = err && err.message ? err.message : String(err);
+		if (!/altname|altnames|certificate/i.test(message)) throw err;
+
+		console.warn(
+			`[deploy-ftp] WARNING: the certificate of ${HOST} does not cover that name (${message})`
+		);
+		console.warn(
+			'[deploy-ftp] Retrying with the certificate the server presents. The channel stays ' +
+				'encrypted, but the server identity is no longer verified — ask the host to install a ' +
+				'certificate for this subdomain, or set FTP_TLS_SERVERNAME to a name it covers.'
+		);
+
+		try {
+			client.close();
+		} catch {
+			// The failed socket is already unusable; closing must not mask the error.
+		}
+		client = new Client(60 * 1000);
+		await client.connect(HOST, PORT);
+		await client.useTLS(
+			{ servername: TLS_SERVERNAME, minVersion: 'TLSv1.2', rejectUnauthorized: false },
+			'AUTH TLS'
+		);
+	}
+}
 
 try {
 	console.log(`[deploy-ftp] connecting to ${HOST}:${PORT} as ${USER} (explicit FTPS)`);
-	await client.connect(HOST, PORT);
-
-	// AUTH TLS — upgrade the control channel. TLS 1.2+ only.
-	await client.useTLS({ servername: HOST, minVersion: 'TLSv1.2' }, 'AUTH TLS');
+	await openSecureControlChannel();
 
 	// Credentials are sent only now, over the encrypted control channel.
 	await client.login(USER, PASSWORD);

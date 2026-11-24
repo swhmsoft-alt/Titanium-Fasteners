@@ -89,6 +89,11 @@ jobs:
           FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
           FTP_PORT: ${{ secrets.FTP_PORT || '21' }}
+          # Optional: the name the server certificate covers. A cPanel account
+          # usually gets a shared certificate (*.serverhostgroup.com), which
+          # does not list the subdomain; without this the deployer falls back
+          # to the presented certificate and warns about it.
+          FTP_TLS_SERVERNAME: ${{ secrets.FTP_TLS_SERVERNAME }}
         run: |
           set -o pipefail
           mkdir -p _audit
