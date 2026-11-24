@@ -238,7 +238,7 @@ const failures = [];
 
 // The server closes an FTP session after a limited number of transfers, so
 // the upload renews the session on its own.
-const FILES_PER_SESSION = 40;
+const FILES_PER_SESSION = 25;
 const SESSION_MS = 60 * 1000;
 
 // The directory the upload writes into, restored after every reconnect.
@@ -360,6 +360,12 @@ async function reopenSession() {
 	const user = (process.env[activeSet.user] ?? '').trim();
 	const password = (process.env[activeSet.password] ?? '').trim();
 	await client.login(user, password);
+
+	// The data channel has to be protected again on the new session,
+	// otherwise the server refuses the transfers.
+	await client.send('PBSZ 0');
+	await client.send('PROT P');
+	await client.send('TYPE I');
 }
 
 try {
