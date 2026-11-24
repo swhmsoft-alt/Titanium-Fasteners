@@ -65,16 +65,21 @@ jobs:
 
       # ── DEPLOY ─────────────────────────────────────────────────────────────
       # Credentials live in repository Secrets — never in this file.
+      #
+      # Every value has a fallback chain, because an unset secret must degrade
+      # to the next source instead of aborting the whole run:
+      #   host     -> secret -> repository variable -> the known cPanel host
+      #   user     -> secret FTP_USER -> secret FTP_USERNAME (legacy)
+      #   password -> secret FTP_PASSWORD -> secret FTP2_PASSWORD (probe set)
+      #   path     -> secret FTP_REMOTE_PATH -> secret FTP_DIR (legacy)
+      #   port     -> secret FTP_PORT -> 21
       - name: Deploy to cPanel over FTPS
         env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          # Both spellings are passed so one set of repository Secrets drives
-          # this workflow AND the legacy deploy.yml (FTP_USERNAME / FTP_DIR).
-          # The deployer prefers FTP_USER / FTP_REMOTE_PATH and falls back.
-          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_HOST: ${{ secrets.FTP_HOST || vars.FTP_HOST || 'fastener.bozemetal.com' }}
+          FTP_USER: ${{ secrets.FTP_USER || secrets.FTP_USERNAME }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD || secrets.FTP2_PASSWORD }}
+          FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
-          FTP_PORT: ${{ secrets.FTP_PORT }}
+          FTP_PORT: ${{ secrets.FTP_PORT || '21' }}
         run: node scripts/deploy-ftp-ci.mjs

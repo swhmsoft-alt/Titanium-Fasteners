@@ -151,12 +151,42 @@ if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
 // "/" means the FTP login root is already the site document root.
 // FTP_REMOTE_PATH is preferred; FTP_DIR is the legacy spelling still used by
 // deploy.yml, so one set of repository Secrets drives both workflows.
-const REMOTE_PATH = (
+//
+// When neither is configured the target is DISCOVERED: cPanel subdomain
+// accounts are chrooted into their home directory, which usually contains
+// the document root in a sub-directory rather than at the login root. The
+// candidates below are the domain names the server actually uses.
+const CONFIGURED_REMOTE_PATH = (
 	process.env.FTP_REMOTE_PATH ??
 	process.env.FTP_DIR ??
-	'/'
+	''
 )
-	.trim() || '/';
+	.trim();
+
+const REMOTE_PATH_CANDIDATES = [
+	'fastener.bozemetal.com',
+	'public_html',
+	'www.fastener.bozemetal.com',
+	'bozemetal.com',
+];
+
+// Which spelling actually carried the value? Only the NAME is printed, never
+// the value, so a misconfigured secret is visible in the log without leaking
+// the credential itself.
+const credentialSources = {
+	host: (process.env.FTP_HOST ?? '').trim() ? 'FTP_HOST' : 'unset',
+	user: (process.env.FTP_USER ?? '').trim()
+		? 'FTP_USER'
+		: (process.env.FTP_USERNAME ?? '').trim()
+			? 'FTP_USERNAME'
+			: 'unset',
+	password: (process.env.FTP_PASSWORD ?? '').trim() ? 'FTP_PASSWORD' : 'unset',
+	path: CONFIGURED_REMOTE_PATH ? 'configured' : 'auto-discover',
+};
+console.log(
+	`[deploy-ftp] credential sources: host=${credentialSources.host} user=${credentialSources.user} ` +
+		`password=${credentialSources.password} path=${credentialSources.path}`
+);
 
 /* ── step 2: validate build output ──────────────────────────────────────── */
 
@@ -188,16 +218,42 @@ try {
 	const pwd = await client.pwd();
 	console.log(`[deploy-ftp] logged in, remote PWD = ${pwd}`);
 
-	if (REMOTE_PATH !== '/' && REMOTE_PATH !== '.') {
-		await client.cd(REMOTE_PATH);
-		console.log(`[deploy-ftp] changed to remote directory ${REMOTE_PATH}`);
-	} else {
-		console.log('[deploy-ftp] remote path is "/" — the login root is the document root');
+	/**
+	 * Resolve the directory that IS the site document root.
+	 *
+	 * A configured path wins. Otherwise the known candidates are probed: the
+	 * first one that can be entered AND listed is used. Falling back to the
+	 * login root is the last resort, because uploading into the wrong
+	 * directory silently publishes nothing.
+	 * @returns {Promise<string>} the directory to upload into
+	 */
+	async function resolveRemotePath() {
+		if (CONFIGURED_REMOTE_PATH && CONFIGURED_REMOTE_PATH !== '/') {
+			await client.cd(CONFIGURED_REMOTE_PATH);
+			console.log(`[deploy-ftp] using configured remote directory ${CONFIGURED_REMOTE_PATH}`);
+			return CONFIGURED_REMOTE_PATH;
+		}
+
+		for (const candidate of REMOTE_PATH_CANDIDATES) {
+			try {
+				await client.cd(candidate);
+				await client.list();
+				console.log(`[deploy-ftp] discovered remote document root: ${candidate}`);
+				return candidate;
+			} catch {
+				console.log(`[deploy-ftp] candidate "${candidate}" is not usable, trying the next one`);
+			}
+		}
+
+		console.log('[deploy-ftp] no candidate matched — using the login root as the document root');
+		return '/';
 	}
+
+	const remotePath = await resolveRemotePath();
 
 	await client.uploadFromDir(DIST);
 
-	console.log('[deploy-ftp] upload finished');
+	console.log(`[deploy-ftp] upload finished -> ${HOST}:${PORT}${remotePath}`);
 	console.log('[deploy-ftp] done');
 } catch (err) {
 	const code = err && typeof err.code === 'number' ? err.code : undefined;
