@@ -353,17 +353,27 @@ try {
 
 		/**
 		 * Can a file be written into the current directory?
+		 *
+		 * Only the upload decides: the server may refuse the delete of the
+		 * probe file (some cPanel accounts do), and that must not turn a
+		 * writable directory into an unwritable one.
 		 * @returns {Promise<boolean>} true when a probe file could be written
 		 */
 		async function isWritable() {
-			const probe = `.deploy-probe-${Date.now()}.txt`;
+			const probe = `deploy-probe-${Date.now()}.txt`;
 			try {
 				await client.uploadFrom(Buffer.from('probe'), probe);
-				await client.remove(probe);
-				return true;
 			} catch {
 				return false;
 			}
+			try {
+				await client.remove(probe);
+			} catch {
+				console.log(
+					`[deploy-ftp] the probe file ${probe} could not be removed; the account may not allow deletes`
+				);
+			}
+			return true;
 		}
 
 		/**
