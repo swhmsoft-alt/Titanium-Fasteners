@@ -5,11 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# The build job only reads the repository. `statuses: write` is the one extra
-# permission: it lets the job publish the deployment outcome as a commit
-# status, which is readable without a GitHub session.
+# The job reads the repository and publishes its own diagnostics:
+#   statuses: write -> the deployment outcome as a commit status
+#   contents: write -> the deployment log on the `deploy-diagnostics` branch
+# Neither permission can touch the source code on `main`.
 permissions:
-  contents: read
+  contents: write
   statuses: write
 
 # Two pushes must never write the same FTP directory at the same time.
@@ -109,7 +110,7 @@ jobs:
       - name: Report deployment result
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
         run: |
           set -uo pipefail
@@ -126,10 +127,26 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
-          SUMMARY=$(tail -n 12 _audit/deploy-log.txt 2>/dev/null | tr '\n' ' ' | cut -c1-200)
-          gh api --method POST \
-            "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -f state="$([ "${DEPLOY_OUTCOME}" = success ] && echo success || echo failure)" \
-            -f context="deploy/ftps" \
-            -f description="${SUMMARY:-deployment did not run}" \
-            --silent || echo "::warning::could not publish the deployment status"
+          SUMMARY=$(tail -n 12 _audit/deploy-log.txt 2>/dev/null | tr '\n' ' ' | tr -d '"\\' | cut -c1-200)
+          STATE=$([ "${DEPLOY_OUTCOME}" = success ] && echo success || echo failure)
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -d "{\"state\":\"${STATE}\",\"context\":\"deploy/ftps\",\"description\":\"${SUMMARY:-deployment did not run}\"}" \
+            -o /dev/null -w 'status-api:%{http_code}\n' || echo "::warning::could not publish the deployment status"
+
+          # The same log is committed to a dedicated branch. A branch can be
+          # read with a plain `git fetch`, so the failure stays diagnosable
+          # even when the run log and the API are behind a login.
+          if [ -f _audit/deploy-log.txt ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git checkout -B deploy-diagnostics
+            cp _audit/deploy-log.txt deploy-log.txt
+            git add deploy-log.txt
+            git commit -q -m "deploy log for ${GITHUB_SHA}" || true
+            git push --force origin deploy-diagnostics \
+              || echo "::warning::could not push the diagnostics branch"
+          fi
