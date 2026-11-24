@@ -46,9 +46,11 @@
  * devDependencies) — CI installs with --omit=dev in some setups.
  */
 
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { createReadStream } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { Readable } from 'node:stream';
 import { Client } from 'basic-ftp';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -362,7 +364,8 @@ try {
 		async function isWritable() {
 			const probe = `deploy-probe-${Date.now()}.txt`;
 			try {
-				await client.uploadFrom(Buffer.from('probe'), probe);
+				// uploadFrom expects a stream, not a Buffer.
+				await client.uploadFrom(Readable.from([Buffer.from('probe')]), probe);
 			} catch (err) {
 				console.log(
 					`[deploy-ftp] the probe file could not be written: ${err && err.message ? err.message : err}`
@@ -468,7 +471,74 @@ try {
 
 	const remotePath = await resolveRemotePath();
 
-	await client.uploadFromDir(DIST);
+	/**
+	 * Upload a local tree to the current remote directory.
+	 *
+	 * The bulk helper hides which file failed, and this server refuses some
+	 * storages (550). Every file is therefore sent on its own: a refused
+	 * file is deleted first and sent again, and anything that still fails is
+	 * reported by path.
+	 * @param {string} localDir
+	 * @param {string} remoteDir
+	 * @returns {Promise<{ sent: number, failed: string[] }>}
+	 */
+	async function uploadTree(localDir, remoteDir) {
+		let sent = 0;
+		const failed = [];
+
+		for (const entry of readdirSync(localDir, { withFileTypes: true })) {
+			const localPath = join(localDir, entry.name);
+			const remotePath = remoteDir ? `${remoteDir}/${entry.name}` : entry.name;
+
+			if (entry.isDirectory()) {
+				try {
+					await client.send(`MKD ${remotePath}`);
+				} catch {
+					// The directory exists already, or the account may not create
+					// directories; the files below decide whether it works.
+				}
+				const nested = await uploadTree(localPath, remotePath);
+				sent += nested.sent;
+				failed.push(...nested.failed);
+				continue;
+			}
+
+			try {
+				await client.uploadFrom(createReadStream(localPath), remotePath);
+				sent += 1;
+			} catch (err) {
+				const code = err && typeof err.code === 'number' ? err.code : undefined;
+				if (code === 550 || code === 553) {
+					try {
+						await client.remove(remotePath);
+					} catch {
+						// It may simply not exist.
+					}
+					try {
+						await client.uploadFrom(createReadStream(localPath), remotePath);
+						sent += 1;
+						continue;
+					} catch (retryErr) {
+						failed.push(`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`);
+						continue;
+					}
+				}
+				failed.push(`${remotePath} (${err && err.message ? err.message : err})`);
+			}
+		}
+
+		return { sent, failed };
+	}
+
+	const result = await uploadTree(DIST, '');
+	console.log(`[deploy-ftp] ${result.sent} file(s) transferred`);
+	if (result.failed.length > 0) {
+		console.error(`[deploy-ftp] ERROR: ${result.failed.length} file(s) could not be transferred:`);
+		for (const failure of result.failed.slice(0, 20)) {
+			console.error(`[deploy-ftp]   ${failure}`);
+		}
+		process.exitCode = 1;
+	}
 
 	// The transfer reports success even when the server silently drops a
 	// file, so the result is checked on the server: a document root that
