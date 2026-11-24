@@ -11,10 +11,22 @@ node_modules/
 .env.production
 .env.local
 
+# deployment state (local only)
+deploy-manifest.json
+.deploy-diff.json
+_audit/
+
 # logs
 npm-debug.log*
 yarn-error.log*
 *.log
+
+# local FTP / channel probe scratch files
+gl1.txt
+p1.txt
+p2.txt
+plog.txt
+plog.zip
 
 # editor / OS
 .vscode/

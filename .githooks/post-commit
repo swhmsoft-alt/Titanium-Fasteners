@@ -1,0 +1,14 @@
+#!/bin/sh
+# post-commit hook — appends one line to the local commit log.
+#
+# Contract: this hook MUST NEVER block a commit. Every failure path exits 0.
+# The real work lives in .githooks/.post-commit.mjs (kept as a Node script so
+# the logic is identical on Windows, macOS and Linux).
+set +e
+
+ROOT_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+[ -n "$ROOT_DIR" ] || exit 0
+
+node "$ROOT_DIR/.githooks/.post-commit.mjs" >/dev/null 2>&1
+
+exit 0

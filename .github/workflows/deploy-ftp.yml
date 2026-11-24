@@ -1,0 +1,80 @@
+name: Deploy to cPanel via FTP (audit-gated)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The build job only needs to read the repository. Nothing is written back.
+permissions:
+  contents: read
+
+# Two pushes must never write the same FTP directory at the same time.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+# Full upload duration is bounded so a stuck transfer cannot occupy a runner.
+timeout-minutes: 60
+
+jobs:
+  build-and-deploy:
+    name: Build, gate, deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # No `cache: npm` on purpose — a poisoned cache keeps polluting the
+          # environment long after the offending commit is gone.
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      # Product data gate: CSV truth source → generated src/data/products.
+      - name: Generate product data
+        run: npm run gen:products
+
+      # npm run build routes through scripts/astro-build.mjs, which
+      # canonicalises the project root before spawning Astro (Windows CSS
+      # fix). On Linux the path is already canonical — a no-op there.
+      - name: Build
+        run: npm run build
+
+      # ── GATE ───────────────────────────────────────────────────────────────
+      # Reads the BUILD OUTPUT (dist/), not the source tree: the artefact is
+      # the single source of truth. Runs AFTER the build because it needs
+      # dist/ to exist. A non-zero exit aborts the job — no continue-on-error,
+      # no --no-verify: a broken build must never reach the server.
+      - name: Gate — internal link integrity
+        run: node scripts/check-links.mjs --report _audit/link-report.txt
+
+      # The report is uploaded even when the gate fails, so the failure is
+      # diagnosable after the fact.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: link-audit-report
+          path: _audit/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # ── DEPLOY ─────────────────────────────────────────────────────────────
+      # Credentials live in repository Secrets — never in this file.
+      - name: Deploy to cPanel over FTPS
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          # Both spellings are passed so one set of repository Secrets drives
+          # this workflow AND the legacy deploy.yml (FTP_USERNAME / FTP_DIR).
+          # The deployer prefers FTP_USER / FTP_REMOTE_PATH and falls back.
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH }}
+          FTP_DIR: ${{ secrets.FTP_DIR }}
+          FTP_PORT: ${{ secrets.FTP_PORT }}
+        run: node scripts/deploy-ftp-ci.mjs

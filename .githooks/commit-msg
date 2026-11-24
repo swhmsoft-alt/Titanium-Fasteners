@@ -1,0 +1,17 @@
+#!/bin/sh
+# commit-msg hook — appends a reminder block when the commit message carries
+# no conventional-commit marker.
+#
+# Contract: it NEVER rejects the commit and NEVER rewrites the message. It
+# only appends an advisory block below the existing message.
+set +e
+
+ROOT_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+[ -n "$ROOT_DIR" ] || exit 0
+
+MSG_FILE="$1"
+[ -n "$MSG_FILE" ] || exit 0
+
+node "$ROOT_DIR/.githooks/.commit-msg.mjs" "$MSG_FILE" >/dev/null 2>&1
+
+exit 0

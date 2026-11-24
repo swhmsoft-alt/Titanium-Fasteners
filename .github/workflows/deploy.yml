@@ -1,8 +1,9 @@
 name: Deploy to cPanel (FTP)
 
 on:
-  push:
-    branches: [main]
+  # Manual trigger only. The audit-gated workflow (deploy-ftp.yml) owns the
+  # automatic push -> deploy path; letting both run on the same push would
+  # have two runners writing the same FTP directory at the same time.
   workflow_dispatch:
 
 # The build job only needs to read the repository. Nothing is written back.
