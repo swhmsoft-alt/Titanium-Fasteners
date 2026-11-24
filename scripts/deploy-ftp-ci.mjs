@@ -363,7 +363,10 @@ try {
 			const probe = `deploy-probe-${Date.now()}.txt`;
 			try {
 				await client.uploadFrom(Buffer.from('probe'), probe);
-			} catch {
+			} catch (err) {
+				console.log(
+					`[deploy-ftp] the probe file could not be written: ${err && err.message ? err.message : err}`
+				);
 				return false;
 			}
 			try {
@@ -407,19 +410,52 @@ try {
 			);
 		}
 
+		// A document root holds the site itself; the login root holds the
+		// account. That difference decides the target even when the write
+		// probe is refused.
+		let siteRoot = null;
+		let writableRoot = null;
+
 		for (const candidate of REMOTE_PATH_CANDIDATES) {
+			let items;
 			try {
 				await client.cd(candidate);
+				items = await client.list();
 			} catch {
 				console.log(`[deploy-ftp] candidate "${candidate}" does not exist`);
 				continue;
 			}
-			await describe(`candidate "${candidate}"`);
-			if (await isWritable()) {
-				console.log(`[deploy-ftp] discovered remote document root: ${candidate}`);
-				return candidate;
+
+			const names = items.slice(0, 12).map((item) => item.name);
+			console.log(`[deploy-ftp] candidate "${candidate}" contains: ${names.join(', ')}`);
+
+			const looksLikeSite = items.some((item) => item.name === 'index.html');
+			if (looksLikeSite && !siteRoot) {
+				siteRoot = candidate;
 			}
-			console.log(`[deploy-ftp] candidate "${candidate}" is not writable`);
+
+			if (await isWritable()) {
+				if (looksLikeSite) {
+					console.log(`[deploy-ftp] discovered remote document root: ${candidate}`);
+					return candidate;
+				}
+				if (!writableRoot) {
+					writableRoot = candidate;
+				}
+			}
+		}
+
+		if (siteRoot) {
+			console.log(
+				`[deploy-ftp] using ${siteRoot} as the document root: it holds the site files`
+			);
+			await client.cd(siteRoot);
+			return siteRoot;
+		}
+		if (writableRoot) {
+			console.log(`[deploy-ftp] using ${writableRoot} as the document root`);
+			await client.cd(writableRoot);
+			return writableRoot;
 		}
 
 		await client.cd('/');
@@ -434,8 +470,36 @@ try {
 
 	await client.uploadFromDir(DIST);
 
-	console.log(`[deploy-ftp] upload finished -> ${HOST}:${PORT}${remotePath}`);
-	console.log('[deploy-ftp] done');
+	// The transfer reports success even when the server silently drops a
+	// file, so the result is checked on the server: a document root that
+	// does not hold the new build is not a deployment.
+	const CHECKED_FILES = [
+		'index.html',
+		'images/category/titanium-screws-category-hero.webp',
+		'images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp',
+	];
+	const missing = [];
+	for (const file of CHECKED_FILES) {
+		try {
+			const size = await client.size(file);
+			console.log(`[deploy-ftp] verified ${file} (${size} bytes)`);
+		} catch {
+			missing.push(file);
+		}
+	}
+	if (missing.length > 0) {
+		console.error(
+			`[deploy-ftp] ERROR: ${missing.length} file(s) are missing on the server: ${missing.join(', ')}`
+		);
+		console.error(
+			'[deploy-ftp] The upload did not reach the live site. Check the remote directory and the ' +
+				'write permission of the account.'
+		);
+		process.exitCode = 1;
+	} else {
+		console.log(`[deploy-ftp] upload finished -> ${HOST}:${PORT}${remotePath}`);
+		console.log('[deploy-ftp] done');
+	}
 } catch (err) {
 	const message = err && err.message ? err.message : err;
 	const code = err && typeof err.code === 'number' ? err.code : undefined;
