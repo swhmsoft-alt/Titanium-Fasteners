@@ -5,9 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# The build job only needs to read the repository. Nothing is written back.
+# The build job only reads the repository. `statuses: write` is the one extra
+# permission: it lets the job publish the deployment outcome as a commit
+# status, which is readable without a GitHub session.
 permissions:
   contents: read
+  statuses: write
 
 # Two pushes must never write the same FTP directory at the same time.
 concurrency:
@@ -69,11 +72,12 @@ jobs:
       # Every value has a fallback chain, because an unset secret must degrade
       # to the next source instead of aborting the whole run:
       #   host     -> secret -> repository variable -> the known cPanel host
-      #   user     -> secret FTP_USER -> secret FTP_USERNAME (legacy)
-      #   password -> secret FTP_PASSWORD -> secret FTP2_PASSWORD (probe set)
+      #   user     -> secret FTP_USER -> FTP_USERNAME -> FTP2_USERNAME
+      #   password -> secret FTP_PASSWORD -> FTP2_PASSWORD
       #   path     -> secret FTP_REMOTE_PATH -> secret FTP_DIR (legacy)
       #   port     -> secret FTP_PORT -> 21
       - name: Deploy to cPanel over FTPS
+        id: deploy
         env:
           FTP_HOST: ${{ secrets.FTP_HOST || vars.FTP_HOST || 'fastener.bozemetal.com' }}
           FTP_USER: ${{ secrets.FTP_USER || secrets.FTP_USERNAME || secrets.FTP2_USERNAME }}
@@ -84,4 +88,48 @@ jobs:
           FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
           FTP_PORT: ${{ secrets.FTP_PORT || '21' }}
-        run: node scripts/deploy-ftp-ci.mjs
+        run: |
+          set -o pipefail
+          mkdir -p _audit
+          node scripts/deploy-ftp-ci.mjs 2>&1 | tee _audit/deploy-log.txt
+
+      # The deployment log is uploaded whatever happened, so a failed transfer
+      # can be read after the fact.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deploy-log
+          path: _audit/deploy-log.txt
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # A commit status carries a one-line summary of the deployment. Unlike
+      # the run log it is readable without a GitHub session, so a broken
+      # pipeline stays diagnosable from the outside.
+      - name: Report deployment result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+        run: |
+          set -uo pipefail
+          mkdir -p _audit
+          {
+            echo "### Deployment"
+            echo
+            echo "- outcome: \`${DEPLOY_OUTCOME}\`"
+            if [ -f _audit/deploy-log.txt ]; then
+              echo
+              echo '```'
+              tail -n 40 _audit/deploy-log.txt
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          SUMMARY=$(tail -n 12 _audit/deploy-log.txt 2>/dev/null | tr '\n' ' ' | cut -c1-200)
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state="$([ "${DEPLOY_OUTCOME}" = success ] && echo success || echo failure)" \
+            -f context="deploy/ftps" \
+            -f description="${SUMMARY:-deployment did not run}" \
+            --silent || echo "::warning::could not publish the deployment status"
