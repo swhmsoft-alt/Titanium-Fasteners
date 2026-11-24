@@ -232,11 +232,26 @@ if (!existsSync(DIST) || !statSync(DIST).isDirectory()) {
 
 let client = new Client(60 * 1000);
 
+// The credential set that worked, reused when the session is re-opened.
+let activeSet = null;
+const failures = [];
+
+// The server closes an FTP session after a limited number of transfers, so
+// the upload renews the session on its own.
+const FILES_PER_SESSION = 40;
+const SESSION_MS = 60 * 1000;
+
+// The directory the upload writes into, restored after every reconnect.
+let documentRoot = '';
+
 // The host may present a cPanel shared certificate that does not cover the
 // subdomain (its altnames list only *.serverhostgroup.com). The name can be
 // pinned with FTP_TLS_SERVERNAME; FTP_TLS_STRICT=true forbids the fallback.
 const TLS_SERVERNAME = (process.env.FTP_TLS_SERVERNAME ?? '').trim() || HOST;
 const TLS_STRICT = (process.env.FTP_TLS_STRICT ?? 'false').trim().toLowerCase() === 'true';
+
+// The certificate warning is printed once; the session is re-opened often.
+let tlsWarningShown = false;
 
 /**
  * Open the control channel and upgrade it to TLS.
@@ -265,12 +280,15 @@ async function openSecureControlChannel() {
 		console.warn(
 			`[deploy-ftp] TLS handshake failed (${kind}/${code}): ${message}`
 		);
-		console.warn(
-			`[deploy-ftp] The certificate of ${HOST} does not cover that name, so the handshake ` +
-				'is retried with the certificate the server presents. The channel stays encrypted, ' +
-				'but the server identity is no longer verified — ask the host to install a ' +
-				'certificate for this subdomain, or set FTP_TLS_SERVERNAME to a name it covers.'
-		);
+		if (!tlsWarningShown) {
+			tlsWarningShown = true;
+			console.warn(
+				`[deploy-ftp] The certificate of ${HOST} does not cover that name, so the handshake ` +
+					'is retried with the certificate the server presents. The channel stays encrypted, ' +
+					'but the server identity is no longer verified — ask the host to install a ' +
+					'certificate for this subdomain, or set FTP_TLS_SERVERNAME to a name it covers.'
+			);
+		}
 
 		try {
 			client.close();
@@ -289,11 +307,9 @@ async function openSecureControlChannel() {
 /**
  * Connect and log in with the first credential set the server accepts.
  *
- * @returns {Promise<string>} the name of the credential set that worked
+ * @returns {Promise<void>}
  */
-async function connectAndLogin() {
-	const failures = [];
-
+async function openSession() {
 	for (const [index, set] of usableSets.entries()) {
 		const user = (process.env[set.user] ?? '').trim();
 		const password = (process.env[set.password] ?? '').trim();
@@ -305,7 +321,8 @@ async function connectAndLogin() {
 			await openSecureControlChannel();
 			await client.login(user, password);
 			console.log(`[deploy-ftp] logged in with ${set.user}`);
-			return set.user;
+			activeSet = set;
+			return;
 		} catch (err) {
 			const message = err && err.message ? err.message : String(err);
 			console.warn(`[deploy-ftp] ${set.user} was rejected: ${message}`);
@@ -326,9 +343,28 @@ async function connectAndLogin() {
 	process.exit(1);
 }
 
+/**
+ * Re-open the control channel with the credential set that worked.
+ *
+ * The server closes long FTP sessions, so the upload reconnects every few
+ * dozen files and continues where it stopped.
+ */
+async function reopenSession() {
+	try {
+		client.close();
+	} catch {
+		// The socket is already broken.
+	}
+	client = new Client(60 * 1000);
+	await openSecureControlChannel();
+	const user = (process.env[activeSet.user] ?? '').trim();
+	const password = (process.env[activeSet.password] ?? '').trim();
+	await client.login(user, password);
+}
+
 try {
 	console.log(`[deploy-ftp] connecting to ${HOST}:${PORT} (explicit FTPS)`);
-	await connectAndLogin();
+	await openSession();
 
 	// PBSZ 0 / PROT P — protect the DATA channel as well.
 	await client.send('PBSZ 0');
@@ -470,6 +506,7 @@ try {
 	}
 
 	const remotePath = await resolveRemotePath();
+	documentRoot = remotePath === '/' ? '' : remotePath;
 
 	/**
 	 * Upload a local tree to the current remote directory.
@@ -485,6 +522,8 @@ try {
 	async function uploadTree(localDir, remoteDir) {
 		let sent = 0;
 		const failed = [];
+		let sinceReconnect = 0;
+		let lastReconnect = Date.now();
 
 		for (const entry of readdirSync(localDir, { withFileTypes: true })) {
 			const localPath = join(localDir, entry.name);
@@ -500,14 +539,53 @@ try {
 				const nested = await uploadTree(localPath, remotePath);
 				sent += nested.sent;
 				failed.push(...nested.failed);
+				sinceReconnect += nested.sent;
 				continue;
+			}
+
+			// The server closes the session after a few dozen transfers, so the
+			// session is renewed before that happens.
+			if (sinceReconnect >= FILES_PER_SESSION || Date.now() - lastReconnect > SESSION_MS) {
+				console.log(
+					`[deploy-ftp] renewing the FTP session after ${sinceReconnect} file(s)`
+				);
+				await reopenSession();
+				if (documentRoot) {
+					await client.cd(documentRoot);
+				}
+				sinceReconnect = 0;
+				lastReconnect = Date.now();
 			}
 
 			try {
 				await client.uploadFrom(createReadStream(localPath), remotePath);
 				sent += 1;
+				sinceReconnect += 1;
 			} catch (err) {
 				const code = err && typeof err.code === 'number' ? err.code : undefined;
+				const isClosed = /FIN packet|closed/i.test(err && err.message ? err.message : '');
+
+				if (isClosed) {
+					// The session died mid-transfer: renew it and send the file again.
+					try {
+						await reopenSession();
+						if (documentRoot) {
+							await client.cd(documentRoot);
+						}
+						sinceReconnect = 0;
+						lastReconnect = Date.now();
+						await client.uploadFrom(createReadStream(localPath), remotePath);
+						sent += 1;
+						sinceReconnect += 1;
+						continue;
+					} catch (retryErr) {
+						failed.push(
+							`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
+						);
+						continue;
+					}
+				}
+
 				if (code === 550 || code === 553) {
 					try {
 						await client.remove(remotePath);
@@ -517,9 +595,12 @@ try {
 					try {
 						await client.uploadFrom(createReadStream(localPath), remotePath);
 						sent += 1;
+						sinceReconnect += 1;
 						continue;
 					} catch (retryErr) {
-						failed.push(`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`);
+						failed.push(
+							`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
+						);
 						continue;
 					}
 				}
