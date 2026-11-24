@@ -76,9 +76,11 @@ jobs:
       - name: Deploy to cPanel over FTPS
         env:
           FTP_HOST: ${{ secrets.FTP_HOST || vars.FTP_HOST || 'fastener.bozemetal.com' }}
-          FTP_USER: ${{ secrets.FTP_USER || secrets.FTP_USERNAME }}
+          FTP_USER: ${{ secrets.FTP_USER || secrets.FTP_USERNAME || secrets.FTP2_USERNAME }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP2_USERNAME: ${{ secrets.FTP2_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD || secrets.FTP2_PASSWORD }}
+          FTP2_PASSWORD: ${{ secrets.FTP2_PASSWORD }}
           FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
           FTP_PORT: ${{ secrets.FTP_PORT || '21' }}

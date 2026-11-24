@@ -123,6 +123,21 @@ function requireEnv(names) {
 	return null;
 }
 
+/**
+ * Name of the variable that actually carries the value, for the log.
+ * @param {string[]} names
+ * @returns {string} the winning name, or 'unset'
+ */
+function sourceOf(names) {
+	const list = Array.isArray(names) ? names : [names];
+	for (const name of list) {
+		if ((process.env[name] ?? '').trim()) return name;
+	}
+	return 'unset';
+}
+
+// The env file must be applied BEFORE the credentials are read, otherwise the
+// local namespace (PRODUCTION_*) never reaches the FTP_* lookups.
 if (ENV_FILE) {
 	const envPath = resolve(ROOT, ENV_FILE);
 	if (!existsSync(envPath)) {
@@ -133,14 +148,23 @@ if (ENV_FILE) {
 	console.log(`[deploy-ftp] credentials loaded from ${ENV_FILE}`);
 }
 
-const HOST = requireEnv('FTP_HOST');
-const USER = requireEnv(['FTP_USER', 'FTP_USERNAME']);
-const PASSWORD = requireEnv('FTP_PASSWORD');
+// The credential spellings that exist across the repository's secret sets.
+// The deployment workflow provisions the preferred names; the legacy sets
+// are accepted so one registered credential set can drive every workflow.
+const HOST_NAMES = ['FTP_HOST'];
+const USER_NAMES = ['FTP_USER', 'FTP_USERNAME', 'FTP2_USERNAME'];
+const PASSWORD_NAMES = ['FTP_PASSWORD', 'FTP2_PASSWORD'];
+
+const HOST = requireEnv(HOST_NAMES);
+const USER = requireEnv(USER_NAMES);
+const PASSWORD = requireEnv(PASSWORD_NAMES);
 
 if (!HOST || !USER || !PASSWORD) {
 	console.error('[deploy-ftp] aborting: fix the missing variable(s) listed above.');
 	process.exit(1);
 }
+
+
 
 const PORT = Number.parseInt((process.env.FTP_PORT ?? '21').trim(), 10);
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -174,13 +198,9 @@ const REMOTE_PATH_CANDIDATES = [
 // the value, so a misconfigured secret is visible in the log without leaking
 // the credential itself.
 const credentialSources = {
-	host: (process.env.FTP_HOST ?? '').trim() ? 'FTP_HOST' : 'unset',
-	user: (process.env.FTP_USER ?? '').trim()
-		? 'FTP_USER'
-		: (process.env.FTP_USERNAME ?? '').trim()
-			? 'FTP_USERNAME'
-			: 'unset',
-	password: (process.env.FTP_PASSWORD ?? '').trim() ? 'FTP_PASSWORD' : 'unset',
+	host: sourceOf(HOST_NAMES),
+	user: sourceOf(USER_NAMES),
+	password: sourceOf(PASSWORD_NAMES),
 	path: CONFIGURED_REMOTE_PATH ? 'configured' : 'auto-discover',
 };
 console.log(
