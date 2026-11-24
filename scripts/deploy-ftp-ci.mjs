@@ -244,14 +244,15 @@ async function openSecureControlChannel() {
 		return;
 	} catch (err) {
 		const message = err && err.message ? err.message : String(err);
-		if (!/altname|altnames|certificate/i.test(message)) throw err;
-
+		const kind = err && err.name ? err.name : 'Error';
+		const code = err && err.code ? err.code : 'n/a';
 		console.warn(
-			`[deploy-ftp] WARNING: the certificate of ${HOST} does not cover that name (${message})`
+			`[deploy-ftp] TLS handshake failed (${kind}/${code}): ${message}`
 		);
 		console.warn(
-			'[deploy-ftp] Retrying with the certificate the server presents. The channel stays ' +
-				'encrypted, but the server identity is no longer verified — ask the host to install a ' +
+			`[deploy-ftp] The certificate of ${HOST} does not cover that name, so the handshake ` +
+				'is retried with the certificate the server presents. The channel stays encrypted, ' +
+				'but the server identity is no longer verified — ask the host to install a ' +
 				'certificate for this subdomain, or set FTP_TLS_SERVERNAME to a name it covers.'
 		);
 

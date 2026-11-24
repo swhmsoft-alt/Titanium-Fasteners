@@ -144,13 +144,16 @@ jobs:
 
           # The same log is committed to a dedicated branch. A branch can be
           # read with a plain `git fetch`, so the failure stays diagnosable
-          # even when the run log and the API are behind a login.
+          # even when the run log and the API are behind a login. The file name
+          # carries the commit sha, so every run adds a new entry.
           if [ -f _audit/deploy-log.txt ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git checkout -B deploy-diagnostics
+            mkdir -p deploy-logs
+            cp _audit/deploy-log.txt "deploy-logs/${GITHUB_SHA}.txt"
             cp _audit/deploy-log.txt deploy-log.txt
-            git add deploy-log.txt
+            git add -f deploy-log.txt "deploy-logs/${GITHUB_SHA}.txt"
             git commit -q -m "deploy log for ${GITHUB_SHA}" || true
             git push --force origin deploy-diagnostics \
               || echo "::warning::could not push the diagnostics branch"
