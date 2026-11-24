@@ -52,7 +52,7 @@ hero: {
 		"heading": "Smart Assembly: Digitalization in Manufacturing",
 		"lead": "Streamline your assembly operations with our cutting-edge Smart Factory Assembly service. Precisely designed to optimize your unique set up, our solution unlocks new possibilities in your production.",
 		"image": {
-			"src": "/images/services-smart-factory-smart-assembly/01-smart-factory-assembly-guy-with-tablet-in-his-ha.webp",
+			"src": "/images/services-smart-factory-smart-assembly/06-factory-layout-with-labeled-zones-workers-and-a-.webp",
 			"alt": "Smart Factory Assembly Guy with Tablet in his hands looking at the Dashboard with realt-time data",
 			"ratio": "5/4",
 			"width": 634,
@@ -85,7 +85,7 @@ blocks: [
 			"heading": "Smart Assembly: Digitalization in Manufacturing",
 			"lead": "Streamline your assembly operations with our cutting-edge Smart Factory Assembly service. Precisely designed to optimize your unique set up, our solution unlocks new possibilities in your production.",
 			"image": {
-				"src": "/images/services-smart-factory-smart-assembly/01-smart-factory-assembly-guy-with-tablet-in-his-ha.webp",
+				"src": "/images/services-smart-factory-smart-assembly/06-factory-layout-with-labeled-zones-workers-and-a-.webp",
 				"alt": "Smart Factory Assembly Guy with Tablet in his hands looking at the Dashboard with realt-time data",
 				"ratio": "5/4",
 				"width": 634,
@@ -110,7 +110,7 @@ blocks: [
 			"kind": "video",
 			"heading": "4 Reasons Why You Need Smart Factory Assembly",
 			"caption": "Discover why you can't afford to miss out on the benefits of a smart assembly system.",
-			"poster": "/images/services-smart-factory-smart-assembly/video-poster.jpg",
+			"poster": "/images/services-smart-factory-smart-assembly/38-assembly-station-with-smart-assembly-tools-and-s.webp",
 			"posterSrc": "https://img.youtube.com/vi/Z2ujkpBi9Zg/maxresdefault.jpg",
 			"videoId": "Z2ujkpBi9Zg"
 		},

@@ -92,7 +92,7 @@ blocks: [
 			"kind": "video",
 			"heading": "Connecting the Dots: Our Approach in 2 Minutes",
 			"caption": "Fastening technologies, products, latest engineering know-how, and proven productivity for fastening composites",
-			"poster": "/images/services-engineering-fastening-composites/video-poster.jpg",
+			"poster": "/images/services-engineering-fastening-composites/05-two-engineers-are-working-on-a-test-setup-for-a-.webp",
 			"posterSrc": "https://img.youtube.com/vi/DGAz1FVDgc8/maxresdefault.jpg",
 			"videoId": "DGAz1FVDgc8"
 		},

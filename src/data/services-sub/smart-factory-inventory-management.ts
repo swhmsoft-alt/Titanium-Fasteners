@@ -52,7 +52,7 @@ hero: {
 		"heading": "Build a Resilient Supply Chain with Our Smart Inventory Management Solution",
 		"lead": "Take control of your production and assembly efficiency. Optimize your B- and C-parts management, automate orders, and improve material flow - start with small steps and scale seamlessly as you grow.",
 		"image": {
-			"src": "/images/services-smart-factory-inventory-management/01-two-people-walk-through-the-shop-floor-the-woman.webp",
+			"src": "/images/services-smart-factory-inventory-management/12-factory-layout-with-labeled-zones-workers-and-a-.webp",
 			"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
 			"ratio": "5/4",
 			"width": 634,
@@ -85,7 +85,7 @@ blocks: [
 			"heading": "Build a Resilient Supply Chain with Our Smart Inventory Management Solution",
 			"lead": "Take control of your production and assembly efficiency. Optimize your B- and C-parts management, automate orders, and improve material flow - start with small steps and scale seamlessly as you grow.",
 			"image": {
-				"src": "/images/services-smart-factory-inventory-management/01-two-people-walk-through-the-shop-floor-the-woman.webp",
+				"src": "/images/services-smart-factory-inventory-management/12-factory-layout-with-labeled-zones-workers-and-a-.webp",
 				"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
 				"ratio": "5/4",
 				"width": 634,
@@ -194,7 +194,7 @@ blocks: [
 			"kind": "video",
 			"heading": "Efficiency in Action: How ABB Benefits from Smart Factory Logistics",
 			"caption": "The Smart Factory Solution: How ABB transformed their internal logistics",
-			"poster": "/images/services-smart-factory-inventory-management/video-poster.jpg",
+			"poster": "/images/services-smart-factory-inventory-management/05-autonomous-mobile-robot-amr-transporting-c-part-.webp",
 			"posterSrc": "https://img.youtube.com/vi/_2YUVVH6oZE/maxresdefault.jpg",
 			"videoId": "_2YUVVH6oZE"
 		},

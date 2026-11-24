@@ -9,6 +9,6 @@ export const CATEGORIES: Category[] = [
 	{ id: 'bolts', name: 'Bolts', description: 'Hex head bolts shoulder bolts and studs.', image: '/images/category/05-tools-and-equipment-for-standard-fasteners-eleme.webp', order: '2' },
 	{ id: 'nuts', name: 'Nuts', description: 'Hex nuts flange nuts and lock nuts.', image: '/images/category/02-nuts.webp', order: '3' },
 	{ id: 'washers', name: 'Washers', description: 'Plain washers spring washers and tab washers.', image: '/images/category/03-washers.webp', order: '4' },
-	{ id: 'pins', name: 'Pins', description: 'Dowel pins clevis pins and retaining pins.', image: '/images/category/04-pins.webp', order: '5' },
+	{ id: 'pins', name: 'Pins', description: 'Dowel pins clevis pins and retaining pins.', image: '/images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp', order: '5' },
 	{ id: 'securing', name: 'Securing and Anti-Loosening', description: 'Lock nuts prevailing torque types wedge lock washers and anti-loosening systems.', image: '/images/category/03-washers.webp', order: '6' }
 ];

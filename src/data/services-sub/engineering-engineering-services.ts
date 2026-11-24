@@ -52,7 +52,7 @@ hero: {
 		"heading": "Trusted Engineering Services for Your Fastening Needs",
 		"lead": "We provide a suite of engineering services under our Assembly Technology Expert program. Explore innovative methods and strategies to shorten your time-to-market, optimize throughput, improve quality, and reduce assembly costs in your production process.",
 		"image": {
-			"src": "/images/services-engineering-engineering-services/01-people-around-a-table-discussing-a-technical-dra.webp",
+			"src": "/images/services-engineering-engineering-services/03-a-male-and-female-sit-at-a-table-with-a-screen-d.webp",
 			"alt": "People around a table discussing a technical drawing in an industrial looking office. ",
 			"ratio": "5/4",
 			"width": 634,
@@ -85,7 +85,7 @@ blocks: [
 			"heading": "Trusted Engineering Services for Your Fastening Needs",
 			"lead": "We provide a suite of engineering services under our Assembly Technology Expert program. Explore innovative methods and strategies to shorten your time-to-market, optimize throughput, improve quality, and reduce assembly costs in your production process.",
 			"image": {
-				"src": "/images/services-engineering-engineering-services/01-people-around-a-table-discussing-a-technical-dra.webp",
+				"src": "/images/services-engineering-engineering-services/03-a-male-and-female-sit-at-a-table-with-a-screen-d.webp",
 				"alt": "People around a table discussing a technical drawing in an industrial looking office. ",
 				"ratio": "5/4",
 				"width": 634,
@@ -110,7 +110,7 @@ blocks: [
 			"kind": "video",
 			"heading": "Engineering Services in 2 Minutes",
 			"caption": "Learn more about our Engineering Services: A three stage methodology from concept to production",
-			"poster": "/images/services-engineering-engineering-services/video-poster.jpg",
+			"poster": "/images/services-engineering-engineering-services/04-factory-worker-assembling-apparatus.webp",
 			"posterSrc": "https://img.youtube.com/vi/Z2M9RTI3VbU/maxresdefault.jpg",
 			"videoId": "Z2M9RTI3VbU"
 		},
