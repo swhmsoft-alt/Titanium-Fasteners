@@ -148,23 +148,39 @@ if (ENV_FILE) {
 	console.log(`[deploy-ftp] credentials loaded from ${ENV_FILE}`);
 }
 
-// The credential spellings that exist across the repository's secret sets.
-// The deployment workflow provisions the preferred names; the legacy sets
-// are accepted so one registered credential set can drive every workflow.
-const HOST_NAMES = ['FTP_HOST'];
-const USER_NAMES = ['FTP_USER', 'FTP_USERNAME', 'FTP2_USERNAME'];
-const PASSWORD_NAMES = ['FTP_PASSWORD', 'FTP2_PASSWORD'];
+// The credential sets that exist across the repository's secrets.
+//
+// The user and the password of a set belong together: mixing a user from one
+// set with the password of another can only fail. Each set is tried in turn,
+// because an account can exist while its home directory does not (Pure-FTPd
+// answers 421 "Home directory not available" in that case).
+const CREDENTIAL_SETS = [
+	{ user: 'FTP_USER', password: 'FTP_PASSWORD' },
+	{ user: 'FTP_USERNAME', password: 'FTP_PASSWORD' },
+	{ user: 'FTP2_USERNAME', password: 'FTP2_PASSWORD' },
+];
 
-const HOST = requireEnv(HOST_NAMES);
-const USER = requireEnv(USER_NAMES);
-const PASSWORD = requireEnv(PASSWORD_NAMES);
+const HOST = requireEnv(['FTP_HOST']);
 
-if (!HOST || !USER || !PASSWORD) {
+/** The credential sets that carry a complete user and password. */
+const usableSets = CREDENTIAL_SETS.filter(
+	(set) =>
+		(process.env[set.user] ?? '').trim() && (process.env[set.password] ?? '').trim()
+);
+
+if (!HOST || usableSets.length === 0) {
+	if (!HOST) {
+		console.error('[deploy-ftp] ERROR: missing required environment variable (accepted: FTP_HOST)');
+	}
+	if (usableSets.length === 0) {
+		console.error(
+			'[deploy-ftp] ERROR: no complete credential set found. Accepted pairs: ' +
+				CREDENTIAL_SETS.map((set) => `${set.user} + ${set.password}`).join(', ')
+		);
+	}
 	console.error('[deploy-ftp] aborting: fix the missing variable(s) listed above.');
 	process.exit(1);
 }
-
-
 
 const PORT = Number.parseInt((process.env.FTP_PORT ?? '21').trim(), 10);
 if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
@@ -194,18 +210,12 @@ const REMOTE_PATH_CANDIDATES = [
 	'bozemetal.com',
 ];
 
-// Which spelling actually carried the value? Only the NAME is printed, never
-// the value, so a misconfigured secret is visible in the log without leaking
-// the credential itself.
-const credentialSources = {
-	host: sourceOf(HOST_NAMES),
-	user: sourceOf(USER_NAMES),
-	password: sourceOf(PASSWORD_NAMES),
-	path: CONFIGURED_REMOTE_PATH ? 'configured' : 'auto-discover',
-};
+// Which sets are available? Only the NAMES are printed, never the values,
+// so a misconfigured secret stays visible in the log without leaking.
 console.log(
-	`[deploy-ftp] credential sources: host=${credentialSources.host} user=${credentialSources.user} ` +
-		`password=${credentialSources.password} path=${credentialSources.path}`
+	`[deploy-ftp] credential sets available: ${usableSets
+		.map((set) => `${set.user}+${set.password}`)
+		.join(', ')} | path=${CONFIGURED_REMOTE_PATH ? 'configured' : 'auto-discover'}`
 );
 
 /* ── step 2: validate build output ──────────────────────────────────────── */
@@ -221,17 +231,17 @@ let client = new Client(60 * 1000);
 
 // The host may present a cPanel shared certificate that does not cover the
 // subdomain (its altnames list only *.serverhostgroup.com). The name can be
-// pinned with FTP_TLS_SERVERNAME; otherwise the handshake falls back to the
-// server's own certificate and says so loudly.
+// pinned with FTP_TLS_SERVERNAME; FTP_TLS_STRICT=true forbids the fallback.
 const TLS_SERVERNAME = (process.env.FTP_TLS_SERVERNAME ?? '').trim() || HOST;
+const TLS_STRICT = (process.env.FTP_TLS_STRICT ?? 'false').trim().toLowerCase() === 'true';
 
 /**
  * Open the control channel and upgrade it to TLS.
  *
- * The first attempt verifies the certificate against the host name. When the
- * server only has a shared certificate the altname check fails; the second
- * attempt accepts the presented certificate, keeps the channel encrypted and
- * prints the reason, so the operator can install a dedicated certificate.
+ * The certificate of a cPanel subdomain account usually does not cover that
+ * name, so the handshake is retried with the certificate the server presents.
+ * The channel stays encrypted and the reason is printed; FTP_TLS_STRICT=true
+ * turns the fallback off.
  * @returns {Promise<void>}
  */
 async function openSecureControlChannel() {
@@ -246,6 +256,9 @@ async function openSecureControlChannel() {
 		const message = err && err.message ? err.message : String(err);
 		const kind = err && err.name ? err.name : 'Error';
 		const code = err && err.code ? err.code : 'n/a';
+		if (TLS_STRICT) {
+			throw err;
+		}
 		console.warn(
 			`[deploy-ftp] TLS handshake failed (${kind}/${code}): ${message}`
 		);
@@ -270,12 +283,49 @@ async function openSecureControlChannel() {
 	}
 }
 
-try {
-	console.log(`[deploy-ftp] connecting to ${HOST}:${PORT} as ${USER} (explicit FTPS)`);
-	await openSecureControlChannel();
+/**
+ * Connect and log in with the first credential set the server accepts.
+ *
+ * @returns {Promise<string>} the name of the credential set that worked
+ */
+async function connectAndLogin() {
+	const failures = [];
 
-	// Credentials are sent only now, over the encrypted control channel.
-	await client.login(USER, PASSWORD);
+	for (const [index, set] of usableSets.entries()) {
+		const user = (process.env[set.user] ?? '').trim();
+		const password = (process.env[set.password] ?? '').trim();
+
+		console.log(
+			`[deploy-ftp] credential set ${index + 1}/${usableSets.length}: ${set.user} (${set.password})`
+		);
+		try {
+			await openSecureControlChannel();
+			await client.login(user, password);
+			console.log(`[deploy-ftp] logged in with ${set.user}`);
+			return set.user;
+		} catch (err) {
+			const message = err && err.message ? err.message : String(err);
+			console.warn(`[deploy-ftp] ${set.user} was rejected: ${message}`);
+			failures.push(`${set.user}: ${message}`);
+			try {
+				client.close();
+			} catch {
+				// The socket is already broken; closing must not mask the error.
+			}
+			client = new Client(60 * 1000);
+		}
+	}
+
+	console.error('[deploy-ftp] every credential set was rejected:');
+	for (const failure of failures) {
+		console.error(`[deploy-ftp]   ${failure}`);
+	}
+	process.exit(1);
+}
+
+try {
+	console.log(`[deploy-ftp] connecting to ${HOST}:${PORT} (explicit FTPS)`);
+	await connectAndLogin();
 
 	// PBSZ 0 / PROT P — protect the DATA channel as well.
 	await client.send('PBSZ 0');

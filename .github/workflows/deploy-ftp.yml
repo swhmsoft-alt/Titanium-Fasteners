@@ -70,21 +70,24 @@ jobs:
       # ── DEPLOY ─────────────────────────────────────────────────────────────
       # Credentials live in repository Secrets — never in this file.
       #
-      # Every value has a fallback chain, because an unset secret must degrade
-      # to the next source instead of aborting the whole run:
-      #   host     -> secret -> repository variable -> the known cPanel host
-      #   user     -> secret FTP_USER -> FTP_USERNAME -> FTP2_USERNAME
-      #   password -> secret FTP_PASSWORD -> FTP2_PASSWORD
-      #   path     -> secret FTP_REMOTE_PATH -> secret FTP_DIR (legacy)
-      #   port     -> secret FTP_PORT -> 21
+      # Every variable keeps its own name on purpose. The deployer pairs a
+      # user with the password of the SAME set, because a user from one set
+      # and a password from another can only fail:
+      #   set 1 -> FTP_USER     + FTP_PASSWORD
+      #   set 2 -> FTP_USERNAME + FTP_PASSWORD
+      #   set 3 -> FTP2_USERNAME+ FTP2_PASSWORD
+      # The sets are tried in order; an account whose home directory does not
+      # exist is rejected by the server and the next set takes over.
+      #
+      # The host falls back to the known cPanel host, the port to 21.
       - name: Deploy to cPanel over FTPS
         id: deploy
         env:
           FTP_HOST: ${{ secrets.FTP_HOST || vars.FTP_HOST || 'fastener.bozemetal.com' }}
-          FTP_USER: ${{ secrets.FTP_USER || secrets.FTP_USERNAME || secrets.FTP2_USERNAME }}
+          FTP_USER: ${{ secrets.FTP_USER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP2_USERNAME: ${{ secrets.FTP2_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD || secrets.FTP2_PASSWORD }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP2_PASSWORD: ${{ secrets.FTP2_PASSWORD }}
           FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
@@ -92,8 +95,10 @@ jobs:
           # Optional: the name the server certificate covers. A cPanel account
           # usually gets a shared certificate (*.serverhostgroup.com), which
           # does not list the subdomain; without this the deployer falls back
-          # to the presented certificate and warns about it.
+          # to the presented certificate and warns about it. Set
+          # FTP_TLS_STRICT=true to forbid that fallback.
           FTP_TLS_SERVERNAME: ${{ secrets.FTP_TLS_SERVERNAME }}
+          FTP_TLS_STRICT: ${{ vars.FTP_TLS_STRICT || 'false' }}
         run: |
           set -o pipefail
           mkdir -p _audit
