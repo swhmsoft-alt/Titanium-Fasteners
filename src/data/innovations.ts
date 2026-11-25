@@ -147,30 +147,30 @@ export const INNOVATIONS = {
 				imageWidth: 300,
 				imageHeight: 169,
 				caption:
-					'ESKA® HA-Schraubengarnituren are lightweight, high-strength aluminum fasteners for preloadable aluminum structures.',
+					'HA-Schraubengarnituren are lightweight, high-strength aluminum fasteners for preloadable aluminum structures.',
 			},
 			{
 				image: '/images/innovations/03-close-up-of-a-jextar-titan-high-strength-titaniu.webp',
-				alt: 'Close-up of a Jextar® Titan high-strength titanium fastener',
+				alt: 'Close-up of a Titan high-strength titanium fastener',
 				imageWidth: 300,
 				imageHeight: 169,
 				caption:
-					'Jextar® Titan high-strength fasteners are designed for extreme temperatures and aggressive environments.',
+					'Titan high-strength fasteners are designed for extreme temperatures and aggressive environments.',
 			},
 			{
 				image: '/images/innovations/04-pem-ghost-fasteners-for-invisible-connections.webp',
-				alt: 'PEM® Ghost fasteners for invisible connections',
+				alt: 'Ghost fasteners for invisible connections',
 				imageWidth: 300,
 				imageHeight: 169,
 				caption:
-					'PEM® Ghost is a fastening connection that is invisible, secure, yet easy to release for authorized personnel.',
+					'Ghost is a fastening connection that is invisible, secure, yet easy to release for authorized personnel.',
 			},
 			{
 				image: '/images/innovations/05-ecosyn-sef-stainless-steel-contact-fitting-faste.webp',
 				alt: 'ecosyn SEF stainless steel contact fitting fastener',
 				imageWidth: 300,
 				imageHeight: 169,
-				caption: 'The ecosyn® SEF inox is a 3-in-1 contact fitting made from stainless steel.',
+				caption: 'The SEF inox is a 3-in-1 contact fitting made from stainless steel.',
 			},
 			{
 				image: '/images/innovations/06-two-pem-castsert-press-in-threaded-inserts-on-wh.webp',
@@ -178,7 +178,7 @@ export const INNOVATIONS = {
 				imageWidth: 300,
 				imageHeight: 169,
 				caption:
-					'PEM® CastSerts are stainless steel press-in threaded inserts for strong threads in soft metals and die-cast alloys.',
+					'CastSerts are stainless steel press-in threaded inserts for strong threads in soft metals and die-cast alloys.',
 			},
 		] as InnovationItem[],
 	},

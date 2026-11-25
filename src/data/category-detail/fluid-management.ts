@@ -37,11 +37,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		{ kind: 'paragraph', text: 'Hydraulic and pneumatic components need to be tested. This is where quick connectors can save you a lot of time and money. They allow you to within seconds, thus optimizing the process and making you more efficient. connect the testing object' },
 		{ kind: 'paragraph', text: 'Our portfolio of quick connectors is ideally suited for pressure testing and function testing (pneumatic, hydraulic, oil-hydraulic, or vacuum).' },
 		{ kind: 'paragraph', text: 'Are you dealing with non-standard requirements? We also support you with custom products for hydraulic and pneumatic applications. In addition, our innovative tools and machines can also be integrated into automated serial production workflows.' },
-		{ kind: 'paragraph', text: 'We supply branded hydraulic and pneumatic products, including the following:' },
-		{ kind: 'list', items: [
-			{ lead: '', text: '' },
-			{ lead: 'WEH®', text: '' },
-		] },
+		{ kind: 'paragraph', text: 'We supply hydraulic and pneumatic products for standard and custom applications.' },
 	],
 	brands: {
 		heading: '',

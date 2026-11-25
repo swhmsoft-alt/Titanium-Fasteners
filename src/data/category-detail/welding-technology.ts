@@ -35,32 +35,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	],
 	brands: {
 		heading: 'Meet Our Welding Technology Brands',
-		tiles: [
-			{
-				href: '/product-solutions/product-categories-and-brands/welding-technology/fasteks-welko/',
-				image: '/images/category-detail-welding-technology/05-overview-of-fasteks-welko-stud-welding-fasteners.webp',
-				alt: 'Overview of FASTEKS Welko stud welding fasteners, including welding studs, welding bushes and welding pins.',
-				label: 'Stud Welding Systems',
-				title: 'FASTEKS® WELKO',
-				description: 'This capacitor discharge stud welding solution offers weld studs, bushes, pins, and other fasteners, as well as stud welding machines.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/welding-technology/mm-welding/',
-				image: '/images/category-detail-welding-technology/06-light-weight-welding-solutions-for-ev-interior.webp',
-				alt: 'Light weight welding solutions for EV interior',
-				label: 'Ultrasonic Welding',
-				title: 'Multi-Material Welding®',
-				description: 'Innovative fastening technique using ultrasonic energy to create connection points in composite and lightweight materials.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/welding-technology/tucker/',
-				image: '/images/category-detail-welding-technology/07-close-up-of-three-different-stanley-tucker-alumi.webp',
-				alt: 'Close up of three different Stanley Tucker aluminium welding studs',
-				label: 'Stud Welding Systems',
-				title: 'TUCKER®',
-				description: 'Economical and efficient drawn arc stud welding system. Suitable for manual, semi-automated, and fully automated applications.',
-			},
-		],
+		tiles: [],
 	},
 	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {

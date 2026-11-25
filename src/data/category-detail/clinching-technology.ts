@@ -54,40 +54,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	],
 	brands: {
 		heading: 'Our Clinching Technology Brands',
-		tiles: [
-			{
-				href: '/product-solutions/product-categories-and-brands/clinching-technology/haeger/',
-				image: '/images/category-detail-clinching-technology/03-a-red-haeger-insertion-press-for-installing-self.webp',
-				alt: 'A red Haeger insertion press for installing self-clinching fasteners, model 824MSPe.',
-				label: 'Insertion Presses',
-				title: 'Haeger®',
-				description: 'Hydraulic-based inserter systems for the installation of self-clinching fasteners. Precise and reliable.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/clinching-technology/micropem/',
-				image: '/images/category-detail-clinching-technology/04-three-ts4-micropem-tackscrew-fasteners-for-sheet.webp',
-				alt: 'Three TS4™ microPEM® TackScrew™ fasteners for sheet-to-sheet fastening on white background',
-				label: 'Self-Clinching Fasteners',
-				title: 'microPEM®',
-				description: 'Micro fasteners by PEM® are ideal for compact electronic applications, such as computers and laptops, tablets, wearables, smartphones and other devices.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/clinching-technology/pem/',
-				image: '/images/category-detail-clinching-technology/05-a-pem-self-clinching-nut-on-a-white-background.webp',
-				alt: 'A PEM® self-clinching nut  on a white background.',
-				label: 'Self-Clinching Fasteners',
-				title: 'PEM®',
-				description: 'The clinching technology pioneer offers all types of self-clinching fasteners such as nuts, studs, or standoffs.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/clinching-technology/pemserter/',
-				image: '/images/category-detail-clinching-technology/06-a-blue-pemserter-4-insertion-machine-for-self-cl.webp',
-				alt: 'A blue PEMSERTER 4 insertion machine for self-clinching fasteners',
-				label: 'Insertion Machines',
-				title: 'PEMSERTER®',
-				description: 'Reliable insertion presses and automatic feeding systems for self-clinching fasteners.',
-			},
-		],
+		tiles: [],
 	},
 	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {

@@ -45,22 +45,6 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		heading: 'Our Clip Fastener Brands',
 		tiles: [
 			{
-				href: '/product-solutions/product-categories-and-brands/clip-fasteners/araymond/',
-				image: '/images/category-detail-clip-fasteners/03-a-metal-araymond-panel-edge-nut-on-white-backgro.webp',
-				alt: 'A metal ARaymond panel edge nut on white background',
-				label: 'Quick Fastening Solutions',
-				title: 'ARaymond®',
-				description: 'Optimize your assembly and increase efficiency with panel clips, snap clips, edge nuts, and snap-on nuts.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/clip-fasteners/fasteks-klipko/',
-				image: '/images/category-detail-clip-fasteners/04-a-metal-fasteks-klipko-earthing-cage-nut-on-whit.webp',
-				alt: 'A metal FASTEKS KLIPKO earthing cage nut on white background',
-				label: 'Cage Nuts',
-				title: 'FASTEKS® KLIPKO',
-				description: 'Easy to install, flexible, and stable fastening elements that reduce weight and compensate for tolerances.',
-			},
-			{
 				href: '/product-solutions/product-categories-and-brands/clip-fasteners/mikalor/',
 				image: '/images/category-detail-clip-fasteners/05-close-up-of-a-metal-hose-clamp-on-a-white-backgr.webp',
 				alt: 'Close-up of a metal hose-clamp on a white background.',

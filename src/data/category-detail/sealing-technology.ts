@@ -41,24 +41,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 	],
 	brands: {
 		heading: 'Our Sealing Technology Brands',
-		tiles: [
-			{
-				href: '/product-solutions/product-categories-and-brands/sealing-technology/koenig-check-valve/',
-				image: '/images/category-detail-sealing-technology/03-two-koenig-check-valves-expansion-restrictors-on.webp',
-				alt: 'Two Koenig Check Valves expansion restrictors on a white background.',
-				label: 'Check Valves',
-				title: 'SFC KOENIG Check Valve®',
-				description: 'A reliable solution to control flow directions in fluid systems. Leakage-free metal-to-metal sealing, even in high vibration environments.',
-			},
-			{
-				href: '/product-solutions/product-categories-and-brands/sealing-technology/koenig-expander/',
-				image: '/images/category-detail-sealing-technology/04-two-sfc-k-nig-sealing-plugs-on-white-background.webp',
-				alt: 'Two SFC König Sealing Plugs on white background',
-				label: 'Sealing Plugs',
-				title: 'KOENIG EXPANDER®',
-				description: 'Seal drill holes in fluid systems with this one-piece, easy-to-install solution. The original KOENIG EXPANDER® plugs.',
-			},
-		],
+		tiles: [],
 	},
 	note: { text: 'The products listed here may not be available in all countries. In case of questions, please', linkLabel: 'contact us', linkHref: '/contact/', linkSuffix: '.' },
 	services: {
