@@ -9,15 +9,16 @@
   - **上线实证**：commit `465fedc` 推 `main` → CI run **#25**「Deploy to cPanel via FTP (audit-gated)」**conclusion=success**（Setup Node / Install / gen:products / Build / 链接闸门 / FTPS 上传 全 success）。真实浏览器打开 `https://fastener.bozemetal.com/404.html` **已渲染出自定义 404 页**（截图确认 Error 404 / Page not found / 三 CTA / 四宫格）。
 - **Next Step**：
   1. ~~服务器侧唯一遗留（需人工）~~ —— **该结论已作废**。上一轮误判为「必须由有 cPanel 权限的人手工配置」，实际不需要主机管理员权限：`ErrorDocument 404 /404.html` 这条映射可由仓库侧随部署下发。
-  2. **本轮修复（已落地，待线上验证）**：`scripts/deploy-ftp-ci.mjs` 新增 `ensureErrorDocument()` —— 上传 `dist/` 之后，在文档根**合并式**写入 `.htaccess`（先 `SIZE` 探存在性 → `downloadTo` 读回原内容 → 仅在缺失映射时追加 `ErrorDocument 404 /404.html`），**绝不覆盖**服务器上已有的规则；已存在同款映射则跳过（幂等）。写入后用浏览器 UA 探活一次，若站点返回 5xx（说明该主机 `AllowOverride` 不接受该指令）则**自动回滚** `.htaccess` 并把部署标记为失败，确保站点不被打挂。同时把 `404.html` 加入部署后服务器校验清单。
-  3. 线上验证（**由用户手动操作，勿自动探测**）：手动访问一个不存在的路径，确认状态码 = 404 且正文为自定义 404 页。
+  2. **本轮修复（已上线，CI run #27 success）**：`scripts/deploy-ftp-ci.mjs` 新增 `ensureErrorDocument()` —— 上传 `dist/` 之后，在文档根**合并式**写入 `.htaccess`（先 `SIZE` 探存在性 → `downloadTo` 读回原内容 → 仅在缺失映射时追加 `ErrorDocument 404 /404.html`），**绝不覆盖**服务器上已有的规则；已存在同款映射则跳过（幂等）。写入后用浏览器 UA 探活一次，若站点返回 5xx（说明该主机 `AllowOverride` 不接受该指令）则**自动回滚** `.htaccess` 并把部署标记为失败，确保站点不被打挂。同时把 `404.html` 加入部署后服务器校验清单。
+     - **run #27 日志实证**：`.htaccess now maps an unknown URL to ErrorDocument 404 /404.html` → `the site answered 200 after the 404 mapping was written`（未触发回滚，说明该主机接受该指令）→ `verified 404.html (110052 bytes)`。
+  3. **线上最终验证（由用户手动操作，勿自动探测）**：用真实浏览器手动访问一个不存在的路径，确认状态码 = 404 且正文为自定义 404 页。**本轮自动化验证未能完成**——站点的 JS 反爬校验（`请稍候…` + 5 秒 reload 循环）拦截了 DevTools 导航与 `fetch`，返回的 200/12KB 正文是校验页而非服务器真实响应；该校验只放行真实用户交互。
 - **Known Pitfalls**：
   - **`documentRoot` 是相对路径，重复 cd 会 550**：部署器解析出的文档根是 `fastener.bozemetal.com`（相对登录根）。上传结束时工作目录**已经**在该目录内，若再 `cd(documentRoot)` 一次，等于找 `fastener.bozemetal.com/fastener.bozemetal.com` → 服务器回 550、整个部署被判失败（CI run #26 就这样挂的，503 个文件其实已传完）。写入 `.htaccess` 前必须先 `pwd()` 比对，只在确实不在根目录时才 cd，且 cd 失败不得中断部署。
   - **`.htaccess` 的合并优先级**：`ErrorDocument` 属 FileInfo 覆盖类别，主机 `AllowOverride` 收窄会让带该指令的 `.htaccess` 直接导致 500 —— 故必须保留「读回 → 合并 → 探活 → 5xx 回滚」这条链路，任何简化都可能让整站不可用。
   - **`docs/redirects-industries.md` §3 的栈判断已过时**：该文档称生产为 OpenResty behind Cloudflare、`.htaccess` 不生效；但用户截图里的默认错误页（巨大灰色 404 + `The resource requested could not be found on this server!`）是 **LiteSpeed/Apache** 的默认 404，正是 cPanel 共享主机的默认栈，且 LiteSpeed **支持** `.htaccess`。该文档结论待复核，勿据此拒绝 `.htaccess` 方案。
   - **站点前置 JS 反爬校验**（`One moment, please...` / `正在验证您的请求，请稍候…`）：`Invoke-WebRequest` 与 DevTools `take_snapshot` 会被拦并误判为「内容缺失」，**必须以真实浏览器渲染结果为准**。
   - **不要对线上站点做自动化批量抓取** —— 服务商对 AI 抓取有限制，会触发拦截/封禁；验证一律用单次人工浏览器访问。
-  - DevTools `evaluate_script` 里 `fetch('/x')` 抛 `Failed to parse URL`（无 base URL），跨域绝对地址 `fetch` 亦失败；改用 `navigate_page` + `take_snapshot`。
+  - DevTools `evaluate_script` 里 `fetch('/x')` 在**当前页面同源**时可用（本轮实测可用，返回 status 与正文片段），可用于查状态码与正文关键词；但站点反爬校验页会把真实响应替换成校验页，**读到的 200/校验页正文不能当作服务器真实行为**。
   - GitHub CLI（`gh`）本机未安装，查 run 状态用 `Invoke-RestMethod https://api.github.com/repos/swhmsoft-alt/Titanium-Fasteners/actions/runs/<id>`。
 
 
