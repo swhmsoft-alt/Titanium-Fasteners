@@ -3,6 +3,23 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## 部署器：0 字节占位符不再打红成功部署（2026-11-25）★ 最新一节，先读这里
+
+- **Current Status**：根治 CI run #29 的失败模式 —— 「一个空占位符能打红一次成功的部署」。**改动文件仅 2 个**：`scripts/deploy-ftp-ci.mjs`（部署器）+ `scripts/lib/empty-placeholders.mjs`（新建，占位符策略模块）。**未改动**：workflow（`deploy-ftp.yml` / `deploy.yml` / `probe.yml` 一律未动）、`src/**`、布局 / 全局 CSS / 路由 / 产品数据 / `public/**`。
+  - **触发源（已实测确认，非推测）**：仓库里恰好 **4 个 0 字节文件** —— `public/download/cad/.gitkeep`、`public/download/spec/.gitkeep` 及其在 `dist/` 中的副本。`public/**` 被原样复制进 `dist/`，所以占位符会一路走到上传环节；该主机在存 0 字节文件时会提前关数据连接，旧逻辑把它记进 `failed[]` → `result.failed.length > 0` → `process.exitCode = 1` → **站点完全正常但 CI 判红**。
+  - **修法（两道防线，双保险）**：① **上传前跳过**——`uploadTree` 遍历到 0 字节文件时 `classifyFile()` 判定为 `skip-empty`，计入 `skipped[]` 并 `continue`，**根本不去 STOR**（目录 `MKD` 照常建）；② **失败降级**——万一空文件仍被拒（策略被绕过 / 未来新增路径），`recordFailure()` 检查 `isZeroByteFile(localPath)`，命中则计入 `warned[]` **不进 `failed[]`**。
+  - **退出码语义未被削弱**：`process.exitCode = 1` **只**由 `result.failed.length > 0` 触发；`skipped` / `warned` 只打 `console.warn`。真实文件（index.html / 404.html / 图片）传失败**仍然**判失败。
+  - **策略模块 `scripts/lib/empty-placeholders.mjs`**：`isZeroByteFile(path)`（`statSync().size === 0`；路径不存在或读不到 → 返回 `false`，即**不**当成空文件，仍去上传并暴露真实错误）+ `classifyFile(path)` → `'skip-empty' | 'upload'`。
+- **验收（18 项静态 + 9 项运行时，全 PASS）**：① 静态：两文件 `node --check` 通过；策略模块对「空文件 / 真实文件 / 不存在路径」三种输入判断正确；`dist/` 内 2 个 0 字节文件全部被判 `skip-empty`；部署器确已 import 策略、确有跳过分支、失败确已走 `recordFailure`；**`exit code 1` 的判定块内不含 `skipped`/`warned`**（即两者不会误触发失败）；`failed.push(` 恰好 2 处（记录器 + 嵌套合并）。② **运行时（关键）**：把部署器里**真实的 `uploadTree` 源码**用 brace-match 抽出来，在 `new Function` 沙箱里配 stub client 实跑三种场景 —— **A** 空占位符被跳过、只有 2 个真实文件被传、`failed[]` 为空；**B** 强制 `classifyFile` 返回 `upload` 让空文件真的被拒 → 落 `warned[]`、**不进 `failed[]`**、2 个真实文件照常传完；**C** 真实文件被拒 → **仍落 `failed[]`**（部署照旧判红）、且占位符不混入真实失败。
+- **Next Step**：**本轮只做仓库侧修复，未推送**。若要生效需 commit + push 到 `main`（触发 `deploy-ftp.yml`）；**推送前请确认** —— 这是上一轮明确划在批准范围外的改动，且 §「共享主机写入护栏」那条铁律仍有效：**「能跑的部署链每改一次就多一次改坏的机会」**，改的是部署器本身，务必在推完后盯 CI run 的结论 + 部署日志里的 `WARNING: N zero-byte placeholder file(s) were skipped` 行，确认 exit 0。
+- **Known Pitfalls**：
+  - **`.gitkeep` 只能是 0 字节** —— 不能往里写占位内容绕过（那会让它变成真实文件被上传，且污染线上目录）。要真正让站点带上这些目录，靠 `MKD` 建目录即可，文件本身不必存在。
+  - **`public/**` 会被原样复制进 `dist/`** —— 任何 `public/` 下的 0 字节文件都会进入上传清单；新增目录时用 `.gitkeep` 会被这条链路自动跳过（已处理），但**其它形态的空文件**（如 0 字节 `.json`）同样适用该策略。
+  - **改 `scripts/deploy-ftp-ci.mjs` 要用行级手术**（该文件 >1200 行，大块 `old_text` 替换极易错位）：用 `git checkout -- <file>` 先复位再按行 splice，别直接编辑器大段替换。
+  - **本机终端输出捕获不可靠**（PSReadLine 崩溃 / shell 连接丢失）：探针脚本必须**自己 `writeFileSync` 落盘**（用 `utf8`，不是 PowerShell 的 `>`，那个写 UTF-16），再 `read_files` 读回。`node --check` 之类命令的 stdout 常常只能从落盘文件看。
+  - **`join` 不从 `node:fs` 导出** —— 必须 `import { join } from 'node:path'`，否则 ESM 直接报 `does not provide an export named 'join'`。
+  - **`_probe*.mjs` / `_verify*.mjs` / `_fixture/` 都是临时探针** —— 收据前必须删净；`.gitignore` 不覆盖仓库根目录的 `_` 前缀文件，会被 `git status` 看见。
+
 ## 404 本地验收闸门（2026-11-25）★ 最新一节，先读这里
 
 - **Current Status**：新增 `scripts/check-404.mjs` + npm script `check:404`，并在 CI（`.github/workflows/deploy-ftp.yml`）链接闸门之后追加「Gate — 404 page acceptance」一步。**未改动** `src/pages/404.astro`、`global.css`、BaseLayout / Header / Footer、任何路由表；无新依赖。

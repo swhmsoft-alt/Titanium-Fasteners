@@ -54,6 +54,7 @@ import { Readable } from 'node:stream';
 import net from 'node:net';
 import tls from 'node:tls';
 import { Client } from 'basic-ftp';
+import { classifyFile, isZeroByteFile } from './lib/empty-placeholders.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const DIST = join(ROOT, 'dist');
@@ -1019,6 +1020,24 @@ try {
 	async function uploadTree(localDir, remoteDir) {
 		let sent = 0;
 		const failed = [];
+		const skipped = [];
+		const warned = [];
+
+		/**
+		 * Record a transfer failure.
+		 *
+		 * A zero-byte placeholder is reported as a WARNING: the site content
+		 * is complete, so a refused empty file must not turn a finished
+		 * deployment red. Every other failure stays a failure.
+		 */
+		const recordFailure = (remotePath, err, localPath) => {
+			const message = err && err.message ? err.message : err;
+			if (isZeroByteFile(localPath)) {
+				warned.push(`${remotePath} (${message})`);
+				return;
+			}
+			failed.push(`${remotePath} (${message})`);
+		};
 		let sinceReconnect = 0;
 		let lastReconnect = Date.now();
 
@@ -1036,7 +1055,18 @@ try {
 				const nested = await uploadTree(localPath, remotePath);
 				sent += nested.sent;
 				failed.push(...nested.failed);
+				skipped.push(...nested.skipped);
+				warned.push(...nested.warned);
 				sinceReconnect += nested.sent;
+				continue;
+			}
+
+			// A zero-byte placeholder carries no content, and this host closes
+			// the data connection while storing one — which used to fail an
+			// otherwise complete deployment. The directory above is still
+			// created; only the empty file is left out.
+			if (classifyFile(localPath) === 'skip-empty') {
+				skipped.push(remotePath);
 				continue;
 			}
 
@@ -1081,9 +1111,7 @@ try {
 						break;
 					} catch (retryErr) {
 						if (attempt === 3) {
-							failed.push(
-								`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
-							);
+							recordFailure(remotePath, retryErr, localPath);
 							break;
 						}
 						await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
@@ -1102,19 +1130,30 @@ try {
 						sent += 1;
 						sinceReconnect += 1;
 					} catch (retryErr) {
-						failed.push(
-							`${remotePath} (${retryErr && retryErr.message ? retryErr.message : retryErr})`
-						);
+						recordFailure(remotePath, retryErr, localPath);
 					}
 				}
 			}
 		}
 
-		return { sent, failed };
+		return { sent, failed, skipped, warned };
 	}
 
 	const result = await uploadTree(DIST, '');
 	console.log(`[deploy-ftp] ${result.sent} file(s) transferred`);
+
+	if (result.skipped.length > 0) {
+		console.warn(
+			`[deploy-ftp] WARNING: ${result.skipped.length} zero-byte placeholder file(s) were skipped: ` +
+				result.skipped.slice(0, 20).join(', ')
+		);
+	}
+	if (result.warned.length > 0) {
+		console.warn(
+			`[deploy-ftp] WARNING: ${result.warned.length} empty placeholder file(s) could not be stored: ` +
+				result.warned.slice(0, 20).join(', ')
+		);
+	}
 
 	// The 404 mapping lives in the document root, next to the uploaded site.
 	// It is written AFTER the upload so that the upload — which replaces
