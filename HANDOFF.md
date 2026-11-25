@@ -3,6 +3,24 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## `/product-solutions/innovations/` 主题改写为「钛材料核心」创新页（2026-11-25）★ 最新一节，先读这里
+
+- **Current Status**：把 innovations 页从「参考站通用创新秀」改写为**以钛材料为核心的紧固件技术创新**页。**改动文件 4 个**：`src/data/innovations.ts`（文案层全量重写）、`src/components/sections/innovations/GradeTable.astro`（新建）、`src/components/sections/innovations/PageHero.astro`（1 行 `object-cover`）、`src/components/sections/innovations/InnovationsCarousel.astro`（1 行 `object-cover`）、`src/pages/product-solutions/innovations.astro`（引入 GradeTable）。**未改动**：全局 CSS、BaseLayout、SiteHeader、SiteFooter、`src/config/site.ts` 导航、任何路由结构、产品数据 CSV。
+  - **改写原因**：原页面是参考站文案残留 —— "190 years of experience"、"brand partners / start-ups / pilot projects"、以及 5 张以**铝**（ESKA）、**不锈钢**（SEF inox）、**PEM Ghost / CastSert 第三方品牌**为主体的"创新品"，与本站"钛紧固件原厂"定位直接冲突，且违反 LAYOUT_RULES「零虚构 / 无第三方品牌残留」。
+  - **新叙事主线**：材料 → 牌号 → 工艺路线 → 表面（防咬合）→ 验证 → 批次文件。Hero 标题 `Titanium Fastening Innovation Starts With the Material`；轮播改为 `Five Decisions That Define a Titanium Fastener`（Grade 2 / Grade 5 / Grade 23 ELI / 表面工程 / PMI-XRF 五张真实图）；协作段 `Your Part, Our Engineering`；能力卡 `What We Do With Your Titanium Fastener`（Grade Selection / Route per Geometry / Anti-Galling Finishes / Material Verification / Lot Traceability / Secure Partnership）；CTA `Send Us the Joint and We Will Answer With a Route`。
+  - **新增 GradeTable 段**：牌号矩阵按 LAYOUT_RULES「牌号矩阵必须用表格/多列紧凑网格，禁止用大图」实现为**全宽紧凑表格**，数据源 `src/data/product-solutions/routes.ts` 的 `GRADES`（由生成产物 `data/products/materials.csv` 派生，公开名义值），牌号链接走 `materialHref()`（Grade 2/5 → 各自落地页，Grade 9/23 → 牌号矩阵页 / `?material=ti-gr23` 深链）。
+  - **数据口径**：所有力学/温度数值均来自 `src/data/products/materials.ts`（Grade 2 = 275/345 MPa/300 °C；Grade 5 = 828/895 MPa/315 °C；Grade 23 = 790/860 MPa）；表面处理口径与 `data/products/finishes.ts` 一致（ASTM F86 / AMS 2700 钝化、AMS 2488 Type II/III 阳极氧化、PVD、DLC）。**未新增任何扭矩系数、摩擦系数、咬死实测值或交期承诺**。
+  - **图片**：全部换成 `public/images/public-images/` 下真实存在的钛件实拍图（`product-solutions-hero-titanium-fastener-production`、`industries-corrosion-marine-grade2-`、`industries-aerospace-grade5-`、`industries-cleanroom-grade23-`、`product-solutions-surface-engineering-anodised-`、`services-quality-titanium-inspection`、`product-solutions-oem-custom-titanium-part-drawn`），并给 Hero 与轮播 `<img>` 补 `object-cover`，避免 4:3 / 3:2 原图被 5:4、16:9 容器拉伸。
+- **验收**：build `Complete!` 0 ERROR；`dist/product-solutions/innovations/index.html` 内新标题 9/9 命中、新图路径 7/7 命中且 dist 内文件均存在；旧词 `190 years of experience` / `ESKA` / `CastSert` / `Ghost` / `SEF inox` / `jextar` / `inventor` / `pilot project` / `Bossard` / `SPAX` 全部归零；表格内 4 个牌号链接落点文件（`/products/grade-2-fasteners/`、`/products/grade-5-fasteners/`、`/products/?material=ti-gr23`、`/knowledge-hub/materials/titanium-grade-supply-matrix/`）逐条核对均存在。
+- **2026-11-25 追加（同日第二轮）**：**按用户要求拿掉 Hero 右侧的询盘表单卡片**（那张 Country/Region + First Name/Last Name/E-Mail/Company + 提交 的卡）。改动：`src/data/innovations.ts`（删除 `form` 数据块与 `ContactForm` 接口，hero 增加 `primaryCta`/`secondaryCta`）、`src/components/sections/innovations/PageHero.astro`（删除整块表单 DOM，改为 2 个胶囊 CTA：`Request a Quote → /contact/`、`See Grade 2 Fasteners → /products/grade-2-fasteners/`）、`src/components/sections/innovations/NextStepCta.astro`（**重写**：原来的 `<dialog>` 抽屉**没有任何 open handler（无 showModal/无脚本），按钮点了没反应**；改为「左文右图」4:3 单图 + `Request a Quote → /contact/` 按钮）、`src/pages/product-solutions/innovations.astro`（去掉 `form={PAGE.form}`）。
+  - **为什么底部 CTA 必须一起改**：表单删掉后页面就完全没转化入口了；原 NextStepCta 按钮是死的（`dialog` 永远打不开），所以顺手换成真链接。
+  - **验收**：build Complete! 0 ERROR；dist 内 `<form` = 0、`Country or Region` = 0；两处 `Request a Quote` 均指向 `/contact/`（真实路由，`src/pages/contact.astro` 存在）；`See Grade 2 Fasteners` → `/products/grade-2-fasteners/` 存在。浏览器实测（1440 与 390）：横向溢出 0，Hero 图 643×514（5:4 未变形），底部 CTA 图 643×482 / 390 下 310×233（4:3），两个 CTA 按钮均 190×50。
+- **Next Step**：本轮已完工待部署；若需进一步提升，可考虑 ① 把 `src/config/site.ts` 导航里的条目名 `Innovations` 改为更贴题的 `Material Innovation`（**属导航改动，需用户明确指令**）；② 清理 `public/images/innovations/01~06`（旧参考站配图，现已无引用；`14~19` 图标仍被 services / special-parts 引用）。
+- **Known Pitfalls**：
+  - **`npm run build` 的 stdout 在本机终端捕获不到** —— 必须 `npm run build > build.log 2>&1` 再用 `Select-String -Path build.log -Pattern 'ERROR|Complete!'` 过滤，且 `>` 在 PowerShell 下写 UTF-16，`Select-String` 仍可读，但**交付前必须删掉 build.log**。
+  - **`npm run gen:products` 本轮不需要跑** —— 未改 `data/products/*.csv`，`src/data/products/**` 是生成产物，本次只读不写。
+  - **页面级视觉调整必须落在 `src/components/sections/**` 的局部组件** —— 全局 CSS / Layout / Header / Footer 一律未动。
+
 ## 部署器：0 字节占位符不再打红成功部署（2026-11-25）★ 最新一节，先读这里
 
 - **Current Status**：根治 CI run #29 的失败模式 —— 「一个空占位符能打红一次成功的部署」。**改动文件仅 2 个**：`scripts/deploy-ftp-ci.mjs`（部署器）+ `scripts/lib/empty-placeholders.mjs`（新建，占位符策略模块）。**未改动**：workflow（`deploy-ftp.yml` / `deploy.yml` / `probe.yml` 一律未动）、`src/**`、布局 / 全局 CSS / 路由 / 产品数据 / `public/**`。

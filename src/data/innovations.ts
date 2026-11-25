@@ -1,29 +1,24 @@
 /**
- * Innovations — 1:1 data for `/product-solutions/innovations/`.
+ * Innovations — data for `/product-solutions/innovations/`.
  *
- * MEASURED on the reference (1440×1000, 2026-11-10):
- *   hero      figure x=745 y=267 643×514 (5:4) | contact card x=920 w=362
- *   carousel  5 cards, 316 wide, h=305/305/276/276/305, y=1277
- *   article   y=2187 h=512 H2 44px "What We Offer You"
- *             grid y=2260, 3 cols × 428.33, row pitch 220, card h=210
- *   cta       "Contact Us" button y=2892 x=70 140×49
+ * THEME (2026-11-25): the page is no longer a generic "innovation" showcase.
+ * It is the titanium-material story: grade selection → forming/machining route
+ * → surface (anti-galling) engineering → verification → lot documentation.
  *
- * Every string, link and image below was read off the reference DOM.
+ * CONTENT RULES
+ * ------------
+ * 1. Every technical value comes from `data/products/**` (materials, finishes,
+ *    standards) or from existing site facts (M1.6–M36, EN 10204 3.1, PMI/XRF).
+ * 2. No invented test data, no friction/torque coefficients, no company history
+ *    claims, no third-party brand names.
+ * 3. Every image path must exist under `public/images/`.
+ * 4. Internal links may only point at real routes (see @data/product-solutions
+ *    PATHS / @data/grade-paths).
  */
 
 export interface BreadcrumbItem {
 	label: string;
 	href?: string;
-}
-
-export interface ContactForm {
-	title: string;
-	countries: string[];
-	fields: string[];
-	messageLabel: string;
-	consent: string;
-	consentHref: string;
-	submit: string;
 }
 
 export interface InnovationItem {
@@ -43,9 +38,9 @@ export interface OfferItem {
 
 export const INNOVATIONS = {
 	seo: {
-		title: 'Innovations',
+		title: 'Titanium Fastening Innovation',
 		description:
-			'Explore new and innovative fastening technologies — from high-strength aluminum and titanium fasteners to invisible fastening connections. Or bring your own idea and let us make it a success.',
+			'Titanium fastening innovation at grade level: CP Grade 2, Grade 5 Ti-6Al-4V, Grade 9 and Grade 23 ELI, forming and CNC routes per geometry, anti-galling surface finishes, PMI/XRF verification and EN 10204 3.1 lot documentation.',
 	},
 
 	hero: {
@@ -58,193 +53,138 @@ export const INNOVATIONS = {
 			{ label: 'Innovations' },
 		] as BreadcrumbItem[],
 		eyebrow: 'Product Solutions',
-		heading: 'Innovative Fasteners: The Future of Fastening Technology',
-		lead: 'Explore new and innovative fastening technologies. Or are you an inventor yourself? Contact us to make your idea come to life!',
-		image: '/images/innovations/01-a-futuristic-drone-soaring-above-a-cityscape-sym.webp',
+		heading: 'Titanium Fastening Innovation Starts With the Material',
+		lead: 'Grade, forming route, surface and documentation are decided together, because on titanium each one changes how the joint behaves.',
+		image: '/images/public-images/product-solutions-hero-titanium-fastener-production.webp',
 		imageAlt:
-			'A futuristic drone soaring above a cityscape, symbolizing the advancement of drone delivery technology.',
-		imageWidth: 634,
-		imageHeight: 507,
+			'Titanium fasteners in production, formed and machined from titanium bar stock.',
+		imageWidth: 1600,
+		imageHeight: 1200,
+		primaryCta: { label: 'Request a Quote', href: '/contact/' },
+		secondaryCta: { label: 'See Grade 2 Fasteners', href: '/products/grade-2-fasteners/' },
 	},
 
-	form: {
-		title: 'Contact Us',
-		countries: [
-			'Select',
-			'Other country',
-			'Albania',
-			'Argentina',
-			'Australia',
-			'Austria',
-			'Belarus',
-			'Belgium',
-			'Bosnia and Herzegovina',
-			'Brazil',
-			'Bulgaria',
-			'Canada',
-			'China',
-			'Croatia',
-			'Czech Republic',
-			'Denmark',
-			'Egypt',
-			'Estonia',
-			'Finland',
-			'France',
-			'Germany',
-			'Greece',
-			'Hungary',
-			'Iceland',
-			'India',
-			'Ireland',
-			'Israel',
-			'Italy',
-			'Latvia',
-			'Lithuania',
-			'Malaysia',
-			'Mexico',
-			'Moldova',
-			'Netherlands',
-			'North Macedonia',
-			'Norway',
-			'Poland',
-			'Portugal',
-			'Republic of Korea',
-			'Romania',
-			'Serbia',
-			'Singapore',
-			'Slovakia',
-			'Slovenia',
-			'South Africa',
-			'Spain',
-			'Sweden',
-			'Switzerland',
-			'Taiwan',
-			'Thailand',
-			'Turkey',
-			'Ukraine',
-			'United Kingdom',
-			'United States',
-			'Vietnam',
-		],
-		fields: ['First Name', 'Last Name', 'E-Mail', 'Company'],
-		messageLabel: 'Your Message',
-		consent: 'By submitting this form I consent to the',
-		consentHref: '/legal/privacy-policy/',
-		submit: 'Submit',
-	} as ContactForm,
-
 	intro: [
-		'We continuously develop innovative fasteners and new processing techniques. Our focus is always on functionality and safety over the product lifetime, maximum productivity in production, and sustainability across the entire value chain.',
-		'For these innovative fasteners, our R&D Fastening Technology works closely with established brand partners, start-ups, and our internal engineering departments around the world. The functionality and manufacturability of these innovations have already been verified – they are now available for validation as part of joint pilot projects.',
+		'A titanium fastener is not a steel fastener with a different colour. The grade sets the strength and the temperature ceiling, the forming route sets the thread and the fatigue behaviour, and the surface decides whether two titanium threads bond to each other under load. We work on all four together, because changing one without the others is how a joint fails in service.',
+		'The material arrives as certified titanium bar or billet, and it leaves as a finished, labelled part with its own production record. Everything we change — cold heading, CNC machining, anodising, passivation, PVD or DLC — is agreed against your drawing and your service condition before the lot is scheduled.',
 	],
 
+	grades: {
+		heading: 'The Titanium Grades We Form, Machine and Supply',
+		lead: 'Published values for the grades we work with. The grade is agreed against the service condition before the material is drawn.',
+	},
+
 	innovations: {
-		heading: 'Our Fastening Innovations',
+		heading: 'Five Decisions That Define a Titanium Fastener',
 		items: [
 			{
-				image: '/images/innovations/02-a-high-strength-eska-aluminum-fastener-on-a-whit.webp',
-				alt: 'A high-strength ESKA aluminum fastener on a white background.',
-				imageWidth: 300,
-				imageHeight: 169,
+				image: '/images/public-images/industries-corrosion-marine-grade2-titanium-fasteners.webp',
+				alt: 'Grade 2 commercially pure titanium fasteners for corrosive and marine environments.',
+				imageWidth: 1600,
+				imageHeight: 1200,
 				caption:
-					'HA-Schraubengarnituren are lightweight, high-strength aluminum fasteners for preloadable aluminum structures.',
+					'Grade 2 commercially pure titanium — 275 MPa proof, 345 MPa tensile, usable to 300 °C. Chosen where corrosion resistance decides the grade, not strength.',
 			},
 			{
-				image: '/images/innovations/03-close-up-of-a-jextar-titan-high-strength-titaniu.webp',
-				alt: 'Close-up of a Titan high-strength titanium fastener',
-				imageWidth: 300,
-				imageHeight: 169,
+				image: '/images/public-images/industries-aerospace-grade5-titanium-fasteners.webp',
+				alt: 'Grade 5 Ti-6Al-4V titanium fasteners for aerospace structures.',
+				imageWidth: 1600,
+				imageHeight: 1200,
 				caption:
-					'Titan high-strength fasteners are designed for extreme temperatures and aggressive environments.',
+					'Grade 5 Ti-6Al-4V — 828 MPa proof strength, 895 MPa tensile, 4.43 g/cm³. AMS 4928 bar stock where aerospace traceability is required.',
 			},
 			{
-				image: '/images/innovations/04-pem-ghost-fasteners-for-invisible-connections.webp',
-				alt: 'Ghost fasteners for invisible connections',
-				imageWidth: 300,
-				imageHeight: 169,
+				image: '/images/public-images/industries-cleanroom-grade23-titanium-parts.webp',
+				alt: 'Grade 23 ELI titanium parts for cleanroom and medical use.',
+				imageWidth: 1600,
+				imageHeight: 1200,
 				caption:
-					'Ghost is a fastening connection that is invisible, secure, yet easy to release for authorized personnel.',
+					'Grade 23 ELI — 790 MPa proof strength with the extra ductility of the ELI chemistry, specified for cleanroom and medical implant tooling.',
 			},
 			{
-				image: '/images/innovations/05-ecosyn-sef-stainless-steel-contact-fitting-faste.webp',
-				alt: 'SEF stainless steel contact fitting fastener',
-				imageWidth: 300,
-				imageHeight: 169,
-				caption: 'The SEF inox is a 3-in-1 contact fitting made from stainless steel.',
+				image: '/images/public-images/product-solutions-surface-engineering-anodised-titanium-fasteners.webp',
+				alt: 'Anodised titanium fasteners with a black anodic oxide finish.',
+				imageWidth: 1600,
+				imageHeight: 1200,
+				caption:
+					'AMS 2488 Type II and III anodising, AMS 2700 / ASTM F86 passivation, PVD and DLC. On titanium the finish is specified for galling, wear and identification — not for rust protection.',
 			},
 			{
-				image: '/images/innovations/06-two-pem-castsert-press-in-threaded-inserts-on-wh.webp',
-				alt: 'Two PEM CastSert press-in threaded inserts on white background',
-				imageWidth: 300,
-				imageHeight: 169,
+				image: '/images/public-images/services-quality-titanium-inspection.webp',
+				alt: 'Inspection of titanium fasteners on the shop floor.',
+				imageWidth: 1600,
+				imageHeight: 1200,
 				caption:
-					'CastSerts are stainless steel press-in threaded inserts for strong threads in soft metals and die-cast alloys.',
+					'PMI and XRF verification on incoming titanium, with inspection results written up against the heat number and released as an EN 10204 3.1 certificate per lot.',
 			},
 		] as InnovationItem[],
 	},
 
 	yourInnovation: {
-		heading: 'Your Innovation in Fastening Technology',
+		heading: 'Your Part, Our Engineering',
 		paragraphs: [
-			'Do you have an innovative fastening idea? We’ve got the know-how to make it a success! Whether you are in the early stages with just an idea, in the process of refining your prototype, or you’re ready to go to market with your invention: we are your partner of choice to make it happen.',
-			'Why? We strive to find solutions to global fastening challenges every day and we know how to navigate the innovation process. In our years of experience, we have successfully implemented innovations in-house and with brand partners and external institutions. We know the nuts and bolts of the business.',
-			'Together, we can make your idea come to life.',
+			'Bring us a drawing, a joint condition or a problem you could not solve with a catalogue fastener. We start from the material: commercially pure Grade 2 for corrosive service, Grade 5 for strength with low weight, Grade 9 where the joint runs above 300 °C, Grade 23 ELI for cleanroom and medical work.',
+			'From there the route is chosen per geometry. Where the shape allows it, the part is cold headed and the thread rolled from certified wire. Where the tolerance, the thread form or the material does not allow cold forming, it is machined from ASTM B348 bar stock on CNC, and quoted as a machined part rather than as a catalogue item.',
+			'In both cases the lot leaves with the same documentation: the certificate, the inspection record and the packaging that keeps grades and lots apart in your warehouse.',
 		],
 	},
 
 	offers: {
-		heading: 'What We Offer You',
+		heading: 'What We Do With Your Titanium Fastener',
 		items: [
 			{
 				icon: '/images/innovations/14-engineering-icon.svg',
 				alt: 'Engineering icon',
-				title: 'Expert Know-How',
+				title: 'Grade Selection',
 				description:
-					'Benefit from 190 years of experience and our expertise in materials, technologies, coatings, and more.',
+					'Grade 2, Grade 5, Grade 9 and Grade 23 ELI, selected against the service condition and quoted with the published values for that grade.',
 			},
 			{
 				icon: '/images/innovations/15-design-icon.svg',
 				alt: 'Design icon',
-				title: 'Development Support',
+				title: 'Route per Geometry',
 				description:
-					'Our online calculators, CAD portal, and services for prototypes and small series assist you in development.',
+					'Cold heading with rolled threads where the shape allows it, CNC machining where the tolerance or the material does not.',
 			},
 			{
 				icon: '/images/innovations/16-inspection-of-a-screw.svg',
 				alt: 'Inspection of a screw',
-				title: 'Concept Testing',
+				title: 'Anti-Galling Finishes',
 				description:
-					'With our technical test labs, you can make sure your products meet necessary requirements.',
+					'AMS 2488 anodising, AMS 2700 / ASTM F86 passivation, PVD or DLC, chosen for the joint rather than for appearance.',
 			},
 			{
 				icon: '/images/innovations/17-check-icon.svg',
 				alt: 'Check Icon',
-				title: 'Market Check',
+				title: 'Material Verification',
 				description:
-					'You’ve got an idea but are unsure about its market potential? We can help you assess it.',
+					'PMI and XRF on incoming titanium, so the material behind the certificate is the material in the part.',
 			},
 			{
 				icon: '/images/innovations/18-global-logistic-icon.svg',
 				alt: 'Global logistic icon',
-				title: 'Global Network',
-				description: 'Benefit from our strong global sourcing and distribution network.',
+				title: 'Lot Traceability',
+				description:
+					'One production record per lot, carried through forming, heat treatment, machining and finishing under the heat number.',
 			},
 			{
 				icon: '/images/innovations/19-partnership-icon.svg',
 				alt: 'Partnership icon',
 				title: 'Secure Partnership',
 				description:
-					'Your idea is safe with us. We value transparency as well as fair and reliable partnerships',
+					'Drawings are handled under NDA where the project requires it, and the same documentation follows every repeat order.',
 			},
 		] as OfferItem[],
 	},
 
 	nextStep: {
-		heading: 'Ready to go the Next Step with Your Innovation?',
-		buttonLabel: 'Contact Us',
-		dialogImage: '/images/innovations/20-two-people-discussing-design-of-a-fastener.webp',
-		dialogImageAlt: 'Two people discussing design of a fastener.',
-		dialogImageWidth: 740,
-		dialogImageHeight: 317,
+		heading: 'Send Us the Joint and We Will Answer With a Route',
+		lead: 'Send the drawing, the grade you need and the service condition. We reply with the forming or machining route, the finish and the documentation the lot will carry.',
+		buttonLabel: 'Request a Quote',
+		buttonHref: '/contact/',
+		image: '/images/public-images/product-solutions-oem-custom-titanium-part-drawn.webp',
+		imageAlt: 'A titanium part machined to a customer drawing.',
+		imageWidth: 1500,
+		imageHeight: 1000,
 	},
 };

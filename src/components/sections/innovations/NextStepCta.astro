@@ -1,30 +1,33 @@
 ---
 /**
  * NextStepCta — closing call to action of
- * `/product-solutions/innovations/`: heading + "Contact Us" button
- * and its side drawer dialog.
+ * `/product-solutions/innovations/`: heading + lead + one photo + button.
  *
- * MEASURED on the reference (1440×1000, 2026-11-10):
- *   h2      y=2756  44px #004975, 2 lines (w=782)
- *   button  y=2892 x=70 140×49, radius 28, bg #007ac3
- *   dialog  right drawer 728px wide, image 740×317 (21:9)
+ * 2026-11-25: the hero contact card was removed from this page, so this
+ * closing section is now the page's conversion point. The button links to
+ * the real `/contact/` route; the previous `<dialog>` drawer carried no
+ * open handler and has been replaced by this band.
  */
 interface Props {
 	heading: string;
+	lead: string;
 	buttonLabel: string;
-	dialogImage: string;
-	dialogImageAlt: string;
-	dialogImageWidth: number;
-	dialogImageHeight: number;
+	buttonHref: string;
+	image: string;
+	imageAlt: string;
+	imageWidth: number;
+	imageHeight: number;
 }
 
 const {
 	heading,
+	lead,
 	buttonLabel,
-	dialogImage,
-	dialogImageAlt,
-	dialogImageWidth,
-	dialogImageHeight,
+	buttonHref,
+	image,
+	imageAlt,
+	imageWidth,
+	imageHeight,
 } = Astro.props;
 ---
 
@@ -33,52 +36,27 @@ const {
 </div>
 
 <section class="container-fluid">
-	<div class="flex gap-8 py-8">
-		<button
-			class="text-button appearance-none cursor-pointer transition-[box-shadow,border-color,background-color,color,text-decoration-color] ease-out duration-100 font-bold rounded-[28px] inline-block text-center px-24 py-16 bg-blue text-white hover:bg-blue-dark3"
-		>
-			{buttonLabel}
-		</button>
-		<div>
-			<dialog
-				class="max-w-full backdrop:bg-blue-dark backdrop:bg-opacity-80 overflow-visible my-48 lg:my-0 max-h-[calc(100%-96px)] lg:max-h-full bottom-0 lg:bottom-0 left-0 right-0 bg-transparent h-[calc(100vh-96px)] lg:h-full lg:w-[728px]"
+	<div class="flex flex-col items-center gap-24 wd:flex-row wd:items-center wd:gap-48">
+		<div class="wd:w-1/2 wd:shrink-0">
+			<p class="text-p pb-24 text-gray max-w-rich-text lg:pb-32">{lead}</p>
+			<a
+				href={buttonHref}
+				class="text-button inline-block appearance-none cursor-pointer rounded-[28px] bg-blue px-24 py-16 text-center font-bold text-white transition-[background-color,color] duration-100 ease-out hover:bg-blue-dark3"
 			>
-				<span class="sr-only" id="overlay-label">Overlay</span>
-				<button
-					class="group absolute right-16 top-[-20px] z-10 flex h-40 w-40 items-center justify-center rounded-full border-2 border-blue-dark3 bg-white hover:border-[3px] hover:border-blue lg:fixed lg:right-[708px] lg:top-16"
-				>
-					<span class="sr-only">Close</span>
-					<svg
-						class="h-[16px] w-[16px] inline-block group-hover:text-blue text-blue-dark3 stroke-[1.75]"
-						aria-hidden="true"
-					>
-						<use href="/images/sprite.svg#close"></use>
-					</svg>
-				</button>
-				<div
-					class="scrollbar-hidden absolute bottom-0 left-0 right-0 top-0 h-full w-auto overflow-auto lg:bottom-0 lg:left-auto lg:right-0 lg:top-0 lg:mt-0 lg:w-[728px]"
-				>
-					<div class="bg-white lg:min-h-full">
-						<figure class="w-full">
-							<img
-								class="aspect-21/9 w-full object-cover"
-								src={dialogImage}
-								alt={dialogImageAlt}
-								width={dialogImageWidth}
-								height={dialogImageHeight}
-								loading="lazy"
-								style="aspect-ratio:21 / 9"
-							/>
-						</figure>
-						<div
-							class="p-16 pb-40 sm:px-24 md:px-48 lg:px-64 lg:pb-48 lg:pt-24"
-						>
-							<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
-							<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
-						</div>
-					</div>
-				</div>
-			</dialog>
+				{buttonLabel}
+			</a>
 		</div>
+
+		<figure class="w-full wd:w-1/2 wd:shrink-0">
+			<img
+				class="aspect-4/3 w-full object-cover"
+				src={image}
+				alt={imageAlt}
+				width={imageWidth}
+				height={imageHeight}
+				loading="lazy"
+				style="aspect-ratio:4 / 3"
+			/>
+		</figure>
 	</div>
 </section>

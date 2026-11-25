@@ -1,17 +1,14 @@
 ---
 /**
- * PageHero — breadcrumb + H1 + lead + image + contact card of
+ * PageHero — breadcrumb + H1 + lead + image of
  * `/product-solutions/innovations/`.
  *
- * MEASURED on the reference (1440×1000, 2026-11-10):
- *   hero figure   x=745 y=267 w=643 h=514 (5:4)
- *   breadcrumb    y=290 (16px)
- *   eyebrow p     y=348  20px #666
- *   h1            y=388  64px/70.4 #004975 (3 lines)
- *   lead p        y=631  24px/38.4 #333 (3 lines)
- *   contact card  x=920 w=362 — "Contact Us" h2 y=434, submit y=1079 362×49
+ * 2026-11-25: the contact card that used to overlap the hero image has been
+ * removed from this page. The hero is now a plain two-column band (copy +
+ * one 5:4 photo), and the conversion point is the CTA row under the lead
+ * plus the closing "Send Us the Joint" section.
  */
-import type { BreadcrumbItem, ContactForm } from '@data/innovations';
+import type { BreadcrumbItem } from '@data/innovations';
 
 interface Props {
 	breadcrumb: BreadcrumbItem[];
@@ -22,7 +19,8 @@ interface Props {
 	imageAlt: string;
 	imageWidth: number;
 	imageHeight: number;
-	form: ContactForm;
+	primaryCta: { label: string; href: string };
+	secondaryCta: { label: string; href: string };
 }
 
 const {
@@ -34,7 +32,8 @@ const {
 	imageAlt,
 	imageWidth,
 	imageHeight,
-	form,
+	primaryCta,
+	secondaryCta,
 } = Astro.props;
 ---
 
@@ -84,10 +83,25 @@ const {
 		<p class="text-label mb-8 text-gray-medium lg:mb-12">{eyebrow}</p>
 		<h1 class="text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32">{heading}</h1>
 		<p class="text-lead mb-24 text-gray sm:mb-0">{lead}</p>
+
+		<div class="mt-24 flex flex-wrap items-center gap-16 lg:mt-32">
+			<a
+				href={primaryCta.href}
+				class="text-button appearance-none cursor-pointer rounded-pill bg-blue px-24 py-16 font-bold text-white transition-[background-color,color] duration-100 ease-out hover:bg-blue-dark3"
+			>
+				{primaryCta.label}
+			</a>
+			<a
+				href={secondaryCta.href}
+				class="text-button appearance-none cursor-pointer rounded-pill border-[1px] border-blue px-24 py-16 font-bold text-blue transition-[background-color,color,border-color] duration-100 ease-out hover:bg-blue hover:text-white"
+			>
+				{secondaryCta.label}
+			</a>
+		</div>
 	</div>
 
 	<div
-		class="relative mb-24 md:mb-32 wd:order-2 wd:mb-0 wd:w-1/2 wd:shrink-0 wd:grow-0 order-1 sm:mt-24 md:order-1 md:max-wd:mb-56 md:max-wd:pr-[280px]"
+		class="relative mb-24 md:mb-32 wd:order-2 wd:mb-0 wd:w-1/2 wd:shrink-0 wd:grow-0 order-1 sm:mt-24 md:order-1"
 	>
 		<figure class="flex w-full" data-ratio="1.25">
 			<img
@@ -97,92 +111,9 @@ const {
 				height={imageHeight}
 				loading="eager"
 				fetchpriority="high"
-				class="aspect-5/4 md:object-cover flex-shrink-0 w-full rounded-tl-2xl rounded-tr-2xl md:rounded-2xl"
+				class="aspect-5/4 object-cover flex-shrink-0 w-full rounded-tl-2xl rounded-tr-2xl md:rounded-2xl"
 				style="aspect-ratio:5 / 4"
 			/>
 		</figure>
-
-		<div
-			class="z-1 w-full overflow-x-hidden rounded-bl-lg rounded-br-lg border-[1px] border-[rgba(204,228,243,1)] bg-white p-20 shadow-[0_0_20px_0_rgba(0,0,0,0.05)] md:absolute md:right-0 md:w-[360px] md:rounded-lg"
-		>
-			<form action="#" method="post">
-				<h2 class="mb-24 text-blue-dark3 text-h5">{form.title}</h2>
-				<div class="mb-24 text-p-sm text-gray lg:text-p-s"></div>
-
-				<div class="mb-24">
-					<label class="relative flex flex-col gap-2">
-						<span class="absolute top-8 ml-12 text-p-sm text-gray-medium">Country or Region</span>
-						<select
-							class="mt-2 w-full appearance-none overflow-x-hidden border-b border-gray-soft bg-transparent px-12 pb-8 pr-32 pt-24 text-p-sm text-ellipsis focus:border-blue focus:outline-none focus:ring-3 focus:ring-blue-light"
-						>
-							{form.countries.map((c) => <option>{c}</option>)}
-						</select>
-						<svg
-							class="pointer-events-none absolute right-12 top-1/2 h-16 w-16 -translate-y-1/2 text-gray-medium"
-							aria-hidden="true"
-						>
-							<use href="/images/sprite.svg#chevron-down"></use>
-						</svg>
-					</label>
-				</div>
-
-				{
-					form.fields.map((f) => (
-						<div class="relative mb-24 flex flex-col">
-							<label class="relative text-p-sm">
-								<input
-									class="peer w-full border-b border-gray-soft bg-transparent px-12 pb-8 pt-24 text-p-sm focus:border-blue focus:outline-none focus:ring-3 focus:ring-blue-light"
-									type="text"
-									name={f}
-									placeholder=" "
-								/>
-								<span class="absolute left-12 top-[16px] -translate-y-12 items-center bg-white text-p-sm text-gray-medium transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12">
-									{f}
-									<span class="ml-[2px] text-blue">*</span>
-								</span>
-							</label>
-						</div>
-					))
-				}
-
-				<div class="relative mb-24 flex flex-col">
-					<label class="relative text-p-sm">
-						<textarea
-							class="peer w-full border-b border-gray-soft bg-transparent px-12 pb-8 pt-24 text-p-sm focus:border-blue focus:outline-none focus:ring-3 focus:ring-blue-light"
-							name="message"
-							rows="3"
-							placeholder=" "
-						></textarea>
-						<span class="absolute left-12 top-[16px] -translate-y-12 flex items-center bg-white text-p-sm text-gray-medium transition-all duration-500 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-12">
-							{form.messageLabel}
-						</span>
-					</label>
-				</div>
-
-				<div class="mb-8">
-					<label class="flex cursor-pointer items-center gap-x-3.5 text-p-sm">
-						<input class="sr-only" type="checkbox" />
-						<span class="relative mr-8 py-[3px]">
-							<span class="absolute left-0 top-0 h-18 w-18 rounded-full bg-gray-light shadow-[0_0_4px_0_rgba(0,0,0,0.25)]"></span>
-							<span class="block h-[12px] w-[31px] rounded-3xl bg-gray-light"></span>
-						</span>
-						<span>
-							{form.consent}{' '}
-							<a class="text-blue underline" href={form.consentHref}>privacy policy</a>
-							<span class="text-blue">*</span>
-						</span>
-					</label>
-				</div>
-
-				<span class="mt-24 flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-end">
-					<button
-						type="submit"
-						class="flex w-full items-center justify-center text-button appearance-none cursor-pointer rounded-pill bg-blue px-24 pt-[11px] pb-[12px] font-bold text-white transition-[background-color,color,border-color,box-shadow] duration-100 ease-out hover:bg-blue-dark3 sm:w-auto sm:min-w-[200px]"
-					>
-						{form.submit}
-					</button>
-				</span>
-			</form>
-		</div>
 	</div>
 </header>

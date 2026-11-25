@@ -1,0 +1,57 @@
+---
+/**
+ * GradeTable — the titanium grade matrix of `/product-solutions/innovations/`.
+ *
+ * Data comes from `src/data/product-solutions/routes.ts` (GRADES), which is
+ * derived from the generated product dictionary — published nominal values
+ * only, never measured lot values. Links are real routes (grade landing page,
+ * catalogue deep link or the grade supply matrix).
+ *
+ * Per the layout rules a grade matrix is a compact full-width table — never a
+ * photo grid.
+ */
+import { GRADES } from '@data/product-solutions';
+
+interface Props {
+	heading: string;
+	lead: string;
+}
+
+const { heading, lead } = Astro.props;
+---
+
+<section class="container-fluid mb-64 mt-32 lg:mb-80 lg:mt-40">
+	<h2 class="text-h3 mb-16 text-blue-dark3 lg:mb-24">{heading}</h2>
+	<p class="text-p mb-24 max-w-rich-text text-gray lg:mb-32">{lead}</p>
+
+	<div class="overflow-x-auto">
+		<table class="w-full min-w-[720px] border-collapse text-left">
+			<thead>
+				<tr class="border-b border-blue-70">
+					<th class="text-p-s py-12 pr-16 font-bold text-blue-dark3">Grade</th>
+					<th class="text-p-s py-12 pr-16 font-bold text-blue-dark3">Proof strength</th>
+					<th class="text-p-s py-12 pr-16 font-bold text-blue-dark3">Tensile strength</th>
+					<th class="text-p-s py-12 pr-16 font-bold text-blue-dark3">Max. temperature</th>
+					<th class="text-p-s py-12 pr-16 font-bold text-blue-dark3">Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					GRADES.map((g) => (
+						<tr class="border-b border-blue-70 align-top">
+							<td class="py-12 pr-16">
+								<a class="text-blue underline" href={g.href}>
+									{g.name}
+								</a>
+							</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">{g.proof}</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">{g.tensile}</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">{g.maxTemp}</td>
+							<td class="py-12 pr-16 text-p-sm text-gray">{g.note}</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+</section>

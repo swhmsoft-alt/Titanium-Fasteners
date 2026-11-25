@@ -4,11 +4,16 @@
  * Reference: https://www.bossard.com/global-en/product-solutions/innovations/
  *
  * MEASURED on the reference (1440×1000, 2026-11-10):
- *   hero      figure x=745 y=267 643×514 | contact card x=920 w=362, submit y=1079
+ *   hero      figure x=745 y=267 643×514 | contact card x=920 w=362
  *   intro     2 × container-fluid rich-text paragraphs
- *   carousel  "Our Fastening Innovations" — 5 cards, 316 wide, y=1277
- *   article   "What We Offer You"  y=2187 h=512  (grid y=2260, 3 cols × 2 rows)
- *   cta       "Contact Us" button y=2892 x=70 140×49
+ *   carousel  5 cards, 316 wide
+ *   grades    full-width compact grade matrix table
+ *   article   "What We Do With Your Titanium Fastener"  3 cols × 2 rows
+ *   cta       "Send Us the Joint and We Will Answer With a Route" + button
+ *
+ * 2026-11-25: the hero contact card was removed (the page reads cleaner
+ * without a second form next to the copy). Conversion now happens through
+ * the hero CTA row and the closing section, both pointing at /contact/.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SiteHeader from '@components/layout/SiteHeader.astro';
@@ -17,6 +22,7 @@ import SiteFooter from '@components/layout/SiteFooter.astro';
 import CookieConsent from '@components/layout/CookieConsent.astro';
 import BackToTop from '@components/layout/BackToTop.astro';
 import PageHero from '@components/sections/innovations/PageHero.astro';
+import GradeTable from '@components/sections/innovations/GradeTable.astro';
 import InnovationsCarousel from '@components/sections/innovations/InnovationsCarousel.astro';
 import OfferGrid from '@components/sections/innovations/OfferGrid.astro';
 import NextStepCta from '@components/sections/innovations/NextStepCta.astro';
@@ -34,7 +40,7 @@ const currentPathname = Astro.url.pathname;
 	<MegaMenu />
 
 	<main id="main" class="pt-48 md:pt-91">
-		<PageHero {...PAGE.hero} form={PAGE.form} />
+		<PageHero {...PAGE.hero} />
 
 		{
 			PAGE.intro.map((para) => (
@@ -43,6 +49,8 @@ const currentPathname = Astro.url.pathname;
 				</div>
 			))
 		}
+
+		<GradeTable heading={PAGE.grades.heading} lead={PAGE.grades.lead} />
 
 		<div>
 			<InnovationsCarousel
