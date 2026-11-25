@@ -533,7 +533,7 @@ const facet = (ids, labelMap) => ids.map((id) => ({ id, label: labelMap.get(id) 
  *   总览      /products/
  *   分类页    /products/<category_id>/
  *   产品族页  /products/<category_id>/<family_id>/
- * 仓库禁止跳转/重定向 —— 这个形态一旦生成就是契约。
+ * 产品区禁止跳转/重定向 —— 这个形态一旦生成就是契约。
  */
 const PRODUCT_ROUTE_BASE = '/products/';
 const familyRoute = (category, id) => `${PRODUCT_ROUTE_BASE}${category}/${id}/`;

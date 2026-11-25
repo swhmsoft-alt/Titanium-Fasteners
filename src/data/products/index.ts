@@ -91,7 +91,7 @@ export function familyById(id: string): Family | undefined {
 export const PUBLISHED_FAMILIES: Family[] = FAMILIES.filter((f) => f.status === 'published');
 
 
-/** 路由基址。Phase B 已定死 URL 形态 —— 仓库禁止任何跳转/重定向，
+/** 路由基址。Phase B 已定死 URL 形态 —— 产品区不允许跳转/重定向，
  * 路由常量集中在此，改动必须同步改页面文件路径。
  */
 export { PRODUCT_ROUTE_BASE, familyPath, categoryPath, CATEGORY_CARDS, FILTER_GROUPS, ALL_PRODUCTS, HAS_PUBLISHED, CATEGORY_VIEWS } from './category-view';

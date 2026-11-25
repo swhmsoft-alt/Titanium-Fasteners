@@ -166,7 +166,8 @@ export const INDUSTRIES_HUB = {
 		 * 行业清单与导航面板（src/config/site.ts → NAVIGATION → Industries）严格一致：
 		 * 顺序、名称、href 三者同源，十项全部指向 src/pages/industries/ 下的真实静态页。
 		 * 旧版本使用 /industries/aerospace/、/industries/robotics/ 等参考站 slug，
-		 * 那些页面早已改名或移除，现已全部消除。
+		 * 那些页面已移除；旧 URL 现在由 astro.config.mjs 的 redirects 永久跳转
+		 * 到对应的现行页面（见 docs/redirects-industries.md）。
 		 */
 		items: [
 			{

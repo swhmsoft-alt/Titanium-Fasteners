@@ -3,6 +3,29 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## 行业旧页退役 + 永久跳转（2026-11-25）★ 最新一节，先读这里
+
+- **Current Status**：CMS 家族行业子页（参考站抓取产物，带参考品牌口吻）**已全部退役**，旧 URL **不再 404** —— 改为永久跳转。
+  - **删除的路由**：`src/pages/industries/aerospace.astro`、`src/pages/industries/[slug].astro`（原承载 electrical-engineering / hvac / medical / railway / robotics / semiconductors 六个 slug）。
+  - **删除的数据**：`src/data/industries-aerospace.ts`、`src/data/industries-sub/**`（7 文件）。
+  - **删除的组件**：`src/components/sections/industries-aerospace/**`（7）、`src/components/sections/industries-sub/**`（6）、`src/components/sections/industries/IndustryCards.astro`。
+  - **跳转表（唯一真相源 = `astro.config.mjs` → `redirects`）**：`aerospace→aerospace-uav`、`medical→medical-devices`、`robotics→industrial-robotics`、`semiconductors→semiconductor-vacuum`、`railway→rail-rolling-stock`、`electrical-engineering→/industries/`、`hvac→/industries/`。
+  - **产物形态**：Astro 静态 `redirects` 在旧路径生成 stub —— `noindex` + `rel=canonical` 指向目标 + `meta refresh` 0 秒跳转。**是 200 不是 301**；真 301 需服务器侧规则。
+  - **server 侧规则（待有主机权限者执行）**：完整 OpenResty + Cloudflare 写法与验证命令见 **`docs/redirects-industries.md`**。生产为 OpenResty 藏在 Cloudflare 后，`.htaccess` **不生效**。
+  - **死链联动**：`scripts/lib/link-baseline.json` 里 17 条 `/industries/aerospace/about-bossard-aerospace/**` 已随旧页消失而失效（不再有页面引用它们），但 baseline 仍保留条目 → 属**过期条目**，不影响闸门（0 new）。
+  - **页脚修正**：`src/config/site.ts` FOOTER Industries 列 4 条旧 href 已改为现行 slug。
+  - **口径修正**：原「仓库禁止任何跳转/重定向」已**收窄为产品区专用纪律**（`src/config/site.ts` / `src/data/products/index.ts` / `scripts/gen-products.mjs` / `docs/PRODUCT-DATA.md`），避免与本次经批准的例外冲突。
+  - **素材清扫**：按「只看 dist 渲染引用」判据删除 **233 张**旧页素材（含 Bossard 等第三方品牌残留图），`public/images` 由 573 → 340 张。
+- **验收**：`npm run build` **93 页 Complete! 0 ERROR**；`npm run check:links` **112 known / 0 new**；`npm run check` **4 errors**（全为 `docs/legacy/` + `src/data/home.ts` + `knowledge-hub/packaging/` + `services/index.astro` 的历史类型债，**与本次无关**，原基线 16 条中 industries 相关 12 条随删页消失）；sitemap **11 条** `/industries/*`（hub + 10 应用页，无旧 slug）；dist 内 **7/7** 旧 URL stub 存在、**10/10** 现行页存在、图片引用 **340 条 0 缺失**。
+- **Next Step**：
+  1. **服务器侧 301 必做**：把 `docs/redirects-industries.md` §3.1（OpenResty）或 §3.2（Cloudflare Redirect Rules）交给有 cPanel / Cloudflare 权限的人执行，并按 §3.3 用 `curl -w "%{http_code} %{redirect_url}"` 复核七条路径返回 301。
+  2. **FTP 部署注意**：`scripts/deploy-ftp-ci.mjs` 只覆盖同名路径、**不删服务器上多余文件**。退役页的旧目录需主机侧手工清理（本次已随 233 张素材删除减少大部分）。
+- **Known Pitfalls**：
+  - Astro 静态 `redirects` 产出的是 **200 + meta refresh**，不是 301；别把仓库内的跳转表当成「301 已完成」。
+  - `redirects` 的 key **不带尾斜杠**（`'/industries/aerospace'`），target **带尾斜杠**（`'/industries/aerospace-uav/'`）；`trailingSlash: 'always'` 下写反会多出一条重复路由。
+  - `src/data/industries/index.ts` 曾导出 `IndustryCard` 类型，仅被已删的 `IndustryCards.astro` 消费 → 已一并删除；hub 的行业网格类型是 `HubSector`，两者别混淆。
+  - `scripts/preflight.mjs` 的 `dataCandidates` / `dynamicRoutes` 列表里原本含 `industries-sub/` 与 `industries/[slug].astro`，删页时必须同步移除，否则 preflight 会把「动态路由存在」误判为通过。
+
 ## 0. 现状
 
 | 项 | 值 |

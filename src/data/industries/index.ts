@@ -6,21 +6,10 @@
  * were removed from the page, so the module was replaced by this folder:
  *
  *   · `hub.ts` — the content of the rebuilt `/industries/` page.
- *   · the `IndustryCard` type below — still consumed by
- *     `@components/sections/industries/IndustryCards.astro`, which the
- *     aerospace page reuses for its teaser rows.
+ *
+ * The CMS-style industry grid (IndustryCard) and the reference-site
+ * aerospace page that consumed it were retired together with the old
+ * industry sub-pages; the ten application pages carry their own data
+ * modules under src/data/industries-*.ts.
  */
 export * from './hub';
-
-/** A tile of the two-up industry grid. `span` mirrors the reference column span. */
-export interface IndustryCard {
-	href: string;
-	image: string;
-	alt: string;
-	imageWidth: number;
-	imageHeight: number;
-	/** 'wide' = aspect-5/4 tile (11 of 18 columns), 'narrow' = aspect-3/4 tile (7 of 18). */
-	span: 'wide' | 'narrow';
-	title: string;
-	description: string;
-}

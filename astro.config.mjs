@@ -77,6 +77,38 @@ export default defineConfig({
   ...(BASE_PATH ? { base: BASE_PATH.replace(/\/$/, '') } : {}),
   output: 'static',
   trailingSlash: 'always',
+  /**
+   * Retired industry URLs → permanent destinations.
+   *
+   * WHY
+   * ---
+   * The CMS-style industry sub-pages (aerospace, medical, robotics,
+   * semiconductors, railway, electrical-engineering, hvac) were replaced by
+   * ten hand-written application pages under /industries/. The old URLs are
+   * still linked from the live internet (referral pages, bookmarks, inbound
+   * citations), so they must not turn into 404s.
+   *
+   * WHAT THIS IS / IS NOT
+   * ---------------------
+   * Astro's static `redirects` emits a tiny HTML stub at each source path:
+   * `noindex` + `rel=canonical` to the target + an instant meta-refresh.
+   * That is the repository-level guarantee — the old URL always resolves and
+   * never advertises itself as a duplicate.
+   *
+   * It is NOT an HTTP 301: the stub is served with status 200 by the static
+   * host. Real 301 status codes must be issued by the web server (OpenResty)
+   * or the CDN (Cloudflare). See docs/redirects-industries.md for the
+   * server-side rules that must be applied alongside this mapping.
+   */
+  redirects: {
+    '/industries/aerospace': '/industries/aerospace-uav/',
+    '/industries/electrical-engineering': '/industries/',
+    '/industries/hvac': '/industries/',
+    '/industries/medical': '/industries/medical-devices/',
+    '/industries/railway': '/industries/rail-rolling-stock/',
+    '/industries/robotics': '/industries/industrial-robotics/',
+    '/industries/semiconductors': '/industries/semiconductor-vacuum/',
+  },
   build: {
     // Inline all Astro-collected CSS into HTML. The stylesheet is
     // render-blocking; inlining removes the extra round-trip at the cost of a

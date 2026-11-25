@@ -32,7 +32,7 @@ const results = [];
 const check = (id, label, ok, detail) => results.push({ id, label, ok, detail });
 
 /* ── 1. 路由与文件落点 ─────────────────────────────────────────────── */
-/* slug 里的连字符可代表路径层级：industries-aerospace → industries/aerospace */
+/* slug 里的连字符可代表路径层级：industries-aerospace-uav → industries/aerospace/uav */
 const nested = slug.replace(/-/g, '/');
 const pageCandidates = [
 	`src/pages/${slug}.astro`,
@@ -43,7 +43,6 @@ const pageCandidates = [
 const dataCandidates = [
 	`src/data/${slug}.ts`,
 	`src/data/${slug}/index.ts`,
-	`src/data/industries-sub/${slug.replace(/^industries-/, '')}.ts`,
 ];
 /* 动态路由：族页 /products/[category]/[family]、分类页 /products/[category]
  * —— 文件名里的方括号是 Astro 的动态参数，slug 走 getStaticPaths，不体现在文件名中。
@@ -51,7 +50,6 @@ const dataCandidates = [
 const dynamicRoutes = [
 	'src/pages/products/[category]/[family].astro',
 	'src/pages/products/[category]/index.astro',
-	'src/pages/industries/[slug].astro',
 	'src/pages/product-solutions/product-categories-and-brands/[slug].astro',
 	'src/pages/services/benefits/[slug].astro',
 	'src/pages/services/[family]/[slug].astro',

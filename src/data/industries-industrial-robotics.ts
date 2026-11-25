@@ -3,11 +3,12 @@
  *
  * WHY A DEDICATED MODULE
  * ----------------------
- * `/industries/robotics/` is the inherited CMS page type (one block vocabulary for
- * eight generic industry pages). The industrial-robotics page is a BOZE application
- * page with its own six-section order, its own two named robot sub-applications and
- * its own static grade-comparison table, so it gets its own hand-written data module
- * instead of being forced into the generic block vocabulary.
+ * The retired CMS industry family (`/industries/robotics/`) used one block
+ * vocabulary for eight generic industry pages. The industrial-robotics page is
+ * a BOZE application page with its own six-section order, its own two named
+ * robot sub-applications and its own static grade-comparison table, so it gets
+ * its own hand-written data module instead of being forced into the generic
+ * block vocabulary.
  *
  * DATA PROVENANCE
  * ---------------

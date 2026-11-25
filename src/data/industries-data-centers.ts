@@ -5,9 +5,8 @@
  * ----------
  * This page replaces the inherited CMS industry page of the same slug (the
  * reference-site scrape that still carried the reference brand's voice). The
- * CMS family is generated from `qa/ref/`, so the loader map in
- * `src/pages/industries/[slug].astro` no longer lists `data-centers` and the
- * static route below owns the URL.
+ * CMS family was generated from `qa/ref/` and has been retired; the static
+ * route below owns the URL.
  *
  * IMAGE SOURCING NOTE
  * -------------------

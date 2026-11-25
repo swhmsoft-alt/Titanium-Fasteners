@@ -25,7 +25,7 @@ import { gradeLandingPath } from '@data/grade-paths';
  * 「按执行标准直达」的落地页 —— 每个标准体系一个**专属页面**（矩阵表 + 牌号 + FAQ + 询盘），
  * 不再把菜单项指向 `/products/?standard=…` 筛选深链。
  *
- * 路由固定（仓库禁止跳转/重定向，页面文件路径即 URL）：
+ * 路由固定（产品区 URL 形态不可变，页面文件路径即 URL）：
  *   DIN   → /products/din-titanium-fasteners/
  *   ISO   → /products/iso-titanium-fasteners/
  *   ASTM  → /products/astm-asme-titanium-fasteners/
@@ -646,10 +646,10 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
 	{
 		heading: 'Industries',
 		items: [
-			{ name: 'Aerospace & UAV', href: '/industries/aerospace/' },
-			{ name: 'Industrial Robotics', href: '/industries/robotics/' },
-			{ name: 'Medical Devices', href: '/industries/medical/' },
-			{ name: 'Semiconductors', href: '/industries/semiconductors/' },
+			{ name: 'Aerospace & UAV', href: '/industries/aerospace-uav/' },
+			{ name: 'Industrial Robotics', href: '/industries/industrial-robotics/' },
+			{ name: 'Medical Devices', href: '/industries/medical-devices/' },
+			{ name: 'Semiconductors', href: '/industries/semiconductor-vacuum/' },
 			{ name: 'All Industries', href: '/industries/', arrow: true },
 		],
 	},
