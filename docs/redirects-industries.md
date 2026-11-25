@@ -51,8 +51,26 @@ server or the CDN — §3.
 
 ## 3. Server-side rules (must be applied by whoever holds host access)
 
-Production is **OpenResty** behind **Cloudflare**. `.htaccess` is not read by
-OpenResty, so it must not be used here.
+> **STACK NOTE — re-verify before acting.** This section originally stated that
+> production is OpenResty behind Cloudflare and that `.htaccess` is therefore
+> not read. That claim is now in doubt: the default error page served for an
+> unknown path (large grey 404, `The resource requested could not be found on
+> this server!`) is the **LiteSpeed/Apache** default page — the standard stack
+> of a cPanel shared host — and LiteSpeed **does** read `.htaccess`.
+>
+> Check the real stack before applying these rules. If the origin is
+> Apache/LiteSpeed, `.htaccess` works and the mapping can be shipped by the
+> repository (see §3.0). If it really is OpenResty, the `location` blocks below
+> are correct as written.
+>
+> ### 3.0 Apache / LiteSpeed (`.htaccess`)
+>
+> The 404 error document is already handled this way by the deployer
+> (`scripts/deploy-ftp-ci.mjs` → `ensureErrorDocument()`): the document root's
+> `.htaccess` is **merged**, never overwritten, and the run rolls the file back
+> if the site answers with a 5xx afterwards. For the redirect rules below the
+> same file is the place — add them to the `.htaccess` of the document root
+> (`/home/safetipa/fastener.bozemetal.com`).
 
 ### 3.1 OpenResty (origin)
 

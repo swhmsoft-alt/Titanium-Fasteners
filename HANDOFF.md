@@ -3,6 +3,23 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## 404 错误页上线（2026-11-25）★ 最新一节，先读这里
+
+- **Current Status**：新建 `src/pages/404.astro`（**唯一代码改动**，187 行；未动 BaseLayout / Header / Footer / 全局 CSS / 任何路由 / 无新依赖）。复用 `BaseLayout` + 全站导航/页脚 + `Button`/`Card` UI 组件 + `@data/knowledge-hub`；四模块：① Error 404 状态标记 + h1 + 导语 ② 三大入口 CTA（Back to homepage → `/`、Go back → `history.back()` 且无历史时回落 `/`、Send us an inquiry instead → `/contact/`）③ 四宫格业务入口（`/products/`、`/product-solutions/`、`/services/`、`/contact/`，逐条核对 `src/pages/` 存在）④ Knowledge Hub 工具行（href 由 `@data/knowledge-hub` 派生，与菜单同源）。带 `<meta name="robots" content="noindex, nofollow">`，canonical = `/404.html`。
+  - **上线实证**：commit `465fedc` 推 `main` → CI run **#25**「Deploy to cPanel via FTP (audit-gated)」**conclusion=success**（Setup Node / Install / gen:products / Build / 链接闸门 / FTPS 上传 全 success）。真实浏览器打开 `https://fastener.bozemetal.com/404.html` **已渲染出自定义 404 页**（截图确认 Error 404 / Page not found / 三 CTA / 四宫格）。
+- **Next Step**：
+  1. ~~服务器侧唯一遗留（需人工）~~ —— **该结论已作废**。上一轮误判为「必须由有 cPanel 权限的人手工配置」，实际不需要主机管理员权限：`ErrorDocument 404 /404.html` 这条映射可由仓库侧随部署下发。
+  2. **本轮修复（已落地，待线上验证）**：`scripts/deploy-ftp-ci.mjs` 新增 `ensureErrorDocument()` —— 上传 `dist/` 之后，在文档根**合并式**写入 `.htaccess`（先 `SIZE` 探存在性 → `downloadTo` 读回原内容 → 仅在缺失映射时追加 `ErrorDocument 404 /404.html`），**绝不覆盖**服务器上已有的规则；已存在同款映射则跳过（幂等）。写入后用浏览器 UA 探活一次，若站点返回 5xx（说明该主机 `AllowOverride` 不接受该指令）则**自动回滚** `.htaccess` 并把部署标记为失败，确保站点不被打挂。同时把 `404.html` 加入部署后服务器校验清单。
+  3. 线上验证（**由用户手动操作，勿自动探测**）：手动访问一个不存在的路径，确认状态码 = 404 且正文为自定义 404 页。
+- **Known Pitfalls**：
+  - **`.htaccess` 的合并优先级**：`ErrorDocument` 属 FileInfo 覆盖类别，主机 `AllowOverride` 收窄会让带该指令的 `.htaccess` 直接导致 500 —— 故必须保留「读回 → 合并 → 探活 → 5xx 回滚」这条链路，任何简化都可能让整站不可用。
+  - **`docs/redirects-industries.md` §3 的栈判断已过时**：该文档称生产为 OpenResty behind Cloudflare、`.htaccess` 不生效；但用户截图里的默认错误页（巨大灰色 404 + `The resource requested could not be found on this server!`）是 **LiteSpeed/Apache** 的默认 404，正是 cPanel 共享主机的默认栈，且 LiteSpeed **支持** `.htaccess`。该文档结论待复核，勿据此拒绝 `.htaccess` 方案。
+  - **站点前置 JS 反爬校验**（`One moment, please...` / `正在验证您的请求，请稍候…`）：`Invoke-WebRequest` 与 DevTools `take_snapshot` 会被拦并误判为「内容缺失」，**必须以真实浏览器渲染结果为准**。
+  - **不要对线上站点做自动化批量抓取** —— 服务商对 AI 抓取有限制，会触发拦截/封禁；验证一律用单次人工浏览器访问。
+  - DevTools `evaluate_script` 里 `fetch('/x')` 抛 `Failed to parse URL`（无 base URL），跨域绝对地址 `fetch` 亦失败；改用 `navigate_page` + `take_snapshot`。
+  - GitHub CLI（`gh`）本机未安装，查 run 状态用 `Invoke-RestMethod https://api.github.com/repos/swhmsoft-alt/Titanium-Fasteners/actions/runs/<id>`。
+
+
 ## 行业旧页退役 + 永久跳转（2026-11-25）★ 最新一节，先读这里
 
 - **Current Status**：CMS 家族行业子页（参考站抓取产物，带参考品牌口吻）**已全部退役**，旧 URL **不再 404** —— 改为永久跳转。

@@ -305,6 +305,191 @@ if (!existsSync(DIST) || !statSync(DIST).isDirectory()) {
 	process.exit(1);
 }
 
+/* ── the 404 error document ─────────────────────────────────────────────── */
+
+/**
+ * The single server directive that makes an unknown URL render the site's own
+ * 404 page instead of the web server's built-in error page.
+ */
+const ERROR_DOCUMENT_DIRECTIVE = 'ErrorDocument 404 /404.html';
+
+/**
+ * Make the server answer an unknown URL with the site's own 404 page.
+ *
+ * WHY THIS IS NEEDED
+ * ------------------
+ * The build emits `dist/404.html`, but a static host only serves that file for
+ * an unknown path when the web server is told to. Without the mapping the
+ * server answers with ITS OWN default error page, so the 404 page never
+ * appears and the whole effort is invisible.
+ *
+ * WHERE IT LIVES
+ * --------------
+ * In the document root's `.htaccess` — the one file the web server reads for
+ * that directory. That file may already exist and may hold rules the hosting
+ * panel generated (HTTPS redirect, directory protection), so it is MERGED and
+ * never overwritten: the current content is downloaded, the directive is
+ * appended only when it is missing, and only then is the file written back.
+ *
+ * A failure here must never fail the deployment — the site itself has already
+ * been uploaded at this point and does not depend on this file.
+ */
+async function ensureErrorDocument() {
+	try {
+		// Writable is imported lazily: it is needed only by this function and
+		// the module-level import list stays untouched.
+		const { Writable } = await import('node:stream');
+
+		let existing = '';
+		let hasExisting = false;
+
+		// SIZE first: it tells whether the file exists without transferring
+		// anything, and it fails with 550 when it does not — the normal
+		// first-run case.
+		let exists = false;
+		try {
+			await client.size('.htaccess');
+			exists = true;
+		} catch (err) {
+			const message = err && err.message ? err.message : String(err);
+			if (!/550|not found|no such/i.test(message)) {
+				console.warn(
+					`[deploy-ftp] WARNING: the existing .htaccess could not be inspected (${message}) — ` +
+						'the 404 mapping was left alone instead of overwriting it'
+				);
+				return;
+			}
+		}
+
+		if (exists && typeof client.downloadTo === 'function') {
+			try {
+				const chunks = [];
+				const sink = new Writable({
+					write(chunk, _encoding, callback) {
+						chunks.push(Buffer.from(chunk));
+						callback();
+					},
+				});
+				await client.downloadTo(sink, '.htaccess');
+				existing = Buffer.concat(chunks).toString('utf8');
+				hasExisting = true;
+			} catch (err) {
+				const message = err && err.message ? err.message : String(err);
+				// The file exists but could not be read. Writing now would
+				// overwrite content nobody has seen, so the step is skipped.
+				console.warn(
+					`[deploy-ftp] WARNING: the existing .htaccess could not be read (${message}) — ` +
+						'the 404 mapping was left alone instead of overwriting it'
+				);
+				return;
+			}
+		}
+
+		if (exists && typeof client.downloadTo !== 'function') {
+			console.warn(
+				'[deploy-ftp] WARNING: a .htaccess already exists on the server and cannot be read — ' +
+					'the 404 mapping was left alone instead of overwriting it'
+			);
+			return;
+		}
+
+		if (hasExisting && /^\s*ErrorDocument\s+404\s+\S+/im.test(existing)) {
+			console.log('[deploy-ftp] the server already maps 404 to a document — .htaccess left untouched');
+			return { previous: existing, written: false };
+		}
+
+		const body =
+			hasExisting && existing.trim().length > 0
+				? `${existing.replace(/\s*$/, '')}\n\n${ERROR_DOCUMENT_DIRECTIVE}\n`
+				: `# Managed by scripts/deploy-ftp-ci.mjs — the 404 mapping.\n${ERROR_DOCUMENT_DIRECTIVE}\n`;
+
+		// uploadFrom takes a stream, not a Buffer.
+		await client.uploadFrom(Readable.from([Buffer.from(body, 'utf8')]), '.htaccess');
+		console.log(`[deploy-ftp] .htaccess now maps an unknown URL to ${ERROR_DOCUMENT_DIRECTIVE}`);
+
+		return { previous: hasExisting ? existing : null, written: true };
+	} catch (err) {
+		console.warn(
+			`[deploy-ftp] WARNING: the 404 mapping could not be written: ${
+				err && err.message ? err.message : err
+			}`
+		);
+		return null;
+	}
+}
+
+/**
+ * Roll the .htaccess back to its previous state.
+ *
+ * WHY
+ * ---
+ * `ErrorDocument` belongs to the FileInfo override class. If the host limits
+ * `AllowOverride` to something narrower, a .htaccess carrying an unexpected
+ * directive makes the server answer 500 — the whole site would be down.
+ * That is a far worse outcome than a default 404 page, so the change is
+ * undone as soon as it is detected.
+ *
+ * @param {string|null} previous the content before the write, null when the
+ *   file did not exist at all
+ */
+async function restoreErrorDocument(previous) {
+	try {
+		if (previous === null) {
+			await client.remove('.htaccess');
+			console.log('[deploy-ftp] the .htaccess was removed again — the previous state is restored');
+			return;
+		}
+		await client.uploadFrom(Readable.from([Buffer.from(previous, 'utf8')]), '.htaccess');
+		console.log('[deploy-ftp] the .htaccess was restored to its previous content');
+	} catch (err) {
+		console.error(
+			`[deploy-ftp] ERROR: the .htaccess could not be restored: ${
+				err && err.message ? err.message : err
+			}`
+		);
+	}
+}
+
+/**
+ * Ask the site whether it still answers after the .htaccess was written.
+ *
+ * A 5xx answer means the directive upset the server configuration, and the
+ * rollback has to happen. Anything else — including a 4xx from an
+ * anti-scraping layer in front of the site — leaves the file in place.
+ * @returns {Promise<boolean>} true when the site answered with a 5xx status
+ */
+async function siteAnswersWithServerError() {
+	const url = (process.env.SITE_URL ?? 'https://fastener.bozemetal.com').trim();
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), 15000);
+	try {
+		const response = await fetch(url, {
+			headers: {
+				// A browser-like agent, so an anti-scraping layer in front of
+				// the site answers like it would for a visitor.
+				'user-agent':
+					'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36',
+				accept: 'text/html',
+			},
+			signal: controller.signal,
+			redirect: 'manual',
+		});
+		console.log(`[deploy-ftp] the site answered ${response.status} after the 404 mapping was written`);
+		return response.status >= 500;
+	} catch (err) {
+		// The site could not be reached at all — that is not a proof that the
+		// .htaccess broke it, so the file stays.
+		console.warn(
+			`[deploy-ftp] the site could not be checked after the 404 mapping: ${
+				err && err.message ? err.message : err
+			}`
+		);
+		return false;
+	} finally {
+		clearTimeout(timer);
+	}
+}
+
 /* ── steps 3-7: connect, upgrade, upload ────────────────────────────────── */
 
 let client = new Client(60 * 1000);
@@ -930,6 +1115,25 @@ try {
 
 	const result = await uploadTree(DIST, '');
 	console.log(`[deploy-ftp] ${result.sent} file(s) transferred`);
+
+	// The 404 mapping lives in the document root, next to the uploaded site.
+	// It is written AFTER the upload so that the upload — which replaces
+	// files at identical paths — can never clobber a rule that the server
+	// already carries.
+	if (documentRoot) {
+		await client.cd(documentRoot);
+	}
+	const errorDocumentState = await ensureErrorDocument();
+	if (errorDocumentState && errorDocumentState.written) {
+		if (await siteAnswersWithServerError()) {
+			console.error(
+				'[deploy-ftp] the site answers with a server error after the 404 mapping was written — ' +
+					'the .htaccess is rolled back so the site stays online.'
+			);
+			await restoreErrorDocument(errorDocumentState.previous);
+			process.exitCode = 1;
+		}
+	}
 	if (result.failed.length > 0) {
 		console.error(`[deploy-ftp] ERROR: ${result.failed.length} file(s) could not be transferred:`);
 		for (const failure of result.failed.slice(0, 20)) {
@@ -943,6 +1147,7 @@ try {
 	// does not hold the new build is not a deployment.
 	const CHECKED_FILES = [
 		'index.html',
+		'404.html',
 		'images/category/titanium-screws-category-hero.webp',
 		'images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp',
 	];
