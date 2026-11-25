@@ -170,13 +170,12 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/sealing-technology/',
-				image:
-					'/images/product-categories-and-brands/13-an-overview-of-sealing-plugs-and-check-valves-on.webp',
-				alt: 'An overview of sealing plugs and check valves on a white background.',
+				image: '/images/category/titanium-washers-sealing-square.webp',
+				alt: 'Titanium plain washers and sealing fasteners on a white background.',
 				label: 'Products and Brands',
-				title: 'Sealing Technology',
+				title: 'Titanium Sealing Technology',
 				description:
-					'Reliable hydraulic and pneumatic sealing plugs, check valves, and related tools',
+					'Titanium fasteners, washers and flange bolts that keep a sealed joint free of corrosion',
 			},
 		],
 	},
