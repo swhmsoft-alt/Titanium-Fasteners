@@ -1120,8 +1120,24 @@ try {
 	// It is written AFTER the upload so that the upload — which replaces
 	// files at identical paths — can never clobber a rule that the server
 	// already carries.
-	if (documentRoot) {
-		await client.cd(documentRoot);
+	//
+	// The working directory is already the document root when the upload
+	// ends, and `documentRoot` is a RELATIVE path — cd-ing into it a second
+	// time would look for a directory of that name INSIDE it and fail with
+	// 550. The current directory is therefore checked first.
+	try {
+		const current = await client.pwd();
+		const root = (documentRoot ?? '').replace(/^\/+|\/+$/g, '');
+		if (root && !current.replace(/\/+$/, '').endsWith(`/${root}`)) {
+			await client.cd(documentRoot);
+		}
+	} catch (err) {
+		// A directory that cannot be entered is not a reason to abort the
+		// deployment: the upload already succeeded.
+		console.warn(
+			`[deploy-ftp] the document root could not be re-entered (${err && err.message ? err.message : err}) — ` +
+				'the 404 mapping is written in the current directory'
+		);
 	}
 	const errorDocumentState = await ensureErrorDocument();
 	if (errorDocumentState && errorDocumentState.written) {
