@@ -19,28 +19,28 @@ export const CATEGORY_CARDS: CategoryCardView[] = [
 		"title": "Screws",
 		"products": 2,
 		"href": "/products/screws/",
-		"image": "/images/category/01-screws.webp",
+		"image": "/images/category/titanium-screws-category-hero.webp",
 		"alt": "Screws"
 	},
 	{
 		"title": "Bolts",
 		"products": 11,
 		"href": "/products/bolts/",
-		"image": "/images/category/05-tools-and-equipment-for-standard-fasteners-eleme.webp",
+		"image": "/images/category/titanium-bolts-category-hero.webp",
 		"alt": "Bolts"
 	},
 	{
 		"title": "Nuts",
 		"products": 1,
 		"href": "/products/nuts/",
-		"image": "/images/category/02-nuts.webp",
+		"image": "/images/category/titanium-nuts-category-hero.webp",
 		"alt": "Nuts"
 	},
 	{
 		"title": "Washers",
 		"products": 1,
 		"href": "/products/washers/",
-		"image": "/images/category/03-washers.webp",
+		"image": "/images/category/titanium-washers-category-hero.webp",
 		"alt": "Washers"
 	}
 ];
@@ -933,7 +933,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 		"id": "screws",
 		"heading": "Screws",
 		"description": "Socket head cap screws set screws and other threaded fasteners.",
-		"image": "/images/category/01-screws.webp",
+		"image": "/images/category/titanium-screws-category-hero.webp",
 		"breadcrumb": [
 			{
 				"label": "Home",
@@ -1048,7 +1048,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 		"id": "bolts",
 		"heading": "Bolts",
 		"description": "Hex head bolts shoulder bolts and studs.",
-		"image": "/images/category/05-tools-and-equipment-for-standard-fasteners-eleme.webp",
+		"image": "/images/category/titanium-bolts-category-hero.webp",
 		"breadcrumb": [
 			{
 				"label": "Home",
@@ -1548,7 +1548,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 		"id": "nuts",
 		"heading": "Nuts",
 		"description": "Hex nuts flange nuts and lock nuts.",
-		"image": "/images/category/02-nuts.webp",
+		"image": "/images/category/titanium-nuts-category-hero.webp",
 		"breadcrumb": [
 			{
 				"label": "Home",
@@ -1609,7 +1609,7 @@ export const CATEGORY_VIEWS: Record<string, CategoryView> = {
 		"id": "washers",
 		"heading": "Washers",
 		"description": "Plain washers spring washers and tab washers.",
-		"image": "/images/category/03-washers.webp",
+		"image": "/images/category/titanium-washers-category-hero.webp",
 		"breadcrumb": [
 			{
 				"label": "Home",
