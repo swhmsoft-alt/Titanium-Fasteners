@@ -1,0 +1,187 @@
+---
+/**
+ * /404/ — 全站统一的 404 承接页。
+ *
+ * WHY THIS PAGE
+ * -------------
+ * 静态站里「页面不存在」的唯一承接点。目标有两个：
+ *   ① 让访客（尤其是从搜索/外链落地的）不至于撞墙就走；
+ *   ② 把这次访问转成一次有效的内容浏览或一条询盘。
+ *
+ * LAYOUT INTENT
+ * -------------
+ * 复用全站既有骨架：BaseLayout + SiteHeader + MegaMenu + SiteFooter +
+ * CookieConsent + BackToTop。页面自身只做三段：
+ *   ① 状态标识 + 标题 + 一段引导文案
+ *   ② 主行动按钮组（返回首页 / 返回上一页 / 直接去询价）
+ *   ③ 核心栏目快捷网格 + Knowledge Hub 工具行（流量承接）
+ *
+ * 不放任何图片：404 页没有可核实的实拍素材，硬凑插图只会产生装饰性留白。
+ *
+ * 链接纪律（不可放宽）：页内每一条 href 都必须是项目中**已建页**的真实路由
+ * —— 顶部栏目取自 @config/site 的 NAVIGATION / FOOTER_COLUMNS（同一份真相源），
+ * 工具行取自 @data/knowledge-hub（菜单与落地页同源派生）。
+ *
+ * 页面级 CSS 一律来自既有 utility（Tailwind v4 @theme token），本页**不新增**
+ * 任何全局样式，也不改动 Layout / Header / Footer。
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SiteHeader from '@components/layout/SiteHeader.astro';
+import MegaMenu from '@components/layout/MegaMenu.astro';
+import SiteFooter from '@components/layout/SiteFooter.astro';
+import CookieConsent from '@components/layout/CookieConsent.astro';
+import BackToTop from '@components/layout/BackToTop.astro';
+import Button from '@components/ui/Button.astro';
+import Card from '@components/ui/Card.astro';
+import { KNOWLEDGE_HUB_GROUPS } from '@data/knowledge-hub';
+
+const currentPathname = Astro.url.pathname;
+
+/**
+ * 核心栏目快捷入口 —— 全部是真实存在的顶层路由：
+ *   /products/           src/pages/products/index.astro
+ *   /product-solutions/  src/pages/product-solutions/index.astro
+ *   /services/           src/pages/services/index.astro
+ *   /contact/            src/pages/contact.astro
+ */
+const ENTRY_CARDS = [
+	{
+		title: 'Product Range',
+		href: '/products/',
+		body: 'Screws, bolts, nuts and washers in grade 2 and grade 5, cut to DIN, ISO and ASTM.',
+	},
+	{
+		title: 'Product Solutions',
+		href: '/product-solutions/',
+		body: 'Standard fasteners, custom machined parts, coatings and material grades.',
+	},
+	{
+		title: 'Manufacturing Services',
+		href: '/services/',
+		body: 'Cold heading, CNC to print, MTC traceability, PMI checks and order programmes.',
+	},
+	{
+		title: 'Contact & RFQ',
+		href: '/contact/',
+		body: 'Send a zero-risk brief — a process engineer answers with a quotation.',
+	},
+];
+
+/**
+ * Knowledge Hub 工具行 —— href 由 @data/knowledge-hub 派生，
+ * 与菜单面板、落地页同源，因此每一条都指向已建页。
+ */
+const TOOL_LINKS = KNOWLEDGE_HUB_GROUPS.map((group) => ({
+	title: group.heading,
+	items: group.items.map((item) => ({ name: item.name, href: item.href })),
+}));
+---
+
+<BaseLayout
+	title="Page Not Found"
+	description="The page you requested is no longer available. Browse our titanium fastener range, manufacturing services and standards pages, or send us an inquiry."
+	canonicalPath="/404.html"
+>
+	{/* 404 页面必须不进索引 —— 与 sitemap 的过滤口径保持一致。 */}
+	<meta name="robots" content="noindex, nofollow" />
+
+	<SiteHeader currentPathname={currentPathname} />
+	<MegaMenu />
+
+	<main id="main" class="pt-48 md:pt-91">
+		<!-- ① 状态标识与说明 -->
+		<section class="container-fluid pb-32 pt-24 lg:pb-40 lg:pt-32">
+			<p class="text-label mb-8 text-gray-medium">Error 404</p>
+			<h1 class="text-h1 mb-16 text-blue-dark3">Page not found</h1>
+			<p class="text-lead max-w-[760px] text-gray">
+				The page you asked for does not exist — it may have been retired, renamed, or the
+				link that brought you here is out of date. Use the entries below, or tell us what
+				you were looking for and we will point you to it.
+			</p>
+
+			<!-- ② 主行动按钮组 -->
+			<div class="mt-24 flex flex-wrap items-center gap-16 lg:gap-24 lg:mt-32">
+				<Button href="/" variant="primary">Back to homepage</Button>
+				<Button type="button" variant="outline" class="js-go-back">Go back</Button>
+				<a
+					href="/contact/"
+					class="text-label text-blue-dark3 underline decoration-blue-70 underline-offset-8 transition-colors duration-300 hover:text-blue"
+				>
+					Send us an inquiry instead
+				</a>
+			</div>
+		</section>
+
+		<!-- ③ 核心栏目快捷导航 -->
+		<section class="container-fluid pb-40 lg:pb-48" aria-labelledby="not-found-entries">
+			<h2 id="not-found-entries" class="text-h4 mb-12 text-blue-dark3 md:mb-16">
+				Where would you like to go?
+			</h2>
+			<p class="mb-24 max-w-[760px] text-p text-gray">
+				Four entrances cover most requests. Every one of them opens a page we actually
+				publish.
+			</p>
+			<ul class="grid gap-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-24">
+				{
+					ENTRY_CARDS.map((card) => (
+						<li>
+							<Card href={card.href} title={card.title} body={card.body} />
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<!-- ④ Knowledge Hub 工具行 —— 紧凑列表，不占用大块版面 -->
+		<section class="bg-gray-vlight py-40 lg:py-48" aria-labelledby="not-found-tools">
+			<div class="container-fluid">
+				<h2 id="not-found-tools" class="text-h4 mb-12 text-blue-dark3 md:mb-16">
+					Tools, documents and specifications
+				</h2>
+				<div class="grid gap-24 md:grid-cols-3 lg:gap-40">
+					{
+						TOOL_LINKS.map((group) => (
+							<div>
+								<h3 class="text-card mb-12 text-blue-dark3">{group.title}</h3>
+								<ul class="flex flex-col gap-8">
+									{group.items.map((item) => (
+										<li>
+											<a
+												href={item.href}
+												class="text-p-sm inline-block text-gray transition-colors duration-300 hover:text-blue"
+											>
+												{item.name}
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<SiteFooter />
+	<CookieConsent />
+	<BackToTop />
+</BaseLayout>
+
+<script>
+	/**
+	 * 「Go back」—— 原生 history.back()，无依赖。
+	 * 若用户是直接打开本站 404（没有上一页可退），回退到站内首页，
+	 * 避免按钮点了没有反应。
+	 */
+	const goBack = document.querySelector('.js-go-back');
+	if (goBack) {
+		goBack.addEventListener('click', () => {
+			if (window.history.length > 1 && document.referrer) {
+				window.history.back();
+			} else {
+				window.location.href = '/';
+			}
+		});
+	}
+</script>
