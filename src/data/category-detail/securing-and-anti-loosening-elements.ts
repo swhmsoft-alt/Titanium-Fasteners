@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'securing-and-anti-loosening-elements',
-	seo: { title: 'Securing and Anti-Loosening - Products and Brands | Bossard Group', description: 'Bossard brand overview of self-locking fasteners, including wedge lock washers, locknuts, retaining rings, and self-locking screws. ' },
+	seo: { title: 'Securing and Anti-Loosening - Products and Brands', description: 'Brand overview of self-locking fasteners, including wedge lock washers, locknuts, retaining rings, and self-locking screws. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: '...' },
 			{ label: 'Securing and Anti-Loosening Elements' },
 		],

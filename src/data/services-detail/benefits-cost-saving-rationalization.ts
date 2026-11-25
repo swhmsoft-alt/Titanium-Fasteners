@@ -37,13 +37,13 @@ export const PAGE = {
 	slug: "benefits-cost-saving-rationalization",
 	path: "services/benefits/cost-saving-rationalization",
 	seo: {
-		title: "Cost Saving Rationalization | Bossard Group",
+		title: "Cost Saving Rationalization",
 		description: "Find out how our services and products lead to cost savings and rationalization.",
 	},
 	hero: {
 		breadcrumb: [
 		{
-			"label": "Bossard Group - Fasteners, Engineering, Logistics",
+			"label": "Home",
 			"href": "/"
 		},
 		{

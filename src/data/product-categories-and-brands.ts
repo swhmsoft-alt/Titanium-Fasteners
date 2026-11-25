@@ -44,7 +44,7 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 	},
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard homepage', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands' },
 		] as BreadcrumbItem[],
@@ -59,7 +59,7 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 		imageHeight: 507,
 	},
 	intro:
-		'At Bossard, we work with trusted brand partners from all over the world to provide you with the best fit for your fastening application. In addition to our branded products, we also offer a wide range of standard parts (ISO/DIN).',
+		'We work with trusted brand partners from all over the world to provide you with the best fit for your fastening application. In addition to our branded products, we also offer a wide range of standard parts (ISO/DIN).',
 	categories: {
 		heading: 'Discover Our Product Categories',
 		label: 'Products and Brands',

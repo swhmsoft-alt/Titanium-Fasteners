@@ -27,13 +27,13 @@ export const PAGE = {
 slug: "smart-factory-inventory-management",
 path: "services/smart-factory/inventory-management",
 seo: {
-title: "Inventory and C-Parts Management | Bossard Group",
+title: "Inventory and C-Parts Management",
 description: "Smart factory solutions: real-time automation, supply chain transparency, optimized C-parts management, and seamless material flow.",
 },
 hero: {
 		"breadcrumb": [
 			{
-				"label": "Bossard Group - Fasteners, Engineering, Logistics",
+				"label": "Home",
 				"href": "/"
 			},
 			{
@@ -66,7 +66,7 @@ blocks: [
 			"kind": "hero",
 			"breadcrumb": [
 				{
-					"label": "Bossard Group - Fasteners, Engineering, Logistics",
+					"label": "Home",
 					"href": "/"
 				},
 				{
@@ -251,7 +251,7 @@ blocks: [
 					"description": "Integrate the handling of all your B- and C-parts from various suppliers in one system. Reduce administrative effort, improve delivery performance and reliability, and optimize inventory levels.",
 					"icon": {
 						"src": "/images/services-smart-factory-inventory-management/04-illustration-that-showcases-the-consolidation-of.webp",
-						"alt": "Illustration that showcases the consolidation of several suppliers at Bossard to deliver C-parts from one single source",
+						"alt": "Illustration that showcases the consolidation of several suppliers to deliver C-parts from one single source",
 						"width": 202,
 						"height": 202
 					}

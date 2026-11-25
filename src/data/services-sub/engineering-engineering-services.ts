@@ -27,13 +27,13 @@ export const PAGE = {
 slug: "engineering-engineering-services",
 path: "services/engineering/engineering-services",
 seo: {
-title: "Engineering Services | Bossard Group",
+title: "Engineering Services",
 description: "Trusted engineering services for your fastening needs. Optimize production, improve quality and reduce costs with our Assembly Technology Expert program.",
 },
 hero: {
 		"breadcrumb": [
 			{
-				"label": "Bossard Group - Fasteners, Engineering, Logistics",
+				"label": "Home",
 				"href": "/"
 			},
 			{
@@ -66,7 +66,7 @@ blocks: [
 			"kind": "hero",
 			"breadcrumb": [
 				{
-					"label": "Bossard Group - Fasteners, Engineering, Logistics",
+					"label": "Home",
 					"href": "/"
 				},
 				{

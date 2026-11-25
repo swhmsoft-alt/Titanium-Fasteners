@@ -27,13 +27,13 @@ export const PAGE = {
 slug: "smart-factory-smart-assembly",
 path: "services/smart-factory/smart-assembly",
 seo: {
-title: "Smart Assembly: Assembly Digitalization on your shopfloor | Bossard Group",
+title: "Smart Assembly: Assembly Digitalization on your shopfloor",
 description: "Sm﻿art Factory Assembly is a cutting-edge service precisely designed to streamline your assembly operations. ",
 },
 hero: {
 		"breadcrumb": [
 			{
-				"label": "Bossard Group - Fasteners, Engineering, Logistics",
+				"label": "Home",
 				"href": "/"
 			},
 			{
@@ -66,7 +66,7 @@ blocks: [
 			"kind": "hero",
 			"breadcrumb": [
 				{
-					"label": "Bossard Group - Fasteners, Engineering, Logistics",
+					"label": "Home",
 					"href": "/"
 				},
 				{
@@ -149,7 +149,7 @@ blocks: [
 					"description": "Connect and integrate all assembly tools and devices with Smart Factory Assembly, for seamless interaction with the ELAM Solutions platform.",
 					"icon": {
 						"src": "/images/services-smart-factory-smart-assembly/04-bossard-smart-tool.webp",
-						"alt": "Bossard Smart Tool ",
+						"alt": "Smart Tool",
 						"width": 202,
 						"height": 202
 					}

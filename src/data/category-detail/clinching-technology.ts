@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'clinching-technology',
-	seo: { title: 'Clinching Technology - Self-Clinching Fasteners | Bossard Group', description: 'Discover the world of self-clinching fasteners, including self-clinching nuts, self-clinching studs, standoffs, pins, insertion presses, and more. ' },
+	seo: { title: 'Clinching Technology - Self-Clinching Fasteners', description: 'Discover the world of self-clinching fasteners, including self-clinching nuts, self-clinching studs, standoffs, pins, insertion presses, and more. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Clinching Technology' },
@@ -30,7 +30,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Self-clinching is a secure, robust fastening solution suitable for various metals and sheet thicknesses. This is how it works:',
-	video: { heading: 'Self-Clinching Fasteners Explained', thumbnail: 'https://img.youtube.com/vi/WpaXUDGw0bE/maxresdefault.jpg', thumbnailAlt: 'PS | Clinching Technology from Bossard', caption: 'Watch the video to gain more insights into the world of clinching technology.' },
+	video: { heading: 'Self-Clinching Fasteners Explained', thumbnail: 'https://img.youtube.com/vi/WpaXUDGw0bE/maxresdefault.jpg', thumbnailAlt: 'PS | Clinching Technology', caption: 'Watch the video to gain more insights into the world of clinching technology.' },
 	richText: [
 		{ kind: 'heading', text: 'What Is Clinching Technology?' },
 		{ kind: 'paragraph', text: 'A self-clinching fastener is pressed into the workpiece, displacing the host material around the mounting hole. This causes the material to cold flow into a specially designed annular recess in the fastener’s shank or pilot. A serrated clinching ring or a special head shape prevents the fastener from rotating after installation.' },

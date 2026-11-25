@@ -37,13 +37,13 @@ export const PAGE = {
 	slug: "benefits-higher-quality-and-safety",
 	path: "services/benefits/higher-quality-and-safety",
 	seo: {
-		title: "Higher Quality and Safety | Bossard Group",
+		title: "Higher Quality and Safety",
 		description: "Find out how our services and products lead to higher quality and safety of your products.",
 	},
 	hero: {
 		breadcrumb: [
 		{
-			"label": "Bossard Group - Fasteners, Engineering, Logistics",
+			"label": "Home",
 			"href": "/"
 		},
 		{

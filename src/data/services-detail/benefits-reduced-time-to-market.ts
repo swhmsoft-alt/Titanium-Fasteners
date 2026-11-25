@@ -37,13 +37,13 @@ export const PAGE = {
 	slug: "benefits-reduced-time-to-market",
 	path: "services/benefits/reduced-time-to-market",
 	seo: {
-		title: "Reduced time to market | Bossard Group",
+		title: "Reduced time to market",
 		description: "Discover how we bring our customers’ products to market faster – a crucial competitive advantage in a global environment where speed counts.",
 	},
 	hero: {
 		breadcrumb: [
 		{
-			"label": "Bossard Group - Fasteners, Engineering, Logistics",
+			"label": "Home",
 			"href": "/"
 		},
 		{

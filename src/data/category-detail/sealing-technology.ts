@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'sealing-technology',
-	seo: { title: 'Sealing Technology Solutions | Bossard Group', description: 'Discover our world-leading solutions in sealing technology and flow control, including metal-to-metal sealing plugs, check valves, and countersinks.' },
+	seo: { title: 'Sealing Technology Solutions', description: 'Discover our world-leading solutions in sealing technology and flow control, including metal-to-metal sealing plugs, check valves, and countersinks.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Sealing Technology' },
@@ -28,7 +28,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Sealing auxiliary holes and managing fluid flow in hydraulic and pneumatic applications is crucial. Thankfully, there are specialized solutions that help you achieve increased system reliability and efficiency, while also dealing with challenges such as:',
-	video: { heading: 'Fluid Management and Sealing Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/E82RKpQoDT0/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Fluid Management and Sealing Technology at Bossard', caption: 'Get an introduction into the world of fluid management solutions and sealing technology.' },
+	video: { heading: 'Fluid Management and Sealing Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/E82RKpQoDT0/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Fluid Management and Sealing Technology', caption: 'Get an introduction into the world of fluid management solutions and sealing technology.' },
 	richText: [
 		{ kind: 'list', items: [
 			{ lead: '', text: 'quick, reliable metal-to-metal sealing' },

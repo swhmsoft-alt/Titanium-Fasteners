@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'access-solutions',
-	seo: { title: 'Access Solutions, Locking and Control Elements | Bossard Group', description: 'Get an overview of the diverse world of access solutions, from hinges, latches, and handles to positioning elements and quick release fasteners.' },
+	seo: { title: 'Access Solutions, Locking and Control Elements', description: 'Get an overview of the diverse world of access solutions, from hinges, latches, and handles to positioning elements and quick release fasteners.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Access Solutions' },
@@ -28,7 +28,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'No matter your industry, reliable low-maintenance solutions that control access to your products are crucial to ensuring quality and safety. Access and control elements are a diverse product category that range from simple handles or knobs for opening doors to hinges that adjust display mounts and electronic security levers that prevent unauthorized access.',
-	video: { heading: 'The Many Diverse Applications of Access Solutions', thumbnail: 'https://img.youtube.com/vi/-htXGKzlWD4/maxresdefault.jpg', thumbnailAlt: 'PS | Access, Locking and Control Solutions from Bossard', caption: 'Dive into the world of access solutions and discover some of the unexpected places where these elements are in use.' },
+	video: { heading: 'The Many Diverse Applications of Access Solutions', thumbnail: 'https://img.youtube.com/vi/-htXGKzlWD4/maxresdefault.jpg', thumbnailAlt: 'PS | Access, Locking and Control Solutions', caption: 'Dive into the world of access solutions and discover some of the unexpected places where these elements are in use.' },
 	richText: [
 		{ kind: 'heading', text: 'Different Types of Access Solutions' },
 		{ kind: 'paragraph', text: 'Access solutions and control elements are used in a wide range of industries, such as machinery, railway, automotive, and many more. Our portfolio ranges from standard machine and control elements, including knobs, handwheels, and hinges to more specialized parts, for example:' },

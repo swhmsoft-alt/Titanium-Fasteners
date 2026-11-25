@@ -58,7 +58,7 @@ export const FASTENER_COATINGS = {
 	},
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard homepage', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: '...' },
 			{ label: 'Fastener Coatings' },
 		] as BreadcrumbItem[],

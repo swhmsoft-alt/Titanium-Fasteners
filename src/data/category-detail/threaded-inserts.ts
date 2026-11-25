@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'threaded-inserts',
-	seo: { title: 'Threaded Inserts - Products and Brands | Bossard Group', description: 'Explore various threaded inserts and top brands, including wire thread inserts, self-tapping thread inserts, and press-in threaded inserts.' },
+	seo: { title: 'Threaded Inserts - Products and Brands', description: 'Explore various threaded inserts and top brands, including wire thread inserts, self-tapping thread inserts, and press-in threaded inserts.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Threaded Inserts' },
@@ -30,10 +30,10 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Threaded inserts create precise, robust, and wear-resistant nut threads in workpieces made of light metal, plastic, and other materials with low shear strength. They also allow you to replace defective threads quickly and cost-effectively.',
-	video: { heading: 'Threaded Insert Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/3InS-07jc8I/maxresdefault.jpg', thumbnailAlt: 'PS | Threaded Inserts Fastening Technology from Bossard', caption: 'Watch the video to learn about the different types of threaded inserts and their use cases.' },
+	video: { heading: 'Threaded Insert Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/3InS-07jc8I/maxresdefault.jpg', thumbnailAlt: 'PS | Threaded Inserts Fastening Technology', caption: 'Watch the video to learn about the different types of threaded inserts and their use cases.' },
 	richText: [
 		{ kind: 'heading', text: 'Different Types of Threaded Inserts' },
-		{ kind: 'paragraph', text: 'Depending on the application, different types of threaded inserts are available. At Bossard, we distinguish between the following types:' },
+		{ kind: 'paragraph', text: 'Depending on the application, different types of threaded inserts are available. We distinguish between the following types:' },
 		{ kind: 'list', items: [
 			{ lead: 'Wire', text: 'thread inserts' },
 			{ lead: 'Self-tapping', text: 'thread inserts' },

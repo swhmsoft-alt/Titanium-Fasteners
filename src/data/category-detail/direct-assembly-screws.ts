@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'direct-assembly-screws',
-	seo: { title: 'Direct Assembly Screws - Products and Brands | Bossard Group', description: 'Discover self-drilling screws, thread-cutting screws, thread-forming screws, and more. Bossard brand overview of direct assembly screws.' },
+	seo: { title: 'Direct Assembly Screws - Products and Brands', description: 'Discover self-drilling screws, thread-cutting screws, thread-forming screws, and more. Brand overview of direct assembly screws.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: '...' },
 			{ label: 'Direct Assembly Screws' },
 		],
@@ -29,10 +29,10 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Direct assembly screws are suitable for numerous applications and materials, such as aluminum, thin sheet metal, steel, thermoplastics, wood, and concrete. Different materials require different screw designs to ensure an optimal connection.',
-	video: { heading: 'Find the Right Screw for Your Application', thumbnail: 'https://img.youtube.com/vi/19ozjSem_oI/maxresdefault.jpg', thumbnailAlt: 'PS | Direct Assembly Screws from Bossard', caption: 'Get a quick overview of direct assembly screws and learn which one to use for which application.' },
+	video: { heading: 'Find the Right Screw for Your Application', thumbnail: 'https://img.youtube.com/vi/19ozjSem_oI/maxresdefault.jpg', thumbnailAlt: 'PS | Direct Assembly Screws', caption: 'Get a quick overview of direct assembly screws and learn which one to use for which application.' },
 	richText: [
 		{ kind: 'heading', text: 'Different Types of Direct Assembly Screws' },
-		{ kind: 'paragraph', text: 'At Bossard, we distinguish between different types of screws for direct assembly:' },
+		{ kind: 'paragraph', text: 'We distinguish between different types of screws for direct assembly:' },
 		{ kind: 'list', items: [
 			{ lead: 'Self-drilling screws', text: 'require no pre-drilling, which makes them ideal for quick and efficient installation.' },
 			{ lead: 'Thread-cutting screws', text: 'create a mating thread in hard materials while still requiring only a low installation torque.' },

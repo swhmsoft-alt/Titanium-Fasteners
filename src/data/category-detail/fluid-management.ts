@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'fluid-management',
-	seo: { title: 'Fluid Management Solutions | Bossard Group', description: 'Improve your industrial fluid management systems with pressure intensifiers and quick connectors for hydraulic and pneumatic solutions.' },
+	seo: { title: 'Fluid Management Solutions', description: 'Improve your industrial fluid management systems with pressure intensifiers and quick connectors for hydraulic and pneumatic solutions.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Fluid Management' },
@@ -28,7 +28,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Fluid management solutions are crucial, especially in the agricultural, machinery, or manufacturing sectors. They ensure that hydraulic and pneumatic systems run reliably and efficiently.',
-	video: { heading: 'Fluid Management and Sealing Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/E82RKpQoDT0/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Fluid Management and Sealing Technology at Bossard', caption: 'Get an introduction into the world of fluid management solutions and sealing technology.' },
+	video: { heading: 'Fluid Management and Sealing Technology: An Overview', thumbnail: 'https://img.youtube.com/vi/E82RKpQoDT0/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Fluid Management and Sealing Technology', caption: 'Get an introduction into the world of fluid management solutions and sealing technology.' },
 	richText: [
 		{ kind: 'heading', text: 'Fluid Management: Challenges and How to Solve Them' },
 		{ kind: 'paragraph', text: 'Typical challenges in industrial fluid management are pressure control and optimizing the testing process of hydraulic and pneumatic components. For these use cases, we provide specialized solutions:' },

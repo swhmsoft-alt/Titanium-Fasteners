@@ -37,13 +37,13 @@ export const PAGE = {
 	slug: "benefits-leaner-processes-and-automation",
 	path: "services/benefits/leaner-processes-and-automation",
 	seo: {
-		title: "Leaner Processes and Automation | Bossard Group",
+		title: "Leaner Processes and Automation",
 		description: "Discover the Secret of 15-85 – Total Cost of Ownership (TCO) in Fastening and our top 4 solutions for leaner processes and automation.",
 	},
 	hero: {
 		breadcrumb: [
 		{
-			"label": "Bossard Group - Fasteners, Engineering, Logistics",
+			"label": "Home",
 			"href": "/"
 		},
 		{

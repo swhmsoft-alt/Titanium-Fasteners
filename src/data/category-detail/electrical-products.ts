@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'electrical-products',
-	seo: { title: 'Electrical Products and Brands | Bossard Group', description: 'Bossard brand overview of electrical products. Discover our solutions for wire management, contact parts, cable ties, cable glands, enclosures, and more.' },
+	seo: { title: 'Electrical Products and Brands', description: 'Brand overview of electrical products. Discover our solutions for wire management, contact parts, cable ties, cable glands, enclosures, and more.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Electrical Products' },

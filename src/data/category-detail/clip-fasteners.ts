@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'clip-fasteners',
-	seo: { title: 'Clip Fasteners Overview | Bossard Group', description: 'Discover quick-release clip fasteners for time-sensitive applications, including cage nuts, hose clamps, spring plungers, ball lock pins, and more. ' },
+	seo: { title: 'Clip Fasteners Overview', description: 'Discover quick-release clip fasteners for time-sensitive applications, including cage nuts, hose clamps, spring plungers, ball lock pins, and more. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Clip Fasteners' },

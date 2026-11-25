@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'embedding-and-surface-bonding-fasteners',
-	seo: { title: 'Embedding and Surface Bonding Fasteners | Bossard Group', description: 'The ideal solution to create a secure fixing point in composite or plastic materials – without any holes, punching, or drilling. ' },
+	seo: { title: 'Embedding and Surface Bonding Fasteners', description: 'The ideal solution to create a secure fixing point in composite or plastic materials – without any holes, punching, or drilling. ' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'bigHead' },

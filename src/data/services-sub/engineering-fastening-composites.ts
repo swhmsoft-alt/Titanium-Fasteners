@@ -27,13 +27,13 @@ export const PAGE = {
 slug: "engineering-fastening-composites",
 path: "services/engineering/fastening-composites",
 seo: {
-title: "Composite Fastening Elements | Bossard Group",
+title: "Composite Fastening Elements",
 description: "Explore innovative fastening solutions for composites. From design to assembly, we guide, design, and deliver optimal solutions for your challenges.",
 },
 hero: {
 		"breadcrumb": [
 			{
-				"label": "Bossard Group - Fasteners, Engineering, Logistics",
+				"label": "Home",
 				"href": "/"
 			},
 			{
@@ -66,7 +66,7 @@ blocks: [
 			"kind": "hero",
 			"breadcrumb": [
 				{
-					"label": "Bossard Group - Fasteners, Engineering, Logistics",
+					"label": "Home",
 					"href": "/"
 				},
 				{
@@ -144,7 +144,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Bossard has the most effective composite fastening technologies available. Beyond that, our expertise lies in precisely specifying when and how to use them. We eliminate guesswork and mitigate risks at every stage of your design, manufacturing, and assembly processes.",
+					"text": "We have the most effective composite fastening technologies available. Beyond that, our expertise lies in precisely specifying when and how to use them. We eliminate guesswork and mitigate risks at every stage of your design, manufacturing, and assembly processes.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -174,7 +174,7 @@ blocks: [
 				{
 					"kind": "imageRow",
 					"heading": "We Design – Creating the Best Solution",
-					"body": "We design, test, and validate the fasteners according to the specifications from the guiding process. This ensures that it meets the requirements of both the OEM and the manufacturer. Bossard’s approach actively tailors the final product to the precise needs and expectations outlined in the requirement catalog.",
+					"body": "We design, test, and validate the fasteners according to the specifications from the guiding process. This ensures that it meets the requirements of both the OEM and the manufacturer. Our approach actively tailors the final product to the precise needs and expectations outlined in the requirement catalog.",
 					"image": {
 						"src": "/images/services-engineering-fastening-composites/06-two-people-at-a-desk-in-a-modern-office-discuss-.webp",
 						"alt": "Two people at a desk in a modern office discuss fastening a composite material; one holds a sandwich panel, the other a fastener.",

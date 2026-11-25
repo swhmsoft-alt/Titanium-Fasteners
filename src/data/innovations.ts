@@ -45,13 +45,13 @@ export const INNOVATIONS = {
 	seo: {
 		title: 'Innovations',
 		description:
-			'Explore new and innovative fastening technologies at Bossard — from high-strength aluminum and titanium fasteners to invisible fastening connections. Or bring your own idea and let us make it a success.',
+			'Explore new and innovative fastening technologies — from high-strength aluminum and titanium fasteners to invisible fastening connections. Or bring your own idea and let us make it a success.',
 	},
 
 	hero: {
 		breadcrumb: [
 			{
-				label: 'Bossard Group - Fasteners, Engineering, Logistics',
+				label: 'Home',
 				href: '/',
 			},
 			{ label: 'Product Solutions', href: '/product-solutions/' },
@@ -59,7 +59,7 @@ export const INNOVATIONS = {
 		] as BreadcrumbItem[],
 		eyebrow: 'Product Solutions',
 		heading: 'Innovative Fasteners: The Future of Fastening Technology',
-		lead: 'Explore new and innovative fastening technologies at Bossard. Or are you an inventor yourself? Contact us to make your idea come to life!',
+		lead: 'Explore new and innovative fastening technologies. Or are you an inventor yourself? Contact us to make your idea come to life!',
 		image: '/images/innovations/01-a-futuristic-drone-soaring-above-a-cityscape-sym.webp',
 		imageAlt:
 			'A futuristic drone soaring above a cityscape, symbolizing the advancement of drone delivery technology.',
@@ -134,7 +134,7 @@ export const INNOVATIONS = {
 	} as ContactForm,
 
 	intro: [
-		'At Bossard, we continuously develop innovative fasteners and new processing techniques. Our focus is always on functionality and safety over the product lifetime, maximum productivity in production, and sustainability across the entire value chain.',
+		'We continuously develop innovative fasteners and new processing techniques. Our focus is always on functionality and safety over the product lifetime, maximum productivity in production, and sustainability across the entire value chain.',
 		'For these innovative fasteners, our R&D Fastening Technology works closely with established brand partners, start-ups, and our internal engineering departments around the world. The functionality and manufacturability of these innovations have already been verified – they are now available for validation as part of joint pilot projects.',
 	],
 
@@ -167,7 +167,7 @@ export const INNOVATIONS = {
 			},
 			{
 				image: '/images/innovations/05-ecosyn-sef-stainless-steel-contact-fitting-faste.webp',
-				alt: 'ecosyn SEF stainless steel contact fitting fastener',
+				alt: 'SEF stainless steel contact fitting fastener',
 				imageWidth: 300,
 				imageHeight: 169,
 				caption: 'The SEF inox is a 3-in-1 contact fitting made from stainless steel.',
@@ -186,7 +186,7 @@ export const INNOVATIONS = {
 	yourInnovation: {
 		heading: 'Your Innovation in Fastening Technology',
 		paragraphs: [
-			'Do you have an innovative fastening idea? We’ve got the know-how to make it a success! Whether you are in the early stages with just an idea, in the process of refining your prototype, or you’re ready to go to market with your invention: Bossard is your partner of choice to make it happen.',
+			'Do you have an innovative fastening idea? We’ve got the know-how to make it a success! Whether you are in the early stages with just an idea, in the process of refining your prototype, or you’re ready to go to market with your invention: we are your partner of choice to make it happen.',
 			'Why? We strive to find solutions to global fastening challenges every day and we know how to navigate the innovation process. In our years of experience, we have successfully implemented innovations in-house and with brand partners and external institutions. We know the nuts and bolts of the business.',
 			'Together, we can make your idea come to life.',
 		],

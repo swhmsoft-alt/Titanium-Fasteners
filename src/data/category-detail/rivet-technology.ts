@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'rivet-technology',
-	seo: { title: 'Rivet Technology - Products and Brands | Bossard Group', description: 'An overview of rivet technology, from blind rivets and blind rivet nuts to lockbolts, including the proper rivet tools for installation.' },
+	seo: { title: 'Rivet Technology - Products and Brands', description: 'An overview of rivet technology, from blind rivets and blind rivet nuts to lockbolts, including the proper rivet tools for installation.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Rivet Technology' },
@@ -30,7 +30,7 @@ export const CATEGORY_DETAIL: CategoryDetailPage = {
 		],
 	},
 	intro: 'Rivet technology reliably connects two independent components. Whether you are dealing with steel, plastic, or other materials of different strengths and thicknesses, riveting will securely hold them together.',
-	video: { heading: 'Rivet Technology: The Basics', thumbnail: 'https://img.youtube.com/vi/dmzax1ClSPc/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Rivet Technology from Bossard', caption: 'Learn more about the different types of rivets, including blind rivets, blind rivet nuts, and lockbolts.' },
+	video: { heading: 'Rivet Technology: The Basics', thumbnail: 'https://img.youtube.com/vi/dmzax1ClSPc/maxresdefault.jpg', thumbnailAlt: 'PS | Categories and Brands | Rivet Technology', caption: 'Learn more about the different types of rivets, including blind rivets, blind rivet nuts, and lockbolts.' },
 	richText: [
 		{ kind: 'heading', text: 'Types of Rivets' },
 		{ kind: 'paragraph', text: 'There is a rivet for every fastening need. and systems provide the solution for your one-sided access applications, from high-strength to lightweight materials. If you require a high production output, technology allows you to fasten up to 70 rivets per minute. For applications in high-vibration environments, ensure a safe and non-releasable connection. Blind rivet nuts blind riveting speed riveting lockbolts' },

@@ -37,13 +37,13 @@ export const PAGE = {
 	slug: "benefits-design-optimization-and-validation",
 	path: "services/benefits/design-optimization-and-validation",
 	seo: {
-		title: "Design Optimization and Validation | Bossard Group",
+		title: "Design Optimization and Validation",
 		description: "Find out how you benefit from design optimization and validation of your services and products.",
 	},
 	hero: {
 		breadcrumb: [
 		{
-			"label": "Bossard Group - Fasteners, Engineering, Logistics",
+			"label": "Home",
 			"href": "/"
 		},
 		{

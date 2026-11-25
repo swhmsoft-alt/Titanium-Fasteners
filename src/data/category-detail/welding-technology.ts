@@ -9,10 +9,10 @@ import type { CategoryDetailPage } from './types';
 
 export const CATEGORY_DETAIL: CategoryDetailPage = {
 	slug: 'welding-technology',
-	seo: { title: 'Welding Technology Overview | Bossard Group', description: 'Discover the technique that creates strong, permanent fastening connections: from classic stud welding to innovative ultrasonic welding.' },
+	seo: { title: 'Welding Technology Overview', description: 'Discover the technique that creates strong, permanent fastening connections: from classic stud welding to innovative ultrasonic welding.' },
 	hero: {
 		breadcrumb: [
-			{ label: 'Bossard Group - Fasteners, Engineering, Logistics', href: '/' },
+			{ label: 'Home', href: '/' },
 			{ label: 'Product Solutions', href: '/product-solutions/' },
 			{ label: 'Product Categories and Brands', href: '/product-solutions/product-categories-and-brands/' },
 			{ label: 'Welding Technology' },
