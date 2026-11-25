@@ -3,6 +3,19 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## 404 本地验收闸门（2026-11-25）★ 最新一节，先读这里
+
+- **Current Status**：新增 `scripts/check-404.mjs` + npm script `check:404`，并在 CI（`.github/workflows/deploy-ftp.yml`）链接闸门之后追加「Gate — 404 page acceptance」一步。**未改动** `src/pages/404.astro`、`global.css`、BaseLayout / Header / Footer、任何路由表；无新依赖。
+  - **解决的问题**：`astro dev` / `astro preview` 下，无尾斜杠的未知 URL 会显示 **Astro 自带的 trailingSlash 提示页**（带 Astro logo），而不是自建 404 页。带尾斜杠则正常显示自建 404 页。**这是开发服务器层的行为，与 404 页面本身无关。**
+  - **源码定位**：`node_modules/astro/dist/vite-plugin-astro-server/trailing-slash.js` → `devTrailingSlash`。判断条件 `trailingSlash === 'always' && !pathname.endsWith('/') && !hasFileExtension(pathname)` 成立即 `writeHtmlResponse(404, trailingSlashMismatchTemplate)` 直接返回。**该中间件在 Astro 路由管线之前执行**，因此 `src/pages/404.astro` 与 `src/middleware.ts` 都无法拦截它（middleware 在管线内，跑不到）。该条件**不检查路由是否存在**，所以连真实页 `/products/screws`（无斜杠）在 dev 下也会命中这张提示页。
+  - **生产端不受影响**：线上由 `.htaccess` 的 `ErrorDocument 404 /404.html` 承接（CI run #27 已上线，见下一节）。LiteSpeed 对无斜杠未知路径返回 404 → 命中该映射 → 同样渲染自建 404 页。**带/不带斜杠在生产都会走自建 404。**
+- **Next Step**：本地验收一律跑 `npm run check:404`（需先 `npm run build`）。它起一个本地静态服务器**复刻生产 `ErrorDocument 404 /404.html` 语义**（404 时回落 `dist/404.html`），对 6 种 URL 形态断言「状态码 404 + 正文是自建 404 页」，并校验 `dist/404.html` 的 10 个关键标记（noindex、canonical `/404.html`、h1、三条 CTA、四个业务入口）。任何一项不达标即 exit 1。
+- **Known Pitfalls**：
+  - **不要用 `astro dev` / `astro preview` 判断 404 页是否正常** —— 无斜杠 URL 必然显示 Astro 提示页，这是框架设计，不是 bug。要证明生产行为，用 `npm run check:404`。
+  - **`/products/din-titanium-fasteners/1/` 是刻意构造的不存在路径**，不是路由 bug：族 id 全是 kebab slug（`hex-socket-head-cap-screw` 等），站内无任何数字 id 链接（已 grep 确认）。产品路由为 `/products/<category>/<family>/`。
+  - **Node 退出方式**：`check-404.mjs` 用 `process.exitCode = 1` 而非 `process.exit(1)` —— HTTP server 刚 `close()` 后强制退出会触发 Windows 上的 `handle->flags & UV_HANDLE_CLOSING` 断言崩溃（退出码变成 -1073740791）。同理 `server.closeAllConnections()` 必须在 `server.close()` 之前调用。
+  - **闸门自检**：脚本失败路径已反向验证过（喂一份只含 Astro 模板文本的假 `dist/404.html` → exit 1），确认它不是永远绿的空壳。
+
 ## 404 错误页上线（2026-11-25）★ 最新一节，先读这里
 
 - **Current Status**：新建 `src/pages/404.astro`（**唯一代码改动**，187 行；未动 BaseLayout / Header / Footer / 全局 CSS / 任何路由 / 无新依赖）。复用 `BaseLayout` + 全站导航/页脚 + `Button`/`Card` UI 组件 + `@data/knowledge-hub`；四模块：① Error 404 状态标记 + h1 + 导语 ② 三大入口 CTA（Back to homepage → `/`、Go back → `history.back()` 且无历史时回落 `/`、Send us an inquiry instead → `/contact/`）③ 四宫格业务入口（`/products/`、`/product-solutions/`、`/services/`、`/contact/`，逐条核对 `src/pages/` 存在）④ Knowledge Hub 工具行（href 由 `@data/knowledge-hub` 派生，与菜单同源）。带 `<meta name="robots" content="noindex, nofollow">`，canonical = `/404.html`。
