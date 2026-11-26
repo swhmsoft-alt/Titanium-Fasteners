@@ -366,13 +366,41 @@ if (isset($files['attachment']) && is_array($files['attachment'])) {
     }
 }
 
+/**
+ * 把 PHP 上传错误码翻译成访客能看懂的原因。
+ *
+ * 前端会直接显示响应里的 msg 字段，所以这里必须是人话，而不是裸错误码。
+ */
+function uploadErrorMessage(int $code): string
+{
+	switch ($code) {
+		case UPLOAD_ERR_INI_SIZE:
+			return 'The file is larger than this server accepts. Please send a smaller file or email it to us.';
+		case UPLOAD_ERR_FORM_SIZE:
+			return 'The file is larger than the upload form allows. Please send a smaller file or email it to us.';
+		case UPLOAD_ERR_PARTIAL:
+			return 'The file was only partially uploaded. Please try again or email it to us.';
+		case UPLOAD_ERR_NO_FILE:
+			return 'No file was received.';
+		case UPLOAD_ERR_NO_TMP_DIR:
+			return 'The server has no temporary folder for uploads. Please email the file to us.';
+		case UPLOAD_ERR_CANT_WRITE:
+			return 'The server could not write the uploaded file to disk. Please email the file to us.';
+		case UPLOAD_ERR_EXTENSION:
+			return 'A server extension blocked the upload. Please email the file to us.';
+		default:
+			return 'The file could not be uploaded (code ' . $code . '). Please email it to us.';
+	}
+}
+
+
 foreach ($attachmentItems as $file) {
     $err = $file['error'];
     if ($err === UPLOAD_ERR_NO_FILE) {
         continue;
     }
     if ($err !== UPLOAD_ERR_OK) {
-        respond(400, ['ok' => false, 'msg' => 'File upload failed (code ' . $err . ').']);
+        respond(400, ['ok' => false, 'msg' => uploadErrorMessage($err)]);
     }
 
     $tmp = $file['tmp_name'];

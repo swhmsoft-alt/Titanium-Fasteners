@@ -206,7 +206,20 @@ export default function InquiryForm(props: InquiryFormProps) {
 				picked.forEach((f) => fd.append('attachment[]', f));
 
 				const res = await fetch(uploadEndpoint, { method: 'POST', body: fd });
-				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				// 后端把失败原因写在 msg 里（例：File upload failed (code 1)），
+				// 必须读出来显示，否则访客只会看到一句笼统的失败提示。
+				const body = await res.json().catch(() => null);
+				if (!res.ok) {
+					throw new Error(String(body?.msg ?? `HTTP ${res.status}`));
+				}
+				// files = 后端实际落盘的附件数。少于用户选择数 → 有文件没送达，
+				// 不能报「提交成功」。
+				const stored = typeof body?.files === 'number' ? body.files : picked.length;
+				if (stored < picked.length) {
+					throw new Error(
+						`We received your message, but only ${stored} of ${picked.length} attachment(s) were stored. Please email the remaining file to ${fallbackEmail}.`
+					);
+				}
 				setStatus('sent');
 				setSent(true);
 				form.reset();

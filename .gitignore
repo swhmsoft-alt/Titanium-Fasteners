@@ -28,6 +28,10 @@ p2.txt
 plog.txt
 plog.zip
 
+# inquiry storage (customer data — server-side only, never commit)
+.boze-secure/
+public/.boze-secure/
+
 # editor / OS
 .vscode/
 .idea/

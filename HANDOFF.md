@@ -3,7 +3,27 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
-## 询盘接口 500 根因修复 + 存储越界整改（2026-11-26）★ 最新一节，先读这里
+## 询盘后台零门槛化 + 附件回执可见化（2026-11-26）★ 最新一节，先读这里
+
+- **Current Status**：把 `inquiry-admin.php` 从「只有懂 PHP 的人会用」改造成「工人照着中文界面点按钮就能取件」，并修掉前端一个**会误报成功**的缺陷。**改动文件 4 个**：`public/api/inquiry-admin.php`（重写）、`public/api/submit-inquiry.php`（错误码人话化）、`src/components/sections/contact/ContactInquiryForm.astro`（读 `files`/`msg`）、`src/components/islands/InquiryForm.tsx`（同上）。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由 / 产品 CSV / 部署链 / 附件存储格式。
+  - **口令两条路，且都不需要站长碰服务器**：① 仓库内置口令（**只存 SHA-256 哈希**，明文不入版本库）；② 站长在 `.boze-secure/admin.key.php` 写自己的口令。**覆盖文件一旦存在就完全取代内置口令**（不是「两条路任选其一」）—— 否则站长担心内置口令泄露时也无法收回那条路，覆盖就失去「收回权限」的意义。两条路都用 `hash_equals` 常数时间比对。
+  - **中文后台功能**：附件列显示「已收到 N 个文件」+ 原始文件名 + 扩展名/字节数；PDF/PNG/JPG 有「预览」（`Content-Disposition: inline`），其余类型预览自动跳转为下载；「下载全部附件 (ZIP)」；「标记已处理 / 标为未处理」（状态存 `.boze-secure/processed.php`，flock 排他锁）；「回邮客户」按钮（mailto 预填参考号+需求）；未处理行高亮、已处理行置灰。
+  - **ZIP 不依赖 `ext-zip`**：本地 PHP 8.3 CLI 就没编 zip 扩展，共享主机大概率同样没有 → 绑在 `ZipArchive` 上会让按钮变成 501 而站长并不知道该找主机商开什么。改为**纯 PHP store 模式打包**（method 0 不需 zlib，`crc32()` 是核心函数），流式 `fwrite` 进临时文件，内存占用与单个附件同量级，不会因「20MB × N」打爆 `memory_limit`。
+  - **前端修掉的真缺陷（重点）**：原逻辑**忽略响应里的 `files` 与 `msg`** → 附件没落盘也照样显示「提交成功」回执卡。现在：HTTP 非 2xx 直接抛后端 `msg` 原文；`files < 选择数` 也算失败，明确告知「只收到 N 个文件，请邮件补发其余附件」。后端 `UPLOAD_ERR_*` 错误码翻译成人话（原来只回 `File upload failed (code 1)`）。
+  - **验收（本机真实 PHP 8.3.14 + `php -S`，非静态审查）**：`php -l` 两个文件均无语法错误。**后台端到端 46 项全过**（含：未登录不泄露邮箱/公司、未登录直连附件/打包/标记全部 302、错误口令被拒、正确口令 302、列表中文表头+附件计数+原名、**下载字节与上传逐字节相同**、`attachment; filename="bracket.pdf"`、预览 `inline`、CSV 预览 302 转下载、ZIP 条目名/CRC/字节全部正确、路径穿越 400、非法存储名 400、载荷 URL 取不到原件、标记已处理落盘并置灰）。**覆盖机制单独 4 项全过**（自定义口令可登录 / 有覆盖文件时内置口令失效 / 错误口令被拒）。**浏览器实测**（Chrome DevTools MCP，真实渲染）：失败路径显示后端 `msg` 原文且表单不隐藏（可改后重试）；`files=0` 显示「only 0 of 1 attachment(s) were stored…请邮件补发」；成功路径出回执卡 `RFQ-2026-8475`。`npm run build` → `Complete!` 94 页 0 ERROR。
+- **Next Step**：
+  1. **部署后必须实测一次线上 multipart 提交**：用真实 `.step` / `.dwg` / PDF POST `https://fastener.bozemetal.com/api/submit-inquiry.php`，确认 200 且 `files:N`，并确认 `https://fastener.bozemetal.com/.boze-secure/uploads/<hash>.php` 返回空响应。
+  2. **内置口令的明文不入库**（本仓库只存 SHA-256 哈希，明文进版本库 = 安全设计作废）。首次口令由用户在会话中口头给定；**建议上线后立刻在 cPanel 建 `.boze-secure/admin.key.php` 换成站长自己的口令**（第一行必须是 `<?php __halt_compiler(); ?>`，第二行写口令；省了第一行口令就能被 URL 直接下载）—— 放了之后内置口令即刻失效，这正是「收回权限」的手段。
+  3. **确认主机 PHP 已启用 fileinfo**（`php -m | grep fileinfo`）；未启用也能跑（魔数降级），但 CSV/纯文本的判定会偏保守。
+  4. **确认 `mail()` 在 cPanel 上可用**（PHP `mail()` 依赖主机 sendmail）。若不可用，询盘仍会落盘、后台也能看到，但**无人收到通知** —— 响应里的 `mailed` 字段可用来判断。
+  5. **cPanel 上传限制**需手动确认：`upload_max_filesize ≥ 20M`、`post_max_size ≥ 40M`、`memory_limit ≥ post_max_size`、`max_execution_time ≥ 120`。默认 2M 会静默失败（`UPLOAD_ERR_INI_SIZE`）。
+- **Known Pitfalls（本轮新增）**：
+  - **本地测 PHP 端点绝不能把存储根设在仓库 `public/` 下**：存储根 = `dirname(__DIR__)`，仓库内测试会生成 `public/.boze-secure/` → 被 build 复制进 `dist/` → 部署时**覆盖线上询盘数据**。本轮一律用 `C:\boze_test` 这类**仓库外**目录做 `php -S` 根目录。
+  - **Node `fetch` 不自动管理 cookie**：探针脚本必须手动把 `Set-Cookie` 存下来并回填 `Cookie` 请求头，否则登录后的每个请求都是 302，现象是「密码对了却还是回到登录页」。
+  - **共享主机未必有 `ext-zip`**（本地 PHP 8.3 CLI 就没有）。任何依赖扩展的能力都要有纯 PHP 兜底，否则线上会变成 501 而站长无从排查。
+  - **覆盖文件与内置口令不能是「或」关系**：两者同时有效 = 内置口令永远无法被收回。
+
+## 询盘接口 500 根因修复 + 存储越界整改（2026-11-26）★ 次新节，先读这里
 
 - **Current Status**：修复 `public/api/submit-inquiry.php` 的线上 500（HTTP 500 + 空 body），并把附件存储从共享账户根 `/home/safetipa` 收回到站点目录内。**改动文件 6 个**：`public/api/submit-inquiry.php`（重写）、`src/config/site.ts`（`INQUIRY.endpoint` 指向新端点）、`src/components/islands/InquiryForm.tsx`（`attachment[]` + name 属性）、`src/components/sections/contact/ContactInquiryForm.astro`（同上）、`src/data/legal.ts`（隐私口径同步）、`package.json` + `scripts/check-php.mjs`（新建，PHP 语法闸门接入 build）。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由结构 / 产品数据 CSV。
   - **三个独立缺陷**（缺一不可，每个都足以让功能失效）：
