@@ -40,7 +40,7 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 	seo: {
 		title: 'Product Categories and Brands',
 		description:
-			'Discover the diverse world of fastening elements and brands — rivets, thread inserts, self-clinching fasteners, access solutions and much more.',
+			'Titanium fasteners organised by the job they do — direct assembly, anti-loosening joints, thin-sheet and composite assembly, welded structures, bonded joints, electrical housings, service access, fluid management and sealing.',
 	},
 	hero: {
 		breadcrumb: [
@@ -51,7 +51,7 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 		eyebrow: 'Product Solutions',
 		heading: 'Product Categories and Brands',
 		lead:
-			'No matter your fastening challenge, our comprehensive product portfolio offers solutions. Discover the diverse world of fastening elements and brands, including rivets, thread inserts, self-clinching fasteners, access solutions and much more.',
+			'Twelve ways a titanium fastener gets used. Each solution page sets out the grade, the finish and the fastener we would run for that joint — from direct assembly and anti-loosening to thin sheet, bonded structures, electrical housings and service access.',
 		image:
 			'/images/product-categories-and-brands/01-woman-in-business-attire-holding-a-screw-in-her-.webp',
 		imageAlt: 'Woman in business attire holding a screw in her hand',
@@ -59,120 +59,127 @@ export const PRODUCT_CATEGORIES_AND_BRANDS = {
 		imageHeight: 507,
 	},
 	intro:
-		'We work with trusted brand partners from all over the world to provide you with the best fit for your fastening application. In addition to our branded products, we also offer a wide range of standard parts (ISO/DIN).',
+		'We are a titanium fastener factory, so every solution page below is written around the part we actually make: the bolt, the stud, the nut, the washer and the special part machined to your drawing. Where a job needs something we do not make — a rivet, a clinching element, a quick-release captive fastener — we say so on the page and tell you what the titanium in the joint has to do instead.',
 	categories: {
 		heading: 'Discover Our Product Categories',
 		label: 'Products and Brands',
 		tiles: [
 			{
 				href: '/product-solutions/product-categories-and-brands/direct-assembly-screws/',
-				image: '/images/product-categories-and-brands/02-different-types-of-direct-assembly-screws-on-a-w.webp',
-				alt: 'Different types of direct assembly screws on a white background.',
-				label: 'Products and Brands',
-				title: 'Direct Assembly Screws',
+				image:
+					'/images/product-categories-and-brands/02-different-types-of-direct-assembly-screws-on-a-w.webp',
+				alt: 'Range of titanium direct assembly screws — socket head cap, countersunk and hex head types.',
+				label: 'Product Solutions',
+				title: 'Titanium Direct Assembly',
 				description:
-					'Ensure fast, efficient assembly for durable connections between all materials',
+					'Titanium screws that go straight into sheet, aluminium or composite — grade and finish chosen against the base material',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/securing-and-anti-loosening-elements/',
-				image: '/images/product-categories-and-brands/03-different-types-of-securing-and-anti-loosening-e.webp',
-				alt: 'Different types of securing and anti-loosening elements for fastening',
-				label: 'Products and Brands',
-				title: 'Securing and Anti-Loosening Elements',
-				description: 'Self-locking fasteners to prevent loosening and loss',
+				image:
+					'/images/product-categories-and-brands/03-different-types-of-securing-and-anti-loosening-e.webp',
+				alt: 'Titanium securing and anti-loosening elements — nyloc nuts, plain and split-lock washers and retaining rings.',
+				label: 'Product Solutions',
+				title: 'Titanium Anti-Loosening Joints',
+				description:
+					'Bolts, nuts and washers for joints under vibration — controlled preload, and anti-galling finishes',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/clinching-technology/',
-				image: '/images/product-categories-and-brands/04-different-types-of-self-clinching-fasteners-incl.webp',
-				alt: 'Different types of self-clinching fasteners, including nuts, studs and standoffs',
-				label: 'Products and Brands',
-				title: 'Clinching Technology',
+				image:
+					'/images/product-categories-and-brands/04-different-types-of-self-clinching-fasteners-incl.webp',
+				alt: 'Titanium self-clinching fasteners — clinching studs, clinching nuts and flush-head types.',
+				label: 'Product Solutions',
+				title: 'Titanium Thin-Sheet Assembly',
 				description:
-					'Fasteners for strong permanent threads and mounting points in thin sheet metal, PCBs, and other materials',
+					'Fasteners for thin sheet, aluminium and composite panels where the sheet cannot hold a thread',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/rivet-technology/',
-				image: '/images/product-categories-and-brands/05-an-overview-of-different-types-of-rivets-blind-r.webp',
-				alt: 'An overview of different types of rivets, blind rivet nuts and lockbolts.',
-				label: 'Products and Brands',
-				title: 'Rivet Technology',
+				image:
+					'/images/product-categories-and-brands/05-an-overview-of-different-types-of-rivets-blind-r.webp',
+				alt: 'Overview of titanium rivets — solid rivets, blind rivets and tubular rivet pins.',
+				label: 'Product Solutions',
+				title: 'Titanium Permanent and Riveted Joints',
 				description:
-					'Riveting solutions, tools, systems, and engineering support from lightweight to high-strength applications',
+					'The titanium fastener that carries a permanent sheet joint, and the serviceable alternative to welding',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/threaded-inserts/',
-				image: '/images/product-categories-and-brands/06-different-types-of-threaded-inserts-including-br.webp',
-				alt: 'Different types of threaded inserts, including brass inserts, wire thread inserts and key-locking inserts.',
-				label: 'Products and Brands',
-				title: 'Threaded Inserts',
+				image:
+					'/images/product-categories-and-brands/06-different-types-of-threaded-inserts-including-br.webp',
+				alt: 'Different types of titanium threaded inserts — brass, steel and press-in inserts for light alloys.',
+				label: 'Product Solutions',
+				title: 'Titanium Threaded Inserts',
 				description:
-					'Create strong threads in weak materials such as light metals and plastics',
+					'Studs, screws and machined inserts for light metals and composites that need a reusable thread',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/clip-fasteners/',
 				image:
 					'/images/product-categories-and-brands/07-six-different-types-of-clip-fasteners-on-a-white.webp',
-				alt: 'Six different types of clip fasteners on a white background.',
-				label: 'Products and Brands',
-				title: 'Clip Fasteners',
+				alt: 'Six different types of titanium clip fasteners for cable, hose and panel retention.',
+				label: 'Product Solutions',
+				title: 'Titanium Clip and Retention',
 				description:
-					'Quick-release fasteners for time-sensitive connections, replacements, and holding, fixing, and securing',
+					'Fasteners for quick-release panel, cable and hose retention in marine and process service',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/welding-technology/',
 				image:
 					'/images/product-categories-and-brands/08-various-fastening-elements-for-stud-welding-and-.webp',
-				alt: 'Various fastening elements for stud welding and ultrasonic welding',
-				label: 'Products and Brands',
-				title: 'Welding Technology',
+				alt: 'Fastening elements for stud welding — welding shields, collet holders and welding accessories.',
+				label: 'Product Solutions',
+				title: 'Titanium Welded Structures',
 				description:
-					'Strong, permanent fastening connections with welding studs, machines, and related tools',
+					'The fastener that works alongside a weld — including the high-temperature Grade 9 for hot-side service',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/embedding-and-surface-bonding-fasteners/',
 				image:
 					'/images/product-categories-and-brands/09-six-different-types-of-embedding-and-surface-bon.webp',
-				alt: 'Six different types of embedding and surface bonding fasteners on a white bakcground.',
-				label: 'Products and Brands',
-				title: 'Embedding and Surface Bonding Fasteners',
+				alt: 'Six different types of titanium embedding and surface bonding fasteners — anchors and studs.',
+				label: 'Product Solutions',
+				title: 'Titanium Bonded and Embedded Joints',
 				description:
-					'The solution for lightweight, multi-material, and composite applications',
+					'Anchors, studs and washers for structural adhesive joints, without a galvanic couple in the panel',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/electrical-products/',
 				image:
 					'/images/product-categories-and-brands/10-an-overview-of-fastening-elements-for-electrical.webp',
-				alt: 'An overview of fastening elements for electrical applications',
-				label: 'Products and Brands',
-				title: 'Electrical Products',
+				alt: 'An overview of fastening elements for electrical housings, glands and enclosures.',
+				label: 'Product Solutions',
+				title: 'Titanium Electrical Assemblies',
 				description:
-					'Cable entry and cable connection technology as well as cable mounting and cable protection',
+					'Non-magnetic fasteners for enclosures, heat sinks, sensors and hazardous areas',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/access-solutions/',
 				image:
 					'/images/product-categories-and-brands/11-various-access-locking-and-control-elements-such.webp',
-				alt: 'Various access, locking and control elements, such as handles, latches, hinges and more.',
-				label: 'Products and Brands',
-				title: 'Access, Locking and Control Solutions',
+				alt: 'Various titanium access locking and control elements — clips, brackets and quick-release latches.',
+				label: 'Product Solutions',
+				title: 'Titanium Service Access',
 				description:
-					'Access and locking solutions, hinges, and various standard machine elements',
+					'Fasteners and machined hardware for access panels opened and closed again on a service schedule',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/fluid-management/',
 				image:
 					'/images/product-categories-and-brands/12-pressure-intensifiers-and-quick-connectors-for-f.webp',
-				alt: 'Pressure intensifiers and quick connectors for fluid management',
-				label: 'Products and Brands',
-				title: 'Fluid Management',
+				alt: 'Titanium pressure intensifiers and quick connectors for hydrogen and fluid media service.',
+				label: 'Product Solutions',
+				title: 'Titanium Fluid Management',
 				description:
-					'Pressure intensifiers and quick connectors for hydraulic and pneumatic applications',
+					'Titanium fasteners for hydrogen, cryogenic, oxygen, hydraulic and seawater service',
 			},
 			{
 				href: '/product-solutions/product-categories-and-brands/sealing-technology/',
-				image: '/images/category/titanium-washers-sealing-square.webp',
-				alt: 'Titanium plain washers and sealing fasteners on a white background.',
-				label: 'Products and Brands',
+				image:
+					'/images/product-categories-and-brands/13-an-overview-of-sealing-plugs-and-check-valves-on.webp',
+				alt: 'An overview of titanium sealing plugs and check valves for sealed fluid joints.',
+				label: 'Product Solutions',
 				title: 'Titanium Sealing Technology',
 				description:
 					'Titanium fasteners, washers and flange bolts that keep a sealed joint free of corrosion',

@@ -34,8 +34,20 @@ export interface ServiceCard {
 
 export type RichBlock =
 	| { kind: 'heading'; text: string }
-	| { kind: 'paragraph'; text: string }
-	| { kind: 'list'; items: { lead: string; text: string }[] };
+	| {
+			kind: 'paragraph';
+			text: string;
+			/** 段末可选的自然锚文本链接（不暴露路由字符串）。 */
+			link?: { label: string; href: string };
+	  }
+	| { kind: 'list'; items: { lead: string; text: string }[] }
+	| {
+			/** 紧凑全宽矩阵表 —— 介质/牌号/表面处理等对照表走表格，不用大图（LAYOUT_RULES §2.4）。 */
+			kind: 'table';
+			caption?: string;
+			columns: string[];
+			rows: string[][];
+	  };
 
 export interface CategoryDetailPage {
 	slug: string;

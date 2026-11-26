@@ -33,9 +33,49 @@ const { blocks } = Astro.props;
 					))}
 				</ul>
 			</div>
+		) : block.kind === 'table' ? (
+			/* 介质/牌号对照矩阵：全宽紧凑表格（可横向滚动），不使用大图。 */
+			<div class="container-fluid pb-12 lg:pb-20">
+				{block.caption && <p class="mb-12 text-p-sm text-gray-medium lg:text-p-s">{block.caption}</p>}
+				<div class="overflow-x-auto">
+					<table class="w-full min-w-[760px] border-collapse text-left">
+						<thead>
+							<tr class="border-b border-gray-vlight">
+								{block.columns.map((col) => (
+									<th scope="col" class="py-12 pr-16 text-p-sm font-medium text-gray lg:text-p-s">
+										{col}
+									</th>
+								))}
+							</tr>
+						</thead>
+						<tbody>
+							{block.rows.map((row) => (
+								<tr class="border-b border-gray-vlight">
+									{row.map((cell) => (
+										<td class="py-12 pr-16 text-p-sm text-gray lg:text-p-s">{cell}</td>
+									))}
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		) : (
 			<div class="container-fluid">
-				<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">{block.text}</p>
+				<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">
+					{block.text}
+					{block.link && (
+						<>
+							{' '}
+							<a
+								class="cursor-pointer text-blue underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-blue-dark"
+								href={block.link.href}
+							>
+								{block.link.label}
+							</a>
+						</>
+					)}
+				</p>
 			</div>
 		),
 	)

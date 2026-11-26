@@ -46,10 +46,10 @@ export const MARINE_OFFSHORE: AppPageData = {
 		cta: { label: 'Request a marine fastener quote', href: '#rfq-form' },
 		secondaryCta: { label: 'See Grade 2 supply', href: '/products/grade-2-fasteners/' },
 		image: {
-			src: '/images/category-detail-rivet-technology/02-an-overview-of-different-types-of-rivets-blind-r.webp',
-			alt: 'Overview of structural blind rivets used in marine sheet and hull work.',
-			width: 1152,
-			height: 922,
+			src: '/images/public-images/industries-corrosion-marine-grade2-titanium-fasteners.webp',
+			alt: 'Grade 2 titanium fasteners prepared for marine and offshore service.',
+			width: 1600,
+			height: 1200,
 		},
 	},
 	subApplications: {
@@ -122,10 +122,10 @@ export const MARINE_OFFSHORE: AppPageData = {
 			{ label: 'Traceable lots', text: 'each delivery allocated to one heat' },
 		],
 		image: {
-			src: '/images/category-detail-securing-and-anti-loosening-elements/02-different-types-of-securing-and-anti-loosening-e.webp',
-			alt: 'Securing and anti-loosening elements used on vibrating assemblies.',
-			width: 1152,
-			height: 922,
+			src: '/images/fastener-coatings/04-corrosion-protection-coating-image-screw-with-wa.webp',
+			alt: 'Passivated titanium fastener prepared for continuous salt exposure.',
+			width: 960,
+			height: 720,
 		},
 		facts: [
 			{ label: 'Profile', value: 'Offshore process skid, manifold supports and deck equipment frames' },
