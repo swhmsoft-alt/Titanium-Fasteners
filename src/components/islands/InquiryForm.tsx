@@ -74,6 +74,15 @@ export default function InquiryForm(props: InquiryFormProps) {
 	const uid = useId();
 	const [status, setStatus] = useState<Status>('idle');
 	const [error, setError] = useState('');
+	/**
+	 * 客户端预检提示（附件超限等），与服务端失败分开存。
+	 *
+	 * 为什么要分开：下面那段「Submission failed (...)」只在 status === 'error'
+	 * 时渲染，而预检发生在**提交之前**（status 还是 idle），若复用同一个
+	 * error 状态，提示会被这层门控吃掉 —— 表单点了没反应、访客看不到任何
+	 * 提示，只能以为按钮坏了。
+	 */
+	const [precheck, setPrecheck] = useState('');
 	const [sent, setSent] = useState(false);
 	/**
 	 * 规格上下文 —— 来自 URL query（规格表行内询盘链接带过来）。
@@ -124,6 +133,8 @@ export default function InquiryForm(props: InquiryFormProps) {
 	async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		if (status === 'sending') return;
+		// 每次提交重新计账：上一次留下的提示不能压住这一次的结果。
+		setPrecheck('');
 
 		const form = event.currentTarget;
 		const data = new FormData(form);
@@ -179,7 +190,7 @@ export default function InquiryForm(props: InquiryFormProps) {
 		const maxBytes = maxAttachmentMb * 1024 * 1024;
 		const oversized = picked.find((f) => f.size > maxBytes);
 		if (oversized) {
-			setError(`${oversized.name} is larger than ${maxAttachmentMb} MB. Please send a smaller file or email it separately.`);
+			setPrecheck(`${oversized.name} is larger than ${maxAttachmentMb} MB. Please send a smaller file or email it separately.`);
 			return;
 		}
 		// 主机 post_max_size 约束的是**整个 POST 包**，不是单个文件 ——
@@ -187,13 +198,13 @@ export default function InquiryForm(props: InquiryFormProps) {
 		// 与真实原因无关的「邮箱无效」。因此这里也查累计体积。
 		const totalBytes = picked.reduce((sum, f) => sum + f.size, 0);
 		if (picked.length > 1 && totalBytes > maxBytes) {
-			setError(
+			setPrecheck(
 				`The selected attachments total ${(totalBytes / 1024 / 1024).toFixed(1)} MB, which exceeds the ${maxAttachmentMb} MB limit for one submission. Please attach fewer files or email them separately.`
 			);
 			return;
 		}
 		if (picked.length > 0 && !uploadEndpoint) {
-			setError('File upload is not available on this form. Please email the attachment to our engineering inbox.');
+			setPrecheck('File upload is not available on this form. Please email the attachment to our engineering inbox.');
 			return;
 		}
 
@@ -383,6 +394,12 @@ export default function InquiryForm(props: InquiryFormProps) {
 					<label htmlFor={`${uid}-trap`}>Website</label>
 					<input id={`${uid}-trap`} name={trapField} type="text" tabIndex={-1} autoComplete="off" />
 				</div>
+			)}
+
+			{precheck && (
+				<p role="alert" className="text-p-sm text-accent-rose">
+					{precheck}
+				</p>
 			)}
 
 			{status === 'error' && (
