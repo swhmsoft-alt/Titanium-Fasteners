@@ -224,6 +224,21 @@
 - **问题**：原 `NAVIGATION['About us']` 面板是参考站（Careers / Who we are / News & Media / Investor Portal / Event Calendar / Sustainability / Supplier Portal）的照抄 —— 对一个钛紧固件外贸站没有说服力，且 10 条链接指向从未建页的路径（死链）。
 - **改法**：整块换成**三列工厂背书菜单**：① Factory & Production ② Quality & Compliance ③ Supply & Service，每列 3 个条目 = 9 个子项，全部落到真实可达的详情页 `/about-us/<group>/<slug>/`。
 - **唯一数据源**：`src/data/about-us.ts` —— `ABOUT_US_GROUPS`（3 组）/ `ABOUT_US_ITEMS`（9 条扁平）/ `aboutUsPath(item)`（路由与内链共用一个路径函数）/ `ABOUT_US_LANDING`。菜单由 `ABOUT_US_GROUPS.map()` 派生（`src/config/site.ts` 新增常量 `ABOUT_US_NAV_CHILDREN`），**加一条数据 = 自动多一个菜单项 + 一个详情页**，两侧永不脱节。
+
+## 询盘带附件（PHP 落盘端点）— 2026-11-26 新增章节
+
+- **Current Status**：给站内两处询盘表单（`/contact/` 左栏 + 产品族页询盘岛）加**可选附件**，新增 `public/api/submit-inquiry.php` 作为落盘端点。**改动文件 7 个**：`public/api/submit-inquiry.php`（新建）、`src/config/site.ts`（新增 `uploadEndpoint` / `maxAttachmentMb`）、`src/components/sections/contact/ContactInquiryForm.astro`（附件字段 + multipart 分支）、`src/components/islands/InquiryForm.tsx`（附件字段 + multipart 分支）、`src/components/sections/product-family/FamilyInquiry.astro`（传参）、`src/data/contact.ts`（附件文案）、`src/data/legal.ts`（隐私口径 + 日期）。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由结构 / 产品数据 CSV / `src/styles/**`。
+  - **数据流**：无附件 → 原 `INQUIRY.endpoint`（`/api/inquiry` webhook，JSON）路径完全不变；有附件 → `multipart/form-data` POST 到 `/api/submit-inquiry.php`，PHP 落盘后把**文字字段**（不含文件）转发回同一个 webhook。端点不可用时前端降级为 mailto 回执，不丢询盘。
+  - **PHP 端点安全设计**：`finfo(FILEINFO_MIME_TYPE)` 读**真实** MIME 白名单（不信 `$_FILES['type']`）+ 扩展名白名单双闸；`random_bytes(16)` 随机重命名（丢弃用户文件名）；`is_uploaded_file` + `move_uploaded_file`；存储目录 `dirname(__DIR__,2)` = **public_html 之外**（线上=账户根目录，本地=仓库根），文件 URL 不可达；元数据写入 `secure_data/inquiries.json`，`flock(LOCK_EX)` 排他锁；蜜罐字段 `website` 命中则静默返回成功；单文件上限 20MB。
+  - **隐私口径已同步**（重要）：原 legal.ts 写「站点不保存用户上传的图纸文件」——**该表述随本功能失效**，已改为「附件存到 Web 根目录之外的目录、不转发第三方、随询盘同等保留期、未成单则随消息删除」；`Last updated` 改为 26 November 2026。contact.astro 左栏原「No drawings and no attachments are needed at this stage」也已改写。
+  - **验收**：`npm run build` → `Complete!`，0 ERROR；`dist/api/submit-inquiry.php`（13729 字节）存在且**目录内仅此一文件**（无 `.htaccess`）；`dist/contact/index.html` 命中附件字段 2 处；`dist/products/**` 族页命中 `submit-inquiry` 15 页；隐私页命中新增段落与新日期。
+- **Known Pitfalls（本轮新增）**：
+  - **不要给 `public/api/` 加 `.htaccess`**。共享主机若 `AllowOverride` 不含 `Options`/`AuthConfig`，里面的 `Options -ExecCGI` / `Require all denied` 会让**整个 api 目录 500**，询盘端点直接挂掉。仓库里那份 `.htaccess` 已**删除**（含 `php_flag` 在 CGI/FPM 下同样 500 的问题）。加固责任由 PHP 自身（真实 MIME + 随机名 + Web 根外存储）承担。
+  - **本机没有 PHP 运行时**（`php` 不在 PATH），PHP 端点**无法本地端到端验证**，只能静态审查（括号配平 + 关键调用点计数）。上线后需人工用真实文件 POST 一次 `/api/submit-inquiry.php` 验证 finfo 对 `.step` / `.dwg` 的 MIME 判定（部分主机识别为 `application/octet-stream`，白名单已含）。
+  - **cPanel 上传限制需手动调**：`upload_max_filesize ≥ 20M`、`post_max_size ≥ 40M`、`memory_limit ≥ post_max_size`、`max_execution_time ≥ 120`。默认 2M 会导致大文件静默失败（PHP 侧 `UPLOAD_ERR_INI_SIZE`）。
+  - **`secure_uploads/` 与 `secure_data/` 需在 public_html 之外且 PHP 进程可写**（PHP 端点会自动 `mkdir(0750)`）。
+  - **PHP 文件名固定为 `submit-inquiry.php`**（`INQUIRY.uploadEndpoint` 硬编码同一路径），改名必须同步两处。
+
 - **新增页面（13 页）**：`src/pages/about-us/index.astro`（落地页）、`src/pages/about-us/[group]/index.astro`（3 张分组页）、`src/pages/about-us/[group]/[slug].astro`（9 张详情页）；`getStaticPaths` 分别由 `ABOUT_US_GROUPS` / `ABOUT_US_ITEMS` 驱动。
 - **新增组件（4 个）**：`src/components/sections/about-us/` 下 `AboutUsHero.astro`（面包屑 + eyebrow + h1 + lead，几何照 `services-detail/ServiceHero`）、`AboutUsItemGrid.astro`（条目卡网格）、`AboutUsFacts.astro`（详情页「At a glance」事实表）、`AboutUsCta.astro`（页尾 CTA，按钮复用 `@components/ui/Button.astro`，链接走 `INQUIRY.fallbackEmail` 的 mailto，不依赖未建页路由）。
 - **口径纪律**：只用自有品牌（Titanium Fasteners / Boze Metal），不出现参考公司名称；不写无物证的形容词。交期按定位稿 §15 #4 三档口径（不承诺全牌号现货 48h）；合规按 §7 三层口径（材料层 B348 / 成品层 F467-F468 / 文件层 EN 10204 3.1）。

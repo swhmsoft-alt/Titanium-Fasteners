@@ -102,14 +102,17 @@ const jsonLd = {
 					<div class="mb-24">
 						<h2 class="text-h4 mb-8 text-blue-dark3">Start with a zero-risk brief</h2>
 						<p class="text-p-sm text-gray max-w-rich-text">
-							No drawings and no attachments are needed at this stage. Tell us what you are
-							looking for and a titanium process engineer replies to your inbox — your
-							files stay with you until the NDA is signed.
+							A brief is enough to start. Tell us what you are looking for and a titanium
+							process engineer replies to your inbox. If the mutual NDA is already in
+							place, you can attach a BOM or drawing on the same form — uploaded files are
+							stored outside the public web directory and are never published.
 						</p>
 					</div>
 
 					<ContactInquiryForm
 						endpoint={INQUIRY.endpoint}
+						uploadEndpoint={INQUIRY.uploadEndpoint}
+						maxAttachmentMb={INQUIRY.maxAttachmentMb}
 						fallbackEmail={INQUIRY.fallbackEmail}
 						trapField={INQUIRY.trapField}
 						source="contact-page"

@@ -29,6 +29,10 @@ import { CONTACT, CONTACT_INTENTS, type ContactIntent } from '@data/contact';
 interface Props {
 	/** webhook 端点；空串则不发起网络请求，纯客户端回执。 */
 	endpoint: string;
+	/** 带附件时的落盘端点；空串则附件一律退回纯文本通道。 */
+	uploadEndpoint: string;
+	/** 单个附件体积上限（MB），仅用于前端预检与提示。 */
+	maxAttachmentMb: number;
 	/** 降级/直发收件邮箱。 */
 	fallbackEmail: string;
 	/** 蜜罐字段名；空串则不发该字段。 */
@@ -39,7 +43,7 @@ interface Props {
 	pageUrl: string;
 }
 
-const { endpoint, fallbackEmail, trapField, source, pageUrl } = Astro.props;
+const { endpoint, uploadEndpoint, maxAttachmentMb, fallbackEmail, trapField, source, pageUrl } = Astro.props;
 
 const f = CONTACT.form;
 ---
@@ -50,6 +54,8 @@ const f = CONTACT.form;
 		data-contact-form
 		novalidate
 		data-endpoint={endpoint}
+		data-upload-endpoint={uploadEndpoint}
+		data-max-mb={maxAttachmentMb}
 		data-fallback-email={fallbackEmail}
 		data-trap-field={trapField}
 		data-source={source}
@@ -108,6 +114,22 @@ const f = CONTACT.form;
 				class="w-full border border-gray-light bg-white px-16 py-13 text-p-sm text-gray focus:border-blue focus:outline-none"
 			/>
 			<p class="mt-8 text-p-sm text-gray-medium">{f.emailHint}</p>
+		</div>
+
+		<!-- ── 3b. 附件（可选，仅在 NDA 已签署后使用） ─────────────────── -->
+		<div>
+			<label for="contact-file" class="text-label mb-8 block text-blue-dark3">
+				{f.fileLabel}
+			</label>
+			<input
+				id="contact-file"
+				type="file"
+				name="attachment"
+				multiple
+				accept={f.fileAcceptedTypes}
+				class="w-full border border-gray-light bg-white px-16 py-10 text-p-sm text-gray file:mr-16 file:rounded-pill file:border-0 file:bg-blue-dark3 file:px-16 file:py-8 file:text-button file:leading-none file:text-white"
+			/>
+			<p class="mt-8 text-p-sm leading-normal text-gray-medium">{f.fileHint}</p>
 		</div>
 
 		<!-- 蜜罐：真人看不见，机器人会填。填了即静默丢弃。 -->
@@ -304,6 +326,8 @@ const f = CONTACT.form;
 
 			const intentLabel = selectedIntentLabel();
 			const endpoint = form.dataset.endpoint ?? '';
+			const uploadEndpoint = form.dataset.uploadEndpoint ?? '';
+			const maxMb = Number(form.dataset.maxMb ?? '20');
 			const source = form.dataset.source ?? 'contact-page';
 			const pageUrl = form.dataset.pageUrl ?? '';
 
@@ -329,13 +353,57 @@ const f = CONTACT.form;
 				pageUrl,
 			};
 
-			// endpoint 未配置 → 不发网络请求，直接给可用的邮件通道。
-			if (!endpoint) {
+			/**
+			 * 附件处理：文件本身走 multipart 落盘端点，文字字段同批提交。
+			 *
+			 * 附件不做前端类型白名单之外的强校验（浏览器 accept 只是提示），
+			 * 真实类型判定由服务端 finfo 完成；这里只拦截明显超限的文件，
+			 * 避免一次注定失败的 413。
+			 */
+			const fileInput = form.querySelector<HTMLInputElement>('#contact-file');
+			const picked = fileInput?.files ? Array.from(fileInput.files) : [];
+			const oversized = picked.find((f) => f.size > maxMb * 1024 * 1024);
+			if (oversized) {
+				showError(
+					`${oversized.name} is larger than ${maxMb} MB. Please send a smaller file or email it separately.`
+				);
+				return;
+			}
+
+			// 有附件但落盘端点未配置 → 明确提示走邮件通道，不静默丢文件。
+			if (picked.length > 0 && !uploadEndpoint) {
+				showError(
+					'File upload is not available on this form. Please email the attachment to our engineering inbox.'
+				);
+				return;
+			}
+
+			// endpoint 未配置且无附件 → 不发网络请求，直接给可用的邮件通道。
+			if (!endpoint && picked.length === 0) {
 				showReceipt(intentLabel, email, brief, 'offline');
 				return;
 			}
 
 			try {
+				if (picked.length > 0) {
+					// 多段式提交：文件 + 字段一次性交给 PHP 落盘端点。
+					const fd = new FormData();
+					fd.append('source', source);
+					fd.append('intent', intent);
+					fd.append('email', email);
+					fd.append('requirement', brief);
+					fd.append('pageUrl', pageUrl);
+					fd.append('company', '');
+					fd.append('quantity', '');
+					if (trapField) fd.append(trapField, '');
+					picked.forEach((f) => fd.append('attachment', f));
+
+					const res = await fetch(uploadEndpoint, { method: 'POST', body: fd });
+					if (!res.ok) throw new Error(`HTTP ${res.status}`);
+					showReceipt(intentLabel, email, brief, 'posted');
+					return;
+				}
+
 				const res = await fetch(endpoint, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },

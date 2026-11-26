@@ -149,6 +149,10 @@ export const CONTACT = {
 			'Example: Looking for Grade 5 (Ti-6Al-4V) DIN 912 socket head cap screws, M8x30, Est. annual usage 50k pcs. Please send your countersigned Mutual NDA before we share the BOM.',
 		emailLabel: 'Work Email *',
 		emailHint: 'Use your company email for priority engineering review.',
+		fileLabel: 'Attachment (optional)',
+		fileHint:
+			'BOM (xlsx / csv), drawings (pdf, step, iges, dwg, dxf) or photos — up to 20 MB each. Attach only after our mutual NDA is in place; files are stored outside the public web directory and are not published.',
+		fileAcceptedTypes: '.pdf,.csv,.txt,.xls,.xlsx,.ods,.step,.stp,.iges,.igs,.dwg,.dxf,.zip,.jpg,.jpeg,.png',
 		cta: 'Initiate Secure Inquiry & Request NDA',
 		ctaNote:
 			'Zero spam. A titanium process engineer will reply directly to your inbox within 12 business hours.',

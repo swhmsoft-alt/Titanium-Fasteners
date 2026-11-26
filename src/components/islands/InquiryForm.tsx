@@ -43,6 +43,10 @@ export interface InquiryContext {
 export interface InquiryFormProps {
 	/** webhook 端点；空串则降级 mailto。 */
 	endpoint: string;
+	/** 带附件时的落盘端点；空串则附件一律退回纯文本通道。 */
+	uploadEndpoint: string;
+	/** 单个附件体积上限（MB），仅用于前端预检与提示。 */
+	maxAttachmentMb: number;
 	/** 降级收件邮箱。 */
 	fallbackEmail: string;
 	/** 业务来源标识。 */
@@ -66,7 +70,7 @@ const FIELD =
 	'w-full border border-gray-vlight bg-white px-16 py-13 text-p-sm text-gray focus:border-blue focus:outline-none';
 
 export default function InquiryForm(props: InquiryFormProps) {
-	const { endpoint, fallbackEmail, source, trapField, context } = props;
+	const { endpoint, uploadEndpoint, maxAttachmentMb, fallbackEmail, source, trapField, context } = props;
 	const uid = useId();
 	const [status, setStatus] = useState<Status>('idle');
 	const [error, setError] = useState('');
@@ -164,6 +168,52 @@ export default function InquiryForm(props: InquiryFormProps) {
 			quantity: String(data.get('quantity') ?? ''),
 			pageUrl: context.pageUrl,
 		};
+
+		/**
+		 * 附件：文件走 multipart 落盘端点，文字字段同批提交。
+		 *
+		 * 真实类型判定在服务端 finfo 完成，这里只拦明显超限的文件。
+		 */
+		const fileInput = form.querySelector<HTMLInputElement>(`#${uid}-attachment`);
+		const picked = fileInput?.files ? Array.from(fileInput.files) : [];
+		const oversized = picked.find((f) => f.size > maxAttachmentMb * 1024 * 1024);
+		if (oversized) {
+			setError(`${oversized.name} is larger than ${maxAttachmentMb} MB. Please send a smaller file or email it separately.`);
+			return;
+		}
+		if (picked.length > 0 && !uploadEndpoint) {
+			setError('File upload is not available on this form. Please email the attachment to our engineering inbox.');
+			return;
+		}
+
+		if (picked.length > 0) {
+			setStatus('sending');
+			setError('');
+			try {
+				const fd = new FormData();
+				fd.append('source', source);
+				fd.append('email', payload.contact.email);
+				fd.append('company', payload.contact.company);
+				fd.append('country', payload.contact.country);
+				fd.append('phone', payload.contact.phone);
+				fd.append('quantity', payload.quantity);
+				fd.append('requirement', payload.requirement);
+				fd.append('pageUrl', payload.pageUrl);
+				fd.append('product', JSON.stringify(payload.product));
+				if (trapField) fd.append(trapField, '');
+				picked.forEach((f) => fd.append('attachment', f));
+
+				const res = await fetch(uploadEndpoint, { method: 'POST', body: fd });
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				setStatus('sent');
+				setSent(true);
+				form.reset();
+			} catch (e) {
+				setStatus('error');
+				setError(e instanceof Error ? e.message : 'Network error');
+			}
+			return;
+		}
 
 		if (!endpoint) {
 			// 降级：mailto。带上产品上下文，工程师打开邮件就知道询的是哪款。
@@ -280,6 +330,24 @@ export default function InquiryForm(props: InquiryFormProps) {
 					className={`${FIELD} resize-y`}
 					placeholder="e.g. M6 x 20, Gr5, black anodized, 2000 pcs, MTC required"
 				/>
+			</div>
+
+			<div>
+				<label htmlFor={`${uid}-attachment`} className="mb-8 block text-p-sm text-gray">
+					Attachment (optional)
+				</label>
+				<input
+					id={`${uid}-attachment`}
+					name="attachment"
+					type="file"
+					multiple
+					accept=".pdf,.csv,.txt,.xls,.xlsx,.ods,.step,.stp,.iges,.igs,.dwg,.dxf,.zip,.jpg,.jpeg,.png"
+					className={FIELD}
+				/>
+				<p className="mt-8 text-p-sm text-gray-medium">
+					BOM, drawing or photo — up to {maxAttachmentMb} MB each. Attach only after our
+					mutual NDA is in place; files are stored outside the public web directory.
+				</p>
 			</div>
 
 			{/* 蜜罐 —— 视觉隐藏但对机器人可见 */}

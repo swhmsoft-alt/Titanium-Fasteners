@@ -15,7 +15,9 @@
  *     （懒加载），未点击时不会向 Google 发起请求；
  *   · 询盘表单把内容 POST 到本站自有端点 fastener.bozemetal.com/api/inquiry，
  *     未接后端时降级为 mailto:；
- *   · 不设账号体系，不做支付，站点不保存用户上传的图纸文件。
+ *   · 附件（可选）走 fastener.bozemetal.com/api/submit-inquiry.php：文件存到
+ *     Web 根目录之外的 private 目录，文字字段转发回同一承接端点；
+ *   · 不设账号体系，不做支付。
  *
  * 红线：不写未发生的统计数字、不写虚构的 DPO 姓名 / 监管机关地址，
  * 不用「我们绝对安全」这类不可核实的措辞。
@@ -61,7 +63,7 @@ export const PRIVACY_POLICY = {
 		{ label: 'Controller', value: 'Boze Metal — Baoji, Shaanxi, P.R. China' },
 		{ label: 'Contact', value: 'info@bozemetal.com' },
 		{ label: 'Site', value: 'fastener.bozemetal.com' },
-		{ label: 'Last updated', value: '20 November 2026' },
+		{ label: 'Last updated', value: '26 November 2026' },
 	] as LegalFact[],
 	/** 处理个人数据的目的 —— 与询盘流程一一对应。 */
 	purposes: [
@@ -90,6 +92,7 @@ sections: [
 			heading: 'What the inquiry forms collect',
 			paragraphs: [
 				'When you submit an inquiry form on this site, the fields you fill in are sent to our own inquiry endpoint at fastener.bozemetal.com so that the relevant engineer can answer you. The standard fields are your name, e-mail address, company, country and the specification or message you write. That is the extent of what we ask for.',
+				'The inquiry form also offers an optional attachment field. A file you choose there is uploaded to our own server, stored in a directory outside the public web folder so it cannot be fetched by a web address, and is not forwarded to any third party. We keep the original file name only inside our inquiry record so the engineering desk can identify it.',
 				'Please do not include confidential drawings, personal data about third parties or anything your organisation has not cleared for disclosure. If a drawing is needed, ask us for the mutual NDA first — we will not open a file before it is in place.',
 				'This website has no user accounts, no login and no payment processing, so we hold no credentials, no card data and no password hashes.',
 			],
@@ -110,6 +113,7 @@ sections: [
 			heading: 'How long we keep it',
 			paragraphs: [
 				'Inquiry data is kept for as long as it takes to answer the request and support the resulting business relationship, and for the period required to meet tax and customs record-keeping obligations. Enquiry messages that do not lead to an order are deleted once the quotation decision is closed.',
+				'An attachment you send with an inquiry is kept on the same basis as the inquiry itself: for the quotation and production conversation it supports, and for the record-keeping period that follows. If the enquiry does not lead to an order, the attachment is deleted with the message.',
 				'Server request logs are rotated on a short cycle and are not linked to the contact details you give us.',
 			],
 		},

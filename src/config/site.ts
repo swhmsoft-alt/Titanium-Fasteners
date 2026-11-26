@@ -97,6 +97,19 @@ export const SITE = {
 export const INQUIRY = {
 	/** 询盘 webhook 端点。留空则降级为 mailto:。 */
 	endpoint: 'https://fastener.bozemetal.com/api/inquiry',
+	/**
+	 * 询盘落盘端点（带附件时使用）。
+	 *
+	 * 纯文本询盘走上面的 webhook；一旦访客附带 BOM / 2D 图纸，就改投这个
+	 * PHP 端点 —— 它用 finfo 校验真实 MIME、把附件随机重命名后存到 Web 根
+	 * 目录之外，再把文字字段转发回同一个 webhook。
+	 *
+	 * 前端在多段式提交失败时会自动退回 webhook 纯文本通道，因此该端点不可
+	 * 用时不会让询盘整体丢失。
+	 */
+	uploadEndpoint: 'https://fastener.bozemetal.com/api/submit-inquiry.php',
+	/** 单个附件体积上限（MB）—— 需与主机的 upload_max_filesize 对齐。 */
+	maxAttachmentMb: 20,
 	/** 降级 mailto 的收件邮箱。 */
 	fallbackEmail: 'info@bozemetal.com',
 	/** 表单默认带出的业务上下文，会随提交一起发给 webhook。 */
