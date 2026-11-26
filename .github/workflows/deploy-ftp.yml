@@ -66,6 +66,13 @@ jobs:
       - name: Gate — 404 page acceptance
         run: node scripts/check-404.mjs
 
+      # AI 搜索选源资格闸门（六维评分）：读 dist/，按《工业 B2B 商业页面 AI
+      # 搜索选源资格检查标准》打分。只要有页面在「索引资格」或「事实与证据」
+      # 两个硬门槛上失败就 exit 1 —— 品牌残留或 canonical 错误不允许被其它
+      # 维度的高分掩盖。报告落 _audit/ 供事后诊断。
+      - name: Gate — AI source qualification
+        run: node scripts/check-ai-source.mjs
+
       # The report is uploaded even when the gate fails, so the failure is
       # diagnosable after the fact.
       - uses: actions/upload-artifact@v4
@@ -82,38 +89,52 @@ jobs:
       # Every variable keeps its own name on purpose. The deployer pairs a
       # user with the password of the SAME set, because a user from one set
       # and a password from another can only fail:
-      #   set 1 -> FTP_USER     + FTP_PASSWORD
-      #   set 2 -> FTP_USERNAME + FTP_PASSWORD
-      #   set 3 -> FTP2_USERNAME+ FTP2_PASSWORD
+      #   set 1 -> FTP_USERNAME  + FTP_PASSWORD
+      #   set 2 -> FTP2_USERNAME + FTP2_PASSWORD
       # The sets are tried in order; an account whose home directory does not
-      # exist is rejected by the server and the next set takes over.
+      # exist is rejected by the server and the next set takes over. The
+      # deployer also accepts the FTP_USER spelling, but this repository does
+      # not carry that secret, so it is not wired here.
+      #
+      # ONLY names that are actually configured in this repository are
+      # referenced below. The Actions expression validator resolves every
+      # `secrets.X` / `vars.X` against the repository's configured names and
+      # reports an access to an unknown name as an invalid context access,
+      # so referencing a name that does not exist keeps the workflow
+      # permanently red — even though the runtime would merely expand it to
+      # an empty string.
       #
       # The host falls back to the known cPanel host, the port to 21.
       - name: Deploy to cPanel over FTPS
         id: deploy
         env:
-          FTP_HOST: ${{ secrets.FTP_HOST || vars.FTP_HOST || 'fastener.bozemetal.com' }}
-          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP2_USERNAME: ${{ secrets.FTP2_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP2_PASSWORD: ${{ secrets.FTP2_PASSWORD }}
-          FTP_REMOTE_PATH: ${{ secrets.FTP_REMOTE_PATH || secrets.FTP_DIR }}
+          # FTP_DIR is the spelling the repository actually carries; the
+          # deployer prefers FTP_REMOTE_PATH and falls back to FTP_DIR.
+          FTP_REMOTE_PATH: ${{ secrets.FTP_DIR }}
           FTP_DIR: ${{ secrets.FTP_DIR }}
           FTP_PORT: ${{ secrets.FTP_PORT || '21' }}
-          # Optional: the name the server certificate is verified against.
-          # A cPanel account lives on a shared host, so the certificate
-          # presented for the account's own name lists only the host's
-          # service names (*.serverhostgroup.com). When this is empty the
-          # deployer inspects the certificate and picks a name it DOES
-          # cover, so the handshake stays fully verified. Set this to force
-          # a specific name; FTP_TLS_STRICT=true forbids the unverified
-          # fallback entirely.
-          FTP_TLS_SERVERNAME: ${{ secrets.FTP_TLS_SERVERNAME }}
-          FTP_TLS_STRICT: ${{ vars.FTP_TLS_STRICT || 'false' }}
+          # TLS server-name pinning is deliberately NOT wired here: the
+          # repository has no FTP_TLS_SERVERNAME secret, and referencing a
+          # name that does not exist is reported as an invalid context
+          # access. The deployer already resolves this on its own — it reads
+          # the server certificate once and uses a name the certificate DOES
+          # cover, so the handshake stays fully verified. To pin a name
+          # explicitly, create the `FTP_TLS_SERVERNAME` secret (and, to
+          # forbid the automatic fallback, the `FTP_TLS_STRICT` repository
+          # variable set to `true`) and add the two env lines back here.
         run: |
           set -o pipefail
           mkdir -p _audit
+          # Host fallback: repository secret -> the known cPanel host. An
+          # unset secret expands to an empty string, so `${VAR:-fallback}`
+          # covers both "unset" and "empty".
+          FTP_HOST="${FTP_HOST:-fastener.bozemetal.com}"
+          export FTP_HOST
           node scripts/deploy-ftp-ci.mjs 2>&1 | tee _audit/deploy-log.txt
 
       # The deployment log is uploaded whatever happened, so a failed transfer

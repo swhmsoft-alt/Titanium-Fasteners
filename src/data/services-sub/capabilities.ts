@@ -80,7 +80,7 @@ const SEEDS: CapabilitySeed[] = [
 		family: 'manufacturing-capabilities',
 		slug: 'cnc-machining-to-customer-drawings',
 		eyebrow: 'Manufacturing Capabilities',
-		heading: 'CNC Machining to Customer Drawings',
+		heading: 'Titanium CNC Machining to Customer Drawings',
 		lead:
 			'Custom-machined and special-thread fasteners produced to your drawings, ' +
 			'from sample quantities through to series production.',
@@ -177,7 +177,12 @@ function buildPage(seed: CapabilitySeed): CapabilityPage {
 		slug: seed.slug,
 		path: `${seed.family}/${seed.slug}`,
 		seo: {
-			title: `${label} | Titanium Fasteners`,
+			/*
+			 * 不要在这里拼 '| Titanium Fasteners' —— BaseLayout 已经用 SITE.name
+			 * 统一追加一次，重复拼会让 title 变成
+			 * '... | Titanium Fasteners | Titanium Fasteners'（超长且重复）。
+			 */
+			title: label,
 			description: seed.description,
 		},
 		hero: {

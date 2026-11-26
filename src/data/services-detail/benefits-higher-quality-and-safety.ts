@@ -125,7 +125,7 @@ export const PAGE = {
 			},
 			"image": {
 				"src": "//images.eu.ctfassets.net/0vp0u5uh75zd/6DkxD9StSOTNrdEVADLHxL/8bdc035f8a65506fbea17a4954ded7ff/SFL_key_visual.jpg?q=80&amp;fm=webp&amp;fit=fill&amp;f=center&amp;w=1340&amp;h=1072",
-				"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
+				"alt": "Two people walk through the shop floor, the woman holding a tablet and the man pointing to a mobile trolley of labelled bins.",
 				"ratio": "5/4",
 				"width": 1340,
 				"height": 1072

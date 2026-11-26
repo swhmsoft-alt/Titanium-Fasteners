@@ -119,7 +119,7 @@ export const SEMICONDUCTOR_VACUUM: AppPageData = {
 			{ label: '3.1 certificate', text: 'per lot, tied to one heat number' },
 		],
 		image: {
-			src: '/images/industries-semiconductors/17-close-up-of-a-jextar-titan-high-strength-titaniu.webp',
+			src: '/images/industries-semiconductors/17-close-up-of-high-strength-titanium-fastener.webp',
 			alt: 'Close-up of a high-strength titanium fastener for cleanroom tooling.',
 			width: 1300,
 			height: 731,

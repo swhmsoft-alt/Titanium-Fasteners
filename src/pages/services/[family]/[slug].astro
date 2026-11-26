@@ -66,12 +66,23 @@ interface Props {
 
 const { page } = Astro.props as Props;
 const currentPathname = Astro.url.pathname;
+
+/**
+ * canonical 必须指向本页自身 URL。
+ *
+ * page.path 的两种形态并存：
+ *   - services-sub 的 4 个 CMS 页： 'services/<family>/<slug>'（含 'services/' 前缀）
+ *   - capabilities 的 9 个能力页：  '<family>/<slug>'（不含前缀）
+ * 模板统一拼 '/services/' 会给前者产出 '/services/services/...' 的错误 canonical，
+ * 因此这里按「去掉开头的 services/ 再统一拼前缀」处理，两种形态都得到正确 URL。
+ */
+const canonicalPath = `/services/${page.path.replace(/^services\//, '')}/`;
 ---
 
 <BaseLayout
 	title={page.seo.title}
 	description={page.seo.description}
-	canonicalPath={`/services/${page.path}/`}
+	canonicalPath={canonicalPath}
 >
 	<SiteHeader currentPathname={currentPathname} />
 	<MegaMenu />

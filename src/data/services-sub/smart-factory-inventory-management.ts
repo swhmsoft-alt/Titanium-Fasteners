@@ -28,7 +28,7 @@ slug: "smart-factory-inventory-management",
 path: "services/smart-factory/inventory-management",
 seo: {
 title: "Inventory and C-Parts Management",
-description: "Smart factory solutions: real-time automation, supply chain transparency, optimized C-parts management, and seamless material flow.",
+description: "Shopfloor inventory control for fastener production: real-time bin status, C-parts management, and traceable material flow.",
 },
 hero: {
 		"breadcrumb": [
@@ -50,10 +50,10 @@ hero: {
 		],
 		"eyebrow": "Smart Factory Logistics",
 		"heading": "Build a Resilient Supply Chain with Our Smart Inventory Management Solution",
-		"lead": "Take control of your production and assembly efficiency. Optimize your B- and C-parts management, automate orders, and improve material flow - start with small steps and scale seamlessly as you grow.",
+		"lead": "Take control of production and assembly efficiency: B- and C-parts management, automated orders, and material flow that can be tracked back to the lot.",
 		"image": {
 			"src": "/images/services-smart-factory-inventory-management/12-factory-layout-with-labeled-zones-workers-and-a-.webp",
-			"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
+			"alt": "Two people walk through the shop floor, the woman holding a tablet and the man pointing to a mobile trolley of labelled bins.",
 			"ratio": "5/4",
 			"width": 634,
 			"height": 507
@@ -83,10 +83,10 @@ blocks: [
 			],
 			"eyebrow": "Smart Factory Logistics",
 			"heading": "Build a Resilient Supply Chain with Our Smart Inventory Management Solution",
-			"lead": "Take control of your production and assembly efficiency. Optimize your B- and C-parts management, automate orders, and improve material flow - start with small steps and scale seamlessly as you grow.",
+			"lead": "Take control of production and assembly efficiency: B- and C-parts management, automated orders, and material flow that can be tracked back to the lot.",
 			"image": {
 				"src": "/images/services-smart-factory-inventory-management/12-factory-layout-with-labeled-zones-workers-and-a-.webp",
-				"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
+				"alt": "Two people walk through the shop floor, the woman holding a tablet and the man pointing to a mobile trolley of labelled bins.",
 				"ratio": "5/4",
 				"width": 634,
 				"height": 507
@@ -210,7 +210,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Our smart inventory management solution is the key to smooth, seamless supply chain performance. Beside our main service we offer a range of customizable options. This allows us to tailor our services exactly to your specific needs – providing you with maximum value.",
+					"text": "Our inventory management service covers bin status, order handling and material flow in one place. Beside the core service we offer configurable options, so the setup matches the parts and bins you actually run.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -272,27 +272,27 @@ blocks: [
 		},
 		{
 			"kind": "cardRail",
-			"heading": "Proven Productivity Through Our Logistics Services",
+			"heading": "What The Inventory Service Covers",
 			"items": [
 				{
-					"label": "Take Away 1",
-					"title": "Up to 60%",
-					"description": "higher efficiency in production material control."
+					"label": "Materials",
+					"title": "Lot-Linked Bins",
+					"description": "each bin position is tied to the heat number and lot it was filled from."
 				},
 				{
-					"label": "Take Away 2",
-					"title": "Up to 45%",
-					"description": "higher throughput in your production."
+					"label": "C-Parts",
+					"title": "C-Parts Management",
+					"description": "fastener assortments consolidated per assembly, with the quantity on hand visible."
 				},
 				{
-					"label": "Take Away 3",
-					"title": "Up to 25% Savings",
-					"description": "in intralogistic process costs."
+					"label": "Orders",
+					"title": "Automated Replenishment",
+					"description": "reorder points trigger calls off against your agreed schedule and packaging format."
 				},
 				{
-					"label": "Take Away 4",
-					"title": "30 Years Experience",
-					"description": "in intelligent logistics solutions and inventory management."
+					"label": "Traceability",
+					"title": "Full Chain Traceability",
+					"description": "material, quantity and lot stay linked from goods-in to the assembly station."
 				}
 			]
 		},
@@ -312,7 +312,7 @@ blocks: [
 				},
 				{
 					"title": "Full Supply Chain Control",
-					"description": "Build a seamless information chain for full control and insights into your B- and C-parts. Anytime, anywhere.",
+					"description": "Build one information chain for full control over your B- and C-parts, visible from any station on the line.",
 					"icon": {
 						"src": "/images/services-smart-factory-inventory-management/07-supply-chain-management-icon.svg",
 						"alt": "Supply chain management icon",
@@ -342,7 +342,7 @@ blocks: [
 				},
 				{
 					"title": "Self Optimizing System",
-					"description": "ARIMS effectively analyzes Big Data to enhance predictability through usage patterns and forecasting.",
+					"description": "Usage data from the line is analysed against usage patterns, so replenishment is planned from actual consumption rather than a fixed schedule.",
 					"icon": {
 						"src": "/images/services-smart-factory-inventory-management/10-analysis-icon.svg",
 						"alt": "Analysis icon",
@@ -365,7 +365,7 @@ blocks: [
 		{
 			"kind": "richText",
 			"tag": "div",
-			"heading": "Smart Factory Logistics in Your Production",
+			"heading": "Shopfloor Inventory In Your Production",
 			"body": []
 		},
 		{
@@ -374,7 +374,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Discover the advantages and opportunities of a smart factory with this interactive blueprint. Based on your needs and requirements, we customize our solutions especially for you.",
+					"text": "A shopfloor walkthrough shows where material flow breaks in your plant. We map your parts, bins and reorder points, then configure the setup around them.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -389,48 +389,6 @@ blocks: [
 				"width": 1300,
 				"height": 731
 			}
-		},
-		{
-			"kind": "logoRail",
-			"heading": "Our Valued Customers",
-			"logos": [
-				{
-					"src": "/images/services-smart-factory-inventory-management/13-logo-abb.webp",
-					"alt": "Logo ABB",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-inventory-management/14-logo-alstom.webp",
-					"alt": "Logo Alstom",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-inventory-management/15-logo-komax.webp",
-					"alt": "Logo Komax",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-inventory-management/16-logo-willemin-macodel.webp",
-					"alt": "Logo Willemin Macodel",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-inventory-management/17-logo-unilamp.webp",
-					"alt": "Logo Unilamp",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-inventory-management/18-logo-honeywell.webp",
-					"alt": "Logo Honeywell",
-					"width": 136,
-					"height": 109
-				}
-			]
 		},
 		{
 			"kind": "ctaPanel",

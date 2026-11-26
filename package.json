@@ -21,6 +21,7 @@
     "tokens:snapshot": "node scripts/color-tokens.mjs snapshot",
     "check:links": "node scripts/check-links.mjs",
     "check:404": "node scripts/check-404.mjs",
+    "check:ai-source": "node scripts/check-ai-source.mjs",
     "hooks:install": "node scripts/install-hooks.mjs",
     "hooks:uninstall": "node scripts/install-hooks.mjs --uninstall",
     "deploy": "npm run build && node scripts/deploy-ftp-ci.mjs"

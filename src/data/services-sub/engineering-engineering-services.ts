@@ -28,7 +28,7 @@ slug: "engineering-engineering-services",
 path: "services/engineering/engineering-services",
 seo: {
 title: "Engineering Services",
-description: "Trusted engineering services for your fastening needs. Optimize production, improve quality and reduce costs with our Assembly Technology Expert program.",
+description: "Engineering support for titanium fastener programs: joint design review, print-to-part feasibility, and material verification with full lot documentation.",
 },
 hero: {
 		"breadcrumb": [
@@ -48,9 +48,9 @@ hero: {
 				"label": "Engineering Services"
 			}
 		],
-		"eyebrow": "Assembly Technology Expert",
+		"eyebrow": "Fastening Engineering",
 		"heading": "Trusted Engineering Services for Your Fastening Needs",
-		"lead": "We provide a suite of engineering services under our Assembly Technology Expert program. Explore innovative methods and strategies to shorten your time-to-market, optimize throughput, improve quality, and reduce assembly costs in your production process.",
+		"lead": "We review your joint design and fastener specification, then hand back a manufacturable answer: material grade, finish, tolerance and the documentation you need for release.",
 		"image": {
 			"src": "/images/services-engineering-engineering-services/03-a-male-and-female-sit-at-a-table-with-a-screen-d.webp",
 			"alt": "People around a table discussing a technical drawing in an industrial looking office. ",
@@ -81,9 +81,9 @@ blocks: [
 					"label": "Engineering Services"
 				}
 			],
-			"eyebrow": "Assembly Technology Expert",
+			"eyebrow": "Fastening Engineering",
 			"heading": "Trusted Engineering Services for Your Fastening Needs",
-			"lead": "We provide a suite of engineering services under our Assembly Technology Expert program. Explore innovative methods and strategies to shorten your time-to-market, optimize throughput, improve quality, and reduce assembly costs in your production process.",
+			"lead": "We review your joint design and fastener specification, then hand back a manufacturable answer: material grade, finish, tolerance and the documentation you need for release.",
 			"image": {
 				"src": "/images/services-engineering-engineering-services/03-a-male-and-female-sit-at-a-table-with-a-screen-d.webp",
 				"alt": "People around a table discussing a technical drawing in an industrial looking office. ",
@@ -100,7 +100,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "We offer extensive support for design and R&D engineers to ensure that your fastening solutions meet the highest quality standards and incorporate the latest technologies. Under our Assembly Technology Expert program, we deliver engineering services centered on design, optimization, education, and testing.",
+					"text": "We support design and R&D engineers so the fastening solution can be released for production. Our engineering scope covers design, optimization, training, and testing, executed against DIN, ISO and ASTM F467/F468 fastener data.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -122,7 +122,7 @@ blocks: [
 					"href": "/services/engineering/engineering-services/expert-design/",
 					"label": "Design",
 					"title": "Realize Faster Design to Market",
-					"description": "Preparing for the launch of a new product or version? We speed up your design and go-to-market process through guidance, fastening strategy development, design consulting, and a lean bill of material.",
+					"description": "Preparing for a new product or revision? We support design release through fastening strategy development, design consulting, and a lean bill of material.",
 					"icon": {
 						"src": "/images/services-engineering-engineering-services/03-a-male-and-female-sit-at-a-table-with-a-screen-d.webp",
 						"alt": "A male and female sit at a table with a screen displaying a technical drawing. On the table are a physical application, a technical drawing, and several screws. Key visual for Expert Design only.",
@@ -134,7 +134,7 @@ blocks: [
 					"href": "/services/engineering/engineering-services/assembly-optimization/",
 					"label": "Optimization",
 					"title": "Make Better Use of Your Capacities",
-					"description": "Would you like to save time and money with your current application? We make you more efficient by reducing the complexity of your product, your C-parts assortment, and your assembly processes.",
+					"description": "Working on an existing application? We reduce product complexity, C-part assortment and assembly steps, and return the change list so you can review it.",
 					"icon": {
 						"src": "/images/services-engineering-engineering-services/04-factory-worker-assembling-apparatus.webp",
 						"alt": "Factory worker assembling apparatus",
@@ -146,7 +146,7 @@ blocks: [
 					"href": "/services/engineering/engineering-services/tech-lab/",
 					"label": "Testing and Validation",
 					"title": "Enhance Quality and Safety",
-					"description": "Do you need to validate your fastener selection or joint design? We help you minimize the risks in your application by providing a wide range of tests in our testing laboratories around the world.",
+					"description": "Do you need to validate your fastener selection or joint design? We run the relevant mechanical and material tests and issue the report with the lot documentation.",
 					"icon": {
 						"src": "/images/services-engineering-engineering-services/05-an-engineer-in-the-test-lab-is-preparing-an-appl.webp",
 						"alt": "An engineer in the test lab is preparing an application for torque analysis.",
@@ -157,8 +157,8 @@ blocks: [
 				{
 					"href": "/services/engineering/engineering-services/expert-education/",
 					"label": "Education",
-					"title": "Become a Fastening Expert",
-					"description": "Enhance or refresh your fastening knowledge to make precise selections for your application. Our customized training provides in-depth expertise of fastening technology, making you an expert.",
+					"title": "Fastening Knowledge For Your Team",
+					"description": "Enhance or refresh your fastening knowledge to make precise selections for your application. Our training covers fastener selection, torque control and galling prevention for titanium joints.",
 					"icon": {
 						"src": "/images/services-engineering-engineering-services/06-a-man-using-a-smart-tool-to-fasten-a-screw-into-.webp",
 						"alt": "A man using a smart tool to fasten a screw into aluminium.",
@@ -170,27 +170,27 @@ blocks: [
 		},
 		{
 			"kind": "cardRail",
-			"heading": "Proven Productivity Through Our Engineering Services",
+			"heading": "What Our Engineering Service Covers",
 			"items": [
 				{
-					"label": "Take Away 1",
-					"title": "Up to 30% Faster",
-					"description": "to market through smarter fastening and joint designs."
+					"label": "Design",
+					"title": "Joint Design Review",
+					"description": "fastener selection checked against your drawing, load case and assembly method."
 				},
 				{
-					"label": "Take Away 2",
-					"title": "At Least 40% Savings",
-					"description": "on average in total cost of ownership (TCO), based on 200 projects."
+					"label": "Manufacturing",
+					"title": "Print-to-Part Feasibility",
+					"description": "CNC capacity and tolerance capability confirmed before you commit the order."
 				},
 				{
-					"label": "Take Away 3",
-					"title": "16 Testing Labs",
-					"description": "worldwide. 4 are certified for accredited tests, to improve quality and safety in your application."
+					"label": "Verification",
+					"title": "PMI and XRF Screening",
+					"description": "material identity confirmed on incoming stock, with the report kept on file."
 				},
 				{
-					"label": "Take Away 4",
-					"title": "Over 3500 Engineers",
-					"description": "are trained by our fastening experts every year."
+					"label": "Documentation",
+					"title": "EN 10204 3.1 Certification",
+					"description": "heat numbers carried from goods-in to the shipped lot."
 				}
 			]
 		},
@@ -206,7 +206,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Uncertain about how our engineering services can enhance your operations? Assembly Technology Expert services provide comprehensive support in design, validation, and testing, C-part assortment analysis, education, and training. Explore our interactive blueprint to learn more.",
+					"text": "Not sure which engineering service fits your program? We cover design, validation, testing, C-part assortment analysis, and training, and we can walk through your own drawing and process with you.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -286,7 +286,7 @@ blocks: [
 				},
 				{
 					"title": "Higher Reliability and Quality",
-					"description": "Apply the latest fastening know-how through tailored education and proven fastening expertise.",
+					"description": "Apply fastening know-how through documented training and in-house fastening expertise.",
 					"icon": {
 						"src": "/images/services-engineering-engineering-services/12-increasing-product-quality-icon.svg",
 						"alt": "Increasing product quality icon",
@@ -297,75 +297,9 @@ blocks: [
 			]
 		},
 		{
-			"kind": "logoRail",
-			"heading": "Our Valued Customers",
-			"logos": [
-				{
-					"src": "/images/services-engineering-engineering-services/13-logo-cwa.webp",
-					"alt": "Logo CWA",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/14-logo-bode-rawag.webp",
-					"alt": "Logo Bode RAWAG",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/15-logo-bmc.webp",
-					"alt": "Logo BMC",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/16-logo-beyond-gravity.webp",
-					"alt": "Logo beyond gravity",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/17-logo-loncin.webp",
-					"alt": "Logo Loncin",
-					"width": 136,
-					"height": 109
-				}
-			]
-		},
-		{
-			"kind": "logoRail",
-			"heading": "",
-			"logos": [
-				{
-					"src": "/images/services-engineering-engineering-services/18-logo-5m.webp",
-					"alt": "Logo 5M",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/19-logo-adler-pelzer-group.webp",
-					"alt": "Logo Adler Pelzer Group",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/20-logo-swandoo.webp",
-					"alt": "Logo Swandoo",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-engineering-services/21-logo-storopack.webp",
-					"alt": "Logo Storopack",
-					"width": 136,
-					"height": 109
-				}
-			]
-		},
-		{
 			"kind": "ctaPanel",
-			"eyebrow": "Customer Success",
-			"heading": "Development of the Omega V Lightweight Cabin",
+			"eyebrow": "Engineering Review",
+			"heading": "Drawings Reviewed Before Production Release",
 			"description": "",
 			"cta": null,
 			"image": {

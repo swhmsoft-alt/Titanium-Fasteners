@@ -24,7 +24,7 @@ export const AEROSPACE_UAV: AppPageData = {
 	slug: 'aerospace-uav',
 	industry: 'Aerospace & UAV',
 	seo: {
-		title: 'Aerospace & UAV Titanium Fasteners — Grade 5, Grade 23',
+		title: 'Aerospace & UAV Titanium Fasteners — Grade 5 & 23',
 		description:
 			'Grade 5 Ti-6Al-4V and Grade 23 titanium fasteners for aerospace and UAV airframe, payload and flight hardware, M1.6-M36, with EN 10204 3.1 certificates.',
 	},

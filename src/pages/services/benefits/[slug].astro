@@ -38,7 +38,13 @@ export function getStaticPaths() {
 
 const { page } = Astro.props;
 const currentPathname = Astro.url.pathname;
-const canonicalPath = `/services/benefits/${currentPathname.split('/').pop()}/`;
+
+/**
+ * canonical 用路由参数拼，不用 pathname 反推：
+ * Astro 的 trailingSlash:'always' 让 pathname 以 '/' 结尾，
+ * split('/').pop() 得到空串 —— 那样会产出 '/services/benefits//' 这种双斜杠 URL。
+ */
+const canonicalPath = `/services/benefits/${Astro.params.slug}/`;
 ---
 
 <BaseLayout title={page.seo.title} description={page.seo.description} canonicalPath={canonicalPath}>

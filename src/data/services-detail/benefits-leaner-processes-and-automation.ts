@@ -93,7 +93,7 @@ export const PAGE = {
 			},
 			"image": {
 				"src": "/images/services-benefits-leaner-processes-and-automation/02-two-people-walk-through-the-shop-floor-the-woman.webp",
-				"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",
+				"alt": "Two people walk through the shop floor, the woman holding a tablet and the man pointing to a mobile trolley of labelled bins.",
 				"ratio": "5/4",
 				"width": 1340,
 				"height": 1072

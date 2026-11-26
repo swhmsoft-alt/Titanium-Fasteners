@@ -28,7 +28,7 @@ slug: "engineering-fastening-composites",
 path: "services/engineering/fastening-composites",
 seo: {
 title: "Composite Fastening Elements",
-description: "Explore innovative fastening solutions for composites. From design to assembly, we guide, design, and deliver optimal solutions for your challenges.",
+description: "Fastener selection for composite joints: from design review through assembly, we specify and deliver the fastening solution for the joint.",
 },
 hero: {
 		"breadcrumb": [
@@ -53,7 +53,7 @@ hero: {
 		"lead": "Fastening composites is challenging because unlike traditional materials, there are no standard guidelines. We offer expert guidance on selecting the right fastening technology, from initial design, through manufacturing to final assembly.",
 		"image": {
 			"src": "https://img.youtube.com/vi/DGAz1FVDgc8/maxresdefault.jpg",
-			"alt": "ATE | Fastening Composites: Challenges and Solutions",
+			"alt": "Fastening Composites: Challenges and Solutions",
 			"ratio": "5/4",
 			"width": 1340,
 			"height": 1072
@@ -91,7 +91,7 @@ blocks: [
 		{
 			"kind": "video",
 			"heading": "Connecting the Dots: Our Approach in 2 Minutes",
-			"caption": "Fastening technologies, products, latest engineering know-how, and proven productivity for fastening composites",
+			"caption": "Fastening technologies, fastener products and engineering know-how for composite joints",
 			"poster": "/images/services-engineering-fastening-composites/05-two-engineers-are-working-on-a-test-setup-for-a-.webp",
 			"posterSrc": "https://img.youtube.com/vi/DGAz1FVDgc8/maxresdefault.jpg",
 			"videoId": "DGAz1FVDgc8"
@@ -99,38 +99,8 @@ blocks: [
 		{
 			"kind": "richText",
 			"tag": "div",
-			"heading": "Our Valued Customers",
+			"heading": "Composite Fastener Programs",
 			"body": []
-		},
-		{
-			"kind": "logoRail",
-			"heading": "",
-			"logos": [
-				{
-					"src": "/images/services-engineering-fastening-composites/01-logo-5m.webp",
-					"alt": "Logo 5M",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-fastening-composites/02-logo-adler-pelzer-group.webp",
-					"alt": "Logo Adler Pelzer Group",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-fastening-composites/03-logo-swandoo.webp",
-					"alt": "Logo Swandoo",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-engineering-fastening-composites/04-logo-storopack.webp",
-					"alt": "Logo Storopack",
-					"width": 136,
-					"height": 109
-				}
-			]
 		},
 		{
 			"kind": "richText",
@@ -144,7 +114,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "We have the most effective composite fastening technologies available. Beyond that, our expertise lies in precisely specifying when and how to use them. We eliminate guesswork and mitigate risks at every stage of your design, manufacturing, and assembly processes.",
+					"text": "Composite joints have no universal rule. Our expertise is specifying which fastening technology fits the joint, then documenting that choice so design, manufacturing and assembly work from the same requirement set.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -156,7 +126,7 @@ blocks: [
 				{
 					"kind": "imageRow",
 					"heading": "We Guide – Eliminating Trial and Error",
-					"body": "We ensure seamless collaboration between Original Equipment Manufacturers (OEM) and producers to achieve optimal results. In doing so, we pay attention to the correct functionality of composite materials and the integration of appropriate technologies into the manufacturing process. Our approach begins with the creation of a detailed requirement catalog that accurately captures and defines the needs of both the OEM and the manufacturer.",
+					"body": "We work with OEM engineers and producers on the same requirement set, and we check the function of the composite itself before selecting the fastening technology. The work starts with a detailed requirement catalog that captures what both sides actually need.",
 					"image": {
 						"src": "/images/services-engineering-fastening-composites/05-two-engineers-are-working-on-a-test-setup-for-a-.webp",
 						"alt": "Two engineers are working on a test setup for a torque analysis, directly at test bench",
@@ -192,7 +162,7 @@ blocks: [
 				{
 					"kind": "imageRow",
 					"heading": "We Deliver – Building Your Supply Chain",
-					"body": "Ensuring our capability to deliver the product involves establishing a resilient supply chain. This is crucial for maintaining consistency and reliability in meeting your demands and expectations. As a global leader in fastening solutions, we deliver worldwide, complemented by automated logistics and engineering services that optimize efficiency and costs – our commitment to Proven Productivity.",
+					"body": "Delivery capability depends on a resilient supply chain, and that is what keeps supply consistent. We ship worldwide with lot-level traceability, backed by our own logistics and engineering support.",
 					"image": {
 						"src": "/images/services-engineering-fastening-composites/08-two-people-walk-through-the-shop-floor-the-woman.webp",
 						"alt": "Two people walk through the shop floor, the woman holding a tablet in her hand, the man pointing to a mobile trolley equipped with SmartLabel Cloud bins.",

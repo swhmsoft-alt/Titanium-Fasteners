@@ -28,7 +28,7 @@ slug: "smart-factory-smart-assembly",
 path: "services/smart-factory/smart-assembly",
 seo: {
 title: "Smart Assembly: Assembly Digitalization on your shopfloor",
-description: "Sm﻿art Factory Assembly is a cutting-edge service precisely designed to streamline your assembly operations. ",
+description: "Digital assembly support for titanium fastener lines: work instructions, station data, and lot traceability.",
 },
 hero: {
 		"breadcrumb": [
@@ -50,7 +50,7 @@ hero: {
 		],
 		"eyebrow": "Smart Factory Assembly",
 		"heading": "Smart Assembly: Digitalization in Manufacturing",
-		"lead": "Streamline your assembly operations with our cutting-edge Smart Factory Assembly service. Precisely designed to optimize your unique set up, our solution unlocks new possibilities in your production.",
+		"lead": "Digitize your assembly stations with work instructions, torque data, and real-time production records for titanium fastener lines.",
 		"image": {
 			"src": "/images/services-smart-factory-smart-assembly/06-factory-layout-with-labeled-zones-workers-and-a-.webp",
 			"alt": "Smart Factory Assembly Guy with Tablet in his hands looking at the Dashboard with realt-time data",
@@ -83,7 +83,7 @@ blocks: [
 			],
 			"eyebrow": "Smart Factory Assembly",
 			"heading": "Smart Assembly: Digitalization in Manufacturing",
-			"lead": "Streamline your assembly operations with our cutting-edge Smart Factory Assembly service. Precisely designed to optimize your unique set up, our solution unlocks new possibilities in your production.",
+			"lead": "Digitize your assembly stations with work instructions, torque data, and real-time production records for titanium fastener lines.",
 			"image": {
 				"src": "/images/services-smart-factory-smart-assembly/06-factory-layout-with-labeled-zones-workers-and-a-.webp",
 				"alt": "Smart Factory Assembly Guy with Tablet in his hands looking at the Dashboard with realt-time data",
@@ -100,7 +100,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Harness the power of connected devices, real-time data collection, traceability, flexibility, and tailored customization with our platform ELAM Solutions. Elevate your assembly, no matter your industry – Smart Factory Assembly is ideal for many sectors, such as general industry, contract manufacturers, medical/laboratory, mechanical engineering, hydraulic pneumatic systems, and more. SMEs in particular benefit from our expertise in manufacturing innovation by discovering a new, pragmatic way to digitize their shopfloor.",
+					"text": "Connected devices, real-time data collection, and lot traceability run on one platform. Smart Factory Assembly suits general industry, contract manufacturers, medical and laboratory equipment, mechanical engineering, and hydraulic-pneumatic systems, and it scales from a single station to a full shopfloor.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -124,15 +124,15 @@ blocks: [
 					"title": "Digital Work Instructions",
 					"description": "Looking to reduce assembly errors and provide user-friendly guidance for beginners and professionals? Improve your processes and increase productivity by simulating and testing workflows.",
 					"icon": {
-						"src": "/images/services-smart-factory-smart-assembly/02-woman-with-a-smart-tool-guided-with-elam-solutio.webp",
-						"alt": "Woman with a Smart Tool guided with ELAM Solutions Work Instructions through process. ",
+						"src": "/images/services-smart-factory-smart-assembly/02-woman-guided-by-digital-work-instruction.webp",
+						"alt": "Operator following a digital work instruction on a smart tool during assembly.",
 						"width": 202,
 						"height": 202
 					}
 				},
 				{
 					"href": "/services/smart-factory/smart-assembly/production-data-dashboard/",
-					"label": "ELAM Solutions",
+					"label": "Production Data",
 					"title": "Real-Time Data Dashboard",
 					"description": "Enhance your operations with real-time data that ensures the traceability of product quality, assembly transparency, and continuous improvement.",
 					"icon": {
@@ -146,9 +146,9 @@ blocks: [
 					"href": "/services/smart-factory/smart-assembly/smart-tools-and-devices/",
 					"label": "Tools and Devices",
 					"title": "Smart Tools and Devices",
-					"description": "Connect and integrate all assembly tools and devices with Smart Factory Assembly, for seamless interaction with the ELAM Solutions platform.",
+					"description": "Connect assembly tools and devices so each station reports torque, part, and operator data against the work order.",
 					"icon": {
-						"src": "/images/services-smart-factory-smart-assembly/04-bossard-smart-tool.webp",
+						"src": "/images/services-smart-factory-smart-assembly/04-smart-tool.webp",
 						"alt": "Smart Tool",
 						"width": 202,
 						"height": 202
@@ -161,7 +161,7 @@ blocks: [
 					"description": "The cost of assembly errors can have a significant impact on your production. Reduce them by using computer vision and let our smart camera optimize your manual processes.",
 					"icon": {
 						"src": "/images/services-smart-factory-smart-assembly/05-silver-cube-shaped-smart-camera-with-a-lens-labe.webp",
-						"alt": "Silver cube-shaped smart camera with a lens, labeled &quot;sentinus,&quot; on a white surface against a textured gray background.",
+						"alt": "Smart camera for assembly inspection, shown on a white surface against a gray background.",
 						"width": 202,
 						"height": 202
 					}
@@ -170,29 +170,29 @@ blocks: [
 		},
 		{
 			"kind": "cardRail",
-			"heading": "How Smart Factory Assembly Transf orms Your Production",
+			"heading": "What Digitized Assembly Changes on Your Line",
 			"items": [
 				{
-					"label": "Take Away 1",
-					"title": "100% Traceability",
-					"description": "and transparency with a quality & operations dashboard."
+					"label": "Traceability",
+					"title": "Lot-Level Traceability",
+					"description": "every station records heat number and operator against the work order."
 				},
 				{
-					"label": "Take Away 2",
-					"title": "85% Reduction",
-					"description": "of onboarding time of your new employees."
+					"label": "Onboarding",
+					"title": "Documented Onboarding",
+					"description": "new operators work from the same digital work instruction as experienced staff."
 				},
 				{
-					"label": "Take Away 3",
-					"title": "Up to 80%",
-					"description": "less rework and scrap."
+					"label": "Quality",
+					"title": "Verified Assembly",
+					"description": "torque and angle data are captured for each joint and kept with the lot record."
 				}
 			]
 		},
 		{
 			"kind": "richText",
 			"tag": "div",
-			"heading": "Explore the Future of Your Assembly",
+			"heading": "Where Digitized Assembly Pays Off",
 			"body": []
 		},
 		{
@@ -201,7 +201,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "With industrial manufacturing systems, you can produce large numbers of variants in paperless production reliably, even in a single-piece flow. Dive into our interactive blueprint to explore your options.",
+					"text": "Digital work instructions let you run high variant counts in a paperless flow, down to single-piece production, with the same controlled process for every variant.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -229,7 +229,7 @@ blocks: [
 			"heading": null,
 			"body": [
 				{
-					"text": "Innovation is exciting – it enables rapid process improvement and redesign, as well as new ways of working. In practice, manufacturing innovation takes the form of automation, technological improvements in machines and materials, enhanced use of data and computing power. All of these advancements can help move operations forward by allowing operators to do more with less, while providing more visibility and measurability. Standardized workflows – including the work instructions and protocols that define those workflows – are integral to ensuring quality.",
+					"text": "On a fastener line, improvement comes from automation, better machine and material data, and used production data. Standardized work instructions and protocols are what turn those gains into repeatable quality on every lot.",
 					"strong": null,
 					"strongAt": null
 				}
@@ -240,8 +240,8 @@ blocks: [
 			"heading": "Core Components of Digital Work Instructions at a Glance",
 			"items": [
 				{
-					"title": "Agile Emplo yee Onboarding",
-					"description": "Agile employee onboarding with best practices and gu idance.",
+					"title": "Structured Employee Onboarding",
+					"description": "New operators follow documented best practices and step-by-step guidance.",
 					"icon": {
 						"src": "/images/services-smart-factory-smart-assembly/07-presentation-icon.svg",
 						"alt": "Presentation Icon",
@@ -250,8 +250,8 @@ blocks: [
 					}
 				},
 				{
-					"title": "Replace Manu al Checklists",
-					"description": "Manual checklists can be replaced by automated quality control processes.",
+					"title": "Replace Manual Checklists",
+					"description": "Manual checklists are replaced by automated quality control processes.",
 					"icon": {
 						"src": "/images/services-smart-factory-smart-assembly/08-tasks-list-icon.svg",
 						"alt": "Tasks List icon",
@@ -272,105 +272,27 @@ blocks: [
 			]
 		},
 		{
-			"kind": "logoRail",
-			"heading": "Global References",
-			"logos": [
-				{
-					"src": "/images/services-smart-factory-smart-assembly/10-hydraspecma-logo-small.webp",
-					"alt": "hydraspecma logo small",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/11-logo-cnpc.webp",
-					"alt": "Logo CNPC",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/12-logo-abb.webp",
-					"alt": "Logo ABB",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/13-logo-liebherr.svg",
-					"alt": "Logo Liebherr",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/14-logo-metrohm.webp",
-					"alt": "Logo Metrohm",
-					"width": 136,
-					"height": 109
-				}
-			]
-		},
-		{
-			"kind": "logoRail",
-			"heading": "SME References",
-			"logos": [
-				{
-					"src": "/images/services-smart-factory-smart-assembly/15-integra-logo.webp",
-					"alt": "Integra Logo ",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/16-jingyue-logo.webp",
-					"alt": "Jingyue Logo",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/17-pjm-logo.webp",
-					"alt": "PJM Logo",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/18-mecal-logo.webp",
-					"alt": "Mecal Logo",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/19-logo-heppler.webp",
-					"alt": "Logo Heppler",
-					"width": 136,
-					"height": 109
-				},
-				{
-					"src": "/images/services-smart-factory-smart-assembly/20-logo-dangel.webp",
-					"alt": "Logo Dangel",
-					"width": 136,
-					"height": 109
-				}
-			]
-		},
-		{
 			"kind": "richText",
 			"tag": "article",
-			"heading": "Jump In and Give Our Software a Try!",
+			"heading": "Request a Shopfloor Digitalization Review",
 			"body": []
 		},
 		{
 			"kind": "richText",
 			"tag": "article",
-			"heading": "Download More Information",
+			"heading": "Request Documentation",
 			"body": []
 		},
 		{
 			"kind": "richText",
 			"tag": "div",
-			"heading": "Tailor-Made Solutions for the Digitization of Your Assembly",
+			"heading": "Digitization Built Around Your Assembly Process",
 			"body": []
 		},
 		{
 			"kind": "ctaPanel",
-			"eyebrow": "Customer Success",
-			"heading": "Smart Assembly Ensuring Quality at WILD Group",
+			"eyebrow": "Assembly Data",
+			"heading": "Assembly Quality With Lot Traceability",
 			"description": "",
 			"cta": null,
 			"image": {
