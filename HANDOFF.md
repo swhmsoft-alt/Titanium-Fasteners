@@ -3,7 +3,24 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
-## 询盘后台零门槛化 + 附件回执可见化（2026-11-26）★ 最新一节，先读这里
+## 附件体积上限 + 超限提示可见性修复（2026-11-26）★ 最新一节，先读这里
+
+- **Current Status**：修掉「访客传大附件 → 看到一句毫不相干的『邮箱无效』」这条链路，并补上一个**早于本轮就已存在**的前端缺陷。**改动文件 5 个**：`public/api/submit-inquiry.php`、`src/components/islands/InquiryForm.tsx`、`src/components/sections/contact/ContactInquiryForm.astro`、`src/config/site.ts`、`src/data/contact.ts`。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由结构 / 产品数据 CSV / 部署链 / 附件存储格式与位置。
+  - **根因**：`post_max_size` 约束的是**整个 multipart 请求体**（不是单个文件）。主机上限 8MB，访客传 3 个 3MB 附件 = 9MB > 8MB → PHP **整包丢弃** → 字段全空 → 后端校验失败 → 回一句「邮箱无效」。真实原因（体积超限）被完全掩盖。
+  - **后端**：解析请求体**之前**用 `CONTENT_LENGTH` 与 `post_max_size` 比对，超限直接 **HTTP 413** + 人话消息（不再进入字段校验，因此不再误报邮箱无效）；单文件上限 **6MB**（前后端同步）。
+  - **前端**：① 单文件 > 6MB 直接拦；② **累计体积** > 6MB 也拦（`picked.length > 1 && totalBytes > maxBytes`）—— 累计口径与主机 `post_max_size` 对齐，6MB 上限给 multipart 边界留了余量。
+  - **本轮发现的真缺陷（React 岛）**：`InquiryForm.tsx` 里客户端预检提示（附件超限等）只写 `error` state，而渲染那段「Submission failed (...)」被 `status === 'error'` 门控 —— 预检发生在提交**之前**（status 仍是 idle），提示被门控吃掉。**症状：产品族页选了超大附件点「Send inquiry」，表单毫无反应、页面不显示任何提示**（不是报错，是静默）。修复：新增独立 `precheck` state + 独立 `<p role="alert">` 段落；服务端失败那段保持原样。**这个缺陷早于本轮改动就已存在**（单文件超限检查当初就复用同一个 `error`），本轮补上累计检查时一并修掉。
+  - **验收**：① `npm run build` → `Complete!`，94 页 0 ERROR；② **本地 dist 浏览器实测**（真实渲染，非静态审查）：单 7MB → 显示「p0.pdf is larger than 6 MB. Please send a smaller file or email it separately.」；三 3MB → 显示「The selected attachments total 9.0 MB, which exceeds the 6 MB limit for one submission. …」；**两种情况均无网络请求发出**（fetch 计数 0）；③ **线上 multipart 实测**：小文件 → 200；单 7MB → 被单文件校验拒绝；三个 3MB（合计 9MB）→ **413** + 可读消息；两个 3MB（合计 6MB）→ **200**，2 个文件均已落盘。
+- **Next Step**：
+  1. **清理验证残留记录**：线上询盘后台里留有本轮与上一轮验证产生的记录 —— `probe-size@example.com`、`deploy-verify-*@example.com`（含 `deploy-verify-island@example.com`）等。`inquiry-admin.php` **只支持标记已处理、不支持删除** → 需人工在后台标记为已处理；如需真正删除，需人工在 cPanel 上清理 `.boze-secure/` 或新增删除能力（属独立立项）。
+  2. 若需再确证客户端提示，可用**真实用户路径**复测：填表 → 真实选择大文件 → 点「Send inquiry」，看页面是否出现上述两段提示文字。
+- **Known Pitfalls（本轮新增）**：
+  - **`post_max_size` 管整个请求体，不是单个文件** —— 「单文件 6MB」只是前端口径；主机 8MB 下多个附件累加照样会被 PHP 整包丢弃。**必须同时校验累计体积**。
+  - **「前端拦住了」要同时验两件事**：① 有没有发出网络请求（`fetch` 计数）② 有没有**看得见的**提示文字。只验 ① 会被「静默 return」骗过去 —— 本轮就是靠 ② 才发现 React 岛里提示被 `status==='error'` 门控吃掉。
+  - **客户端预检提示与服务端失败提示不能共用一个 state + 条件渲染门控** —— 两者发生的时机不同（提交前 vs 提交后），必须分开存、分开渲染。
+  - **6MB 是「前端额度」，不是「主机额度」**：主机 `post_max_size` 8MB，6MB 附件 + multipart 边界开销仍在 8MB 以内；调大前端额度前先看主机上限。
+
+## 询盘后台零门槛化 + 附件回执可见化（2026-11-26）★ 次新节，先读这里
 
 - **Current Status**：把 `inquiry-admin.php` 从「只有懂 PHP 的人会用」改造成「工人照着中文界面点按钮就能取件」，并修掉前端一个**会误报成功**的缺陷。**改动文件 4 个**：`public/api/inquiry-admin.php`（重写）、`public/api/submit-inquiry.php`（错误码人话化）、`src/components/sections/contact/ContactInquiryForm.astro`（读 `files`/`msg`）、`src/components/islands/InquiryForm.tsx`（同上）。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由 / 产品 CSV / 部署链 / 附件存储格式。
   - **口令两条路，且都不需要站长碰服务器**：① 仓库内置口令（**只存 SHA-256 哈希**，明文不入版本库）；② 站长在 `.boze-secure/admin.key.php` 写自己的口令。**覆盖文件一旦存在就完全取代内置口令**（不是「两条路任选其一」）—— 否则站长担心内置口令泄露时也无法收回那条路，覆盖就失去「收回权限」的意义。两条路都用 `hash_equals` 常数时间比对。
