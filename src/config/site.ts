@@ -118,8 +118,19 @@ export const INQUIRY = {
 	 * 用时不会让询盘整体丢失。
 	 */
 	uploadEndpoint: 'https://fastener.bozemetal.com/api/submit-inquiry.php',
-	/** 单个附件体积上限（MB）—— 需与主机的 upload_max_filesize 对齐。 */
-	maxAttachmentMb: 20,
+	/**
+	 * 单个附件体积上限（MB）—— 需与主机的 upload_max_filesize 对齐。
+	 *
+	 * 2026-11-26 线上实测：主机的 post_max_size = 8M（7.9MB 提交成功、
+	 * 8.1MB 被丢弃）。post_max_size 约束的是**整个 POST 包**而非单个文件，
+	 * 多个附件累加同样会触发。因此这里按「单文件」与「整包」中更严的一侧
+	 * 取 6MB，给 multipart 边界留出余量 —— 宁可前端拦下，也不要让访客
+	 * 填完长表后收到一句毫不相干的「邮箱无效」。
+	 *
+	 * 若站长把 cPanel 的 post_max_size / upload_max_filesize 调大，
+	 * 请同步调大此值与 public/api/submit-inquiry.php 的 MAX_FILE_BYTES。
+	 */
+	maxAttachmentMb: 6,
 	/** 降级 mailto 的收件邮箱。 */
 	fallbackEmail: 'info@bozemetal.com',
 	/** 表单默认带出的业务上下文，会随提交一起发给 webhook。 */

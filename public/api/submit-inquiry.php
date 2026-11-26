@@ -66,8 +66,16 @@ const ALLOWED_EXT = [
     'dwg', 'dxf', 'zip', 'jpg', 'jpeg', 'png',
 ];
 
-/** 单文件上限 20MB。需与 cPanel 的 upload_max_filesize 对齐。 */
-const MAX_FILE_BYTES = 20 * 1024 * 1024;
+/**
+ * 单文件上限 6MB。
+ *
+ * 为什么不是 20MB：2026-11-26 线上实测主机 post_max_size = 8M（7.9MB 单文件
+ * 提交成功，8.1MB 失败）。post_max_size 限制的是**整个 POST 包**而不是单个
+ * 文件，超限时 PHP 会丢弃整个请求体 → $_POST 与 $_FILES 全空 → 脚本误判为
+ * 「邮箱无效」并返回 400，访客看到与真实原因毫无关系的提示，询盘正文也一并
+ * 丢失。6MB 给 multipart 边界与多附件叠加留出余量。
+ */
+const MAX_FILE_BYTES = 6 * 1024 * 1024;
 
 /**
  * 落盘文件的 PHP 前缀。
@@ -120,6 +128,33 @@ function cleanText($value, int $max = 4000): string
         return mb_substr($text, 0, $max, 'UTF-8');
     }
     return substr($text, 0, $max);
+}
+
+/**
+ * 把 php.ini 的体积写法（8M / 20K / 1G / 1234）解析成字节数。
+ *
+ * 为什么要读 ini：post_max_size 是**整个 POST 包**的上限，超限时 PHP 会静默
+ * 丢弃请求体（$_POST 与 $_FILES 全空）。脚本必须自己察觉这件事，否则会把
+ * 「文件太大」误报成「邮箱无效」。ini_get 不可用时返回 0，闸门自动跳过。
+ */
+function iniBytes(string $value): int
+{
+	$value = trim($value);
+	if ($value === '') {
+		return 0;
+	}
+	$unit = strtoupper(substr($value, -1));
+	$number = (int) $value;
+	switch ($unit) {
+		case 'G':
+			return $number * 1024 * 1024 * 1024;
+		case 'M':
+			return $number * 1024 * 1024;
+		case 'K':
+			return $number * 1024;
+		default:
+			return $number;
+	}
 }
 
 /** 写载荷文件：PHP 前缀 + 原始字节，使其在 Web 上不可下载。 */
@@ -281,6 +316,25 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     respond(405, ['ok' => false, 'msg' => 'Only POST is accepted.']);
 }
 
+/* ── 3b. 请求体体积闸门（必须在解析之前） ───────────────────────────────── */
+
+/*
+ * post_max_size 超限时 PHP 会**丢弃整个请求体**：$_POST 与 $_FILES 都变成空，
+ * 脚本继续往下走会在邮箱校验处报「A valid work e-mail address is required.」
+ * —— 与真实原因（文件太大）毫无关系，且询盘正文一起丢失。
+ *
+ * 判定依据是 CONTENT_LENGTH 与 post_max_size 的比较：超限时 CONTENT_LENGTH
+ * 必然大于 post_max_size，而这个值在 PHP 丢包之前就已确定。
+ */
+$contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
+$postMaxBytes = iniBytes((string) ini_get('post_max_size'));
+if ($postMaxBytes > 0 && $contentLength > $postMaxBytes) {
+	respond(413, [
+		'ok'  => false,
+		'msg' => 'The upload is larger than this server accepts (limit ' . (int) ($postMaxBytes / 1048576) . ' MB per submission). Please send a smaller file, or email the drawing to us and we will pick it up.',
+	]);
+}
+
 /* ── 4. 解析请求体（multipart 或 JSON） ───────────────────────────────── */
 
 $contentType = $_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '';
@@ -411,7 +465,7 @@ foreach ($attachmentItems as $file) {
         respond(400, ['ok' => false, 'msg' => 'Uploaded file could not be verified.']);
     }
     if ($size <= 0 || $size > MAX_FILE_BYTES) {
-        respond(413, ['ok' => false, 'msg' => 'Each attachment must be between 1 byte and 20 MB.']);
+        respond(413, ['ok' => false, 'msg' => 'Each attachment must be between 1 byte and ' . (int) (MAX_FILE_BYTES / 1048576) . ' MB.']);
     }
 
     // 扩展名闸门

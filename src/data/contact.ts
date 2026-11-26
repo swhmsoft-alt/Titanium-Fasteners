@@ -151,7 +151,7 @@ export const CONTACT = {
 		emailHint: 'Use your company email for priority engineering review.',
 		fileLabel: 'Attachment (optional)',
 		fileHint:
-			'BOM (xlsx / csv), drawings (pdf, step, iges, dwg, dxf) or photos — up to 20 MB each. Attach only after our mutual NDA is in place; files are stored outside the public web directory and are not published.',
+			'BOM (xlsx / csv), drawings (pdf, step, iges, dwg, dxf) or photos — up to {maxMb} MB each. Attach only after our mutual NDA is in place; files are stored outside the public web directory and are not published. Larger files can be emailed to our engineering inbox.',
 		fileAcceptedTypes: '.pdf,.csv,.txt,.xls,.xlsx,.ods,.step,.stp,.iges,.igs,.dwg,.dxf,.zip,.jpg,.jpeg,.png',
 		cta: 'Initiate Secure Inquiry & Request NDA',
 		ctaNote:

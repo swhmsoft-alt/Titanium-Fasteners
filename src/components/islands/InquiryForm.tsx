@@ -176,9 +176,20 @@ export default function InquiryForm(props: InquiryFormProps) {
 		 */
 		const fileInput = form.querySelector<HTMLInputElement>(`#${uid}-attachment`);
 		const picked = fileInput?.files ? Array.from(fileInput.files) : [];
-		const oversized = picked.find((f) => f.size > maxAttachmentMb * 1024 * 1024);
+		const maxBytes = maxAttachmentMb * 1024 * 1024;
+		const oversized = picked.find((f) => f.size > maxBytes);
 		if (oversized) {
 			setError(`${oversized.name} is larger than ${maxAttachmentMb} MB. Please send a smaller file or email it separately.`);
+			return;
+		}
+		// 主机 post_max_size 约束的是**整个 POST 包**，不是单个文件 ——
+		// 多个附件累加超限时 PHP 会整体丢弃请求体，访客只会看到一句
+		// 与真实原因无关的「邮箱无效」。因此这里也查累计体积。
+		const totalBytes = picked.reduce((sum, f) => sum + f.size, 0);
+		if (picked.length > 1 && totalBytes > maxBytes) {
+			setError(
+				`The selected attachments total ${(totalBytes / 1024 / 1024).toFixed(1)} MB, which exceeds the ${maxAttachmentMb} MB limit for one submission. Please attach fewer files or email them separately.`
+			);
 			return;
 		}
 		if (picked.length > 0 && !uploadEndpoint) {
@@ -361,7 +372,8 @@ export default function InquiryForm(props: InquiryFormProps) {
 				/>
 				<p className="mt-8 text-p-sm text-gray-medium">
 					BOM, drawing or photo — up to {maxAttachmentMb} MB each. Attach only after our
-					mutual NDA is in place; files are stored outside the public web directory.
+					mutual NDA is in place; files are stored outside the public web directory. Larger
+					files can be emailed to {fallbackEmail}.
 				</p>
 			</div>
 
