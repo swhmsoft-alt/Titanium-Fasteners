@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api/
+Disallow: /.boze-secure/
+
+Sitemap: https://fastener.bozemetal.com/sitemap-index.xml

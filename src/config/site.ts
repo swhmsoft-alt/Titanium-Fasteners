@@ -83,9 +83,12 @@ export const SITE = {
 /**
  * 询盘（RFQ）承接配置 —— B2B 唯一转化出口。
  *
- * CHANNEL DECISION (Phase B, client-confirmed): 自建 webhook。
- * 站点已有同类承接能力（cnc.bozemetal.com 的询盘接口），Phase B 沿用同一套
- * 后端约定，本仓库只负责「静态骨架 + 智能询盘岛」的前端侧。
+ * CHANNEL DECISION (2026-11-26 实测修正):
+ * 原先约定的「站点已有同类承接能力（cnc.bozemetal.com 的询盘接口）」经线上实测
+ * **不成立**：fastener.bozemetal.com / cnc.bozemetal.com / bozemetal.com /
+ * safetiparts.com 的 /api/inquiry 全部返回 404 或 500，即纯文本询盘也从未真正
+ * 送达过。因此改为**自建承接**：两条通道都指向站内同一个 PHP 端点，由它负责
+ * 落盘 + 邮件通知。
  *
  * `endpoint` 用 PUBLIC_ 前缀 → 构建期内联进静态 HTML。Astro 静态站没有
  * 服务端，表单必须由浏览器直接 POST 到 webhook，所以端点是**公开**信息，
@@ -95,8 +98,15 @@ export const SITE = {
  * 这样「先上线页面、后接后端」不会产生死按钮。
  */
 export const INQUIRY = {
-	/** 询盘 webhook 端点。留空则降级为 mailto:。 */
-	endpoint: 'https://fastener.bozemetal.com/api/inquiry',
+	/**
+	 * 纯文本询盘端点（application/json）。
+	 *
+	 * 2026-11-26 实测修正：原先约定的 /api/inquiry 在本站与三个兄弟站上
+	 * 全部返回 404/500，所谓「既有承接端点」并不存在，纯文本询盘从未真正
+	 * 送达。改为与 uploadEndpoint 同源 —— submit-inquiry.php 同时接受 JSON
+	 * 与 multipart，两条通道共用一个落点，询盘不会因为「带不带附件」走丢。
+	 */
+	endpoint: 'https://fastener.bozemetal.com/api/submit-inquiry.php',
 	/**
 	 * 询盘落盘端点（带附件时使用）。
 	 *

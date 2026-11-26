@@ -13,10 +13,10 @@
  *     不写 cookie、不写服务端；
  *   · 唯一的第三方嵌入是页脚的 Google Maps iframe，且为**点击后才加载**
  *     （懒加载），未点击时不会向 Google 发起请求；
- *   · 询盘表单把内容 POST 到本站自有端点 fastener.bozemetal.com/api/inquiry，
- *     未接后端时降级为 mailto:；
- *   · 附件（可选）走 fastener.bozemetal.com/api/submit-inquiry.php：文件存到
- *     Web 根目录之外的 private 目录，文字字段转发回同一承接端点；
+ *   · 询盘表单把内容 POST 到本站自有端点 fastener.bozemetal.com/api/submit-inquiry.php，
+ *     端点不可用时降级为 mailto:；
+ *   · 附件（可选）走同一个端点：文件存在本站目录内一个**不可通过网址取回**的
+ *     私有目录（文件名随机化 + 载荷不可执行），不转发第三方；
  *   · 不设账号体系，不做支付。
  *
  * 红线：不写未发生的统计数字、不写虚构的 DPO 姓名 / 监管机关地址，
@@ -92,7 +92,7 @@ sections: [
 			heading: 'What the inquiry forms collect',
 			paragraphs: [
 				'When you submit an inquiry form on this site, the fields you fill in are sent to our own inquiry endpoint at fastener.bozemetal.com so that the relevant engineer can answer you. The standard fields are your name, e-mail address, company, country and the specification or message you write. That is the extent of what we ask for.',
-				'The inquiry form also offers an optional attachment field. A file you choose there is uploaded to our own server, stored in a directory outside the public web folder so it cannot be fetched by a web address, and is not forwarded to any third party. We keep the original file name only inside our inquiry record so the engineering desk can identify it.',
+				'The inquiry form also offers an optional attachment field. A file you choose there is uploaded to our own server, stored in a private folder that cannot be retrieved through a web address, and is not forwarded to any third party. We keep the original file name only inside our inquiry record so the engineering desk can identify it.',
 				'Please do not include confidential drawings, personal data about third parties or anything your organisation has not cleared for disclosure. If a drawing is needed, ask us for the mutual NDA first — we will not open a file before it is in place.',
 				'This website has no user accounts, no login and no payment processing, so we hold no credentials, no card data and no password hashes.',
 			],

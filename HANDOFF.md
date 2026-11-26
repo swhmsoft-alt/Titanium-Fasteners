@@ -3,6 +3,35 @@
 > 给新会话的 AI：**只读本文件**（≈2K token），其余按 §5 索引按需读**单个**文件，禁止通读。
 > 开工前先输出 §6 的 6 行契约；红线见 `.clinerules/.clinerules.md` §5、§6。
 
+## 询盘接口 500 根因修复 + 存储越界整改（2026-11-26）★ 最新一节，先读这里
+
+- **Current Status**：修复 `public/api/submit-inquiry.php` 的线上 500（HTTP 500 + 空 body），并把附件存储从共享账户根 `/home/safetipa` 收回到站点目录内。**改动文件 6 个**：`public/api/submit-inquiry.php`（重写）、`src/config/site.ts`（`INQUIRY.endpoint` 指向新端点）、`src/components/islands/InquiryForm.tsx`（`attachment[]` + name 属性）、`src/components/sections/contact/ContactInquiryForm.astro`（同上）、`src/data/legal.ts`（隐私口径同步）、`package.json` + `scripts/check-php.mjs`（新建，PHP 语法闸门接入 build）。**未改动**：全局 CSS / BaseLayout / Header / Footer / 路由结构 / 产品数据 CSV。
+  - **三个独立缺陷**（缺一不可，每个都足以让功能失效）：
+    ① **编译期致命错误**：`const STORAGE_ROOT = dirname(__DIR__, 2);` —— PHP 的 `const` 初始值必须是常量表达式，**不允许函数调用**，编译期直接致命错误 → 请求 500 + 空 body。已改为运行时变量。
+    ② **花括号错位**：`cleanText()` 少一个 `}`、末尾多一个 `}`，**净误差为 0**（这是当初括号计数法漏检的原因）。后果：第 96~215 行全部被吞进函数体，顶层 `$email`/`$storedFiles` 未定义 → `count(null)` 抛 TypeError。
+    ③ **前后端契约不匹配**：前端 `fd.append('attachment', f)`（同名无 `[]`）→ PHP 对同名字段**只保留最后一个且不成数组** → `is_array($files['attachment']['name'])` 恒 false → 附件分支永远跳过。前端已改 `attachment[]`（含 input 的 `name` 属性），PHP 端兼容两种形态。
+  - **另一个更严重的发现**：线上 `/api/inquiry`（`INQUIRY.endpoint` 原值）返回 **404**；兄弟站 `cnc.bozemetal.com` / `bozemetal.com` / `safetiparts.com` 的同路径也全 404/500。**所谓「既有 webhook 承接端点」从不存在 —— 纯文本询盘同样从未真正送达过。** 已把 `INQUIRY.endpoint` 与 `uploadEndpoint` 统一指向 `/api/submit-inquiry.php`（该脚本同时接受 JSON 与 multipart），并用 `mail()` 发通知邮件，删除失效的转发逻辑。
+  - **存储越界整改**：新规则要求询盘数据与附件必须留在 `/home/safetipa/fastener.bozemetal.com/` 内，而该目录**同时就是 Web 根** —— 「存在站点内」与「附件不可公开下载」必须同时成立。方案：落盘文件统一用 `.php` 扩展名 + `<?php __halt_compiler(); ?>` 前缀，引擎不再解析其后的字节 → Web 请求该 URL 只执行空脚本、**返回空响应**，原件取不到；文件名是 32 位随机 hex，无目录索引可枚举。**不依赖 `.htaccess`**（共享主机 AllowOverride 曾导致 500）。落盘位置 `.boze-secure/`（`inquiries.php` + `uploads/`）。
+  - **健壮性**：新增 `detectMime()` —— 首选 `finfo`，**扩展不存在时降级为魔数嗅探**（PDF/PNG/JPEG/ZIP/OLE2/STEP/IGES/DWG/纯文本），绝不采信浏览器上报的 Content-Type。已实测：`php -n`（零扩展）下仍 200 且三类工程文件全部正确识别，不再退化成 500。
+  - **验收（本机真实 PHP 8.3.14 + `php -S` 内置服务器，非静态审查）**：旧文件 `php -l` → `Unclosed '{'`（复现 500 根因）；新文件 `php -l` → 无语法错误。端到端：GET → 405（非 500）；JSON 询盘 → 200；`.step` + `.dwg` + `.pdf` multipart → 200 `files:3`，全部落盘；**直接 GET 附件 URL 与记录文件 URL → len=0（原件取不到）**；伪装成 `.pdf` 的 MZ 可执行文件 → 415 拒绝；蜜罐 → 200 静默成功且记录未变；缺必填字段 → 400。`npm run build` → `Complete!` 94 页，0 ERROR。
+  - **2026-11-26 追加（同一轮第二部分）**：实现**查看管理**能力（方案文档《询盘数据落盘-存储位置-查看管理方案.md》里唯一被我漏掉的缺口 —— 附件以 PHP 载荷落盘后，站长自己拿不到干净原件）。新增 `public/api/inquiry-admin.php`（自包含单文件后台）：口令鉴权 → 列出全部询盘（时间/邮箱/公司/需求/附件/来源）→ 点击附件下载**还原后的原始字节**（剥掉 `__halt_compiler` 前缀，文件名用访客上传时的原名）。另修 `submit-inquiry.php` 的**并发丢记录**缺陷：新增 `appendRecord()`（`fopen 'c+b'` + `flock(LOCK_EX)` + `ftruncate`/回写/刷盘/解锁），替换原先无锁的「读-改-写整个数组」。新增 `public/robots.txt`（`Disallow: /api/`、`Disallow: /.boze-secure/` + sitemap 声明）。`package.json` 的 `check:php` 扩到两个 PHP 文件。
+  - **为什么不照搬方案文档的三条**：① 文档的 `.htaccess`（`Require all denied` / `php_flag`）建立在一个**已被证伪**的前提上 —— 这台共享主机的 AllowOverride 曾让全站 500，`scripts/deploy-ftp-ci.mjs` 里专门有「写入 .htaccess 后若 5xx 就回滚」的保护逻辑；② 文档的 `files/a1b2c3d4.pdf` 保留真实扩展名，一旦 `.htaccess` 没生效原件可直接下载，与「不可公开下载」这条硬要求相反；③ 文档的 `?pwd=123` 把密码写进 URL，会进 access log / 浏览器历史 / Referer。现实现的口令存在 `.boze-secure/admin.key.php`（同样是 PHP 载荷，猜到 URL 也读不到内容），用 `hash_equals` 常数时间比对，登录态在 session 里。
+  - **本轮验证（真实 PHP 8.3.14 + `php -S`，非静态审查）**：`php -l` 两个文件均无语法错误；后台端点端到端 11 项全过 —— 未登录只见登录表单且**不泄露任何询盘字段**（`leaksEmail=false`）、未登录直连附件 → 302 重定向且 `len=0`（`leaksPdf=false`）、错误口令被拒、正确口令 302 登录、登录后列表含邮箱/公司/文件名、**附件下载 42 字节与上传文件逐字节相同**（`identical=true`）、`Content-Disposition: attachment; filename="bracket.pdf"`、路径穿越参数 → 400、口令文件直接 GET → `len=0`、附件载荷直接 GET → `len=0`。**并发验证**：8 个并发提交 → 8 条记录、8 个唯一邮箱、零丢失（旧的无锁实现会互相覆盖）。`npm run build` → `Complete!` 94 页 0 ERROR，`dist/api/` 含两个端点，`dist/robots.txt` 生效。
+- **Next Step**：
+  1. **部署后必须实测一次线上 multipart 提交**（本机无法代替）：用真实 `.step` / `.dwg` / PDF POST `https://fastener.bozemetal.com/api/submit-inquiry.php`，确认 200 且 `files:N`，并确认 `https://fastener.bozemetal.com/.boze-secure/uploads/<hash>.php` 返回空响应。
+  2. **在 cPanel 上创建 `.boze-secure/admin.key.php`**（后台才能登录）：内容两行 —— 第一行 `<?php __halt_compiler(); ?>`，第二行写口令。**第一行不能省**：省了口令就能被 URL 直接下载。目录不存在时先建 `.boze-secure/`。随后访问 `https://fastener.bozemetal.com/api/inquiry-admin.php` 用该口令登录。
+  3. **确认主机 PHP 已启用 fileinfo**（`php -m | grep fileinfo`）；未启用也能跑（魔数降级），但 CSV/纯文本的判定会偏保守。
+  4. **确认 `mail()` 在 cPanel 上可用**（PHP `mail()` 依赖主机 sendmail）。若不可用，询盘仍会落盘（`.boze-secure/inquiries.php`），后台也能看到，但**无人收到通知** —— 响应里的 `mailed` 字段可用来判断。
+  5. **cPanel 上传限制**需手动确认：`upload_max_filesize ≥ 20M`、`post_max_size ≥ 40M`、`memory_limit ≥ post_max_size`、`max_execution_time ≥ 120`。默认 2M 会静默失败（`UPLOAD_ERR_INI_SIZE`）。
+  6. **旧目录清理**：旧路径 `/home/safetipa/secure_data`、`/home/safetipa/secure_uploads` 理论上从未有数据（旧脚本编译期就致命错误，一行都没执行过），但**清理前仍需在面板上目视确认**，且只允许动 `/home/safetipa/fastener.bozemetal.com/` 路径内的文件 —— 账户根下的同名目录**不属于本项目，不得擅自删除**。
+- **Known Pitfalls（本轮新增）**：
+  - **PHP 的 `const` 不允许函数调用**（`const X = dirname(__DIR__)`）→ 编译期致命错误，症状是 500 + **空 body**（连错误信息都没有，因为脚本没开始执行）。凡是路径类常量都必须用运行时变量。
+  - **括号计数法会漏检**：少 1 个 `}` 多 1 个 `}` 净误差为 0，但控制流会被整段吞进函数体。PHP 代码必须用真实解析器或 `php -l` 校验（本轮用 `php-parser` AST + `php -l` 双重校验）。
+  - **PHP 对无 `[]` 的同名字段只保留最后一个**：多文件上传必须用 `attachment[]`（FormData 的 append 名 + HTML input 的 name 属性都要改），否则静默丢文件且不报错。
+  - **Windows PowerShell 5.1 的 `System.Net.Http` 程序集默认未加载** → `MultipartFormDataContent` 类型解析失败。测 multipart 用 Node 原生 `fetch` + 手写 boundary，别用 PowerShell。
+  - **本机已装便携 PHP**：`C:\tools\php83\php.exe`（choco 装的 php 8.3.14）。`fileinfo` 扩展已在本机 `php.ini` 中启用；用 `php -n` 可模拟「扩展全无」的主机环境。choco 安装需后台分离进程（`Start-Process -WindowStyle Hidden`），前台跑会被终端重置打断。
+  - **`npm run build` 现已串上 `npm run check:php`**（`scripts/check-php.mjs`，用 php-parser 解析 AST 并单独检出「const 初始值含函数调用」这类编译期致命错误）。本机 `php-parser` 已加入 devDependencies。
+
 ## `/product-solutions/innovations/` 主题改写为「钛材料核心」创新页（2026-11-25）★ 最新一节，先读这里
 
 - **Current Status**：把 innovations 页从「参考站通用创新秀」改写为**以钛材料为核心的紧固件技术创新**页。**改动文件 4 个**：`src/data/innovations.ts`（文案层全量重写）、`src/components/sections/innovations/GradeTable.astro`（新建）、`src/components/sections/innovations/PageHero.astro`（1 行 `object-cover`）、`src/components/sections/innovations/InnovationsCarousel.astro`（1 行 `object-cover`）、`src/pages/product-solutions/innovations.astro`（引入 GradeTable）。**未改动**：全局 CSS、BaseLayout、SiteHeader、SiteFooter、`src/config/site.ts` 导航、任何路由结构、产品数据 CSV。

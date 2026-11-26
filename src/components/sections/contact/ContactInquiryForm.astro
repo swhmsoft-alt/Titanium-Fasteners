@@ -124,7 +124,7 @@ const f = CONTACT.form;
 			<input
 				id="contact-file"
 				type="file"
-				name="attachment"
+				name="attachment[]"
 				multiple
 				accept={f.fileAcceptedTypes}
 				class="w-full border border-gray-light bg-white px-16 py-10 text-p-sm text-gray file:mr-16 file:rounded-pill file:border-0 file:bg-blue-dark3 file:px-16 file:py-8 file:text-button file:leading-none file:text-white"
@@ -396,7 +396,8 @@ const f = CONTACT.form;
 					fd.append('company', '');
 					fd.append('quantity', '');
 					if (trapField) fd.append(trapField, '');
-					picked.forEach((f) => fd.append('attachment', f));
+					// 字段名必须带 []：PHP 对不带 [] 的同名字段只保留最后一个。
+					picked.forEach((f) => fd.append('attachment[]', f));
 
 					const res = await fetch(uploadEndpoint, { method: 'POST', body: fd });
 					if (!res.ok) throw new Error(`HTTP ${res.status}`);

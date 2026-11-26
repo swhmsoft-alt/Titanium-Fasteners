@@ -201,7 +201,9 @@ export default function InquiryForm(props: InquiryFormProps) {
 				fd.append('pageUrl', payload.pageUrl);
 				fd.append('product', JSON.stringify(payload.product));
 				if (trapField) fd.append(trapField, '');
-				picked.forEach((f) => fd.append('attachment', f));
+				// 字段名必须带 []：PHP 对**不带 [] 的同名字段只保留最后一个**，
+				// 多文件会静默只剩最后一个，且结构不成数组。
+				picked.forEach((f) => fd.append('attachment[]', f));
 
 				const res = await fetch(uploadEndpoint, { method: 'POST', body: fd });
 				if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -338,7 +340,7 @@ export default function InquiryForm(props: InquiryFormProps) {
 				</label>
 				<input
 					id={`${uid}-attachment`}
-					name="attachment"
+					name="attachment[]"
 					type="file"
 					multiple
 					accept=".pdf,.csv,.txt,.xls,.xlsx,.ods,.step,.stp,.iges,.igs,.dwg,.dxf,.zip,.jpg,.jpeg,.png"
