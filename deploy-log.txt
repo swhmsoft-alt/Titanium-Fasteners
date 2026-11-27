@@ -1,0 +1,27 @@
+[deploy-ftp] credential sets available: FTP_USERNAME+FTP_PASSWORD, FTP2_USERNAME+FTP2_PASSWORD | path=configured
+[deploy-ftp] connecting to fastener.bozemetal.com:21 (explicit FTPS)
+[deploy-ftp] credential set 1/2: FTP_USERNAME (FTP_PASSWORD)
+[deploy-ftp] the certificate of fastener.bozemetal.com does not cover that name; the handshake is verified against "rs4-va.serverhostgroup.com", which it does cover
+[deploy-ftp] FTP_USERNAME was rejected: 421 Home directory not available - aborting
+[deploy-ftp] FTP_USERNAME: the server accepted the account but its home directory is missing. Fix it in the hosting panel (cPanel -> FTP Accounts -> the account -> Home Directory / Directory): point it at the folder that really holds the site, and make sure that folder exists and is writable by the account.
+[deploy-ftp] credential set 2/2: FTP2_USERNAME (FTP2_PASSWORD)
+[deploy-ftp] logged in with FTP2_USERNAME
+[deploy-ftp] logged in, remote PWD = /
+[deploy-ftp] the configured remote path is "." — that is the login root, so the document root is looked up instead
+[deploy-ftp] candidate "fastener.bozemetal.com" contains: .boze-secure, .htaccess, .well-known, 404.html, _astro, about-us, api, brand, contact, download, favicon-16x16.webp, favicon.svg
+[deploy-ftp] discovered remote document root: fastener.bozemetal.com
+[deploy-ftp] renewing the FTP session after 25 file(s)
+[deploy-ftp] renewing the FTP session after 66 file(s)
+[deploy-ftp] renewing the FTP session after 25 file(s)
+[deploy-ftp] renewing the FTP session after 244 file(s)
+[deploy-ftp] renewing the FTP session after 247 file(s)
+[deploy-ftp] renewing the FTP session after 74 file(s)
+[deploy-ftp] 411 file(s) transferred
+[deploy-ftp] WARNING: 2 zero-byte placeholder file(s) were skipped: download/cad/.gitkeep, download/spec/.gitkeep
+[deploy-ftp] the server already maps 404 to a document — .htaccess left untouched
+[deploy-ftp] verified index.html (152339 bytes)
+[deploy-ftp] verified 404.html (108020 bytes)
+[deploy-ftp] verified images/category/titanium-screws-category-hero.webp (117900 bytes)
+[deploy-ftp] verified images/products/TI-DOUBLE-END-STUD-BOLTS-BZ-110-bolts-titanium.webp (36868 bytes)
+[deploy-ftp] upload finished -> fastener.bozemetal.com:21fastener.bozemetal.com
+[deploy-ftp] done
