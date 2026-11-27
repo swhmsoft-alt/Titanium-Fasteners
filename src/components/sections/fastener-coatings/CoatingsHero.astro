@@ -1,0 +1,111 @@
+---
+/**
+ * CoatingsHero — the top band of
+ * `/product-solutions/components-specific-solutions/fastener-coatings/`.
+ *
+ * LAYOUT BUDGET (LAYOUT_RULES §2)
+ * · Lead paragraph ≤ 40 words, 3–4 lines.
+ * · Up to 3 compact spec badges + 2 CTA buttons.
+ * · The figure is locked to a 16:10 landscape ratio so it can never stretch
+ *   against the text column.
+ */
+import type { BreadcrumbItem } from '@data/fastener-coatings';
+
+interface Props {
+	breadcrumb: BreadcrumbItem[];
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	primaryCta: { label: string; href: string };
+	secondaryCta: { label: string; href: string };
+	trust: readonly { label: string; value: string }[];
+	image: { src: string; alt: string };
+}
+
+const { breadcrumb, eyebrow, heading, lead, primaryCta, secondaryCta, trust, image } =
+	Astro.props;
+---
+
+<header class="container-fluid mb-64 mt-40 flex flex-col wd:mb-72 wd:mt-48 wd:flex-row wd:items-center wd:gap-32 ul:mb-72 ul:mt-48">
+	<div class="order-2 w-full wd:order-1 wd:w-1/2">
+		<nav
+			class="mb-24 mt-8 overflow-hidden text-gray-medium transition-opacity duration-300 lg:mb-32 lg:mt-12"
+			aria-label="Breadcrumb"
+		>
+			<ol class="flex flex-wrap text-h6-s">
+				<li class="flex items-center">
+					<a href={breadcrumb[0].href} class="breadcrumb L0">
+						<svg
+							class="h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[2]"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#home"></use>
+						</svg>
+						<span class="sr-only">{breadcrumb[0].label}</span>
+					</a>
+				</li>
+				{breadcrumb.slice(1).map((item, index) => (
+					<li class="flex items-center">
+						<svg
+							class="mx-8 inline-block h-[16px] w-[16px] fill-gray-medium stroke-gray-medium stroke-[1.75] lg:mx-12"
+							aria-hidden="true"
+						>
+							<use href="/images/sprite.svg#chevron-right"></use>
+						</svg>
+						{item.href ? (
+							<a href={item.href} class="breadcrumb L1">{item.label}</a>
+						) : (
+							<span aria-current={index === breadcrumb.length - 2 ? 'page' : undefined}>
+								{item.label}
+							</span>
+						)}
+					</li>
+				))}
+			</ol>
+		</nav>
+
+		<p class="text-label mb-8 text-gray-medium lg:mb-12">{eyebrow}</p>
+		<h1 class="text-h1 mb-24 hyphens-auto text-blue-dark3 lg:mb-32">{heading}</h1>
+		<p class="text-lead mb-24 max-w-rich-text text-gray sm:mb-0">{lead}</p>
+
+		<div class="mt-24 flex flex-wrap gap-12 lg:mt-32">
+			<a
+				href={primaryCta.href}
+				class="inline-flex items-center justify-center rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+			>
+				{primaryCta.label}
+			</a>
+			<a
+				href={secondaryCta.href}
+				class="inline-flex items-center justify-center rounded-pill border border-blue px-24 py-13 pb-14 text-button leading-none text-blue transition-colors duration-300 hover:bg-blue-light"
+			>
+				{secondaryCta.label}
+			</a>
+		</div>
+
+		<ul class="mt-24 grid grid-cols-1 gap-12 border-t border-blue-light pt-20 sm:grid-cols-3 lg:mt-32">
+			{trust.map((item) => (
+				<li>
+					<span class="text-label mb-4 block text-gray-medium">{item.label}</span>
+					<span class="block text-p-sm font-medium text-blue-dark3">{item.value}</span>
+				</li>
+			))}
+		</ul>
+	</div>
+
+	<div class="order-1 mb-24 w-full wd:order-2 wd:mb-0 wd:w-1/2">
+		<figure class="flex w-full">
+			<img
+				src={image.src}
+				alt={image.alt}
+				width="1600"
+				height="1000"
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
+				class="aspect-16/10 w-full rounded-2xl object-cover"
+				style="aspect-ratio:16 / 10"
+			/>
+		</figure>
+	</div>
+</header>

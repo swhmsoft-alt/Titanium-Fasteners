@@ -1,0 +1,148 @@
+---
+/**
+ * FinishMatrix — module C: the engineering comparison matrix.
+ *
+ * WHY A TABLE, NOT CARDS
+ * ----------------------
+ * The matrix is a comparison of standards, thickness, thread effect and
+ * purpose across five finishes. LAYOUT_RULES §2 reserves large photos for
+ * physical proof and requires compact full-width grids or clean
+ * specification tables for abstract lists — this is that table.
+ *
+ * FILTERING
+ * ---------
+ * The filter chips are progressive enhancement: with JavaScript off, every
+ * row stays visible and the chip row is hidden by a `no-js` guard, so the
+ * information is never lost.
+ */
+import type { MatrixFilter, MatrixRow } from '@data/fastener-coatings';
+
+interface Props {
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	filters: readonly MatrixFilter[];
+	rows: readonly MatrixRow[];
+}
+
+const { eyebrow, heading, lead, filters, rows } = Astro.props;
+
+const columns = [
+	{ key: 'finish', label: 'Finish' },
+	{ key: 'standard', label: 'Governing standard' },
+	{ key: 'thickness', label: 'Coating thickness' },
+	{ key: 'threadImpact', label: 'Effect on thread' },
+	{ key: 'purpose', label: 'Primary purpose' },
+] as const;
+---
+
+<section
+	id="finish-comparison-matrix"
+	class="py-48 lg:py-64"
+	aria-labelledby="finish-matrix-heading"
+>
+	<div class="container-fluid">
+		<p class="text-label mb-8 text-gray-medium">{eyebrow}</p>
+		<h2 id="finish-matrix-heading" class="text-h3 mb-16 max-w-rich-text text-blue-dark3 lg:mb-24">
+			{heading}
+		</h2>
+		<p class="mb-32 max-w-rich-text text-p text-gray lg:mb-40">{lead}</p>
+
+		{
+			filters.length > 0 && (
+				<div class="mb-24 flex flex-wrap gap-8 lg:mb-32" data-matrix-filters hidden>
+					{filters.map((filter) => (
+						<button
+							type="button"
+							class="rounded-pill border border-blue-light px-20 py-8 text-p-sm text-blue-dark3 transition-colors duration-200 hover:border-blue aria-pressed={filter.id === 'all' ? 'true' : 'false'}"
+							data-matrix-filter={filter.id}
+							aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+						>
+							{filter.label}
+						</button>
+					))}
+				</div>
+			)
+		}
+
+		<div class="overflow-x-auto rounded-card border border-blue-light">
+			<table class="w-full min-w-[840px] border-collapse text-left">
+				<caption class="sr-only">
+					Comparison of titanium fastener surface finishes by governing standard, coating
+					thickness, effect on thread fit and primary purpose.
+				</caption>
+				<thead>
+					<tr class="bg-blue-light/50">
+						{
+							columns.map((column) => (
+								<th
+									scope="col"
+									class="px-16 py-14 text-label font-medium text-blue-dark3 lg:px-24 lg:py-16"
+								>
+									{column.label}
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						rows.map((row) => (
+							<tr class="border-t border-blue-light" data-matrix-row data-tags={row.tags.join(' ')}>
+								<th scope="row" class="px-16 py-14 text-p-sm font-medium text-blue-dark3 lg:px-24 lg:py-16">
+									{row.finish}
+								</th>
+								<td class="px-16 py-14 text-p-sm text-gray lg:px-24 lg:py-16">{row.standard}</td>
+								<td class="px-16 py-14 text-p-sm text-gray lg:px-24 lg:py-16">{row.thickness}</td>
+								<td class="px-16 py-14 text-p-sm text-gray lg:px-24 lg:py-16">{row.threadImpact}</td>
+								<td class="px-16 py-14 text-p-sm text-gray lg:px-24 lg:py-16">{row.purpose}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<p class="mt-16 text-p-sm text-gray-medium" data-matrix-empty hidden>
+			No finish matches this filter. Choose another criterion to continue.
+		</p>
+	</div>
+</section>
+
+<script>
+	/* Progressive enhancement: reveal the chips and filter the rows. */
+	const filterBar = document.querySelector<HTMLElement>('[data-matrix-filters]');
+	if (filterBar) {
+		filterBar.hidden = false;
+	}
+
+	const buttons = Array.from(
+		document.querySelectorAll<HTMLButtonElement>('[data-matrix-filter]'),
+	);
+	const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-matrix-row]'));
+	const emptyNote = document.querySelector<HTMLElement>('[data-matrix-empty]');
+
+	const applyFilter = (id: string) => {
+		let visible = 0;
+		rows.forEach((row) => {
+			const tags = (row.dataset.tags ?? '').split(/\s+/).filter(Boolean);
+			const match = id === 'all' || tags.includes(id);
+			row.hidden = !match;
+			if (match) visible += 1;
+		});
+		if (emptyNote) emptyNote.hidden = visible > 0;
+	};
+
+	buttons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const id = button.dataset.matrixFilter ?? 'all';
+			buttons.forEach((other) => {
+				const active = other === button;
+				other.setAttribute('aria-pressed', active ? 'true' : 'false');
+				other.classList.toggle('bg-blue', active);
+				other.classList.toggle('text-white', active);
+			});
+			applyFilter(id);
+		});
+	});
+</script>

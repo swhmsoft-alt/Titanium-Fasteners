@@ -1,15 +1,19 @@
 ---
 /**
  * /product-solutions/components-specific-solutions/fastener-coatings/
- * Reference: https://www.bossard.com/global-en/product-solutions/components-specific-solutions/fastener-coatings/
  *
- * MEASURED on the reference (1440×1000, 2026-11-09):
- *   body 4261px, footer 517px, h-overflow 0px
- *   hero      img 643×514 at x=745 | H1 64px/70.4 #004975 x=70
- *   intro     4 × container-fluid rich-text paragraphs (3 filled + 1 empty)
- *   block 1   Different Types of Fastener Coatings  y=1197 h=938  H2 44px
- *   block 2   Corrosion Protection Coatings         y=2135 h=961  H2 44px
- *   block 3   Learn More About Fastener Coatings    y=3144 h=508  H2 44px
+ * A titanium surface-finishing page that serves two buyer intents:
+ *   Hub   — the four titanium surface states, the comparison matrix and the
+ *           technical FAQ, for a buyer who is still selecting.
+ *   Money — the factory RFQ form and the trust anchors around it.
+ *
+ * The route, the canonical path and the URL are unchanged — this is an
+ * in-place refactor of the existing page.
+ *
+ * STRUCTURED DATA
+ * Service + FAQPage + BreadcrumbList, built from the same data the page
+ * renders, so the JSON-LD cannot point at a standard or a route that is
+ * not on the page.
  */
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SiteHeader from '@components/layout/SiteHeader.astro';
@@ -17,53 +21,78 @@ import MegaMenu from '@components/layout/MegaMenu.astro';
 import SiteFooter from '@components/layout/SiteFooter.astro';
 import CookieConsent from '@components/layout/CookieConsent.astro';
 import BackToTop from '@components/layout/BackToTop.astro';
-import PageHero from '@components/sections/fastener-coatings/PageHero.astro';
-import CoatingTypes from '@components/sections/fastener-coatings/CoatingTypes.astro';
-import CorrosionCallout from '@components/sections/fastener-coatings/CorrosionCallout.astro';
-import WhitePapers from '@components/sections/fastener-coatings/WhitePapers.astro';
+import CoatingsHero from '@components/sections/fastener-coatings/CoatingsHero.astro';
+import FinishHub from '@components/sections/fastener-coatings/FinishHub.astro';
+import FinishMatrix from '@components/sections/fastener-coatings/FinishMatrix.astro';
+import FinishFaq from '@components/sections/fastener-coatings/FinishFaq.astro';
+import CoatingsRfq from '@components/sections/fastener-coatings/CoatingsRfq.astro';
+import RelatedResources from '@components/sections/fastener-coatings/RelatedResources.astro';
 import { FASTENER_COATINGS as PAGE } from '@data/fastener-coatings';
+import { buildCoatingsJsonLd } from '@data/fastener-coatings/jsonld';
+import { SITE } from '@config/site';
 
 const currentPathname = Astro.url.pathname;
+const jsonLd = buildCoatingsJsonLd(SITE);
 ---
 
 <BaseLayout
 	title={PAGE.seo.title}
 	description={PAGE.seo.description}
 	canonicalPath="/product-solutions/components-specific-solutions/fastener-coatings/"
+	jsonLd={jsonLd}
 >
 	<SiteHeader currentPathname={currentPathname} />
 	<MegaMenu />
 
 	<main id="main" class="pt-48 md:pt-91">
-		<PageHero {...PAGE.hero} />
+		<CoatingsHero {...PAGE.hero} />
 
-		{
-			PAGE.intro.map((para) => (
-				<div class="container-fluid">
-					<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text">
-						{para.strong && <strong>{para.strong}</strong>}
-						{para.text}
-					</p>
-				</div>
-			))
-		}
-
-		<CoatingTypes heading={PAGE.types.heading} cards={PAGE.types.cards} />
-
-		<CorrosionCallout callout={PAGE.corrosion} />
-
-		<WhitePapers
-			heading={PAGE.papers.heading}
-			label={PAGE.papers.label}
-			items={PAGE.papers.items}
+		<FinishHub
+			eyebrow={PAGE.hub.eyebrow}
+			heading={PAGE.hub.heading}
+			lead={PAGE.hub.lead}
+			finishes={PAGE.finishes}
 		/>
 
-		<div class="container-fluid">
-			<p class="text-p pb-12 text-gray lg:pb-20 max-w-rich-text"></p>
-		</div>
+		<FinishMatrix
+			eyebrow={PAGE.matrix.eyebrow}
+			heading={PAGE.matrix.heading}
+			lead={PAGE.matrix.lead}
+			filters={PAGE.matrix.filters}
+			rows={PAGE.matrix.rows}
+		/>
+
+		<FinishFaq
+			eyebrow={PAGE.faq.eyebrow}
+			heading={PAGE.faq.heading}
+			lead={PAGE.faq.lead}
+			items={PAGE.faq.items}
+		/>
+
+		<CoatingsRfq
+			eyebrow={PAGE.rfq.eyebrow}
+			heading={PAGE.rfq.heading}
+			lead={PAGE.rfq.lead}
+			anchors={PAGE.rfq.anchors}
+			finishOptions={PAGE.rfq.finishOptions}
+			gradeOptions={PAGE.rfq.gradeOptions}
+		/>
+
+		<RelatedResources heading={PAGE.related.heading} items={PAGE.related.items} />
 	</main>
 
 	<SiteFooter />
 	<CookieConsent />
 	<BackToTop />
 </BaseLayout>
+
+<script>
+	/* The finish cards dispatch this event; the RFQ section preselects it. */
+	document.querySelectorAll<HTMLButtonElement>('[data-quote-finish]').forEach((button) => {
+		button.addEventListener('click', () => {
+			const finish = button.dataset.quoteFinish;
+			if (!finish) return;
+			window.dispatchEvent(new CustomEvent('boze:quote-finish', { detail: finish }));
+		});
+	});
+</script>

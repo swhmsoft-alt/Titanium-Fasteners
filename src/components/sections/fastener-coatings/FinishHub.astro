@@ -1,0 +1,77 @@
+---
+/**
+ * FinishHub — module B: the four core titanium surface states.
+ *
+ * LAYOUT BUDGET (LAYOUT_RULES §2)
+ * · Each card: ONE 4:3 figure (locked), a ≤ 40-word summary, 3 single-line
+ *   bold-lead bullets (≤ 12 words each) and one CTA.
+ * · The CTA dispatches `boze:quote-finish`, which preselects that finish in
+ *   the RFQ form below and scrolls the buyer to it.
+ * · Cards are a full-width 2-column grid — no sub-cards nested in a text
+ *   column.
+ */
+import type { FinishCard } from '@data/fastener-coatings';
+
+interface Props {
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	finishes: readonly FinishCard[];
+}
+
+const { eyebrow, heading, lead, finishes } = Astro.props;
+---
+
+<section class="bg-blue-light/30 py-48 lg:py-64" aria-labelledby="finish-hub-heading">
+	<div class="container-fluid">
+		<p class="text-label mb-8 text-gray-medium">{eyebrow}</p>
+		<h2 id="finish-hub-heading" class="text-h3 mb-16 max-w-rich-text text-blue-dark3 lg:mb-24">
+			{heading}
+		</h2>
+		<p class="mb-40 max-w-rich-text text-p text-gray lg:mb-48">{lead}</p>
+
+		<div class="grid grid-cols-1 gap-24 md:grid-cols-2 lg:gap-32">
+			{
+				finishes.map((finish) => (
+					<article class="flex flex-col rounded-card border border-blue-light bg-white p-20 lg:p-32">
+						<figure class="mb-20 flex w-full overflow-hidden rounded-lg lg:mb-24">
+							<img
+								src={finish.image.src}
+								alt={finish.image.alt}
+								width="1600"
+								height="1000"
+								loading="lazy"
+								decoding="async"
+								class="aspect-16/10 w-full object-cover"
+								style="aspect-ratio:16 / 10"
+							/>
+						</figure>
+
+						<h3 class="text-h4 mb-8 text-blue-dark3">{finish.name}</h3>
+						<p class="mb-16 text-p-sm font-medium uppercase tracking-wide text-gray-medium">
+							{finish.standard}
+						</p>
+						<p class="mb-20 text-p text-gray lg:mb-24">{finish.summary}</p>
+
+						<ul class="mb-24 flex flex-col gap-8 lg:mb-32">
+							{finish.points.map((point) => (
+								<li class="flex gap-10 text-p-sm text-gray">
+									<span aria-hidden="true" class="mt-8 h-8 w-8 shrink-0 rounded-full bg-blue-light" />
+									<span>{point}</span>
+								</li>
+							))}
+						</ul>
+
+						<button
+							type="button"
+							class="mt-auto inline-flex items-center justify-center self-start rounded-pill border border-blue px-24 py-13 pb-14 text-button leading-none text-blue transition-colors duration-300 hover:bg-blue-light"
+							data-quote-finish={finish.id}
+						>
+							{finish.ctaLabel}
+						</button>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>

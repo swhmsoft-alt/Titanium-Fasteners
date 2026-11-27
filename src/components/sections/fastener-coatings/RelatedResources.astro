@@ -1,0 +1,43 @@
+---
+/**
+ * RelatedResources — the closing link row.
+ *
+ * A compact full-width 4-column grid, not a photo band: these are abstract
+ * links, so LAYOUT_RULES §2 requires a grid rather than large images.
+ */
+import type { RelatedLink } from '@data/fastener-coatings';
+
+interface Props {
+	heading: string;
+	items: readonly RelatedLink[];
+}
+
+const { heading, items } = Astro.props;
+---
+
+<section class="bg-blue-light/30 py-48 lg:py-64" aria-labelledby="related-resources-heading">
+	<div class="container-fluid">
+		<h2 id="related-resources-heading" class="text-h4 mb-24 text-blue-dark3 lg:mb-32">
+			{heading}
+		</h2>
+
+		<ul class="grid grid-cols-1 gap-16 md:grid-cols-2 lg:grid-cols-4 lg:gap-24">
+			{
+				items.map((item) => (
+					<li>
+						<a
+							href={item.href}
+							class="flex h-full flex-col rounded-card border border-blue-light bg-white p-20 transition-colors duration-200 hover:border-blue lg:p-24"
+						>
+							<span class="text-p-sm font-medium text-blue-dark3">{item.label}</span>
+							<span class="mt-8 block text-p-sm text-gray">{item.description}</span>
+							<span class="mt-auto pt-16 text-p-sm text-blue underline underline-offset-4">
+								Read more
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

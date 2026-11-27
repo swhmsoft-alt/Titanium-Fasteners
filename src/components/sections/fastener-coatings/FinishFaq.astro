@@ -1,0 +1,67 @@
+---
+/**
+ * FinishFaq — module D: the purchasing and engineering FAQ.
+ *
+ * Uses the native <details> element so the behaviour is keyboard accessible
+ * without JavaScript. The question and answer strings are the same ones the
+ * FAQPage JSON-LD is built from (src/data/fastener-coatings/faq.ts), so the
+ * structured data can never drift from the visible content.
+ *
+ * NOTE: the shared <Accordion> component lays its content out in two columns
+ * from the `md` breakpoint, which would split a long answer in half. This
+ * section therefore renders <details> directly, with one full-width answer.
+ */
+import type { FaqItem } from '@data/fastener-coatings';
+
+interface Props {
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	items: readonly FaqItem[];
+}
+
+const { eyebrow, heading, lead, items } = Astro.props;
+---
+
+<section class="bg-blue-light/30 py-48 lg:py-64" aria-labelledby="finish-faq-heading">
+	<div class="container-fluid">
+		<p class="text-label mb-8 text-gray-medium">{eyebrow}</p>
+		<h2 id="finish-faq-heading" class="text-h3 mb-16 max-w-rich-text text-blue-dark3 lg:mb-24">
+			{heading}
+		</h2>
+		<p class="mb-32 max-w-rich-text text-p text-gray lg:mb-40">{lead}</p>
+
+		<div class="flex max-w-[960px] flex-col gap-12">
+			{
+				items.map((item, index) => (
+					<details class="rounded-lg border border-blue-light bg-white p-16 lg:p-24" open={index === 0}>
+						<summary class="relative flex w-full cursor-pointer items-center justify-between gap-16">
+							<h3 class="text-card text-blue-dark3">{item.question}</h3>
+							<svg
+								class="h-24 w-24 shrink-0 text-blue-dark3 transition-transform duration-300"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="m6 9 6 6 6-6" />
+							</svg>
+						</summary>
+						<div class="mt-16 border-t border-blue-light pt-16 lg:mt-24 lg:pt-24">
+							<p class="text-p text-gray">{item.answer}</p>
+						</div>
+					</details>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	details[open] summary svg {
+		transform: rotate(180deg);
+	}
+</style>

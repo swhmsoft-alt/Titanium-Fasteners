@@ -1,0 +1,365 @@
+---
+/**
+ * CoatingsRfq — the money module: the factory RFQ form.
+ *
+ * WHY VANILLA JS, NOT A REACT ISLAND
+ * ----------------------------------
+ * The form only needs three things: preselect a finish, POST JSON to the
+ * existing inquiry endpoint, and swap in a receipt. Native DOM is enough,
+ * so the page carries no hydration cost, and without JavaScript the form
+ * still submits natively instead of silently losing the enquiry.
+ *
+ * FINISH PRESELECTION
+ * -------------------
+ * The finish cards above dispatch `boze:quote-finish` with the finish id.
+ * This section listens for that event, ticks the matching checkbox and
+ * scrolls the buyer here.
+ *
+ * CONTENT RULES
+ * -------------
+ * No torque, friction or galling figures are requested or claimed. The
+ * buyer is asked for the finish, the grade, the standard and the drawing.
+ */
+import { INQUIRY } from '@config/site';
+import type { RfqFinishOption, RfqGradeOption } from '@data/fastener-coatings';
+
+interface Anchor {
+	label: string;
+	text: string;
+}
+
+interface Props {
+	eyebrow: string;
+	heading: string;
+	lead: string;
+	anchors: readonly Anchor[];
+	finishOptions: readonly RfqFinishOption[];
+	gradeOptions: readonly RfqGradeOption[];
+}
+
+const { eyebrow, heading, lead, anchors, finishOptions, gradeOptions } = Astro.props;
+
+const FIELD =
+	'w-full border border-gray-light bg-white px-16 py-13 text-p-sm text-gray placeholder:text-gray-medium focus:border-blue focus:outline-none';
+---
+
+<section
+	id="rfq-quote-section"
+	class="py-48 lg:py-64"
+	aria-labelledby="coatings-rfq-heading"
+>
+	<div class="container-fluid">
+		<div class="grid grid-cols-1 gap-32 lg:grid-cols-[1fr_1.4fr] lg:gap-48">
+			<div>
+				<p class="text-label mb-8 text-gray-medium">{eyebrow}</p>
+				<h2 id="coatings-rfq-heading" class="text-h3 mb-16 text-blue-dark3 lg:mb-24">
+					{heading}
+				</h2>
+				<p class="mb-24 max-w-rich-text text-p text-gray">{lead}</p>
+
+				<ul class="flex flex-col gap-16">
+					{
+						anchors.map((anchor) => (
+							<li class="border-l-2 border-blue-light pl-16">
+								<span class="block text-p-sm font-medium text-blue-dark3">{anchor.label}</span>
+								<span class="mt-4 block text-p-sm text-gray">{anchor.text}</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div>
+				<form
+					class="flex flex-col gap-20 rounded-card border border-blue-70 bg-white p-24 lg:p-40"
+					data-coatings-rfq
+					novalidate
+					data-endpoint={INQUIRY.endpoint}
+					data-fallback-email={INQUIRY.fallbackEmail}
+					data-trap-field={INQUIRY.trapField}
+				>
+					<fieldset>
+						<legend class="mb-12 block text-p-sm text-blue-dark3">
+							Surface finish required <span class="text-accent-rose">*</span>
+						</legend>
+						<div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
+							{
+								finishOptions.map((option) => (
+									<label class="flex cursor-pointer items-start gap-10 rounded-lg border border-gray-light px-12 py-10 transition-colors duration-200 hover:border-blue">
+										<input
+											type="checkbox"
+											name="finish"
+											value={option.id}
+											data-finish-option
+											class="mt-4 h-16 w-16 shrink-0"
+										/>
+										<span class="text-p-sm text-gray">{option.label}</span>
+									</label>
+								))
+							}
+						</div>
+					</fieldset>
+
+					<div class="grid grid-cols-1 gap-20 md:grid-cols-2">
+						<div>
+							<label for="coatings-grade" class="mb-8 block text-p-sm text-blue-dark3">
+								Titanium grade
+							</label>
+							<select id="coatings-grade" name="grade" class={FIELD}>
+								<option value="">Select a grade</option>
+								{gradeOptions.map((option) => <option value={option.id}>{option.label}</option>)}
+							</select>
+						</div>
+						<div>
+							<label for="coatings-spec" class="mb-8 block text-p-sm text-blue-dark3">
+								Standard and size
+							</label>
+							<input
+								id="coatings-spec"
+								name="specs"
+								type="text"
+								placeholder="e.g. DIN 912, M6 x 20, Grade 5"
+								class={FIELD}
+							/>
+						</div>
+					</div>
+
+					<div>
+						<label for="coatings-quantity" class="mb-8 block text-p-sm text-blue-dark3">
+							Quantity per lot
+						</label>
+						<input
+							id="coatings-quantity"
+							name="quantity"
+							type="text"
+							placeholder="e.g. 5000 pcs per month"
+							class={FIELD}
+						/>
+					</div>
+
+					<div>
+						<label for="coatings-message" class="mb-8 block text-p-sm text-blue-dark3">
+							Requirement and drawing notes
+						</label>
+						<textarea
+							id="coatings-message"
+							name="message"
+							rows="5"
+							placeholder="Describe the joint, the environment and any coating thickness or colour requirement."
+							class={FIELD}
+						></textarea>
+					</div>
+
+					<div class="grid grid-cols-1 gap-20 md:grid-cols-2">
+						<div>
+							<label for="coatings-email" class="mb-8 block text-p-sm text-blue-dark3">
+								Work Email <span class="text-accent-rose">*</span>
+							</label>
+							<input
+								id="coatings-email"
+								name="email"
+								type="email"
+								required
+								autocomplete="email"
+								placeholder="name@company.com"
+								class={FIELD}
+							/>
+						</div>
+						<div>
+							<label for="coatings-company" class="mb-8 block text-p-sm text-blue-dark3">
+								Company Name <span class="text-accent-rose">*</span>
+							</label>
+							<input
+								id="coatings-company"
+								name="company"
+								type="text"
+								required
+								autocomplete="organization"
+								placeholder="Company legal name"
+								class={FIELD}
+							/>
+						</div>
+					</div>
+
+					{/* Honeypot — visually hidden, reachable by bots. */}
+					<div aria-hidden="true" class="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden">
+						<label for="coatings-trap">Website</label>
+						<input id="coatings-trap" name={INQUIRY.trapField} type="text" tabindex="-1" autocomplete="off" />
+					</div>
+
+					<p role="alert" class="hidden text-p-sm text-accent-rose" data-coatings-error></p>
+
+					<div class="flex flex-col gap-12">
+						<button
+							type="submit"
+							class="inline-flex items-center justify-center self-start rounded-pill bg-blue px-24 py-13 pb-14 text-button leading-none text-white transition-colors duration-300 hover:bg-blue-dark3"
+						>
+							Send surface finish inquiry
+						</button>
+						<p class="text-p-sm text-gray-medium">
+							NDA Protected • Direct Factory Quote within 24 Hours • EN 10204 3.1 Certified
+						</p>
+					</div>
+				</form>
+
+				<div class="hidden rounded-card border border-blue-70 bg-white p-40" data-coatings-receipt>
+					<h3 class="text-h4 mb-12 font-normal text-blue-dark3">Inquiry received</h3>
+					<p class="mb-24 text-p text-gray">
+						Thank you. Our engineering desk will reply to your work email within one business day
+						with the surface specification, the certificate scope and the delivery date.
+					</p>
+					<p class="mb-24 text-p-sm text-gray-medium" data-coatings-reference></p>
+					<a
+						href={INQUIRY.fallbackEmail.startsWith('mailto:')
+							? INQUIRY.fallbackEmail
+							: `mailto:${INQUIRY.fallbackEmail}`}
+						class="text-button text-blue underline underline-offset-4"
+						data-coatings-mailto
+					>
+						Send the same brief by email
+					</a>
+					<button
+						type="button"
+						class="mt-24 block text-p-sm text-blue-dark3 underline underline-offset-4"
+						data-coatings-reset
+					>
+						Submit another inquiry
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-coatings-rfq]');
+	const receipt = document.querySelector<HTMLElement>('[data-coatings-receipt]');
+	const errorEl = document.querySelector<HTMLElement>('[data-coatings-error]');
+	const finishInputs = Array.from(
+		document.querySelectorAll<HTMLInputElement>('[data-finish-option]'),
+	);
+
+	/* ── 卡片预选表面处理（跨组件通信） ───────────────────────────── */
+	window.addEventListener('boze:quote-finish', (event) => {
+		const finish = (event as CustomEvent<string>).detail;
+		if (!finish || finishInputs.length === 0) return;
+		const target = finishInputs.find((input) => input.value === finish);
+		if (!target) return;
+		finishInputs.forEach((input) => {
+			input.checked = input === target;
+		});
+		document.getElementById('rfq-quote-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	});
+
+	const makeReference = () =>
+		`REF-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`;
+
+	form?.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		errorEl?.classList.add('hidden');
+
+		const data = new FormData(form);
+		const email = String(data.get('email') ?? '').trim();
+		const company = String(data.get('company') ?? '').trim();
+		const message = String(data.get('message') ?? '').trim();
+		const specs = String(data.get('specs') ?? '').trim();
+		const grade = String(data.get('grade') ?? '').trim();
+		const quantity = String(data.get('quantity') ?? '').trim();
+		const finishes = finishInputs.filter((input) => input.checked).map((input) => input.value);
+
+		const trapField = form.dataset.trapField ?? '';
+		const trap = trapField ? String(data.get(trapField) ?? '').trim() : '';
+
+		/* 机器人填了蜜罐 → 静默成功，不暴露风控规则。 */
+		if (trapField && trap !== '') {
+			form.reset();
+			return;
+		}
+
+		if (!email || !company || finishes.length === 0) {
+			if (errorEl) {
+				errorEl.textContent =
+					'Please provide your work email, your company name and at least one surface finish.';
+				errorEl.classList.remove('hidden');
+			}
+			return;
+		}
+
+		const endpoint = form.dataset.endpoint ?? '';
+		const fallbackEmail = form.dataset.fallbackEmail ?? '';
+		const reference = makeReference();
+		const requirement = [
+			`Surface finish: ${finishes.join(', ')}`,
+			grade ? `Grade: ${grade}` : '',
+			specs ? `Standard / size: ${specs}` : '',
+			quantity ? `Quantity: ${quantity}` : '',
+			message ? `Notes: ${message}` : '',
+		]
+			.filter(Boolean)
+			.join('\n');
+
+		const payload = {
+			source: 'fastener-coatings',
+			intent: 'surface-finish-quote',
+			intentLabel: 'Titanium surface finish quote request',
+			product: {
+				familyId: '',
+				sku: '',
+				name: 'Titanium fastener surface finishing',
+				standard: specs,
+				material: grade,
+				sizeRange: '',
+				thread: '',
+				length: '',
+				pageUrl: window.location.href,
+			},
+			contact: { name: '', email, company, country: '', phone: '' },
+			requirement,
+			quantity,
+			reference,
+			pageUrl: window.location.href,
+		};
+
+		const showReceipt = (delivery: 'posted' | 'failed' | 'offline') => {
+			form.classList.add('hidden');
+			receipt?.classList.remove('hidden');
+			const referenceEl = document.querySelector('[data-coatings-reference]');
+			if (referenceEl) referenceEl.textContent = `Your reference: ${reference}`;
+			const mailtoEl = document.querySelector('[data-coatings-mailto]') as HTMLAnchorElement | null;
+			if (mailtoEl) {
+				mailtoEl.href = `mailto:${fallbackEmail}?subject=${encodeURIComponent(
+					`Titanium surface finish inquiry ${reference}`,
+				)}&body=${encodeURIComponent(`Company: ${company}\nEmail: ${email}\n${requirement}`)}`;
+			}
+			if (delivery !== 'posted') {
+				const hint = document.querySelector('[data-coatings-delivery-hint]');
+				if (hint) {
+					hint.textContent =
+						'We could not confirm server delivery. Use the email link below to send the same brief directly.';
+				}
+			}
+		};
+
+		if (!endpoint) {
+			showReceipt('offline');
+			return;
+		}
+
+		try {
+			const res = await fetch(endpoint, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+			showReceipt(res.ok ? 'posted' : 'failed');
+		} catch {
+			showReceipt('failed');
+		}
+	});
+
+	document.querySelector('[data-coatings-reset]')?.addEventListener('click', () => {
+		receipt?.classList.add('hidden');
+		form?.classList.remove('hidden');
+		form?.reset();
+	});
+</script>
